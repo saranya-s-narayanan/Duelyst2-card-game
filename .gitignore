@@ -67,3 +67,10 @@ local.properties
 .scala_dependencies
 .worksheet
 /bin/
+
+# other files to be ignored
+conf/**
+LICENSE
+NOTICE
+build.sbt
+.DS_Store
