@@ -2,6 +2,8 @@
 
 This is a backend developed for a tactical card game application in Java 
 
+i'm just doing a test on a different branch
+
 ## Getting started
 
 To make it easy for you to get started with GitLab, here's a list of recommended next steps.
