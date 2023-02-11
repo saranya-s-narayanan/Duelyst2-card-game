@@ -27,6 +27,7 @@ public class Initalize implements EventProcessor{
 		gameState.gameInitalised = true;
 		
 		gameState.something = true;
+		System.out.println("Initialized = ");
 		
 		// User 1 makes a change
 		//CommandDemo.executeDemo(out); // this executes the command demo, comment out this when implementing your solution
