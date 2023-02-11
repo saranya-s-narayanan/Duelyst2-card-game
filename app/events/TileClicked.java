@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import akka.actor.ActorRef;
 import structures.GameState;
+import utils.AppConstants;
 
 /**
  * Indicates that the user has clicked an object on the game canvas, in this case a tile.
@@ -25,12 +26,15 @@ public class TileClicked implements EventProcessor{
 	@Override
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
 
-		int tilex = message.get("tilex").asInt();
-		int tiley = message.get("tiley").asInt();
-		
-		if (gameState.something == true) {
-			// do some logic
+		if(gameState.isGameActive) // if the frontend connection is active
+		{
+			AppConstants.printLog("------> TileClicked :: Game is active ! ");
+			int tilex = message.get("tilex").asInt();
+			int tiley = message.get("tiley").asInt();
 		}
+		
+		
+		
 		
 	}
 
