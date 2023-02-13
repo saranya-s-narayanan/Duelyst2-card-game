@@ -1,5 +1,9 @@
 package structures.basic;
 
+import akka.actor.ActorRef;
+import commands.BasicCommands;
+import utils.BasicObjectBuilders;
+
 /**
  * A basic representation of of the Player. A player
  * has health and mana.
@@ -12,10 +16,11 @@ public class Player {
 	int health;
 	int mana;
 	
-	public Player() {
+	public Player(ActorRef out) {
 		super();
 		this.health = 20;
 		this.mana = 0;
+		setPlayer(out);
 	}
 	public Player(int health, int mana) {
 		super();
@@ -34,7 +39,13 @@ public class Player {
 	public void setMana(int mana) {
 		this.mana = mana;
 	}
-	
+
+	public void setPlayer(ActorRef out){
+
+		BasicCommands.setPlayer1Health(out, this);
+		BasicCommands.setPlayer1Mana(out, this);
+		BasicCommands.addPlayer1Notification(out, "Test", 5);
+	}
 	
 	
 }

@@ -8,6 +8,7 @@ import demo.CheckMoveLogic;
 import demo.CommandDemo;
 import structures.GameState;
 import structures.basic.Board;
+import structures.basic.Player;
 import structures.basic.Tile;
 import utils.AppConstants;
 import utils.BasicObjectBuilders;
@@ -37,6 +38,14 @@ public class Initalize implements EventProcessor{
 		gameState.board=new Board(out);
 		
 		AppConstants.printLog("------> Initialize :: Board created !");
+
+		AppConstants.printLog("------> Initialise :: setting player1 health and mana..");
+
+		gameState.player1=new Player(out);
+
+		AppConstants.printLog("------> Initialise :: Player health and mana set !");
+
+
 
 		
 		
