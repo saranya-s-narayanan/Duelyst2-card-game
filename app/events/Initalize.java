@@ -11,6 +11,10 @@ import structures.basic.*;
 import utils.AppConstants;
 import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
+import structures.basic.Board;
+import structures.basic.Player;
+import structures.basic.Tile;
+
 
 /**
  * Indicates that both the core game loop in the browser is starting, meaning
@@ -34,19 +38,15 @@ public class Initalize implements EventProcessor {
 		// Create a board object and assign it to the gameState board object
         gameState.board = new Board(out);
 
+
         AppConstants.printLog("------> Initialize :: Board created !");
-
-        AppConstants.printLog("------> Initialise :: setting player1 health and mana..");
-
-        // Create a player object and assign it to the gameState player object
-        gameState.player1 = new Player(out);
-
-		AppConstants.printLog("------> Initialise :: Player health and mana set !");
-
 
 
         // creating the avatar object
 		gameState.avatar = new BetterUnit(out);
+
+        // creating the player object and passing the avatar object to allow the players health to be set to the avatars.
+        gameState.player1 = new Player(out,gameState.avatar);
 
 
 

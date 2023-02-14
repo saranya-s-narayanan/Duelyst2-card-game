@@ -12,13 +12,17 @@ public class BetterUnit extends Unit {
 
     Set<String> keywords;
 
+    int health;
+    int attack;
+
 
     public BetterUnit(ActorRef out) {
         //avatar object
-        Unit avatar = BasicObjectBuilders.loadUnit(StaticConfFiles.humanAvatar, 0, Unit.class);
-        setAvatar(out, avatar);
-        setHealth(out, avatar);
-        setAttack(out, avatar);
+        this.health = 20;
+        this.attack = 2;
+
+        setAvatar(out);
+
     }
 
     public BetterUnit(Set<String> keywords) {
@@ -34,32 +38,43 @@ public class BetterUnit extends Unit {
         this.keywords = keywords;
     }
 
-    public void setAvatar(ActorRef out, Unit unit) {
+    public void setAvatar(ActorRef out) {
+        // creates the player1 avatar object
+        Unit avatar = BasicObjectBuilders.loadUnit(StaticConfFiles.humanAvatar, 0, Unit.class);
+
         // load tile for avatar placement
         Tile tile = BasicObjectBuilders.loadTile(1, 2);
 
         // Draw the avatar
-        unit.setPositionByTile(tile);
-        BasicCommands.drawUnit(out, unit, tile);
+        avatar.setPositionByTile(tile);
+        BasicCommands.drawUnit(out, avatar, tile);
 
-        //seems to not set health and attack without a sleep ( no idea why )
+        //seems to not set health and attack without a sleep
         try {
-            Thread.sleep(2);
+            Thread.sleep(20);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        BasicCommands.setUnitHealth(out, avatar, getHealth());
+        BasicCommands.setUnitAttack(out, avatar, getAttack());
 
     }
-
-    public void setHealth(ActorRef out, Unit unit) {
-        BasicCommands.setUnitHealth(out, unit, 20);
+    
+    public int getHealth() {
+        return health;
     }
 
-    public void setAttack(ActorRef out, Unit unit) {
-
-        BasicCommands.setUnitAttack(out, unit, 2);
+    public void setHealth(int health) {
+        this.health = health;
     }
 
+    public int getAttack() {
+        return attack;
+    }
+
+    public void setAttack(int attack) {
+        this.attack = attack;
+    }
 
     public static void main(String[] args) {
         // not sure why this is all here in main??

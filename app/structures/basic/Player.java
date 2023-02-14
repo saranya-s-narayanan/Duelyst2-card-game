@@ -17,9 +17,9 @@ public class Player {
 	int health;
 	int mana;
 	// constructor to create a player with set health and mana which calls setPlayer to place the data on the front end.
-	public Player(ActorRef out) {
+	public Player(ActorRef out, BetterUnit avatar) {
 		super();
-		this.health = AppConstants.playerMaxHealth;
+		this.health = avatar.getHealth();
 		this.mana = 0;
 		setPlayer(out);
 	}
