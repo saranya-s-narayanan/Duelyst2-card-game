@@ -67,8 +67,7 @@ public class Initalize implements EventProcessor {
         // creating the player object and passing the avatar object to allow the players health to be set to the avatars.
         gameState.player1 = new Player(out,gameState.avatar);
 
-
-
+        
         // User 1 makes a change
         //CommandDemo.executeDemo(out); // this executes the command demo, comment out this when implementing your solution
         //CheckMoveLogic.executeDemo(out);
