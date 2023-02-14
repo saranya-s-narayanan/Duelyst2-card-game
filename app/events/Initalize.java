@@ -3,6 +3,7 @@ package events;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import akka.actor.ActorRef;
+import com.fasterxml.jackson.databind.introspect.TypeResolutionContext;
 import commands.BasicCommands;
 import demo.CheckMoveLogic;
 import demo.CommandDemo;
@@ -14,6 +15,7 @@ import utils.StaticConfFiles;
 import structures.basic.Board;
 import structures.basic.Player;
 import structures.basic.Tile;
+import structures.basic.BetterUnit;
 
 
 /**
@@ -41,15 +43,29 @@ public class Initalize implements EventProcessor {
 
         AppConstants.printLog("------> Initialize :: Board created !");
 
-
         // creating the avatar object
-		gameState.avatar = new BetterUnit(out);
+        Unit avatar = BasicObjectBuilders.loadUnit(StaticConfFiles.humanAvatar, 0, Unit.class);
+
+        // loading the correct tile for the avatar placement
+        Tile player1Tile = BasicObjectBuilders.loadTile(1, 2);
+
+        // placing avatar on board and setting stats
+		gameState.avatar = new BetterUnit(out,avatar, player1Tile);
+
+        // creating ai avatar object
+        Unit aiAvatar = BasicObjectBuilders.loadUnit(StaticConfFiles.aiAvatar, 1, Unit.class);
+
+        // loading the correct tile for the avatar placement
+        Tile player2Tile = BasicObjectBuilders.loadTile(7, 2);
+
+        // placing avatar on board and setting stats
+        gameState.aiAvatar = new BetterUnit(out, aiAvatar, player2Tile);
+
+        // creating the player object and passing the avatar object to allow the players health to be set to the avatars.
+        gameState.player2 = new ComputerPlayer(out, gameState.aiAvatar);
 
         // creating the player object and passing the avatar object to allow the players health to be set to the avatars.
         gameState.player1 = new Player(out,gameState.avatar);
-
-
-
 
 
 

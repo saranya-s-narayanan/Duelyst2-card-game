@@ -18,9 +18,9 @@ public class Player {
 	int mana;
 	// constructor to create a player with set health and mana which calls setPlayer to place the data on the front end.
 	public Player(ActorRef out, BetterUnit avatar) {
-		super();
+
 		this.health = avatar.getHealth();
-		this.mana = 0;
+		this.mana = 2; // this will be set to player turn +1 once we have player turn available
 		setPlayer(out);
 	}
 	public Player(int health, int mana) {

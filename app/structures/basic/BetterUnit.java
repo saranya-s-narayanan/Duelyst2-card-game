@@ -16,12 +16,13 @@ public class BetterUnit extends Unit {
     int attack;
 
 
-    public BetterUnit(ActorRef out) {
+    public BetterUnit(ActorRef out,Unit unit, Tile tile) {
         //avatar object
         this.health = 20;
         this.attack = 2;
 
-        setAvatar(out);
+        setAvatar(out,unit, tile);
+
 
     }
 
@@ -38,16 +39,16 @@ public class BetterUnit extends Unit {
         this.keywords = keywords;
     }
 
-    public void setAvatar(ActorRef out) {
+    public void setAvatar(ActorRef out, Unit unit, Tile tile) {
         // creates the player1 avatar object
-        Unit avatar = BasicObjectBuilders.loadUnit(StaticConfFiles.humanAvatar, 0, Unit.class);
+//        Unit avatar = BasicObjectBuilders.loadUnit(StaticConfFiles.humanAvatar, 0, Unit.class);
 
         // load tile for avatar placement
-        Tile tile = BasicObjectBuilders.loadTile(1, 2);
+
 
         // Draw the avatar
-        avatar.setPositionByTile(tile);
-        BasicCommands.drawUnit(out, avatar, tile);
+        unit.setPositionByTile(tile);
+        BasicCommands.drawUnit(out, unit, tile);
 
         //seems to not set health and attack without a sleep
         try {
@@ -55,11 +56,12 @@ public class BetterUnit extends Unit {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        BasicCommands.setUnitHealth(out, avatar, getHealth());
-        BasicCommands.setUnitAttack(out, avatar, getAttack());
+        BasicCommands.setUnitHealth(out, unit, getHealth());
+        BasicCommands.setUnitAttack(out, unit, getAttack());
 
     }
-    
+
+
     public int getHealth() {
         return health;
     }
