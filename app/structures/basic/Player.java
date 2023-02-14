@@ -2,6 +2,7 @@ package structures.basic;
 
 import akka.actor.ActorRef;
 import commands.BasicCommands;
+import utils.AppConstants;
 import utils.BasicObjectBuilders;
 
 /**
@@ -15,10 +16,10 @@ public class Player {
 
 	int health;
 	int mana;
-	
+	// constructor to create a player with set health and mana which calls setPlayer to place the data on the front end.
 	public Player(ActorRef out) {
 		super();
-		this.health = 20;
+		this.health = AppConstants.playerMaxHealth;
 		this.mana = 0;
 		setPlayer(out);
 	}
@@ -39,12 +40,12 @@ public class Player {
 	public void setMana(int mana) {
 		this.mana = mana;
 	}
-
+	// Setting the player 1 health and mana on the front end.
 	public void setPlayer(ActorRef out){
 
 		BasicCommands.setPlayer1Health(out, this);
 		BasicCommands.setPlayer1Mana(out, this);
-		BasicCommands.addPlayer1Notification(out, "Test", 5);
+
 	}
 	
 	
