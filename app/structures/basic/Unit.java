@@ -108,7 +108,17 @@ public class Unit {
 		BasicCommands.deleteUnit(out,this);
 	}
 
-	
+	// this will be the main method to check during gameplay. I am aware that I could include the unitRemoval method directly here, however, for purely testing purposes
+	// it may be handy to separate these two methods.
+	public boolean isALive(ActorRef out){
+		if ( unitHealth <= 0){
+			this.unitRemoval(out);
+			return false;
+		}
+		else return true;
+	}
+
+
 	/**
 	 * This command sets the position of the Unit to a specified
 	 * tile.
