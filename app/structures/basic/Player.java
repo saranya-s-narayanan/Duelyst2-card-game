@@ -4,6 +4,7 @@ import akka.actor.ActorRef;
 import commands.BasicCommands;
 import utils.AppConstants;
 import utils.BasicObjectBuilders;
+import utils.StaticConfFiles;//importing for cards in deck and hand
 
 /**
  * A basic representation of of the Player. A player
@@ -16,6 +17,10 @@ public class Player {
 
 	int health;
 	int mana;
+	int cardID=0;//variable to set card id
+	int position = 1;//variable to set card position in hand
+
+
 	// constructor to create a player with set health and mana which calls setPlayer to place the data on the front end.
 	public Player(ActorRef out, BetterUnit avatar) {
 
@@ -57,6 +62,60 @@ public class Player {
 		}
 
 	}
+
+
+	//string array of player 1 deck
+	String[] deck1Cards = {
+		StaticConfFiles.c_azure_herald,
+		StaticConfFiles.c_azurite_lion,
+		StaticConfFiles.c_comodo_charger,
+		StaticConfFiles.c_fire_spitter,
+		StaticConfFiles.c_hailstone_golem,
+		StaticConfFiles.c_ironcliff_guardian,
+		StaticConfFiles.c_pureblade_enforcer,
+		StaticConfFiles.c_silverguard_knight,
+		StaticConfFiles.c_sundrop_elixir,
+		StaticConfFiles.c_truestrike
+	};
 	
+
 	
+    //method to set hand
+    public void setHand(ActorRef out) {
+        for(int i=0;i<3;i++){
+            // drawCard [i]
+        Card card = BasicObjectBuilders.loadCard(deck1Cards[i], cardID, Card.class);
+        BasicCommands.drawCard(out, card, position, 0);
+
+        try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		//increment the card id and position
+        cardID++;
+		position++;
+        }
+    }
+
+	public void drawAnotherCard(ActorRef out) {
+		if(position<=6){
+			Card card = BasicObjectBuilders.loadCard(deck1Cards[cardID], cardID, Card.class);
+        	BasicCommands.drawCard(out, card, position, 0);
+
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			//increment the card id
+			cardID++;
+			position++;
+		}
+		else {
+			AppConstants.printLog("------> End turn Clicked:: but the hand positions are full !");
+			BasicCommands.addPlayer1Notification(out, "Hand positions are full", 2);
+		}
+		
+	}
 }
