@@ -107,6 +107,7 @@ public class Unit {
 	public void unitRemoval(ActorRef out){
 		BasicCommands.deleteUnit(out,this);
 	}
+
 	
 	/**
 	 * This command sets the position of the Unit to a specified
