@@ -17,6 +17,10 @@ public class Player {
 
 	int health;
 	int mana;
+	int cardID=0;//variable to set card id
+	int position = 1;//variable to set card position in hand
+
+
 	// constructor to create a player with set health and mana which calls setPlayer to place the data on the front end.
 	public Player(ActorRef out, BetterUnit avatar) {
 
@@ -75,21 +79,43 @@ public class Player {
 	};
 	
 
-	int unitID=0;//variable to set card id
+	
     //method to set hand
     public void setHand(ActorRef out) {
         for(int i=0;i<3;i++){
             // drawCard [i]
-        Card card = BasicObjectBuilders.loadCard(deck1Cards[i], unitID, Card.class);
-        BasicCommands.drawCard(out, card, (i+1), 0);
+        Card card = BasicObjectBuilders.loadCard(deck1Cards[i], cardID, Card.class);
+        BasicCommands.drawCard(out, card, position, 0);
 
         try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		//increment the card id
-        unitID++;
+		//increment the card id and position
+        cardID++;
+		position++;
         }
     }
+
+	public void drawAnotherCard(ActorRef out) {
+		if(position<=6){
+			Card card = BasicObjectBuilders.loadCard(deck1Cards[cardID], cardID, Card.class);
+        	BasicCommands.drawCard(out, card, position, 0);
+
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			//increment the card id
+			cardID++;
+			position++;
+		}
+		else {
+			AppConstants.printLog("------> End turn Clicked:: but the hand positions are full !");
+			BasicCommands.addPlayer1Notification(out, "Hand positions are full", 2);
+		}
+		
+	}
 }
