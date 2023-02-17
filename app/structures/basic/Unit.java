@@ -1,7 +1,9 @@
 package structures.basic;
 
+import akka.actor.ActorRef;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import commands.BasicCommands;
 
 /**
  * This is a representation of a Unit on the game board.
@@ -25,6 +27,9 @@ public class Unit {
 	Position position;
 	UnitAnimationSet animations;
 	ImageCorrection correction;
+	// basic variables for health and attack of units
+	int unitHealth;
+	int unitAttack;
 	
 	public Unit() {}
 	
@@ -95,6 +100,12 @@ public class Unit {
 
 	public void setAnimations(UnitAnimationSet animations) {
 		this.animations = animations;
+	}
+
+	// this is a method that can be called to remove a unit from the board. this will be used in another method 'isAlive()' to check if the unit is alive during the game.
+	// this could be achieved by using the basicCommands.deletUnit() directly, however this will allow us to more easily call that function.
+	public void unitRemoval(ActorRef out){
+		BasicCommands.deleteUnit(out,this);
 	}
 	
 	/**
