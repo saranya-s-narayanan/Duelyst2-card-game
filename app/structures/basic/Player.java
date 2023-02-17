@@ -4,6 +4,7 @@ import akka.actor.ActorRef;
 import commands.BasicCommands;
 import utils.AppConstants;
 import utils.BasicObjectBuilders;
+import utils.StaticConfFiles;//importing for cards in deck and hand
 
 /**
  * A basic representation of of the Player. A player
@@ -57,6 +58,21 @@ public class Player {
 		}
 
 	}
+
+	
+	//string array of player 1 deck
+	String[] deck1Cards = {
+		StaticConfFiles.c_azure_herald,
+		StaticConfFiles.c_azurite_lion,
+		StaticConfFiles.c_comodo_charger,
+		StaticConfFiles.c_fire_spitter,
+		StaticConfFiles.c_hailstone_golem,
+		StaticConfFiles.c_ironcliff_guardian,
+		StaticConfFiles.c_pureblade_enforcer,
+		StaticConfFiles.c_silverguard_knight,
+		StaticConfFiles.c_sundrop_elixir,
+		StaticConfFiles.c_truestrike
+	};
 	
 	
 }
