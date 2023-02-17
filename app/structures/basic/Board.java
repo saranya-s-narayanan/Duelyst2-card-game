@@ -61,4 +61,11 @@ public class Board {
 	public Tile[][] getTiles(){
 		return this.tiles;
 	}
+
+	// this method will take in an x and y parameter and return the tile object at that position
+	public Tile returnTile(int x, int y){
+	return tiles[x][y];
+	}
 }
+
+

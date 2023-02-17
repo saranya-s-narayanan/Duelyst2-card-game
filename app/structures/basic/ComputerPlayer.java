@@ -33,7 +33,17 @@ public class ComputerPlayer extends Player{
     public void setPlayer2(ActorRef out){
 
         BasicCommands.setPlayer2Health(out, this);
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         BasicCommands.setPlayer2Mana(out, this);
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 }

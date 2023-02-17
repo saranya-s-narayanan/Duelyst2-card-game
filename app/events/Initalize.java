@@ -40,26 +40,21 @@ public class Initalize implements EventProcessor {
 		// Create a board object and assign it to the gameState board object
         gameState.board = new Board(out);
 
-
         AppConstants.printLog("------> Initialize :: Board created !");
 
         // creating the avatar object
         Unit avatar = BasicObjectBuilders.loadUnit(StaticConfFiles.humanAvatar, 0, Unit.class);
 
-        // loading the correct tile for the avatar placement
-        Tile player1Tile = BasicObjectBuilders.loadTile(1, 2);
-
+        // Change by using the returnTile method instead of creating tile objects here
         // placing avatar on board and setting stats
-		gameState.avatar = new BetterUnit(out,avatar, player1Tile);
+        gameState.avatar =  new BetterUnit(out,avatar, gameState.board.returnTile(1,2));
 
         // creating ai avatar object
         Unit aiAvatar = BasicObjectBuilders.loadUnit(StaticConfFiles.aiAvatar, 1, Unit.class);
 
-        // loading the correct tile for the avatar placement
-        Tile player2Tile = BasicObjectBuilders.loadTile(7, 2);
-
+        // Change by using the returnTile method instead of creating tile objects here
         // placing avatar on board and setting stats
-        gameState.aiAvatar = new BetterUnit(out, aiAvatar, player2Tile);
+        gameState.aiAvatar = new BetterUnit(out, aiAvatar, gameState.board.returnTile(7,2));
 
         // creating the player object and passing the avatar object to allow the players health to be set to the avatars.
         gameState.player2 = new ComputerPlayer(out, gameState.aiAvatar);
@@ -67,7 +62,7 @@ public class Initalize implements EventProcessor {
         // creating the player object and passing the avatar object to allow the players health to be set to the avatars.
         gameState.player1 = new Player(out,gameState.avatar);
 
-        
+
         // User 1 makes a change
         //CommandDemo.executeDemo(out); // this executes the command demo, comment out this when implementing your solution
         //CheckMoveLogic.executeDemo(out);

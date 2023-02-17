@@ -44,7 +44,17 @@ public class Player {
 	public void setPlayer(ActorRef out){
 
 		BasicCommands.setPlayer1Health(out, this);
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		BasicCommands.setPlayer1Mana(out, this);
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
 	}
 	
