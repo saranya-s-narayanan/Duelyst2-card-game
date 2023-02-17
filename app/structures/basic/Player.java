@@ -59,7 +59,7 @@ public class Player {
 
 	}
 
-	
+
 	//string array of player 1 deck
 	String[] deck1Cards = {
 		StaticConfFiles.c_azure_herald,
@@ -74,5 +74,22 @@ public class Player {
 		StaticConfFiles.c_truestrike
 	};
 	
-	
+
+	int unitID=0;//variable to set card id
+    //method to set hand
+    public void setHand(ActorRef out) {
+        for(int i=0;i<3;i++){
+            // drawCard [i]
+        Card card = BasicObjectBuilders.loadCard(deck1Cards[i], unitID, Card.class);
+        BasicCommands.drawCard(out, card, (i+1), 0);
+
+        try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		//increment the card id
+        unitID++;
+        }
+    }
 }
