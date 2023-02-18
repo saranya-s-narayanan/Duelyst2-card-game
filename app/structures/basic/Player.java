@@ -48,6 +48,12 @@ public class Player {
 		this.health = health;
 		this.mana = mana;
 	}
+	public int getID() {
+		return playerID;
+	}
+	public void setID(int playerID) {
+		this.playerID = playerID;
+	}
 	public int getHealth() {
 		return health;
 	}

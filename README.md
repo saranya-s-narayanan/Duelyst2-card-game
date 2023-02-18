@@ -21,5 +21,12 @@ The end turn class was modified to include `drawAnotherCard(out)` which is defin
 
 # Player attack ability
 
+
 A 'PerformAction' class has been introduced to include the methods for the implementation of available
- actions (highlight/move/attack) and perfrom appropriate tasks in order
+actions (highlight/move/attack) and perfrom appropriate tasks in order
+	
+	- Added highlightTiles() to highlight or unhighlight the available tiles to move or attack upon clicking
+	on avatar.
+	
+	- Added attackUnit() to implement the avatar attack logic on an enemy unit and handling counter attack
+
