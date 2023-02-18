@@ -27,6 +27,29 @@ public class GameState {
     public BetterUnit aiAvatar = null;
     public long lastHeartbeatTime = 0; // The time of the latest heartbeat message reception
 
+    private boolean turn=true;//varibale to check whose turn is it, true for player, false for AI
+    private int playerTurnNumber =1;//variable to see how many turns had the player had
+    private int compTurnNumber =1;//varibale to see how many turns had the AI had
+
+    public boolean getTurn() {//for getting the turn
+        return this.turn;
+    }
+    public void setTurn(boolean boo) {//for setting the turn
+        this.turn=boo;
+    }
+    public int getPlayerTurnNumber() {//for getting the player turn number
+        return playerTurnNumber;
+    }
+    public void incrementPlayerTurn() {//for incrementing the player turn number
+        this.playerTurnNumber++;
+    }
+    public void incrementCompTurn(){//for incrementing the AI turn number
+        this.compTurnNumber++;
+    }
+    public int getCompTurnNumber() {//for getting the AI turn number
+        return compTurnNumber;
+    }
+
 
     /**
      * This method resets the state variable values to the default ones
