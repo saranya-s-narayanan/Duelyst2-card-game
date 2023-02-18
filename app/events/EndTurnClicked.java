@@ -32,6 +32,7 @@ public class EndTurnClicked implements EventProcessor{
 				AppConstants.printLog("------> End turn Clicked by the player :: mana set to 0 !");
 				gameState.setTurn(false);//passing the turn to AI
 				AppConstants.printLog("------> End turn Clicked by the player :: turn passed to AI !");
+				gameState.player1.setPlayer(out);//making change on the front end
 			}
 			else{//for when AI ends its turn
 				AppConstants.printLog("------> End turn Clicked by the AI !");
@@ -41,6 +42,7 @@ public class EndTurnClicked implements EventProcessor{
 				AppConstants.printLog("------> End turn Clicked by the AI :: player mana set to Turn+1 !");
 				gameState.setTurn(true);//passing the turn to the player
 				AppConstants.printLog("------> End turn Clicked by the AI :: turn passed to player !");
+				gameState.player1.setPlayer(out);//making change on the front end
 			}
 			
 			
