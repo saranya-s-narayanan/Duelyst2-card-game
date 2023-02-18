@@ -23,8 +23,9 @@ public class EndTurnClicked implements EventProcessor{
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
 		if(gameState.isGameActive) // if the frontend connection is active
 		{
-			AppConstants.printLog("------> CardClicked:: Game is active !");
+			AppConstants.printLog("------> End turn Clicked:: Game is active !");
 			
+			gameState.player1.drawAnotherCard(out);
 		}
 	}
 
