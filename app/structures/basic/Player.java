@@ -49,17 +49,10 @@ public class Player {
 	public void setPlayer(ActorRef out){
 
 		BasicCommands.setPlayer1Health(out, this);
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		AppConstants.callSleep(100);
+		
 		BasicCommands.setPlayer1Mana(out, this);
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		AppConstants.callSleep(100);
 
 	}
 
@@ -86,12 +79,8 @@ public class Player {
             // drawCard [i]
         Card card = BasicObjectBuilders.loadCard(deck1Cards[i], cardID, Card.class);
         BasicCommands.drawCard(out, card, position, 0);
-
-        try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+        AppConstants.callSleep(500);
+        
 		//increment the card id and position
         cardID++;
 		position++;
@@ -102,12 +91,8 @@ public class Player {
 		if(position<=6){
 			Card card = BasicObjectBuilders.loadCard(deck1Cards[cardID], cardID, Card.class);
         	BasicCommands.drawCard(out, card, position, 0);
-
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+        	AppConstants.callSleep(500);
+        	
 			//increment the card id
 			cardID++;
 			position++;
