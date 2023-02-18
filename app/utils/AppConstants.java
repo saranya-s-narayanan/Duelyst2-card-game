@@ -21,6 +21,7 @@ public class AppConstants {
 	
 	
 	// Card constants
+	public static int minCardsInHand=3;
 	public static int maxCardsInHand=6;
 	public static int maxCardsInDeck=20;
 	
@@ -31,6 +32,14 @@ public class AppConstants {
 	public static void printLog(String message) {
 		if(isDebugMode)
 			System.out.println(message);
+	}
+	
+	public static void callSleep(long millis) {
+		try {
+			Thread.sleep(millis);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

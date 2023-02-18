@@ -52,24 +52,15 @@ public class BetterUnit extends Unit {
         BasicCommands.drawUnit(out, unit, tile);
 
         //seems to not set health and attack without a sleep
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+		AppConstants.callSleep(100);
+
 
         BasicCommands.setUnitHealth(out, unit, getHealth());
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+		AppConstants.callSleep(100);
+
         BasicCommands.setUnitAttack(out, unit, getAttack());
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+		AppConstants.callSleep(100);
+
 
     }
 

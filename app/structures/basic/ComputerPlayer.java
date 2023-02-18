@@ -2,6 +2,7 @@ package structures.basic;
 
 import akka.actor.ActorRef;
 import commands.BasicCommands;
+import utils.AppConstants;
 
 // creating a computerPlayer class so we can add extra functionalities down the line
 public class ComputerPlayer extends Player{
@@ -33,17 +34,11 @@ public class ComputerPlayer extends Player{
     public void setPlayer2(ActorRef out){
 
         BasicCommands.setPlayer2Health(out, this);
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+		AppConstants.callSleep(100);
+
         BasicCommands.setPlayer2Mana(out, this);
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+		AppConstants.callSleep(100);
+
 
     }
 }
