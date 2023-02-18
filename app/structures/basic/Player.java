@@ -15,17 +15,26 @@ import utils.StaticConfFiles;//importing for cards in deck and hand
  */
 public class Player {
 
+	int playerID=1; // 1=player1, 2= computerPlayer
 	int health;
 	int mana;
 	int cardID=0;//variable to set card id
 	int position = 1;//variable to set card position in hand
 
+	String[] cardsDeck;
 
-	// constructor to create a player with set health and mana which calls setPlayer to place the data on the front end.
-	public Player(ActorRef out, BetterUnit avatar) {
-
+	/** constructor to create a player with set health and mana which calls setPlayer to place the data on the front end.
+	 * 
+	 * @param playerID
+	 * @param out
+	 * @param avatar
+	 * @param cardsDeck
+	 */
+	public Player(int playerID, ActorRef out, BetterUnit avatar, String[] cardsDeck) {
+		this.playerID=playerID;
 		this.health = avatar.getHealth();
 		this.mana = 2; // this will be set to player turn +1 once we have player turn available
+		this.cardsDeck=cardsDeck;
 		setPlayer(out);
 	}
 	public Player(int health, int mana) {
@@ -45,76 +54,73 @@ public class Player {
 	public void setMana(int mana) {
 		this.mana = mana;
 	}
-	// Setting the player 1 health and mana on the front end.
+	
+	/** Setting the player health and mana on the front end
+	 * 
+	 * @param out
+	 */
 	public void setPlayer(ActorRef out){
 
-		BasicCommands.setPlayer1Health(out, this);
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		if(playerID==1)
+		{
+			BasicCommands.setPlayer1Health(out, this);
+			AppConstants.callSleep(100);
+		
+			BasicCommands.setPlayer1Mana(out, this);
+			AppConstants.callSleep(100);
+		}else {
+			 BasicCommands.setPlayer2Health(out, this);
+			 AppConstants.callSleep(100);
+
+		     BasicCommands.setPlayer2Mana(out, this);
+			 AppConstants.callSleep(100);
 		}
-		BasicCommands.setPlayer1Mana(out, this);
-		try {
-			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+
 
 	}
 
 
-	//string array of player 1 deck
-	String[] deck1Cards = {
-		StaticConfFiles.c_azure_herald,
-		StaticConfFiles.c_azurite_lion,
-		StaticConfFiles.c_comodo_charger,
-		StaticConfFiles.c_fire_spitter,
-		StaticConfFiles.c_hailstone_golem,
-		StaticConfFiles.c_ironcliff_guardian,
-		StaticConfFiles.c_pureblade_enforcer,
-		StaticConfFiles.c_silverguard_knight,
-		StaticConfFiles.c_sundrop_elixir,
-		StaticConfFiles.c_truestrike
-	};
 	
-
 	
-    //method to set hand
+	/** This method sets the hand of the corresponding player object
+	 * 
+	 * @param out
+	 */
     public void setHand(ActorRef out) {
-        for(int i=0;i<3;i++){
+        for(int i=0;i<AppConstants.minCardsInHand;i++){
             // drawCard [i]
-        Card card = BasicObjectBuilders.loadCard(deck1Cards[i], cardID, Card.class);
+        Card card = BasicObjectBuilders.loadCard(cardsDeck[i], cardID, Card.class);
         BasicCommands.drawCard(out, card, position, 0);
 
-        try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		AppConstants.callSleep(500);
+
 		//increment the card id and position
         cardID++;
 		position++;
         }
     }
 
+    /** This method draws a card from the deck and adds that card to the hand
+     * of the corresponding player object
+     * 
+     * @param out
+     */
+    
 	public void drawAnotherCard(ActorRef out) {
-		if(position<=6){
-			Card card = BasicObjectBuilders.loadCard(deck1Cards[cardID], cardID, Card.class);
+		if(position<=AppConstants.maxCardsInHand){
+			Card card = BasicObjectBuilders.loadCard(cardsDeck[cardID], cardID, Card.class);
         	BasicCommands.drawCard(out, card, position, 0);
 
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+    		AppConstants.callSleep(500);
+
 			//increment the card id
 			cardID++;
 			position++;
 		}
 		else {
-			AppConstants.printLog("------> End turn Clicked:: but the hand positions are full !");
-			BasicCommands.addPlayer1Notification(out, "Hand positions are full", 2);
+			AppConstants.printLog("------> drawAnotherCard:: but the hand positions are full !");
+			if(playerID==1)
+				BasicCommands.addPlayer1Notification(out, "Hand positions are full", 2);
 		}
 		
 	}

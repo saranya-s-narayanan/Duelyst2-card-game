@@ -55,18 +55,26 @@ public class Initalize implements EventProcessor {
         // Change by using the returnTile method instead of creating tile objects here
         // placing avatar on board and setting stats
         gameState.aiAvatar = new BetterUnit(out, aiAvatar, gameState.board.returnTile(7,2));
+        
 
         // creating the player object and passing the avatar object to allow the players health to be set to the avatars.
-        gameState.player2 = new ComputerPlayer(out, gameState.aiAvatar);
+        gameState.player2 = new ComputerPlayer(2,out, gameState.aiAvatar,AppConstants.deck2Cards);
+        gameState.player2.getMana(); // @doubt
+        AppConstants.printLog("------> Initialize :: Player 2 created!");
 
         // creating the player object and passing the avatar object to allow the players health to be set to the avatars.
-        gameState.player1 = new Player(out,gameState.avatar);
+        gameState.player1 = new Player(1,out,gameState.avatar,AppConstants.deck1Cards);
+        
+        AppConstants.printLog("------> Initialize :: Player 1 created!");
+
+        gameState.activePlayer=1;
+        AppConstants.printLog("------> Initialize :: Set player 1 as activePlayer!");
 
         //print message to the terminal notifying the start of the draw card method
-        AppConstants.printLog("------> Initialize :: Drawing 3 cards from the deck");
+        AppConstants.printLog("------> Initialize :: Player1 :: Setting the hand (draw 3 cards)...");
         //calling the setHand method
         gameState.player1.setHand(out);
-        AppConstants.printLog("------> Initialize :: Card draw complete");
+        AppConstants.printLog("------> Initialize :: Player1 :: Card draw complete !");
 
 
         // User 1 makes a change
