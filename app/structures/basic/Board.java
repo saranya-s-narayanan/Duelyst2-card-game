@@ -5,6 +5,7 @@ import commands.BasicCommands;
 import scala.App;
 import utils.AppConstants;
 import utils.BasicObjectBuilders;
+import utils.StaticConfFiles;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -66,12 +67,23 @@ public class Board {
         return this.tiles;
     }
 
-    // this method will take in an x and y parameter and return the tile object at that position
+    /** this method will take in an x and y parameter and return the tile object at that position
+     * 
+     * @param x
+     * @param y
+     * @return
+     */
     public Tile returnTile(int x, int y) {
         return tiles[x][y];
     }
 
-    // this will take in a tile and return an ArrayList of the two cardinal and one diagonal tiles available for a standard move in the game
+    
+    /** This method will take in a tile and return an ArrayList of the two cardinal and 
+     * one diagonal tiles available for a standard move in the game
+     * @param out
+     * @param tile
+     * @return
+     */
     public ArrayList<Tile> getAdjacentTiles(ActorRef out, Tile tile) {
 
         // arrayList to store the available tiles
@@ -139,21 +151,60 @@ public class Board {
         return adjacentTiles;
     }
 
-    // method to iterate through the arrayList of adjacent tiles and drawTile() with white highlighting
+    
+   
+    /** method to iterate through the arrayList of adjacent tiles and drawTile() with white highlighting
+     * 
+     * @param out
+     * @param tiles
+     */
     public void highlightTilesWhite(ActorRef out, ArrayList<Tile> tiles) {
-
         for (Tile tile : tiles) {
             BasicCommands.drawTile(out, tile, 1);
         }
     }
 
-    // method to iterate through the arrayList of adjacent tiles and drawTile() with red highlighting
+    /** method to iterate through the arrayList of adjacent tiles and drawTile() with red highlighting
+     * 
+     * @param out
+     * @param tiles
+     */
     public void highlightTilesRed(ActorRef out, ArrayList<Tile> tiles) {
 
         for (Tile tile : tiles) {
             BasicCommands.drawTile(out, tile, 2);
         }
     }
+    
+    
+    public void addUnitToBoard(int x,int y,Unit unit) {
+    	tiles[x][y].setUnitToTile(unit);
+    }
+
+	public void addDummyUnitsonBoard(ActorRef out) {
+		// TODO Auto-generated method stub
+		
+
+		// Place a unit with attack:3 and health:2 at [3,2]
+		Unit unit1 = BasicObjectBuilders.loadUnit(StaticConfFiles.u_fire_spitter, 1, Unit.class);
+		unit1.setAttack(3); 
+		unit1.setHealth(2);
+		addUnitToBoard(3, 2, unit1);
+		
+		unit1.setPositionByTile(tiles[3][2]); 	
+		BasicCommands.drawUnit(out, unit1, tiles[3][2]);
+		AppConstants.callSleep(100);
+		
+		BasicCommands.setUnitHealth(out, unit1, unit1.getHealth());
+	    AppConstants.callSleep(100);
+	        
+	    BasicCommands.setUnitAttack(out, unit1, unit1.getAttack());
+	    AppConstants.callSleep(100);
+        AppConstants.printLog("------> addDummyUnitsonBoard :: Placed unit at [3,2]");
+
+
+		
+	}
 
 
 }

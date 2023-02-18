@@ -101,7 +101,33 @@ public class Unit {
 	public void setAnimations(UnitAnimationSet animations) {
 		this.animations = animations;
 	}
-
+	
+	/** Setter and getter method for unitHealth
+	 * 
+	 * @param out
+	 */
+	public int getHealth() {
+		return unitHealth;
+	}
+	
+	public void setHealth(int unitHealth) {
+		this.unitHealth = unitHealth;
+	}
+	
+	/** Setter and getter method for unitAttack
+	 * 
+	 * @param out
+	 */
+	public int getAttack() {
+		return unitAttack;
+	}
+	
+	public void setAttack(int unitAttack) {
+		this.unitAttack = unitAttack;
+	}
+	
+	
+	
 	// this is a method that can be called to remove a unit from the board. this will be used in another method 'isAlive()' to check if the unit is alive during the game.
 	// this could be achieved by using the basicCommands.deletUnit() directly, however this will allow us to more easily call that function.
 	public void unitRemoval(ActorRef out){
