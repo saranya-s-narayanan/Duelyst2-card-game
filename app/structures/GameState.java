@@ -27,7 +27,8 @@ public class GameState {
     public BetterUnit aiAvatar = null;
     public long lastHeartbeatTime = 0; // The time of the latest heartbeat message reception
 
-
+    public int activePlayer=1; // Variable to keep track of the actove player
+    
     /**
      * This method resets the state variable values to the default ones
      */

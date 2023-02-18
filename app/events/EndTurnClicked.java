@@ -25,7 +25,15 @@ public class EndTurnClicked implements EventProcessor{
 		{
 			AppConstants.printLog("------> End turn Clicked:: Game is active !");
 			
-			gameState.player1.drawAnotherCard(out);
+			if(gameState.activePlayer==1) //Player 1 pressed end turn
+			{
+				gameState.player1.drawAnotherCard(out);
+				
+				
+			}else { // Player 2 pressed end turn
+				gameState.player2.drawAnotherCard(out);
+
+			}
 		}
 	}
 
