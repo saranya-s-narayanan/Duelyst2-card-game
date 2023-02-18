@@ -57,11 +57,20 @@ public class Initalize implements EventProcessor {
         gameState.aiAvatar = new BetterUnit(out, aiAvatar, gameState.board.returnTile(7,2));
 
         // creating the player object and passing the avatar object to allow the players health to be set to the avatars.
-        gameState.player2 = new ComputerPlayer(out, gameState.aiAvatar);
+        gameState.player2 = new ComputerPlayer(2,out, gameState.aiAvatar,AppConstants.deck2Cards);
+        gameState.player2.setCurrentXpos(7);
+        gameState.player2.setCurrentYpos(2);
+        AppConstants.printLog("------> Initialize :: Player 2 created!");
 
         // creating the player object and passing the avatar object to allow the players health to be set to the avatars.
-        gameState.player1 = new Player(out,gameState.avatar);
+        gameState.player1 = new Player(1,out,gameState.avatar,AppConstants.deck1Cards);
+        gameState.player1.setCurrentXpos(1);
+        gameState.player2.setCurrentYpos(2);
+        AppConstants.printLog("------> Initialize :: Player 1 created!");
 
+        gameState.player1Turn=true;
+        AppConstants.printLog("------> Initialize :: Set player 1 as activePlayer!");
+        
         // testing if the correct tiles are highlighted
         gameState.board.highlightTilesRed(out, gameState.board.getAdjacentTiles(out,gameState.board.returnTile(8 ,4)));
         //print message to the terminal notifying the start of the draw card method

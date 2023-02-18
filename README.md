@@ -2,6 +2,14 @@
 
 This is a backend developed for a tactical card game application in Java 
 
+# Board creation
+
+A Board class has been created to accomodate different tile objects and its methods ,which constitutes the board
+
+# Player creation
+
+The constructor method has been modified to differentiate both players' attributes and methods
+
 
 # Draw Card
 
