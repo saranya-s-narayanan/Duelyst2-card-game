@@ -139,6 +139,23 @@ public class Board {
         return adjacentTiles;
     }
 
+    // method to iterate through the arrayList of adjacent tiles and drawTile() with white highlighting
+    public void highlightTilesWhite(ActorRef out, ArrayList<Tile> tiles) {
+
+        for (Tile tile : tiles) {
+            BasicCommands.drawTile(out, tile, 1);
+        }
+    }
+
+    // method to iterate through the arrayList of adjacent tiles and drawTile() with red highlighting
+    public void highlightTilesRed(ActorRef out, ArrayList<Tile> tiles) {
+
+        for (Tile tile : tiles) {
+            BasicCommands.drawTile(out, tile, 2);
+        }
+    }
+
+
 }
 
 
