@@ -21,6 +21,7 @@ public class Player {
 	int cardID=0;//variable to set card id
 	int position = 1;//variable to set card position in hand
 	
+	boolean highlighted=false; 
 	boolean moved=false; // variable to check whether the player has already moved or not
 	boolean attacked=false; // variable to check whether the player has already attacked other units or not
 
@@ -60,12 +61,21 @@ public class Player {
 		this.mana = mana;
 	}
 	
+	public boolean getHighlighted() {
+		return highlighted;
+	}
+	public void setHighlighted(boolean highlighted) {
+		this.highlighted = highlighted;
+	}
+	
+	
 	public boolean getMoved() {
 		return moved;
 	}
 	public void setMoved(boolean moved) {
 		this.moved = moved;
 	}
+	
 	
 	public boolean getAttacked() {
 		return attacked;
@@ -156,4 +166,23 @@ public class Player {
 		}
 		
 	}
+	
+	/** This method check whether the player's avatar occupies the given tile or not
+	 * 
+	 * @param tilex
+	 * @param tiley
+	 * @return
+	 */
+	public boolean isAvatarOnTile(int tilex, int tiley) {
+		// TODO Auto-generated method stub
+		AppConstants.printLog("------> isAvatarOnTile:: POS: "+currentXpos+","+currentYpos);
+
+		if (currentXpos==tilex && currentYpos==tiley) // occupied by avatar
+			return true;
+		else
+			return false;
+	}
+	
+	
+	
 }

@@ -17,3 +17,9 @@ String array of card created for deck in player class corresponding to the playe
 (ActorRef out)` was created which draws 3 cards from the deck in the player hand.
 
 The end turn class was modified to include `drawAnotherCard(out)` which is defined in the player class.
+
+
+# Player attack ability
+
+A 'PerformAction' class has been introduced to include the methods for the implementation of available
+ actions (highlight/move/attack) and perfrom appropriate tasks in order

@@ -65,14 +65,26 @@ public class Initalize implements EventProcessor {
         // creating the player object and passing the avatar object to allow the players health to be set to the avatars.
         gameState.player1 = new Player(1,out,gameState.avatar,AppConstants.deck1Cards);
         gameState.player1.setCurrentXpos(1);
-        gameState.player2.setCurrentYpos(2);
+        gameState.player1.setCurrentYpos(2);
         AppConstants.printLog("------> Initialize :: Player 1 created!");
 
         gameState.player1Turn=true;
         AppConstants.printLog("------> Initialize :: Set player 1 as activePlayer!");
         
+        
+        
+        // ******************************* TESTS ******************************************
         // testing if the correct tiles are highlighted
+       
+        AppConstants.printLog("------> Initialize :: Test:: Red Higlight..");
         gameState.board.highlightTilesRed(out, gameState.board.getAdjacentTiles(out,gameState.board.returnTile(8 ,4)));
+        
+        AppConstants.printLog("------> Initialize :: Test:: Adding dummy units on  board..");
+		gameState.board.addDummyUnitsonBoard(out);
+
+		//***************************************************************************************
+		
+		
         //print message to the terminal notifying the start of the draw card method
         AppConstants.printLog("------> Initialize :: Drawing 3 cards from the deck");
         //calling the setHand method
