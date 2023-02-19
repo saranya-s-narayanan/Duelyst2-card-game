@@ -27,6 +27,7 @@ public class Tile {
 	int height;
 	int tilex;
 	int tiley;
+	Unit unit;
 	
 	public Tile() {}
 	
@@ -113,7 +114,24 @@ public class Tile {
 		return null;
 		
 	}
+
+	/** sets a unit to the given tile
+	 * 
+	 * @param unit
+	 */
+	public void setUnitToTile(Unit unit) {
+		// TODO Auto-generated method stub
+		this.unit=unit;
+	}
 	
+	/** Returns the unit on the tile
+	 * 
+	 * @return
+	 */
+	public Unit getUnitFromTile() {
+		// TODO Auto-generated method stub
+		return unit;
+	}
 	
 	
 }
