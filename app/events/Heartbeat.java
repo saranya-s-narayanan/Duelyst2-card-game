@@ -62,7 +62,7 @@ public class Heartbeat implements EventProcessor{
 	            	long timeDifference = System.currentTimeMillis()-gameState.lastHeartbeatTime;
 	             
 	            	// If the time gap is more than the allowed time gap, reset game variables and stop timer.
-	            	if(timeDifference>AppConstants.allowedHeartbeatTimeGap)
+	            	if(timeDifference>AppConstants.allowedHeartbeatTimeGap || gameState.isGameOver==true)
 	            	{
 	        			AppConstants.printLog("------> Heartbeat:: Game is NOT active ! Resetting Backend !!");
 	            		gameState.clearStateVariables();
