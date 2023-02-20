@@ -67,7 +67,7 @@ public class EndTurnClicked implements EventProcessor{
 		
 		gameState.player1Turn=false;//passing the turn to AI
 		AppConstants.printLog("------> End turn Clicked by the player :: turn passed to AI !");
-		
+		BasicCommands.addPlayer1Notification(out, "Passing Turn Over", 2);
 		gameState.player1.setPlayer(out);//making change on the front end
 	}
 
