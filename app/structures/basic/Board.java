@@ -343,6 +343,7 @@ public class Board {
      */
     public void highlightTilesWhite(ActorRef out, ArrayList<Tile> tiles) {
         for (Tile tile : tiles) {
+            if(tile.getUnitFromTile() == null)  // i added this condition as tiles with units should never be highlighted in white only red
             BasicCommands.drawTile(out, tile, 1);
         }
     }

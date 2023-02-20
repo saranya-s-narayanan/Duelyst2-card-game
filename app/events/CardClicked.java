@@ -4,9 +4,11 @@ package events;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import akka.actor.ActorRef;
+import commands.BasicCommands;
 import structures.GameState;
 import structures.basic.Tile;
 import utils.AppConstants;
+import structures.basic.Unit;
 
 import java.util.ArrayList;
 
@@ -27,26 +29,28 @@ public class CardClicked implements EventProcessor {
     public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
 
         if (gameState.isGameActive) // if the frontend connection is active
-        {
-            if (message.hasNonNull("cardClicked")) {
-                int handPosition = message.get("position").asInt();
-                AppConstants.printLog("------> CardClicked:: Game is active !");
+        { if(gameState.player1Turn){ // for the first player
 
-                //  i have tried different ways but essentially this is the logic i am trying to implement
-                highlightSummonableTiles(out, gameState);
+            //  int handPosition = message.get("position").asInt();
+            AppConstants.printLog("------> CardClicked:: Game is active !");
 
-            }
-        }
+            highlightSummonableTiles(out, gameState);
+
+        }}
+
     }
 
-    public void highlightSummonableTiles(ActorRef out, GameState gameState){
+    public void highlightSummonableTiles(ActorRef out, GameState gameState) {
         ArrayList<Tile> list = new ArrayList<>();
+
 
         // list of the tiles with units
         list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles());
 
+        // iteration through the list and highlight adjacent tiles
         for (int i = 0; i < list.size(); i++) {
-            gameState.board.highlightTilesWhite(out, gameState.board.getAdjacentTilesToAttack(out,list.get(i)));
+
+            gameState.board.highlightTilesWhite(out, gameState.board.getAdjacentTilesToAttack(out, list.get(i)));
         }
     }
 
