@@ -169,6 +169,14 @@ public class Player {
 			AppConstants.printLog("------> drawAnotherCard:: but the hand positions are full !");
 			if(playerID==1)
 				BasicCommands.addPlayer1Notification(out, "Hand positions are full", 2);
+				AppConstants.printLog("------> drawAnotherCard:: card to be burn at position: "+(position-1));
+				cardsDeck=AppConstants.deleteCardInDeck(cardsDeck,(position-1));//method to delete card in deck
+				AppConstants.printLog("------> drawAnotherCard:: card burn complted!");
+				AppConstants.printLog("-----> updated deck: ");
+				for(int i=0;i<cardsDeck.length;i++){
+					System.out.println(cardsDeck[i]);
+				}
+				AppConstants.callSleep(500);
 		}
 		
 	}
