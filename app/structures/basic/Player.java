@@ -26,9 +26,11 @@ public class Player {
 	boolean moved=false; // variable to check whether the player has already moved or not
 	boolean attacked=false; // variable to check whether the player has already attacked other units or not
 
-	String[] cardsDeck; // deck of cards 
+	String[] cardsFiles; //  of cards 
 	
 	int currentXpos=0,currentYpos=0;
+
+	public static List<Card> player1Deck = new ArrayList<Card>();//player's deck of card
 
 	/** constructor to create a player with set health and mana which calls setPlayer to place the data on the front end.
 	 * 
@@ -37,11 +39,11 @@ public class Player {
 	 * @param avatar
 	 * @param cardsDeck
 	 */
-	public Player(int playerID, ActorRef out, BetterUnit avatar, String[] cardsDeck) {
+	public Player(int playerID, ActorRef out, BetterUnit avatar, String[] cardsFiles) {
 		this.playerID=playerID;
 		this.health = avatar.getHealth();
 		this.mana = 2; // this will be set to player turn +1 once we have player turn available
-		this.cardsDeck=cardsDeck;
+		this.cardsFiles=cardsFiles;
 		setPlayer(out);
 	}
 	public Player(int health, int mana) {
@@ -130,6 +132,17 @@ public class Player {
 	}
 
 
+	public void createDeck() {
+		for(int i=0;i<2;i++){
+			for(int j=0;j<cardsFiles.length;j++){
+				Card card = BasicObjectBuilders.loadCard(cardsFiles[j], cardID, Card.class);
+				cardID++;
+				player1Deck.add(card);
+			}
+		}
+		
+	}
+
 	
 	/** This method sets the hand of the corresponding player object
 	 * 
@@ -138,13 +151,10 @@ public class Player {
     public void setHand(ActorRef out) {
         for(int i=0;i<AppConstants.minCardsInHand;i++){
             // drawCard [i]
-        Card card = BasicObjectBuilders.loadCard(cardsDeck[i], cardID, Card.class);
-        BasicCommands.drawCard(out, card, position, 0);
-
+        BasicCommands.drawCard(out, player1Deck.get(i), position, 0);
 		AppConstants.callSleep(500);
 
-		//increment the card id and position
-        cardID++;
+		// increment the position
 		position++;
         }
     }
@@ -157,37 +167,25 @@ public class Player {
     
 	public void drawAnotherCard(ActorRef out) {
 		if(position<=AppConstants.maxCardsInHand){
-			Card card = BasicObjectBuilders.loadCard(cardsDeck[cardID], cardID, Card.class);
-        	BasicCommands.drawCard(out, card, position, 0);
-
+			// Card card = BasicObjectBuilders.loadCard(cardsDeck[cardID], cardID, Card.class);
+        	BasicCommands.drawCard(out,player1Deck.get(position) , position, 0);
     		AppConstants.callSleep(500);
 
-			//increment the card id
-			cardID++;
+			//increment the position
 			position++;
 		}
 		else {
 			AppConstants.printLog("------> drawAnotherCard:: but the hand positions are full !");
 			if(playerID==1)
 				BasicCommands.addPlayer1Notification(out, "Hand positions are full", 2);
-				AppConstants.printLog("------> drawAnotherCard:: card to be burn at position: "+(position-1));
-				cardsDeck=deleteCardInDeck(cardsDeck,(position-1));//method to delete card in deck
+				AppConstants.printLog("------> drawAnotherCard:: card to be burn at position: "+ position);
+				player1Deck.remove(position);
 				AppConstants.printLog("------> drawAnotherCard:: card burn complted!");
-				AppConstants.printLog("-----> updated deck: ");
-				for(int i=0;i<cardsDeck.length;i++){
-					System.out.println(cardsDeck[i]);
-				}
 				AppConstants.callSleep(500);
 		}
 		
 	}
 
-	//method to burn a card
-	public static String[] deleteCardInDeck(String[] array, int index) {
-		List<String> list = new ArrayList<String>(Arrays.asList(array));
-		list.remove(index);
-		return list.toArray(new String[0]);
-	}
 	
 	/** This method check whether the player's avatar occupies the given tile or not
 	 * 
