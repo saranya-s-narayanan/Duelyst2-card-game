@@ -5,6 +5,7 @@ import commands.BasicCommands;
 import utils.AppConstants;
 import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;//importing for cards in deck and hand
+import java.util.*;
 
 /**
  * A basic representation of of the Player. A player
@@ -170,7 +171,7 @@ public class Player {
 			if(playerID==1)
 				BasicCommands.addPlayer1Notification(out, "Hand positions are full", 2);
 				AppConstants.printLog("------> drawAnotherCard:: card to be burn at position: "+(position-1));
-				cardsDeck=AppConstants.deleteCardInDeck(cardsDeck,(position-1));//method to delete card in deck
+				cardsDeck=deleteCardInDeck(cardsDeck,(position-1));//method to delete card in deck
 				AppConstants.printLog("------> drawAnotherCard:: card burn complted!");
 				AppConstants.printLog("-----> updated deck: ");
 				for(int i=0;i<cardsDeck.length;i++){
@@ -179,6 +180,13 @@ public class Player {
 				AppConstants.callSleep(500);
 		}
 		
+	}
+
+	//method to burn a card
+	public static String[] deleteCardInDeck(String[] array, int index) {
+		List<String> list = new ArrayList<String>(Arrays.asList(array));
+		list.remove(index);
+		return list.toArray(new String[0]);
 	}
 	
 	/** This method check whether the player's avatar occupies the given tile or not

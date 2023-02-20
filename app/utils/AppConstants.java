@@ -1,6 +1,6 @@
 package utils;
 
-import java.util.*;
+
 /**
 * This class file will be used to store all of the constant values that are 
 * responsible for proper game implementation. 
@@ -73,11 +73,6 @@ public class AppConstants {
 		}
 	}
 
-	//method to burn a card
-	public static String[] deleteCardInDeck(String[] array, int index) {
-		List<String> list = new ArrayList<String>(Arrays.asList(array));
-		list.remove(index);
-		return list.toArray(new String[0]);
-	}
+	
 	
 }
