@@ -76,11 +76,11 @@ public class Initalize implements EventProcessor {
         // ******************************* TESTS ******************************************
         // testing if the correct tiles are highlighted
        
-        AppConstants.printLog("------> Initialize :: Test:: Red Higlight..");
-        gameState.board.highlightTilesRed(out, gameState.board.getAdjacentTiles(out,gameState.board.returnTile(8 ,4)));
+        // AppConstants.printLog("------> Initialize :: Test:: Red Higlight..");
+        // gameState.board.highlightTilesRed(out, gameState.board.getAdjacentTiles(out,gameState.board.returnTile(8 ,4)));
         
-        AppConstants.printLog("------> Initialize :: Test:: Adding dummy units on  board..");
-		gameState.board.addDummyUnitsonBoard(out);
+        // AppConstants.printLog("------> Initialize :: Test:: Adding dummy units on  board..");
+		// gameState.board.addDummyUnitsonBoard(out);
 
 		//***************************************************************************************
 		
