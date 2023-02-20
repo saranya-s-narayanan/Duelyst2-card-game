@@ -1,5 +1,6 @@
 package utils;
 
+
 /**
 * This class file will be used to store all of the constant values that are 
 * responsible for proper game implementation. 
@@ -71,5 +72,7 @@ public class AppConstants {
 			e.printStackTrace();
 		}
 	}
+
+	
 	
 }

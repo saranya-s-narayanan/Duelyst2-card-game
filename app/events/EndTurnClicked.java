@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import akka.actor.ActorRef;
 import structures.GameState;
 import utils.AppConstants;
+import commands.BasicCommands;
 
 /**
  * Indicates that the user has clicked an object on the game canvas, in this case
@@ -50,6 +51,7 @@ public class EndTurnClicked implements EventProcessor{
 		
 		gameState.player1Turn=true;//passing the turn to the player
 		AppConstants.printLog("------> End turn Clicked by the AI :: turn passed to player !");
+		BasicCommands.addPlayer1Notification(out, "Your Turn", 2);
 		gameState.player1.setPlayer(out);//making change on the front end
 	}
 
@@ -65,7 +67,7 @@ public class EndTurnClicked implements EventProcessor{
 		
 		gameState.player1Turn=false;//passing the turn to AI
 		AppConstants.printLog("------> End turn Clicked by the player :: turn passed to AI !");
-		
+		BasicCommands.addPlayer1Notification(out, "Passing Turn Over", 2);
 		gameState.player1.setPlayer(out);//making change on the front end
 	}
 

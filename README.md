@@ -18,6 +18,12 @@ String array of card created for deck in player class corresponding to the playe
 
 The end turn class was modified to include `drawAnotherCard(out)` which is defined in the player class.
 
+# OverDraw
+
+if the hand is full of cards, i.e from position 1-6 then the 7th position will not be drawn on the board, the 
+corresponding card will be deleted from the deck. The method has been defined in AppConstants in utils as 
+`deleteCardInDeck` which takes in the array and position as input parameters.
+
 
 # Player attack ability
 
