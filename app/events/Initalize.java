@@ -91,6 +91,8 @@ public class Initalize implements EventProcessor {
         gameState.player1.setHand(out);
         AppConstants.printLog("------> Initialize :: Card draw complete");
 
+        gameState.board.addDummyUnitsonBoard(out);
+
 
         // User 1 makes a change
         //CommandDemo.executeDemo(out); // this executes the command demo, comment out this when implementing your solution
