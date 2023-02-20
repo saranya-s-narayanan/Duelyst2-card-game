@@ -86,6 +86,11 @@ public class Initalize implements EventProcessor {
 		
 		
         //print message to the terminal notifying the start of the draw card method
+        AppConstants.printLog("------> Initialize :: creating deck");
+        //calling the setHand method
+        gameState.player1.createDeck();
+        AppConstants.printLog("------> Initialize :: deck created");
+        
         AppConstants.printLog("------> Initialize :: Drawing 3 cards from the deck");
         //calling the setHand method
         gameState.player1.setHand(out);
