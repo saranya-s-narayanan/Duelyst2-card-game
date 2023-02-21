@@ -30,7 +30,8 @@ public class Unit {
 	// basic variables for health and attack of units
 	int unitHealth;
 	int unitAttack;
-	
+
+	int isPlayer; // human = 1 ai = 2 this is to just check the unit is player to the playerId when interacting with units
 	public Unit() {}
 	
 	public Unit(int id, UnitAnimationSet animations, ImageCorrection correction) {
@@ -125,9 +126,15 @@ public class Unit {
 	public void setAttack(int unitAttack) {
 		this.unitAttack = unitAttack;
 	}
-	
-	
-	
+
+	public int getIsPlayer() {
+		return isPlayer;
+	}
+
+	public void setIsPlayer(int isPlayer) {
+		this.isPlayer = isPlayer;
+	}
+
 	// this is a method that can be called to remove a unit from the board. this will be used in another method 'isAlive()' to check if the unit is alive during the game.
 	// this could be achieved by using the basicCommands.deletUnit() directly, however this will allow us to more easily call that function.
 	public void unitRemoval(ActorRef out){

@@ -384,6 +384,7 @@ public class Board {
         Unit unit1 = BasicObjectBuilders.loadUnit(StaticConfFiles.u_fire_spitter, 3, Unit.class); // changed ID to 3, as every unit must have a unique ID
         unit1.setAttack(3);
         unit1.setHealth(2);
+        unit1.setIsPlayer(1); // set to player 1
         addUnitToBoard(x, y, unit1);
 
         unit1.setPositionByTile(tiles[2][2]);
@@ -411,7 +412,7 @@ public class Board {
             for (int j = 0; j < tiles[i].length; j++) {
                 Tile tile = tiles[i][j];
                 if (tile.getUnitFromTile() != null ) {
-                    if(tile.getUnitFromTile().getId() == player.getID()) {
+                    if(tile.getUnitFromTile().getIsPlayer() == player.getID()) {
                         tilesWithUnits.add(tile);
                     }
                 }

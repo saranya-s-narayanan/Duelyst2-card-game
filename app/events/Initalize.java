@@ -48,10 +48,10 @@ public class Initalize implements EventProcessor {
         // Change by using the returnTile method instead of creating tile objects here
         // placing avatar on board and setting stats
         gameState.avatar =  new BetterUnit(out,avatar, gameState.board.returnTile(1,2), gameState.board);
-
+        avatar.setIsPlayer(1);
         // creating ai avatar object
         Unit aiAvatar = BasicObjectBuilders.loadUnit(StaticConfFiles.aiAvatar, 2, Unit.class);
-
+        aiAvatar.setIsPlayer(2);
         // Change by using the returnTile method instead of creating tile objects here
         // placing avatar on board and setting stats
         gameState.aiAvatar = new BetterUnit(out, aiAvatar, gameState.board.returnTile(7,2), gameState.board);

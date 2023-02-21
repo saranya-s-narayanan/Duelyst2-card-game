@@ -18,7 +18,7 @@ import java.util.ArrayList;
  */
 public class Player {
 
-	int playerID=1; // 1=player1, 2= computerPlayer
+	int playerID; // 1=player1, 2= computerPlayer
 	int health;
 	int mana;
 	int cardID=0;//variable to set card id

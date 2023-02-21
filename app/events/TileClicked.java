@@ -63,26 +63,7 @@ public class TileClicked implements EventProcessor {
 
             {
 
-                if (startTile == null) { // if the start tile hasn't been set yet
-                    Unit selectedUnit = clickedTile.getUnitFromTile(); // get the unit from the clicked tile
-                    AppConstants.printLog("------> UnitClicked :: On tile " + clickedTile.getTilex() + " " + clickedTile.getTiley() + " by player 1");
-
-                    if (selectedUnit != null) { // if the unit is not null
-                        startTile = clickedTile; // set the start tile to the clicked tile
-                        gameState.board.highlightTilesWhite(out, gameState.board.getAdjacentTiles(out, startTile));
-
-                    } else {
-                        BasicCommands.addPlayer1Notification(out, "Please select a tile with a unit.", 2); // if the unit is null
-                    }
-                }
-
-                else { // Second click moves the unit to the clicked tile
-                    gameState.board.clearTileHighlighting(out, gameState.board); // clear the highlighting once move is clicked
-                    AppConstants.printLog("------> TileClicked :: Moving unit to tile " + clickedTile.getTilex() + " " + clickedTile.getTiley());
-
-                    moveUnit(out, startTile, clickedTile, gameState); // move the unit to the clicked tile
-                    startTile = null; // Reset the start tile to no unit
-                }
+                highlightAndMove(out, gameState, clickedTile);
             }
 
 
@@ -140,6 +121,38 @@ public class TileClicked implements EventProcessor {
         }
 
 
+    }
+
+
+    private void highlightAndMove(ActorRef out, GameState gameState, Tile clickedTile) {
+        if (startTile == null) { // if the start tile hasn't been set yet
+            Unit selectedUnit = clickedTile.getUnitFromTile(); // get the unit from the clicked tile
+            AppConstants.printLog("------> UnitClicked :: On tile " + clickedTile.getTilex() + " " + clickedTile.getTiley() + " by player 1");
+            AppConstants.callSleep(100);
+
+            if (selectedUnit != null) { // if the unit is not null
+                startTile = clickedTile; // set the start tile to the clicked tile
+                gameState.board.highlightTilesWhite(out, gameState.board.getAdjacentTiles(out, startTile));
+                AppConstants.callSleep(100);
+
+            } else {
+                BasicCommands.addPlayer1Notification(out, "Please select a tile with a unit.", 2); // if the unit is null
+
+            }
+        } else if (startTile.getUnitFromTile().getIsPlayer() == 1){ // Second click moves the unit to the clicked tile
+
+            gameState.board.clearTileHighlighting(out, gameState.board); // clear the highlighting once move is clicked
+            AppConstants.printLog("------> TileClicked :: Moving unit to tile " + clickedTile.getTilex() + " " + clickedTile.getTiley());
+            AppConstants.callSleep(100);
+
+            moveUnit(out, startTile, clickedTile, gameState); // move the unit to the clicked tile
+            startTile = null; // Reset the start tile to no unit
+        }
+        else {
+            gameState.board.clearTileHighlighting(out, gameState.board);
+            AppConstants.callSleep(100);
+        startTile = null; // Reset the start tile to no unit
+        }
     }
 
 

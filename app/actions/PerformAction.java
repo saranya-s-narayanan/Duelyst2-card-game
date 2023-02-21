@@ -188,8 +188,11 @@ public class PerformAction {
 
 		// Move the unit to the end tile
 		startTile.removeUnitFromTile(unitToMove);
+		AppConstants.callSleep(100);
 		gameState.board.addUnitToBoard(endTile.getTilex(), endTile.getTiley(), unitToMove);
+		AppConstants.callSleep(100);
 		BasicCommands.moveUnitToTile(out, unitToMove, endTile);
+		AppConstants.callSleep(100);
 	}
 }
 
