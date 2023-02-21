@@ -13,16 +13,15 @@ The constructor method has been modified to differentiate both players' attribut
 
 # Draw Card
 
-String array of card created for deck in player class corresponding to the player cards, `public void setHand
-(ActorRef out)` was created which draws 3 cards from the deck in the player hand.
+This was changed to ArrayList `Deck` and `Hand` in the player class for better handling of deck and hand.
+the `Deck` has 2 sets of card for the players and is created through the `createDeck()` method in player class, `Hand` gets 3 cards from `Deck` at initialization using the `setHand(ActorRef out, int playerID)` method. the cards are removed from the deck whenever a card is drawn using the `drawAnotherCard(ActorRef out, int playerID)` method.
 
-The end turn class was modified to include `drawAnotherCard(out)` which is defined in the player class.
+The end turn class was modified to include `drawAnotherCard(out, playerID)` to facilitate the drawing of card after endTurn is clicked.
 
 # OverDraw
 
 if the hand is full of cards, i.e from position 1-6 then the 7th position will not be drawn on the board, the 
-corresponding card will be deleted from the deck. The method has been defined in AppConstants in utils as 
-`deleteCardInDeck` which takes in the array and position as input parameters.
+corresponding card will be deleted from the deck. The method is part of the `drawAnotherCard(out, playerID)` in the player class.
 
 
 # Player attack ability
@@ -53,3 +52,9 @@ method to highlight all the available summoning tiles for the given player.
 I have modified the constructor so the board is passed into it. This is so the `addUnitToBoard(tilex,tiley)` can be used in the
 creation of the avatar. The avatar needs to be treated as any other unit for the most part so needs to be accessed 
 through the tiles in the same way.
+
+# GameEnd
+
+A method to check if the game has ended, when the players reach 0 health or have no cards left to play, was 
+created in the PerformAction class `gameEnd(ActorRef out, GameState gameState)`. the method returns a boolean
+and also sets `gameState.isGameOver`, it is being called in the Heartbeat.java to periodically check the state.
