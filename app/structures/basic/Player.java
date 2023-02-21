@@ -33,15 +33,15 @@ public class Player {
 	
 	int currentXpos=0,currentYpos=0;
 
-	public List<Card> Deck;// deck of card
-	public List<Card> Hand;// hand containing card
+	public List<Card> deck;// deck of card
+	public List<Card> hand;// hand containing card
 
 	/** constructor to create a player with set health and mana which calls setPlayer to place the data on the front end.
 	 * 
 	 * @param playerID
 	 * @param out
 	 * @param avatar
-	 * @param cardsDeck
+	 * @param cardsdeck
 	 */
 	public Player(int playerID, ActorRef out, BetterUnit avatar, String[] cardsFiles) {
 		this.playerID=playerID;
@@ -49,8 +49,8 @@ public class Player {
 		this.mana = 2; // this will be set to player turn +1 once we have player turn available
 		this.cardsFiles=cardsFiles;
 		this.cardID=0;
-		this.Hand= new ArrayList<Card>();
-		this.Deck = new ArrayList<Card>();
+		this.hand= new ArrayList<Card>();
+		this.deck = new ArrayList<Card>();
 		setPlayer(out);
 	}
 	public Player(int health, int mana) {
@@ -145,14 +145,14 @@ public class Player {
 		for(int j=0;j<cardsFiles.length;j++){
 			Card card = BasicObjectBuilders.loadCard(cardsFiles[j], cardID, Card.class);
 			cardID++;
-			Deck.add(j, card);
-			System.out.println("Card " + Deck.get(j).getCardname() + " added to deck" + "at position "+ j);
+			deck.add(j, card);
+			AppConstants.printLog("Card " + deck.get(j).getCardname() + " added to deck" + "at position "+ j);
 		}
 		for(int j=0;j<cardsFiles.length;j++){
 			Card card = BasicObjectBuilders.loadCard(cardsFiles[j], cardID, Card.class);
 			cardID++;
-			Deck.add((10+j), card);
-			System.out.println("Card " + Deck.get((10+j)).getCardname() + " added to deck"+ "at position "+ (10+j));
+			deck.add((10+j), card);
+			AppConstants.printLog("Card " + deck.get((10+j)).getCardname() + " added to deck"+ "at position "+ (10+j));
 		}
 		
 		
@@ -160,12 +160,12 @@ public class Player {
 
 	//method to get total cards in the deck
 	public int getCardInDeck(){
-		return Deck.size();
+		return deck.size();
 	}
 
 	//method to get total cards in hand
 	public int getCardInHand() {
-		return Hand.size();
+		return hand.size();
 	}
 	
 	/** This method sets the hand of the corresponding player object
@@ -175,13 +175,13 @@ public class Player {
     public void setHand(ActorRef out, int playerID) {
         for(int i=0;i<AppConstants.minCardsInHand;i++){
 			//move the top card from deck to hand
-			Hand.add(i, Deck.get(0));
-			System.out.println("Card " + Deck.get(0).getCardname() + " removing from deck");
-			Deck.remove(0);
-			System.out.println("Card " + Hand.get(i).getCardname() + " added to hand");
+			hand.add(i, deck.get(0));
+			System.out.println("Card " + deck.get(0).getCardname() + " removing from deck");
+			deck.remove(0);
+			System.out.println("Card " + hand.get(i).getCardname() + " added to hand");
 			if(playerID==1){
 				// drawCard [i]
-				BasicCommands.drawCard(out, Hand.get(i), position, 0);
+				BasicCommands.drawCard(out, hand.get(i), position, 0);
 				AppConstants.callSleep(500);
 				// increment the position
 				position++;
@@ -200,11 +200,11 @@ public class Player {
 	public void drawAnotherCard(ActorRef out, int playerID) {
 		if(position<=AppConstants.maxCardsInHand){
 			//move the top card from deck to hand
-			Hand.add(position-1, Deck.get(0));
-			Deck.remove(0);
+			hand.add(position-1, deck.get(0));
+			deck.remove(0);
 			if(playerID==1){
 				//draw the card
-				BasicCommands.drawCard(out, Hand.get(position-1) , position, 0);
+				BasicCommands.drawCard(out, hand.get(position-1) , position, 0);
 				AppConstants.callSleep(500);
 				//increment the position
 				position++;
@@ -212,19 +212,26 @@ public class Player {
 			
 		}
 		else {
-			AppConstants.printLog("------> drawAnotherCard P1:: but the hand positions are full !");
-			if(playerID==1){
-				BasicCommands.addPlayer1Notification(out, "Hand positions are full", 2);
-				AppConstants.printLog("------> drawAnotherCard P1:: card to be burned at position: "+ position);
-				Deck.remove(position);
-				AppConstants.printLog("------> drawAnotherCard P1:: card burn complted!");
-				AppConstants.callSleep(500);
-			}
-			else{
-				AppConstants.printLog("------> drawAnotherCard AI:: card to be burn at position: "+ position);
-				Deck.remove(position);
-				AppConstants.printLog("------> drawAnotherCard AI:: card burn complted!");
-				AppConstants.callSleep(500);
+			AppConstants.printLog("------> drawAnotherCard P1:: but the hand positions are full !, deck size: "+deck.size());
+			if(deck.size()>0)
+			{
+				if(playerID==1){
+					BasicCommands.addPlayer1Notification(out, "Hand positions are full", 2);
+					AppConstants.printLog("------> drawAnotherCard P1:: card to be burned at position: "+ position);
+					//deck.remove(position); //--> was creating outOfbound exception
+					deck.remove(0);
+					AppConstants.printLog("------> drawAnotherCard P1:: card burn complted!");
+					AppConstants.callSleep(500);
+				}
+				else{
+					AppConstants.printLog("------> drawAnotherCard AI:: card to be burn at position: "+ position);
+					//deck.remove(position);
+					deck.remove(0);
+					AppConstants.printLog("------> drawAnotherCard AI:: card burn complted!");
+					AppConstants.callSleep(500);
+				}
+			}else {
+				// To do deck empty scenario
 			}
 				
 		}
