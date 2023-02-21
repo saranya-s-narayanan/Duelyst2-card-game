@@ -132,7 +132,7 @@ public class Player {
 
 	}
 
-
+	//method to create the deck of card for player 1
 	public void createP1Deck() {
 		for(int j=0;j<cardsFiles.length;j++){
 			Card card = BasicObjectBuilders.loadCard(cardsFiles[j], cardID, Card.class);
@@ -153,6 +153,11 @@ public class Player {
 	//method to get total cards in the deck
 	public int getCardInP1Deck(){
 		return player1Deck.size();
+	}
+
+	//method to get total cards in hand
+	public int getCardInP1Hand() {
+		return player1Hand.size();
 	}
 	
 	/** This method sets the hand of the corresponding player object
