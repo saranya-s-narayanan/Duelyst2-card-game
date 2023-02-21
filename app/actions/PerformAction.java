@@ -2,6 +2,7 @@ package actions;
 
 import akka.actor.ActorRef;
 import commands.BasicCommands;
+import events.TileClicked;
 import structures.GameState;
 import structures.basic.BetterUnit;
 import structures.basic.EffectAnimation;
@@ -156,7 +157,41 @@ public class PerformAction {
 		}
 
 		
-		
+
+	}
+	public static void moveUnit(ActorRef out, Tile startTile, Tile endTile,GameState gameState) {
+
+		Unit unitToMove = startTile.getUnitFromTile();
+
+		// Check if there is a unit on the start tile
+		if(unitToMove == null) {
+			BasicCommands.addPlayer1Notification(out, "No unit on the starting tile", 2);
+			AppConstants.callSleep(100);
+			return;
+		}
+
+		// Check if the end tile is empty
+		if(endTile.getUnitFromTile() != null) {
+			BasicCommands.addPlayer1Notification(out, "The end tile is already occupied", 2);
+			AppConstants.callSleep(100);
+			return;
+		}
+
+
+		// Check if the unit can move to the end tile
+		if(!gameState.board.getAdjacentTiles(out, startTile).contains(endTile)) {
+			BasicCommands.addPlayer1Notification(out, "Unit cannot move to the end tile", 2);
+			AppConstants.callSleep(100);
+			return;
+		}
+
+		// Move the unit to the end tile
+		startTile.removeUnitFromTile(unitToMove);
+		AppConstants.callSleep(100);
+		gameState.board.addUnitToBoard(endTile.getTilex(), endTile.getTiley(), unitToMove);
+		AppConstants.callSleep(100);
+		BasicCommands.moveUnitToTile(out, unitToMove, endTile);
+		AppConstants.callSleep(100);
 	}
 
 	/** This method implements the game end functionality
@@ -186,4 +221,8 @@ public class PerformAction {
     }
 
 
+
 }
+
+
+

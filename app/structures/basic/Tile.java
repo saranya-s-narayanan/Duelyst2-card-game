@@ -132,6 +132,10 @@ public class Tile {
 		// TODO Auto-generated method stub
 		return unit;
 	}
+
+	public void removeUnitFromTile(Unit unit) { // to clear the tile from a unit when moving
+		this.unit=null;
+	}
 	
 	
 }

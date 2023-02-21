@@ -25,7 +25,7 @@ public class OtherClicked implements EventProcessor{
 		if(gameState.isGameActive) // if the frontend connection is active
 		{
 			AppConstants.printLog("------> OtherClicked :: Game is active ! ");
-			
+			gameState.board.clearTileHighlighting(out, gameState.board);
 		}
 		
 	}

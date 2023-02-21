@@ -53,8 +53,26 @@ I have modified the constructor so the board is passed into it. This is so the `
 creation of the avatar. The avatar needs to be treated as any other unit for the most part so needs to be accessed 
 through the tiles in the same way.
 
+# Move units
+
+The `highlightAndMove(ActorRef, GameState, Tile)` method is called in the TileClicked class and is used to first highlight the
+available units moves and then on the second click (if a friendly unit), will execute the movement. If it is an enemy unit, 
+it will just clear the highlighting and the player will be able to click another unit again.
+
+# Linking players to units
+
+A variable `int isPlayer` is created in the Unit class to store either the value 1 or 2 which will the used to check that the 
+isPlayer is the same as the current playerID. There may be a better way to do this but for now it gives us all the functionality
+we need to execute core game logic.
+
+# Clearing highlighting with otherClicked
+
+I have created a method `clearHighlighting(ActorRef, Board)` which is called in the otherClicked class as well as in the tileClicked class
+int places which simply reloads the tiles with the mode '0'. 
+
 # GameEnd
 
 A method to check if the game has ended, when the players reach 0 health or have no cards left to play, was 
 created in the PerformAction class `gameEnd(ActorRef out, GameState gameState)`. the method returns a boolean
 and also sets `gameState.isGameOver`, it is being called in the Heartbeat.java to periodically check the state.
+

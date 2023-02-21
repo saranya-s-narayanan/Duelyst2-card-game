@@ -177,7 +177,7 @@ public class Board {
         }
 
         // checking for the right-most tiles
-        if (x < AppConstants.boardWidth - 1) {
+        if (x < AppConstants.boardWidth - 2) {
             adjacentTiles.add(returnTile(x + 1, y));
         }
 
@@ -192,12 +192,12 @@ public class Board {
         }
 
         // top-right
-        if (x < AppConstants.boardWidth - 1 && y > 0) {
+        if (x < AppConstants.boardWidth - 2 && y > 0) {
             adjacentTiles.add(returnTile(x + 1, y - 1));
         }
 
         // bottom-right
-        if (x < AppConstants.boardWidth - 1 && y < AppConstants.boardHeight - 2) {
+        if (x < AppConstants.boardWidth - 2 && y < AppConstants.boardHeight - 2) {
             adjacentTiles.add(returnTile(x + 1, y + 1));
         }
 
@@ -361,6 +361,14 @@ public class Board {
         }
     }
 
+    public void clearTileHighlighting(ActorRef out, Board board) {  // method to clear the highlighted tiles
+        for (int i = 0; i < AppConstants.boardWidth; i++) {
+            for (int j = 0; j < AppConstants.boardHeight; j++) {
+                BasicCommands.drawTile(out, board.tiles[i][j], 0);
+            }
+        }
+
+    }
 
     public void addUnitToBoard(int x, int y, Unit unit) {
         tiles[x][y].setUnitToTile(unit);
@@ -373,9 +381,10 @@ public class Board {
 
         // Place a unit with attack:3 and health:2 at [2,2]
         int x = 2, y = 2;
-        Unit unit1 = BasicObjectBuilders.loadUnit(StaticConfFiles.u_fire_spitter, 1, Unit.class);
+        Unit unit1 = BasicObjectBuilders.loadUnit(StaticConfFiles.u_fire_spitter, 3, Unit.class); // changed ID to 3, as every unit must have a unique ID
         unit1.setAttack(3);
         unit1.setHealth(2);
+        unit1.setIsPlayer(1); // set to player 1
         addUnitToBoard(x, y, unit1);
 
         unit1.setPositionByTile(tiles[2][2]);
@@ -393,17 +402,17 @@ public class Board {
     }
 
     // check whether a tile has a unit on it and returns a list of tiles occupied by units
-    // i have added the conditon of unit id and player id being the same as for now at least i cannot access only the player1's units without a different method
+    // i have added the condition of unit id and player id being the same as for now at least i cannot access only the player1's units without a different method
     // so i have set player1 units and player 1 id to 1 and same for player2 to 2.
     public ArrayList<Tile> getTilesWithUnits(ActorRef out, Tile[][] tiles, Player player) {
-        ArrayList<Tile> tilesWithUnits = new ArrayList<>();
 
+        ArrayList<Tile> tilesWithUnits = new ArrayList<>();
 
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles[i].length; j++) {
                 Tile tile = tiles[i][j];
                 if (tile.getUnitFromTile() != null ) {
-                    if(tile.getUnitFromTile().getId() == player.getID()) {
+                    if(tile.getUnitFromTile().getIsPlayer() == player.getID()) {
                         tilesWithUnits.add(tile);
                     }
                 }
