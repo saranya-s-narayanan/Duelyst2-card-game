@@ -361,6 +361,14 @@ public class Board {
         }
     }
 
+    public void clearTileHighlighting(ActorRef out, Board board) {  // method to clear the highlighted tiles
+        for (int i = 0; i < AppConstants.boardWidth; i++) {
+            for (int j = 0; j < AppConstants.boardHeight; j++) {
+                BasicCommands.drawTile(out, board.tiles[i][j], 0);
+            }
+        }
+
+    }
 
     public void addUnitToBoard(int x, int y, Unit unit) {
         tiles[x][y].setUnitToTile(unit);
@@ -373,7 +381,7 @@ public class Board {
 
         // Place a unit with attack:3 and health:2 at [2,2]
         int x = 2, y = 2;
-        Unit unit1 = BasicObjectBuilders.loadUnit(StaticConfFiles.u_fire_spitter, 1, Unit.class);
+        Unit unit1 = BasicObjectBuilders.loadUnit(StaticConfFiles.u_fire_spitter, 3, Unit.class); // changed ID to 3, as every unit must have a unique ID
         unit1.setAttack(3);
         unit1.setHealth(2);
         addUnitToBoard(x, y, unit1);

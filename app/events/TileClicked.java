@@ -65,24 +65,29 @@ public class TileClicked implements EventProcessor{
 			int tiley = message.get("tiley").asInt();
 
 			Tile clickedTile = gameState.board.returnTile(tilex, tiley); // clicked tile object
+			if(gameState.player1Turn==true) // Player 1 clicked the tile
 
-			if(startTile == null) { // if the start tile hasn't been set yet
-				Unit selectedUnit = clickedTile.getUnitFromTile(); // get the unit from the clicked tile
-				if(selectedUnit != null) { // if the unit is not null
-					startTile = clickedTile; // set the start tile to the clicked tile
+			{
 
-				} else {
-					BasicCommands.addPlayer1Notification(out, "Please select a tile with a unit.", 2); // if the unit is null
+				if (startTile == null) { // if the start tile hasn't been set yet
+					Unit selectedUnit = clickedTile.getUnitFromTile(); // get the unit from the clicked tile
+					AppConstants.printLog("------> UnitClicked :: On tile "+ clickedTile.getTilex() + " " + clickedTile.getTiley() +" by player 1");
+
+					if (selectedUnit != null) { // if the unit is not null
+						startTile = clickedTile; // set the start tile to the clicked tile
+						gameState.board.highlightTilesWhite(out, gameState.board.getAdjacentTiles(out, startTile));
+
+					} else {
+						BasicCommands.addPlayer1Notification(out, "Please select a tile with a unit.", 2); // if the unit is null
+					}
+				} else { // Second click moves the unit to the clicked tile
+					AppConstants.printLog("------> TileClicked :: Moving unit to tile "+ clickedTile.getTilex() + " " + clickedTile.getTiley());
+					moveUnit(out, startTile, clickedTile, gameState); // move the unit to the clicked tile
+					startTile = null; // Reset the start tile to no unit
 				}
-			} else { // Second click moves the unit to the clicked tile
-				moveUnit(out, startTile, clickedTile, gameState); // move the unit to the clicked tile
-				startTile = null; // Reset the start tile to no unit
 			}
 
 
-//			if(gameState.player1Turn==true) // Player 1 clicked the tile
-//
-//			{
 //
 //				AppConstants.printLog("------> TileClicked :: ("+tilex+","+tiley+") by player 1");
 //
