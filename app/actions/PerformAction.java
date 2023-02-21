@@ -169,7 +169,8 @@ public class PerformAction {
         
         if(gameState.isGameActive==true){
 			//check if player 1 health is 0 or not
-			if(gameState.player1.getHealth()<=0 || gameState.player1.getCardInP1Deck()==0){
+			if(gameState.player1.getHealth()<=0 || (gameState.player1.getCardInP1Deck()==0 
+				&& gameState.player1.getCardInP1Hand()==0)){
 				gameState.isGameOver=true;//whichever of these are used to represent game end
 				// gameState.isGameActive=false;//whichever of these are used to represent game end
 				BasicCommands.addPlayer1Notification(out, "Game Over! You Lost", 5);
