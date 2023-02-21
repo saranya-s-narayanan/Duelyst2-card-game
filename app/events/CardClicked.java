@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import akka.actor.ActorRef;
 import commands.BasicCommands;
 import structures.GameState;
+import structures.basic.Player;
 import structures.basic.Tile;
 import utils.AppConstants;
 import structures.basic.Unit;
@@ -45,7 +46,7 @@ public class CardClicked implements EventProcessor {
 
 
         // list of the tiles with units
-        list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles());
+        list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), gameState.player1);
 
         // iteration through the list and highlight adjacent tiles
         for (int i = 0; i < list.size(); i++) {

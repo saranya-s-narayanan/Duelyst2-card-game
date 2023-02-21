@@ -343,8 +343,8 @@ public class Board {
      */
     public void highlightTilesWhite(ActorRef out, ArrayList<Tile> tiles) {
         for (Tile tile : tiles) {
-            if(tile.getUnitFromTile() == null)  // i added this condition as tiles with units should never be highlighted in white only red
-            BasicCommands.drawTile(out, tile, 1);
+            if (tile.getUnitFromTile() == null)  // i added this condition as tiles with units should never be highlighted in white only red
+                BasicCommands.drawTile(out, tile, 1);
         }
     }
 
@@ -393,21 +393,25 @@ public class Board {
     }
 
     // check whether a tile has a unit on it and returns a list of tiles occupied by units
-    public ArrayList<Tile> getTilesWithUnits(ActorRef out, Tile[][] tiles) {
+    // i have added the conditon of unit id and player id being the same as for now at least i cannot access only the player1's units without a different method
+    // so i have set player1 units and player 1 id to 1 and same for player2 to 2. 
+    public ArrayList<Tile> getTilesWithUnits(ActorRef out, Tile[][] tiles, Player player) {
         ArrayList<Tile> tilesWithUnits = new ArrayList<>();
+
 
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles[i].length; j++) {
                 Tile tile = tiles[i][j];
-                if (tile.getUnitFromTile() != null) {
-                    tilesWithUnits.add(tile);
+                if (tile.getUnitFromTile() != null ) {
+                    if(tile.getUnitFromTile().getId() == player.getID()) {
+                        tilesWithUnits.add(tile);
+                    }
                 }
             }
         }
 
         return tilesWithUnits;
     }
-
 
 
 }
