@@ -59,16 +59,15 @@ public class Heartbeat implements EventProcessor{
 		 heartbeatTimerTask = new TimerTask() {
 	            public void run() {
 	            	//to check if the game ended or not
-					gameState.isGameOver=PerformAction.gameEnd(out, gameState);
+					PerformAction.gameEnd(out, gameState);
 					if(gameState.isGameOver==true){
 						{
-							AppConstants.printLog("------> Heartbeat:: Game ended ! Resetting Backend !!");
+							AppConstants.printLog("------> Heartbeat1:: Game ended ! Resetting Backend !!");
 							gameState.clearStateVariables();
 							stopGameTaskTimer();
 							
 						}
 					}
-					AppConstants.printLog("------> Heartbeat:: Game Ended ! Resetting Backend !!");
 	            	// Calculate the time gap between the latest heartbeat receival time and current time
 	            	long timeDifference = System.currentTimeMillis()-gameState.lastHeartbeatTime;
 	            	// If the time gap is more than the allowed time gap, reset game variables and stop timer.

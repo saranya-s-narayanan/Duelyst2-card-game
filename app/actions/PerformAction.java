@@ -154,9 +154,7 @@ public class PerformAction {
 		    	
 		    }
 		}
-		
-		
-		
+
 		
 		
 	}
@@ -165,28 +163,26 @@ public class PerformAction {
      * @param out
      * @param gameState
      */
-    public static boolean gameEnd(ActorRef out, GameState gameState) {
+    public static void gameEnd(ActorRef out, GameState gameState) {
         
+    	AppConstants.printLog("------> gameEnd:: Before- gameState.isGameOver: "+gameState.isGameOver);
         if(gameState.isGameActive==true){
 			//check if player 1 health is 0 or not
-			if(gameState.player1.getHealth()<=0 || (gameState.player1.getCardInDeck()==0 
-				&& gameState.player1.getCardInHand()==0)){
+			if(gameState.player1.getHealth()<=0 || (gameState.player1.getCardInDeck()==0 && gameState.player1.getCardInHand()==0)){
 				gameState.isGameOver=true;//whichever of these are used to represent game end
 				// gameState.isGameActive=false;//whichever of these are used to represent game end
 				BasicCommands.addPlayer1Notification(out, "Game Over! You Lost", 5);
-				return true;
 			}
-			else if(gameState.player2.getHealth()<=0 || (gameState.player2.getCardInDeck()==0 &&
+			else if (gameState.player2.getHealth()<=0 || (gameState.player2.getCardInDeck()==0 &&
 				gameState.player2.getCardInHand()==0)){//if AI reaches 0
 				gameState.isGameOver=true;//whichever of these are used to represent game end
 				// gameState.isGameActive=false;//whichever of these are used to represent game end
 				BasicCommands.addPlayer1Notification(out, "Game Over! Won", 5);
-				return true;
 			}
-			else return false;
 			
         }
-		else return false;
+    	AppConstants.printLog("------> gameEnd:: After- gameState.isGameOver: "+gameState.isGameOver);
+
     }
 
 

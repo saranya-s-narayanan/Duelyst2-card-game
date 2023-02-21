@@ -31,7 +31,7 @@ public class GameState {
     public int playerTurnNumber =1;//variable to see how many turns had the player had
     public int compTurnNumber =1;//varibale to see how many turns had the AI had
 
-    public boolean isGameOver = false; // Variable used for checking active front end connection
+    public boolean isGameOver = false; // Variable used for checking game ending
     
   
 	/*
