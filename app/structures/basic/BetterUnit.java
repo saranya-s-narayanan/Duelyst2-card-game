@@ -1,10 +1,12 @@
 package structures.basic;
 
+import java.util.EventListener;
 import java.util.HashSet;
 import java.util.Set;
 
 import akka.actor.ActorRef;
 import commands.BasicCommands;
+import utils.AppConstants;
 import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
 
@@ -16,12 +18,12 @@ public class BetterUnit extends Unit {
     int attack;
 
 
-    public BetterUnit(ActorRef out,Unit unit, Tile tile) {
+    public BetterUnit(ActorRef out,Unit unit, Tile tile, Board board) {
         //avatar object
-        this.health = 20;
+        this.health = AppConstants.playerMaxHealth;
         this.attack = 2;
 
-        setAvatar(out,unit, tile);
+        setAvatar(out,unit, tile, board);
 
 
     }
@@ -39,25 +41,26 @@ public class BetterUnit extends Unit {
         this.keywords = keywords;
     }
 
-    public void setAvatar(ActorRef out, Unit unit, Tile tile) {
+    public void setAvatar(ActorRef out, Unit unit, Tile tile, Board board) {
         // creates the player1 avatar object
 //        Unit avatar = BasicObjectBuilders.loadUnit(StaticConfFiles.humanAvatar, 0, Unit.class);
 
-        // load tile for avatar placement
 
 
         // Draw the avatar
         unit.setPositionByTile(tile);
         BasicCommands.drawUnit(out, unit, tile);
 
-        //seems to not set health and attack without a sleep
-        try {
-            Thread.sleep(20);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        AppConstants.callSleep(100);
+
+        board.addUnitToBoard(tile.getTilex(), tile.getTiley(), unit); // this makes sure the tile knows the avatar is on it
+
         BasicCommands.setUnitHealth(out, unit, getHealth());
+        AppConstants.callSleep(100);
+        
         BasicCommands.setUnitAttack(out, unit, getAttack());
+        AppConstants.callSleep(100);
+
 
     }
 

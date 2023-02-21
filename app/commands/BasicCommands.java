@@ -21,6 +21,7 @@ import structures.basic.UnitAnimationType;
  *
  */
 public class BasicCommands {
+	// This is a test change
 
 	private static ObjectMapper mapper = new ObjectMapper(); // Jackson Java Object Serializer, is used to turn java objects to Strings
 	

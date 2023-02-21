@@ -1,11 +1,12 @@
 package utils;
 
+
 /**
 * This class file will be used to store all of the constant values that are 
 * responsible for proper game implementation. 
 *
 * This class will be also used to store any global 
-* variables that can be accessed from several Java classes. 
+* variables and methods that can be accessed from several Java classes. 
 *
 **/
 public class AppConstants {
@@ -21,16 +22,57 @@ public class AppConstants {
 	
 	
 	// Card constants
+	public static int minCardsInHand=3;
 	public static int maxCardsInHand=6;
 	public static int maxCardsInDeck=20;
 	
 	
 	// Player constants
 	public static int playerMaxHealth=20;
+
+	//string array of player 1 deck
+	public static String[] deck1Cards = {
+		StaticConfFiles.c_comodo_charger,	
+		StaticConfFiles.c_hailstone_golem,
+		StaticConfFiles.c_pureblade_enforcer,
+		StaticConfFiles.c_azure_herald,
+		StaticConfFiles.c_silverguard_knight,
+		StaticConfFiles.c_azurite_lion,
+		StaticConfFiles.c_fire_spitter,	
+		StaticConfFiles.c_ironcliff_guardian,
+		StaticConfFiles.c_truestrike,	
+		StaticConfFiles.c_sundrop_elixir
+	};
+		
+	public static String[] deck2Cards = {
+		StaticConfFiles.c_planar_scout,
+		StaticConfFiles.c_rock_pulveriser,	
+		StaticConfFiles.c_pyromancer,
+		StaticConfFiles.c_bloodshard_golem,
+		StaticConfFiles.c_blaze_hound,
+		StaticConfFiles.c_windshrike,
+		StaticConfFiles.c_hailstone_golem,
+		StaticConfFiles.c_serpenti,
+		StaticConfFiles.c_staff_of_ykir,
+		StaticConfFiles.c_entropic_decay,
+	};
+	
+	
+	
 	
 	public static void printLog(String message) {
 		if(isDebugMode)
 			System.out.println(message);
 	}
+	
+	public static void callSleep(long millis) {
+		try {
+			Thread.sleep(millis);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	
 	
 }
