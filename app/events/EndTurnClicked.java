@@ -59,7 +59,7 @@ public class EndTurnClicked implements EventProcessor{
 		// TODO Auto-generated method stub
 		AppConstants.printLog("------> End turn Clicked by the player !");
 		
-		gameState.player1.drawAnotherCard(out);//draw a card from the deck
+		gameState.player1.drawAnotherCard(out,1);//draw a card from the deck
 		AppConstants.printLog("------> End turn Clicked by the player :: Draw new card complete !");
 		
 		gameState.player1.setMana(0);//flushing the mana
