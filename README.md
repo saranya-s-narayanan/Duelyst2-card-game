@@ -47,3 +47,4 @@ method to highlight all the available summoning tiles for the given player.
 I have modified the constructor so the board is passed into it. This is so the `addUnitToBoard(tilex,tiley)` can be used in the
 creation of the avatar. The avatar needs to be treated as any other unit for the most part so needs to be accessed 
 through the tiles in the same way.
+
