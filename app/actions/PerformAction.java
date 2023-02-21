@@ -165,7 +165,7 @@ public class PerformAction {
      * @param out
      * @param gameState
      */
-    public static void gameEnd(ActorRef out, GameState gameState) {
+    public static boolean gameEnd(ActorRef out, GameState gameState) {
         
         if(gameState.isGameActive==true){
 			//check if player 1 health is 0 or not
@@ -174,13 +174,16 @@ public class PerformAction {
 				gameState.isGameOver=true;//whichever of these are used to represent game end
 				// gameState.isGameActive=false;//whichever of these are used to represent game end
 				BasicCommands.addPlayer1Notification(out, "Game Over! You Lost", 5);
+				return true;
 			}
 			else if(gameState.player2.getHealth()<=0 || (gameState.player2.getCardInDeck()==0 &&
 				gameState.player2.getCardInHand()==0)){//if AI reaches 0
 				gameState.isGameOver=true;//whichever of these are used to represent game end
 				// gameState.isGameActive=false;//whichever of these are used to represent game end
 				BasicCommands.addPlayer1Notification(out, "Game Over! Won", 5);
+				return true;
 			}
+			else return false;
 			
         }
     }
