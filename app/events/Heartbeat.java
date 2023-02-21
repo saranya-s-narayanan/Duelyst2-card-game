@@ -6,6 +6,7 @@ import java.util.TimerTask;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import actions.PerformAction;
 import akka.actor.ActorRef;
 import structures.GameState;
 import utils.AppConstants;
@@ -37,7 +38,7 @@ public class Heartbeat implements EventProcessor{
 		if(gameState.lastHeartbeatTime==0) {
 			gameState.lastHeartbeatTime=System.currentTimeMillis();
 			gameState.isGameActive=true;
-			startHeartbeatTaskTimer(gameState);
+			startHeartbeatTaskTimer(out,gameState);
 		}
 
 		gameState.lastHeartbeatTime=System.currentTimeMillis();
@@ -53,14 +54,22 @@ public class Heartbeat implements EventProcessor{
  * @param gameState
  */
 	
-	 private void startHeartbeatTaskTimer(GameState gameState) {
+	 private void startHeartbeatTaskTimer(ActorRef out,GameState gameState) {
 		 heartbeatTimer = new Timer();
 		 heartbeatTimerTask = new TimerTask() {
 	            public void run() {
-	            	
+	            	//to check if the game ended or not
+					PerformAction.gameEnd(out, gameState);
+					if(gameState.isGameOver==true){
+						{
+							AppConstants.printLog("------> Heartbeat1:: Game ended ! Resetting Backend !!");
+							gameState.clearStateVariables();
+							stopGameTaskTimer();
+							
+						}
+					}
 	            	// Calculate the time gap between the latest heartbeat receival time and current time
 	            	long timeDifference = System.currentTimeMillis()-gameState.lastHeartbeatTime;
-	             
 	            	// If the time gap is more than the allowed time gap, reset game variables and stop timer.
 	            	if(timeDifference>AppConstants.allowedHeartbeatTimeGap || gameState.isGameOver==true)
 	            	{

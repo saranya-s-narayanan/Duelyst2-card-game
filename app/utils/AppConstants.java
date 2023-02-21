@@ -1,5 +1,6 @@
 package utils;
 
+
 /**
 * This class file will be used to store all of the constant values that are 
 * responsible for proper game implementation. 
@@ -28,32 +29,32 @@ public class AppConstants {
 	
 	// Player constants
 	public static int playerMaxHealth=20;
-	
+
 	//string array of player 1 deck
 	public static String[] deck1Cards = {
-			StaticConfFiles.c_azure_herald,
-			StaticConfFiles.c_azurite_lion,
-			StaticConfFiles.c_comodo_charger,
-			StaticConfFiles.c_fire_spitter,
-			StaticConfFiles.c_hailstone_golem,
-			StaticConfFiles.c_ironcliff_guardian,
-			StaticConfFiles.c_pureblade_enforcer,
-			StaticConfFiles.c_silverguard_knight,
-			StaticConfFiles.c_sundrop_elixir,
-			StaticConfFiles.c_truestrike
-		};
+		StaticConfFiles.c_comodo_charger,	
+		StaticConfFiles.c_hailstone_golem,
+		StaticConfFiles.c_pureblade_enforcer,
+		StaticConfFiles.c_azure_herald,
+		StaticConfFiles.c_silverguard_knight,
+		StaticConfFiles.c_azurite_lion,
+		StaticConfFiles.c_fire_spitter,	
+		StaticConfFiles.c_ironcliff_guardian,
+		StaticConfFiles.c_truestrike,	
+		StaticConfFiles.c_sundrop_elixir
+	};
 		
 	public static String[] deck2Cards = {
-			StaticConfFiles.c_blaze_hound,
-			StaticConfFiles.c_bloodshard_golem,
-			StaticConfFiles.c_entropic_decay,
-			StaticConfFiles.c_hailstone_golem,
-			StaticConfFiles.c_planar_scout,
-			StaticConfFiles.c_pyromancer,
-			StaticConfFiles.c_serpenti,
-			StaticConfFiles.c_rock_pulveriser,
-			StaticConfFiles.c_staff_of_ykir,
-			StaticConfFiles.c_windshrike,
+		StaticConfFiles.c_planar_scout,
+		StaticConfFiles.c_rock_pulveriser,	
+		StaticConfFiles.c_pyromancer,
+		StaticConfFiles.c_bloodshard_golem,
+		StaticConfFiles.c_blaze_hound,
+		StaticConfFiles.c_windshrike,
+		StaticConfFiles.c_hailstone_golem,
+		StaticConfFiles.c_serpenti,
+		StaticConfFiles.c_staff_of_ykir,
+		StaticConfFiles.c_entropic_decay,
 	};
 	
 	
@@ -71,5 +72,7 @@ public class AppConstants {
 			e.printStackTrace();
 		}
 	}
+
+	
 	
 }
