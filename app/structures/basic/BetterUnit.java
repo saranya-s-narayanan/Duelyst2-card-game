@@ -18,12 +18,12 @@ public class BetterUnit extends Unit {
     int attack;
 
 
-    public BetterUnit(ActorRef out,Unit unit, Tile tile) {
+    public BetterUnit(ActorRef out,Unit unit, Tile tile, Board board) {
         //avatar object
         this.health = AppConstants.playerMaxHealth;
         this.attack = 2;
 
-        setAvatar(out,unit, tile);
+        setAvatar(out,unit, tile, board);
 
 
     }
@@ -41,7 +41,7 @@ public class BetterUnit extends Unit {
         this.keywords = keywords;
     }
 
-    public void setAvatar(ActorRef out, Unit unit, Tile tile) {
+    public void setAvatar(ActorRef out, Unit unit, Tile tile, Board board) {
         // creates the player1 avatar object
 //        Unit avatar = BasicObjectBuilders.loadUnit(StaticConfFiles.humanAvatar, 0, Unit.class);
 
@@ -51,7 +51,9 @@ public class BetterUnit extends Unit {
         unit.setPositionByTile(tile);
         BasicCommands.drawUnit(out, unit, tile);
 
-       AppConstants.callSleep(100);
+        AppConstants.callSleep(100);
+
+        board.addUnitToBoard(tile.getTilex(), tile.getTiley(), unit); // this makes sure the tile knows the avatar is on it
 
         BasicCommands.setUnitHealth(out, unit, getHealth());
         AppConstants.callSleep(100);

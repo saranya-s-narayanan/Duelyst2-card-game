@@ -43,18 +43,18 @@ public class Initalize implements EventProcessor {
         AppConstants.printLog("------> Initialize :: Board created !");
 
         // creating the avatar object
-        Unit avatar = BasicObjectBuilders.loadUnit(StaticConfFiles.humanAvatar, 0, Unit.class);
+        Unit avatar = BasicObjectBuilders.loadUnit(StaticConfFiles.humanAvatar, 1, Unit.class);
 
         // Change by using the returnTile method instead of creating tile objects here
         // placing avatar on board and setting stats
-        gameState.avatar =  new BetterUnit(out,avatar, gameState.board.returnTile(1,2));
+        gameState.avatar =  new BetterUnit(out,avatar, gameState.board.returnTile(1,2), gameState.board);
 
         // creating ai avatar object
-        Unit aiAvatar = BasicObjectBuilders.loadUnit(StaticConfFiles.aiAvatar, 1, Unit.class);
+        Unit aiAvatar = BasicObjectBuilders.loadUnit(StaticConfFiles.aiAvatar, 2, Unit.class);
 
         // Change by using the returnTile method instead of creating tile objects here
         // placing avatar on board and setting stats
-        gameState.aiAvatar = new BetterUnit(out, aiAvatar, gameState.board.returnTile(7,2));
+        gameState.aiAvatar = new BetterUnit(out, aiAvatar, gameState.board.returnTile(7,2), gameState.board);
 
         // creating the player object and passing the avatar object to allow the players health to be set to the avatars.
         gameState.player2 = new ComputerPlayer(2,out, gameState.aiAvatar,AppConstants.deck2Cards);
@@ -95,6 +95,8 @@ public class Initalize implements EventProcessor {
         //calling the setHand method
         gameState.player1.setHand(out);
         AppConstants.printLog("------> Initialize :: Card draw complete");
+
+        gameState.board.addDummyUnitsonBoard(out);
 
 
         // User 1 makes a change
