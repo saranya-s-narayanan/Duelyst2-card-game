@@ -31,6 +31,7 @@ public class Player {
 	int currentXpos=0,currentYpos=0;
 
 	public static List<Card> player1Deck = new ArrayList<Card>();//player's deck of card
+	public static List<Card> player1Hand = new ArrayList<Card>();//player's hand of card
 
 	/** constructor to create a player with set health and mana which calls setPlayer to place the data on the front end.
 	 * 
@@ -132,17 +133,27 @@ public class Player {
 	}
 
 
-	public void createDeck() {
-		for(int i=0;i<2;i++){
-			for(int j=0;j<cardsFiles.length;j++){
-				Card card = BasicObjectBuilders.loadCard(cardsFiles[j], cardID, Card.class);
-				cardID++;
-				player1Deck.add(card);
-			}
+	public void createP1Deck() {
+		for(int j=0;j<cardsFiles.length;j++){
+			Card card = BasicObjectBuilders.loadCard(cardsFiles[j], cardID, Card.class);
+			cardID++;
+			player1Deck.add(j, card);
+			System.out.println("Card " + player1Deck.get(j).getCardname() + " added to deck" + "at position "+ j);
 		}
+		for(int j=0;j<cardsFiles.length;j++){
+			Card card = BasicObjectBuilders.loadCard(cardsFiles[j], cardID, Card.class);
+			cardID++;
+			player1Deck.add(10+j, card);
+			System.out.println("Card " + player1Deck.get((10+j)).getCardname() + " added to deck"+ "at position "+ (10+j));
+		}
+		
 		
 	}
 
+	//method to get total cards in the deck
+	public int getCardInP1Deck(){
+		return player1Deck.size();
+	}
 	
 	/** This method sets the hand of the corresponding player object
 	 * 
@@ -150,12 +161,17 @@ public class Player {
 	 */
     public void setHand(ActorRef out) {
         for(int i=0;i<AppConstants.minCardsInHand;i++){
+			//move the top card from deck to hand
+			player1Hand.add(i, player1Deck.get(0));
+			System.out.println("Card " + player1Deck.get(0).getCardname() + " removing from deck");
+			player1Deck.remove(0);
+			System.out.println("Card " + player1Hand.get(i).getCardname() + " added to hand");
+			
             // drawCard [i]
-        BasicCommands.drawCard(out, player1Deck.get(i), position, 0);
-		AppConstants.callSleep(500);
-
-		// increment the position
-		position++;
+			BasicCommands.drawCard(out, player1Hand.get(i), position, 0);
+			AppConstants.callSleep(500);
+			// increment the position
+			position++;
         }
     }
 
@@ -167,10 +183,12 @@ public class Player {
     
 	public void drawAnotherCard(ActorRef out) {
 		if(position<=AppConstants.maxCardsInHand){
-			// Card card = BasicObjectBuilders.loadCard(cardsDeck[cardID], cardID, Card.class);
-        	BasicCommands.drawCard(out,player1Deck.get(position) , position, 0);
+			//move the top card from deck to hand
+			player1Hand.add(position-1, player1Deck.get(0));
+			player1Deck.remove(0);
+			//draw the card
+        	BasicCommands.drawCard(out,player1Hand.get(position-1) , position, 0);
     		AppConstants.callSleep(500);
-
 			//increment the position
 			position++;
 		}
