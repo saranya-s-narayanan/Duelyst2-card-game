@@ -404,8 +404,8 @@ public class Board {
     // i have added the condition of unit id and player id being the same as for now at least i cannot access only the player1's units without a different method
     // so i have set player1 units and player 1 id to 1 and same for player2 to 2.
     public ArrayList<Tile> getTilesWithUnits(ActorRef out, Tile[][] tiles, Player player) {
-        ArrayList<Tile> tilesWithUnits = new ArrayList<>();
 
+        ArrayList<Tile> tilesWithUnits = new ArrayList<>();
 
         for (int i = 0; i < tiles.length; i++) {
             for (int j = 0; j < tiles[i].length; j++) {

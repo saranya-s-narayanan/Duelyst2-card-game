@@ -2,9 +2,12 @@ package structures.basic;
 
 import akka.actor.ActorRef;
 import commands.BasicCommands;
+import structures.GameState;
 import utils.AppConstants;
 import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;//importing for cards in deck and hand
+
+import java.util.ArrayList;
 
 /**
  * A basic representation of of the Player. A player
@@ -102,6 +105,8 @@ public class Player {
 	public void setCurrentYpos(int currentYpos) {
 		this.currentYpos = currentYpos;
 	}
+
+
 	
 	
 	/** Setting the player health and mana on the front end
@@ -147,6 +152,7 @@ public class Player {
 		position++;
         }
     }
+
 
     /** This method draws a card from the deck and adds that card to the hand
      * of the corresponding player object
