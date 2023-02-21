@@ -177,7 +177,7 @@ public class Board {
         }
 
         // checking for the right-most tiles
-        if (x < AppConstants.boardWidth - 2) {
+        if (x < AppConstants.boardWidth - 1) {
             adjacentTiles.add(returnTile(x + 1, y));
         }
 
@@ -192,12 +192,12 @@ public class Board {
         }
 
         // top-right
-        if (x < AppConstants.boardWidth - 2 && y > 0) {
+        if (x < AppConstants.boardWidth - 1 && y > 0) {
             adjacentTiles.add(returnTile(x + 1, y - 1));
         }
 
         // bottom-right
-        if (x < AppConstants.boardWidth - 2 && y < AppConstants.boardHeight - 2) {
+        if (x < AppConstants.boardWidth - 1 && y < AppConstants.boardHeight - 2) {
             adjacentTiles.add(returnTile(x + 1, y + 1));
         }
 
@@ -394,7 +394,7 @@ public class Board {
 
     // check whether a tile has a unit on it and returns a list of tiles occupied by units
     // i have added the conditon of unit id and player id being the same as for now at least i cannot access only the player1's units without a different method
-    // so i have set player1 units and player 1 id to 1 and same for player2 to 2. 
+    // so i have set player1 units and player 1 id to 1 and same for player2 to 2.
     public ArrayList<Tile> getTilesWithUnits(ActorRef out, Tile[][] tiles, Player player) {
         ArrayList<Tile> tilesWithUnits = new ArrayList<>();
 

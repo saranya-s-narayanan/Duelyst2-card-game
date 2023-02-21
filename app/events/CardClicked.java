@@ -30,23 +30,28 @@ public class CardClicked implements EventProcessor {
     public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
 
         if (gameState.isGameActive) // if the frontend connection is active
-        { if(gameState.player1Turn){ // for the first player
+        {
+            if (gameState.player1Turn) { // for the first player
 
-            //  int handPosition = message.get("position").asInt();
-            AppConstants.printLog("------> CardClicked:: Game is active !");
+                //  int handPosition = message.get("position").asInt();
+                AppConstants.printLog("------> CardClicked:: Game is active !");
 
-            highlightSummonableTiles(out, gameState);
+                highlightSummonableTiles(out, gameState, gameState.player1);
 
-        }}
+            }
+            else {
+                highlightSummonableTiles(out, gameState, gameState.player2);
+            }
+        }
 
     }
 
-    public void highlightSummonableTiles(ActorRef out, GameState gameState) {
+    public void highlightSummonableTiles(ActorRef out, GameState gameState, Player player) {
         ArrayList<Tile> list = new ArrayList<>();
 
 
         // list of the tiles with units
-        list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), gameState.player1);
+        list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);
 
         // iteration through the list and highlight adjacent tiles
         for (int i = 0; i < list.size(); i++) {
