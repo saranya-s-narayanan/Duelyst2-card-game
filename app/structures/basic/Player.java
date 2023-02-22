@@ -146,13 +146,13 @@ public class Player {
 			Card card = BasicObjectBuilders.loadCard(cardsFiles[j], cardID, Card.class);
 			cardID++;
 			deck.add(j, card);
-			AppConstants.printLog("Card " + deck.get(j).getCardname() + " added to deck" + "at position "+ j);
+			// AppConstants.printLog("Card " + deck.get(j).getCardname() + " added to deck" + "at position "+ j);
 		}
 		for(int j=0;j<cardsFiles.length;j++){
 			Card card = BasicObjectBuilders.loadCard(cardsFiles[j], cardID, Card.class);
 			cardID++;
 			deck.add((10+j), card);
-			AppConstants.printLog("Card " + deck.get((10+j)).getCardname() + " added to deck"+ "at position "+ (10+j));
+			// AppConstants.printLog("Card " + deck.get((10+j)).getCardname() + " added to deck"+ "at position "+ (10+j));
 		}
 		
 		
@@ -176,9 +176,9 @@ public class Player {
         for(int i=0;i<AppConstants.minCardsInHand;i++){
 			//move the top card from deck to hand
 			hand.add(i, deck.get(0));
-			System.out.println("Card " + deck.get(0).getCardname() + " removing from deck");
+			// System.out.println("Card " + deck.get(0).getCardname() + " removing from deck");
 			deck.remove(0);
-			System.out.println("Card " + hand.get(i).getCardname() + " added to hand");
+			// System.out.println("Card " + hand.get(i).getCardname() + " added to hand");
 			if(playerID==1){
 				// drawCard [i]
 				BasicCommands.drawCard(out, hand.get(i), position, 0);
@@ -212,22 +212,22 @@ public class Player {
 			
 		}
 		else {
-			AppConstants.printLog("------> drawAnotherCard P1:: but the hand positions are full !, deck size: "+deck.size());
+			// AppConstants.printLog("------> drawAnotherCard P1:: but the hand positions are full !, deck size: "+deck.size());
 			if(deck.size()>0)
 			{
 				if(playerID==1){
 					BasicCommands.addPlayer1Notification(out, "Hand positions are full", 2);
-					AppConstants.printLog("------> drawAnotherCard P1:: card to be burned at position: "+ position);
+					// AppConstants.printLog("------> drawAnotherCard P1:: card to be burned at position: "+ position);
 					//deck.remove(position); //--> was creating outOfbound exception
 					deck.remove(0);
-					AppConstants.printLog("------> drawAnotherCard P1:: card burn complted!");
+					// AppConstants.printLog("------> drawAnotherCard P1:: card burn complted!");
 					AppConstants.callSleep(500);
 				}
 				else{
-					AppConstants.printLog("------> drawAnotherCard AI:: card to be burn at position: "+ position);
+					// AppConstants.printLog("------> drawAnotherCard AI:: card to be burn at position: "+ position);
 					//deck.remove(position);
 					deck.remove(0);
-					AppConstants.printLog("------> drawAnotherCard AI:: card burn complted!");
+					// AppConstants.printLog("------> drawAnotherCard AI:: card burn complted!");
 					AppConstants.callSleep(500);
 				}
 			}else {

@@ -45,7 +45,7 @@ public class PerformAction {
 
 			if(player.getHighlighted()==false) // Not highlighted yet
 			{
-		        AppConstants.printLog("------> PerformAction :: checkAction:: Hightlighting...");
+		        // AppConstants.printLog("------> PerformAction :: checkAction:: Hightlighting...");
 
 
 		        if(player.getMoved()==true) // already moved, highlight only adjacent tiles to attack
@@ -54,11 +54,13 @@ public class PerformAction {
 		        	gameState.board.highlightTilesWhite(out, gameState.board.getAdjacentTilesToMoveAndAttack(out,gameState.board,gameState.board.returnTile(tilex ,tiley)));
 
 				player.setHighlighted(true);
+				AppConstants.callSleep(50);
 				
 				
 			}else { // 
-		        AppConstants.printLog("------> PerformAction :: checkAction:: Resetting highlight!");
+		        // AppConstants.printLog("------> PerformAction :: checkAction:: Resetting highlight!");
 				player.setHighlighted(false);
+				AppConstants.callSleep(50);
 			}
 		
 		}
@@ -166,14 +168,14 @@ public class PerformAction {
 		// Check if there is a unit on the start tile
 		if(unitToMove == null) {
 			BasicCommands.addPlayer1Notification(out, "No unit on the starting tile", 2);
-			AppConstants.callSleep(100);
+			AppConstants.callSleep(200);
 			return;
 		}
 
 		// Check if the end tile is empty
 		if(endTile.getUnitFromTile() != null) {
 			BasicCommands.addPlayer1Notification(out, "The end tile is already occupied", 2);
-			AppConstants.callSleep(100);
+			AppConstants.callSleep(200);
 			return;
 		}
 
@@ -181,17 +183,17 @@ public class PerformAction {
 		// Check if the unit can move to the end tile
 		if(!gameState.board.getAdjacentTiles(out, startTile).contains(endTile)) {
 			BasicCommands.addPlayer1Notification(out, "Unit cannot move to the end tile", 2);
-			AppConstants.callSleep(100);
+			AppConstants.callSleep(200);
 			return;
 		}
 
 		// Move the unit to the end tile
 		startTile.removeUnitFromTile(unitToMove);
-		AppConstants.callSleep(100);
+		AppConstants.callSleep(50);
 		gameState.board.addUnitToBoard(endTile.getTilex(), endTile.getTiley(), unitToMove);
-		AppConstants.callSleep(100);
+		AppConstants.callSleep(50);
 		BasicCommands.moveUnitToTile(out, unitToMove, endTile);
-		AppConstants.callSleep(100);
+		AppConstants.callSleep(50);
 	}
 
 	/** This method implements the game end functionality
@@ -200,7 +202,7 @@ public class PerformAction {
      */
     public static void gameEnd(ActorRef out, GameState gameState) {
         
-    	AppConstants.printLog("------> gameEnd:: Before- gameState.isGameOver: "+gameState.isGameOver);
+    	// AppConstants.printLog("------> gameEnd:: Before- gameState.isGameOver: "+gameState.isGameOver);
         if(gameState.isGameActive==true){
 			//check if player 1 health is 0 or not
 			if(gameState.player1.getHealth()<=0 || (gameState.player1.getCardInDeck()==0 && gameState.player1.getCardInHand()==0)){
@@ -216,7 +218,7 @@ public class PerformAction {
 			}
 			
         }
-    	AppConstants.printLog("------> gameEnd:: After- gameState.isGameOver: "+gameState.isGameOver);
+    	// AppConstants.printLog("------> gameEnd:: After- gameState.isGameOver: "+gameState.isGameOver);
 
     }
 
