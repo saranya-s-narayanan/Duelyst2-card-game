@@ -19,6 +19,7 @@ import java.util.ArrayList;
  */
 public class Player {
 
+	BetterUnit avatar;
 	int playerID; // 1=player1, 2= computerPlayer
 	int health;
 	int mana;
@@ -44,6 +45,7 @@ public class Player {
 	 * @param cardsdeck
 	 */
 	public Player(int playerID, ActorRef out, BetterUnit avatar, String[] cardsFiles) {
+		this.avatar = avatar;
 		this.playerID=playerID;
 		this.health = avatar.getHealth();
 		this.mana = 2; // this will be set to player turn +1 once we have player turn available
@@ -57,6 +59,13 @@ public class Player {
 		super();
 		this.health = health;
 		this.mana = mana;
+	}
+	
+	public BetterUnit getAvatar() {
+		return avatar;
+	}
+	public void setAvatar(BetterUnit avatar) {
+		this.avatar = avatar;
 	}
 	public int getID() {
 		return playerID;
