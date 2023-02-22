@@ -15,10 +15,10 @@ import structures.basic.Board;
 import structures.basic.Player;
 import utils.AppConstants;
 
-public class AIAvatarTest {
+public class AIAvatarNotNullTest {
 
 	@Test
-	public void AIAvatarTest() {
+	public void AIAvatarNotNullTest() {
 
 		CheckMessageIsNotNullOnTell altTell = new CheckMessageIsNotNullOnTell(); // create an alternative tell
 		BasicCommands.altTell = altTell; // specify that the alternative tell should be used
@@ -31,7 +31,7 @@ public class AIAvatarTest {
 		ObjectNode eventmessage = Json.newObject();
 		initializeProcessor.processEvent(null, gameState, eventmessage);
 
-		// Check whether AI Avatar is initialized
+		// Check if AI Avatar is not null when game is initialized)
 		assertNotNull("Player should be initialized", gameState.aiAvatar);
 
 	}
