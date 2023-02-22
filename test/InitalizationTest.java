@@ -25,7 +25,7 @@ import utils.BasicObjectBuilders;
 public class InitalizationTest {
 
 	/**
-	 * This test simply checks that a boolean vairable is set in GameState when we call the
+	 * This test simply checks that a boolean variable is set in GameState when we call the
 	 * initalize method for illustration.
 	 */
 	@Test
@@ -42,7 +42,7 @@ public class InitalizationTest {
 		
 		assertFalse(gameState.gameInitalised); // check we have not initalized
 		
-		// lets simulate recieveing an initalize message
+		// lets simulate receiving an initalize message
 		ObjectNode eventMessage = Json.newObject(); // create a dummy message
 		initalizeProcessor.processEvent(null, gameState, eventMessage); // send it to the initalize event processor
 		

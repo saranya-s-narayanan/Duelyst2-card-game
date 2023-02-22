@@ -24,7 +24,7 @@ public class PlayerInitialPositionTest {
 		ObjectNode eventmessage = Json.newObject();
 		initializeProcessor.processEvent(null, gameState, eventmessage);
 
-		// This test is to confirm that the Player's initial x and y positions are 7 and 2 once the game is initialized
+		// This test is to confirm that the Player's initial x and y positions are 1 and 2 once the game is initialized
 		assertEquals(1, gameState.player1.getCurrentXpos());
 		assertEquals(2, gameState.player1.getCurrentYpos());
 
