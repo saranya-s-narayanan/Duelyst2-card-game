@@ -71,23 +71,27 @@ public class Initalize implements EventProcessor {
         gameState.player1 = new Player(1,out,gameState.avatar,AppConstants.deck1Cards);
         gameState.player1.setCurrentXpos(1);
         gameState.player1.setCurrentYpos(2);
-        AppConstants.printLog("------> Initialize :: Player 1 created!");
+        AppConstants.callSleep(200);
+        // AppConstants.printLog("------> Initialize :: Player 1 created!");
 
         gameState.player1Turn=true;
-        AppConstants.printLog("------> Initialize :: Set player 1 as activePlayer!");
+        // AppConstants.printLog("------> Initialize :: Set player 1 as activePlayer!");
 		
         //print message to the terminal notifying the start of the draw card method
-        AppConstants.printLog("------> Initialize :: creating deck for player 1");
+        // AppConstants.printLog("------> Initialize :: creating deck for player 1");
         //setting the deck as an ArrayList
         gameState.player1.createDeck();
-        AppConstants.printLog("------> Initialize :: deck created");
+        AppConstants.callSleep(200);
+        // AppConstants.printLog("------> Initialize :: deck created");
         
-        AppConstants.printLog("------> Initialize :: Drawing 3 cards from the deck for player 1");
+        // AppConstants.printLog("------> Initialize :: Drawing 3 cards from the deck for player 1");
         //Setting the hand as an ArrayList
         gameState.player1.setHand(out,1);
-        AppConstants.printLog("------> Initialize :: Card draw complete");
+        AppConstants.callSleep(200);
+        // AppConstants.printLog("------> Initialize :: Card draw complete");
 
         gameState.board.addDummyUnitsonBoard(out);
+        AppConstants.callSleep(200);
 
 
 
@@ -104,19 +108,22 @@ public class Initalize implements EventProcessor {
         gameState.player2 = new ComputerPlayer(2,out, gameState.aiAvatar,AppConstants.deck2Cards);
         gameState.player2.setCurrentXpos(7);
         gameState.player2.setCurrentYpos(2);
-        AppConstants.printLog("------> Initialize :: Player 2 created!");
+        // AppConstants.printLog("------> Initialize :: Player 2 created!");
+        AppConstants.callSleep(200);
 
 
         //print message to the terminal notifying the start of the draw card method
-        AppConstants.printLog("------> Initialize :: creating deck for AI");
+        // AppConstants.printLog("------> Initialize :: creating deck for AI");
         //setting the deck as an ArrayList
         gameState.player2.createDeck();
-        AppConstants.printLog("------> Initialize :: deck created");
+        AppConstants.callSleep(200);
+        // AppConstants.printLog("------> Initialize :: deck created");
         
-        AppConstants.printLog("------> Initialize :: Drawing 3 cards from the deck for AI");
+        // AppConstants.printLog("------> Initialize :: Drawing 3 cards from the deck for AI");
         //Setting the hand as an ArrayList
         gameState.player2.setHand(out,2);
-        AppConstants.printLog("------> Initialize :: Card draw complete");
+        AppConstants.callSleep(200);
+        // AppConstants.printLog("------> Initialize :: Card draw complete");
         // User 1 makes a change
         //CommandDemo.executeDemo(out); // this executes the command demo, comment out this when implementing your solution
         //CheckMoveLogic.executeDemo(out);

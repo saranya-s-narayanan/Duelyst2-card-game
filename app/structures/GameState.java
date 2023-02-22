@@ -4,6 +4,7 @@ import structures.basic.BetterUnit;
 import structures.basic.Board;
 import structures.basic.ComputerPlayer;
 import structures.basic.Player;
+import structures.basic.Tile;
 
 /**
  * This class can be used to hold information about the on-going game.
@@ -32,6 +33,8 @@ public class GameState {
     public int compTurnNumber =1;//varibale to see how many turns had the AI had
 
     public boolean isGameOver = false; // Variable used for checking game ending
+    public Tile startTile=null;
+    public boolean startTrue=false;//boolean to know if we need to move or not
     
   
 	/*
@@ -56,6 +59,7 @@ public class GameState {
         this.avatar = null;
         this.aiAvatar = null;
         this.lastHeartbeatTime = 0;
+        this.startTile=null;
 
     }
 
