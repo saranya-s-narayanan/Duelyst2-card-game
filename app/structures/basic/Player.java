@@ -149,11 +149,32 @@ public class Player {
 	 */
 	public void setPlayerMana(ActorRef out){
 		if(playerID==1)
-		{
+		{	
 			BasicCommands.setPlayer1Mana(out, this);
 			AppConstants.callSleep(100);
 		}else {
 		     BasicCommands.setPlayer2Mana(out, this);
+			 AppConstants.callSleep(100);
+		}
+	}
+	
+	/** Setting the player health and mana on the front end
+	 * 
+	 * @param out
+	 */
+	public void setPlayer(ActorRef out){
+		if(playerID==1)
+		{
+			BasicCommands.setPlayer1Mana(out, this);
+			AppConstants.callSleep(100);
+			
+			BasicCommands.setPlayer1Health(out, this);
+			AppConstants.callSleep(100);
+		}else {
+		     BasicCommands.setPlayer2Mana(out, this);
+			 AppConstants.callSleep(100);
+			 
+			 BasicCommands.setPlayer2Health(out, this);
 			 AppConstants.callSleep(100);
 		}
 	}
@@ -172,8 +193,6 @@ public class Player {
 			deck.add((10+j), card);
 			AppConstants.printLog("Card " + deck.get((10+j)).getCardname() + " added to deck"+ "at position "+ (10+j));
 		}
-		
-		
 	}
 
 	//method to get total cards in the deck
