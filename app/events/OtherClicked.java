@@ -25,7 +25,8 @@ public class OtherClicked implements EventProcessor{
 		if(gameState.isGameActive) // if the frontend connection is active
 		{
 			AppConstants.printLog("------> OtherClicked :: Game is active ! ");
-			gameState.board.clearTileHighlighting(out, gameState.board.getAdjacentTiles(out, TileClicked.startTile));
+			gameState.board.clearTileHighlighting(out, gameState.board.getAdjacentTiles(out, gameState.startTile));
+			TileClicked.setStartTile(false) ;//to set the move to false
 		}
 		
 	}
