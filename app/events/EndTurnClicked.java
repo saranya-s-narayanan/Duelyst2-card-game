@@ -57,9 +57,6 @@ public class EndTurnClicked implements EventProcessor{
 		BasicCommands.addPlayer1Notification(out, "Your Turn", 2);
 		gameState.player1.setPlayerMana(out);//updating mana on the front end
 		gameState.player2.setPlayerMana(out);//updating mana on the front end
-		
-		// This is to test whether the heartbeat to sync health in real time is working
-		gameState.player2.getAvatar().setHealth(gameState.player2.getAvatar().getHealth()-1);//decreasing the health by 1 after each turn
 	}
 
 	private void endPlayer1Turn(ActorRef out, GameState gameState) {
@@ -82,10 +79,7 @@ public class EndTurnClicked implements EventProcessor{
 		AppConstants.printLog("------> End turn Clicked by the player :: turn passed to AI !");
 		BasicCommands.addPlayer1Notification(out, "Passing Turn Over", 2);
 		gameState.player1.setPlayerMana(out);//updating mana on the front end
-		gameState.player2.setPlayerMana(out);//updating mana on the front end
-		
-		// This is to test whether the heartbeat to sync health in real time is working
-		gameState.player1.getAvatar().setHealth(gameState.player1.getAvatar().getHealth()-1);//decreasing the health by 1 after each turn 
+		gameState.player2.setPlayerMana(out);//updating mana on the front end 
 	}
 
 }
