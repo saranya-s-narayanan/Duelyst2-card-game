@@ -55,8 +55,8 @@ public class EndTurnClicked implements EventProcessor{
 		gameState.player1Turn=true;//passing the turn to the player
 		AppConstants.printLog("------> End turn Clicked by the AI :: turn passed to player !");
 		BasicCommands.addPlayer1Notification(out, "Your Turn", 2);
-		gameState.player1.setPlayer(out);//making change on the front end
-		gameState.player2.setPlayer(out);//making change on the front end
+		gameState.player1.setPlayerMana(out);//updating mana on the front end
+		gameState.player2.setPlayerMana(out);//updating mana on the front end
 	}
 
 	private void endPlayer1Turn(ActorRef out, GameState gameState) {
@@ -78,8 +78,8 @@ public class EndTurnClicked implements EventProcessor{
 		gameState.player1Turn=false;//passing the turn to AI
 		AppConstants.printLog("------> End turn Clicked by the player :: turn passed to AI !");
 		BasicCommands.addPlayer1Notification(out, "Passing Turn Over", 2);
-		gameState.player1.setPlayer(out);//making change on the front end
-		gameState.player2.setPlayer(out);//making change on the front end
+		gameState.player1.setPlayerMana(out);//updating mana on the front end
+		gameState.player2.setPlayerMana(out);//updating mana on the front end 
 	}
 
 }

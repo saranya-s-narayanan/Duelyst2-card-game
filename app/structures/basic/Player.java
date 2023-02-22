@@ -19,6 +19,7 @@ import java.util.ArrayList;
  */
 public class Player {
 
+	BetterUnit avatar;
 	int playerID; // 1=player1, 2= computerPlayer
 	int health;
 	int mana;
@@ -44,6 +45,7 @@ public class Player {
 	 * @param cardsdeck
 	 */
 	public Player(int playerID, ActorRef out, BetterUnit avatar, String[] cardsFiles) {
+		this.avatar = avatar;
 		this.playerID=playerID;
 		this.health = avatar.getHealth();
 		this.mana = 2; // this will be set to player turn +1 once we have player turn available
@@ -57,6 +59,13 @@ public class Player {
 		super();
 		this.health = health;
 		this.mana = mana;
+	}
+	
+	public BetterUnit getAvatar() {
+		return avatar;
+	}
+	public void setAvatar(BetterUnit avatar) {
+		this.avatar = avatar;
 	}
 	public int getID() {
 		return playerID;
@@ -113,31 +122,61 @@ public class Player {
 		this.currentYpos = currentYpos;
 	}
 
-
+	// This method syncs up the Player health with the health of their Avatar
+	public void syncHealth() {
+		this.health = this.avatar.getHealth();
+	}
 	
+	/** Setting the player health on the front end
+	 * 
+	 * @param out
+	 */
+	public void setPlayerHealth(ActorRef out) {
+		if(playerID==1)
+		{
+			BasicCommands.setPlayer1Health(out, this);
+			AppConstants.callSleep(100);
+		
+		}else {
+			 BasicCommands.setPlayer2Health(out, this);
+			 AppConstants.callSleep(100);
+		}
+	}
+	
+	/** Setting the player mana on the front end
+	 * 
+	 * @param out
+	 */
+	public void setPlayerMana(ActorRef out){
+		if(playerID==1)
+		{	
+			BasicCommands.setPlayer1Mana(out, this);
+			AppConstants.callSleep(100);
+		}else {
+		     BasicCommands.setPlayer2Mana(out, this);
+			 AppConstants.callSleep(100);
+		}
+	}
 	
 	/** Setting the player health and mana on the front end
 	 * 
 	 * @param out
 	 */
 	public void setPlayer(ActorRef out){
-
 		if(playerID==1)
 		{
-			BasicCommands.setPlayer1Health(out, this);
-			AppConstants.callSleep(100);
-		
 			BasicCommands.setPlayer1Mana(out, this);
 			AppConstants.callSleep(100);
+			
+			BasicCommands.setPlayer1Health(out, this);
+			AppConstants.callSleep(100);
 		}else {
-			 BasicCommands.setPlayer2Health(out, this);
-			 AppConstants.callSleep(100);
-
 		     BasicCommands.setPlayer2Mana(out, this);
 			 AppConstants.callSleep(100);
+			 
+			 BasicCommands.setPlayer2Health(out, this);
+			 AppConstants.callSleep(100);
 		}
-
-
 	}
 
 	//method to create the deck of card for player 1
@@ -154,8 +193,6 @@ public class Player {
 			deck.add((10+j), card);
 			AppConstants.printLog("Card " + deck.get((10+j)).getCardname() + " added to deck"+ "at position "+ (10+j));
 		}
-		
-		
 	}
 
 	//method to get total cards in the deck

@@ -58,6 +58,14 @@ public class Heartbeat implements EventProcessor{
 		 heartbeatTimer = new Timer();
 		 heartbeatTimerTask = new TimerTask() {
 	            public void run() {
+	            	
+	            	// Syncing player health with the health of their avatar in real time and updating on the front end
+	        		gameState.player1.syncHealth();
+	        		gameState.player1.setPlayerHealth(out);
+	        		gameState.player2.syncHealth(); 
+	        		gameState.player2.setPlayerHealth(out); 
+	        		AppConstants.printLog("------> Heartbeat:: Syncing player and avatar health ! Updating front end !!");
+	            
 	            	//to check if the game ended or not
 					PerformAction.gameEnd(out, gameState);
 					if(gameState.isGameOver==true){
