@@ -61,7 +61,8 @@ public class BetterUnit extends Unit {
         BasicCommands.setUnitAttack(out, unit, getAttack());
         AppConstants.callSleep(100);
 
-
+        unit.setHealth(getHealth()); // oops forgot to set health and attack for avatars !
+        unit.setAttack(getAttack());
     }
 
 

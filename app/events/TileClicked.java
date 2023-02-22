@@ -12,6 +12,7 @@ import commands.BasicCommands;
 
 import structures.GameState;
 
+import structures.basic.Player;
 import structures.basic.Tile;
 import structures.basic.Unit;
 import utils.AppConstants;
@@ -63,7 +64,10 @@ public class TileClicked implements EventProcessor {
 
             {
 
-                highlightAndMove(out, gameState, clickedTile);
+                highlightAndMove(out, gameState, clickedTile, gameState.player1); // add turns
+            }
+            else {
+                highlightAndMove(out, gameState, clickedTile, gameState.player2);
             }
 
 
@@ -124,7 +128,7 @@ public class TileClicked implements EventProcessor {
     }
 
 
-    private void highlightAndMove(ActorRef out, GameState gameState, Tile clickedTile) {
+    private void highlightAndMove(ActorRef out, GameState gameState, Tile clickedTile, Player player) {
         if (startTile == null) { // if the start tile hasn't been set yet
             Unit selectedUnit = clickedTile.getUnitFromTile(); // get the unit from the clicked tile
             AppConstants.printLog("------> UnitClicked :: On tile " + clickedTile.getTilex() + " " + clickedTile.getTiley() + " by player 1");
@@ -139,7 +143,7 @@ public class TileClicked implements EventProcessor {
                 BasicCommands.addPlayer1Notification(out, "Please select a tile with a unit.", 2); // if the unit is null
 
             }
-        } else if (startTile.getUnitFromTile().getIsPlayer() == 1){ // Second click moves the unit to the clicked tile
+        } else if (startTile.getUnitFromTile().getIsPlayer() == player.getID()){ // Second click moves the unit to the clicked tile
 
             gameState.board.clearTileHighlighting(out, gameState.board); // clear the highlighting once move is clicked
             AppConstants.printLog("------> TileClicked :: Moving unit to tile " + clickedTile.getTilex() + " " + clickedTile.getTiley());
