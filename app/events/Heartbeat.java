@@ -64,6 +64,7 @@ public class Heartbeat implements EventProcessor{
 	        		gameState.player1.setPlayerHealth(out);
 	        		gameState.player2.syncHealth(); 
 	        		gameState.player2.setPlayerHealth(out); 
+	        		AppConstants.printLog("------> Heartbeat:: Syncing player and avatar health ! Updating front end !!");
 	            
 	            	//to check if the game ended or not
 					PerformAction.gameEnd(out, gameState);
