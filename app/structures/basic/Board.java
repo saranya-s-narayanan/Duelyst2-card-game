@@ -361,11 +361,17 @@ public class Board {
         }
     }
 
-    public void clearTileHighlighting(ActorRef out, Board board) {  // method to clear the highlighted tiles
-        for (int i = 0; i < AppConstants.boardWidth; i++) {
-            for (int j = 0; j < AppConstants.boardHeight; j++) {
-                BasicCommands.drawTile(out, board.tiles[i][j], 0);
-            }
+    // public void clearTileHighlighting(ActorRef out, Board board) {  // method to clear the highlighted tiles
+    //     for (int i = 0; i < AppConstants.boardWidth; i++) {
+    //         for (int j = 0; j < AppConstants.boardHeight; j++) {
+    //             BasicCommands.drawTile(out, board.tiles[i][j], 0);
+    //         }
+    //     }
+
+    // }
+    public void clearTileHighlighting(ActorRef out, ArrayList<Tile> tiles) {  // method to clear the highlighted tiles changed to git rid of BufferOverflow Exception
+        for (Tile tile : tiles) {
+            BasicCommands.drawTile(out, tile, 0);
         }
 
     }

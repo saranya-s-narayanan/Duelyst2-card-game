@@ -44,7 +44,8 @@ import static actions.PerformAction.moveUnit;
 
 public class TileClicked implements EventProcessor {
 
-    private Tile startTile; // start tile
+    public static Tile startTile; // start tile
+    
 
     @Override
 
@@ -60,6 +61,7 @@ public class TileClicked implements EventProcessor {
             int tiley = message.get("tiley").asInt();
 
             Tile clickedTile = gameState.board.returnTile(tilex, tiley); // clicked tile object
+
             if (gameState.player1Turn == true) // Player 1 clicked the tile
 
             {
@@ -68,7 +70,9 @@ public class TileClicked implements EventProcessor {
             }
             else {
                 highlightAndMove(out, gameState, clickedTile, gameState.player2);
+
             }
+            
 
 
 //
@@ -143,20 +147,26 @@ public class TileClicked implements EventProcessor {
                 BasicCommands.addPlayer1Notification(out, "Please select a tile with a unit.", 2); // if the unit is null
 
             }
+
         } else if (startTile.getUnitFromTile().getIsPlayer() == player.getID()){ // Second click moves the unit to the clicked tile
 
-            gameState.board.clearTileHighlighting(out, gameState.board); // clear the highlighting once move is clicked
+
+            gameState.board.clearTileHighlighting(out, gameState.board.getAdjacentTiles(out, startTile)); // clear the highlighting once move is clicked
             AppConstants.printLog("------> TileClicked :: Moving unit to tile " + clickedTile.getTilex() + " " + clickedTile.getTiley());
-            AppConstants.callSleep(100);
+            AppConstants.callSleep(200);
 
             moveUnit(out, startTile, clickedTile, gameState); // move the unit to the clicked tile
             startTile = null; // Reset the start tile to no unit
         }
         else {
-            gameState.board.clearTileHighlighting(out, gameState.board);
-            AppConstants.callSleep(100);
+            gameState.board.clearTileHighlighting(out, gameState.board.getAdjacentTiles(out, startTile));
+            AppConstants.callSleep(200);
         startTile = null; // Reset the start tile to no unit
         }
+    }
+
+    public static void setStartTile(boolean bool){
+        if(bool==false) startTile=null;
     }
 
 
