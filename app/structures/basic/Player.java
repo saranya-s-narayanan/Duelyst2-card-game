@@ -126,6 +126,11 @@ public class Player {
 	public void syncHealth() {
 		this.health = this.avatar.getHealth();
 	}
+
+	//method to get card by hand position
+	public Card getCardByHandPos(int pos) {
+        return hand.get(pos);
+    }
 	
 	/** Setting the player health on the front end
 	 * 
