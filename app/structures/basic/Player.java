@@ -122,31 +122,40 @@ public class Player {
 		this.currentYpos = currentYpos;
 	}
 
-
+	// This method syncs up the Player health with the health of their Avatar
+	public void syncHealth() {
+		this.health = this.avatar.getHealth();
+	}
 	
-	
-	/** Setting the player health and mana on the front end
+	/** Setting the player health on the front end
 	 * 
 	 * @param out
 	 */
-	public void setPlayer(ActorRef out){
-
+	public void setPlayerHealth(ActorRef out) {
 		if(playerID==1)
 		{
 			BasicCommands.setPlayer1Health(out, this);
 			AppConstants.callSleep(100);
 		
-			BasicCommands.setPlayer1Mana(out, this);
-			AppConstants.callSleep(100);
 		}else {
 			 BasicCommands.setPlayer2Health(out, this);
 			 AppConstants.callSleep(100);
-
+		}
+	}
+	
+	/** Setting the player mana on the front end
+	 * 
+	 * @param out
+	 */
+	public void setPlayerMana(ActorRef out){
+		if(playerID==1)
+		{
+			BasicCommands.setPlayer1Mana(out, this);
+			AppConstants.callSleep(100);
+		}else {
 		     BasicCommands.setPlayer2Mana(out, this);
 			 AppConstants.callSleep(100);
 		}
-
-
 	}
 
 	//method to create the deck of card for player 1
