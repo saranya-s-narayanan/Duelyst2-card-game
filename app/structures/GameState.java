@@ -35,7 +35,6 @@ public class GameState {
     public boolean isGameOver = false; // Variable used for checking game ending
     public Tile startTile=null;
     public boolean startTrue=false;//boolean to know if we need to move or not
-    public int handPosClicked=-1;
     
   
 	/*
