@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import akka.actor.ActorRef;
 import commands.BasicCommands;
 import structures.GameState;
-import structures.basic.Card;
 import structures.basic.Player;
 import structures.basic.Tile;
 import utils.AppConstants;
@@ -27,8 +26,6 @@ import java.util.ArrayList;
  */
 public class CardClicked implements EventProcessor {
 
-    public int handPosition;
-
     @Override
     public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
 
@@ -36,12 +33,9 @@ public class CardClicked implements EventProcessor {
         {
             if (gameState.player1Turn) { // for the first player
 
-                handPosition = message.get("position").asInt();//get hand position
+                //  int handPosition = message.get("position").asInt();
                 AppConstants.printLog("------> CardClicked:: Game is active !");
-                
-                //method call to highlight card
-                highlightMiniCard(out, handPosition, gameState);
-                //method to highlight tiles on which card can be summoned
+
                 highlightSummonableTiles(out, gameState, gameState.player1);
 
             }
@@ -65,23 +59,6 @@ public class CardClicked implements EventProcessor {
             gameState.board.highlightTilesWhite(out, gameState.board.getAdjacentTilesToAttack(out, list.get(i)));
         }
     }
-
-    //method to heighlight MiniCards
-    public void highlightMiniCard(ActorRef out, int position, GameState gameState) {
-        if(gameState.handPosClicked<0){//check if its the first click
-            gameState.handPosClicked=position;//set the gamestate variable to new position clicked
-            Card card1 = gameState.player1.getCardByHandPos(position-1);//get the card at the hand position
-            BasicCommands.drawCard(out, card1, gameState.handPosClicked, 1);//highlight the card
-        }
-        else if(position != gameState.handPosClicked){//check if another card is clicked
-            
-            Card card2 = gameState.player1.getCardByHandPos(position-1);//get the card at the new position
-            Card card1 = gameState.player1.getCardByHandPos(gameState.handPosClicked-1);//get the card at earlier position
-            BasicCommands.drawCard(out, card1, gameState.handPosClicked, 0);//dehighlight the previous position
-            BasicCommands.drawCard(out, card2, position, 1);//highlight the new postion
-            gameState.handPosClicked=position;//set the new position to gameState
-        }
-	}
 
 
 }

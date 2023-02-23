@@ -35,6 +35,13 @@ public class EndTurnClicked implements EventProcessor{
 				//startPlayer1Turn(); // To do
 			}
 			
+			// Update setmoved and setattacked property of summoned to false
+			for(int i=0;i<gameState.summonedUnits.size();i++)
+			{
+				gameState.summonedUnits.get(i).setMoved(false);
+				gameState.summonedUnits.get(i).setAttacked(false);
+
+			}
 			
 		}
 	}
