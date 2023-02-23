@@ -39,7 +39,7 @@ public class GameState {
     public boolean isGameOver = false; // Variable used for checking game ending
     public Tile startTile=null;
     public boolean startTrue=false;//boolean to know if we need to move or not
-    
+    public int handPosClicked=-1;//varibale to hold hand position in gameState
     public ArrayList<Unit> summonedUnits=new ArrayList<Unit>(); //ArrayList for summoned units on board
     
     

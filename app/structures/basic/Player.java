@@ -91,6 +91,10 @@ public class Player {
 	public void setHighlighted(boolean highlighted) {
 		this.highlighted = highlighted;
 	}
+
+	public Card getCardByHandPos(int i) {
+		return hand.get(i);
+	}
 	
 	
 	
