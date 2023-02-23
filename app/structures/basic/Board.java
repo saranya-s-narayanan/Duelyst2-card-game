@@ -182,7 +182,7 @@ public class Board {
         }
 
         // checking for the bottom-most tiles
-        if (y < AppConstants.boardHeight - 2) {
+        if (y < AppConstants.boardHeight - 1) {
             adjacentTiles.add(returnTile(x, y + 1));
         }
 
@@ -197,12 +197,12 @@ public class Board {
         }
 
         // bottom-right
-        if (x < AppConstants.boardWidth - 2 && y < AppConstants.boardHeight - 2) {
+        if (x < AppConstants.boardWidth - 1 && y < AppConstants.boardHeight - 1) {
             adjacentTiles.add(returnTile(x + 1, y + 1));
         }
 
         // bottom-left
-        if (x > 0 && y < AppConstants.boardHeight - 2) {
+        if (x > 0 && y < AppConstants.boardHeight - 1) {
             adjacentTiles.add(returnTile(x - 1, y + 1));
         }
 

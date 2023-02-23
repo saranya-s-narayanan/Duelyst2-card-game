@@ -27,15 +27,14 @@ public class Player {
 	int position = 1;//variable to set card position in hand
 	
 	boolean highlighted=false; 
-	boolean moved=false; // variable to check whether the player has already moved or not
-	boolean attacked=false; // variable to check whether the player has already attacked other units or not
+	
 
 	String[] cardsFiles; //  of cards 
 	
-	int currentXpos=0,currentYpos=0;
+//	int currentXpos=0,currentYpos=0;
 
-	public List<Card> deck;// deck of cards
-	public List<Card> hand;// hand containing cards
+	public List<Card> deck;// deck of card
+	public List<Card> hand;// hand containing card
 
 	/** constructor to create a player with set health and mana which calls setPlayer to place the data on the front end.
 	 * 
@@ -94,43 +93,25 @@ public class Player {
 	}
 	
 	
-	public boolean getMoved() {
-		return moved;
-	}
-	public void setMoved(boolean moved) {
-		this.moved = moved;
-	}
 	
-	
-	public boolean getAttacked() {
-		return attacked;
-	}
-	public void setAttacked(boolean attacked) {
-		this.attacked = attacked;
-	}
 		
-	public int getCurrentXpos() {
-		return currentXpos;
-	}
-	public void setCurrentXpos(int currentXpos) {
-		this.currentXpos = currentXpos;
-	}
-	public int getCurrentYpos() {
-		return currentYpos;
-	}
-	public void setCurrentYpos(int currentYpos) {
-		this.currentYpos = currentYpos;
-	}
+//	public int getCurrentXpos() {
+//		return currentXpos;
+//	}
+//	public void setCurrentXpos(int currentXpos) {
+//		this.currentXpos = currentXpos;
+//	}
+//	public int getCurrentYpos() {
+//		return currentYpos;
+//	}
+//	public void setCurrentYpos(int currentYpos) {
+//		this.currentYpos = currentYpos;
+//	}
 
 	// This method syncs up the Player health with the health of their Avatar
 	public void syncHealth() {
 		this.health = this.avatar.getHealth();
 	}
-
-	//method to get card by hand position
-	public Card getCardByHandPos(int pos) {
-        return hand.get(pos);
-    }
 	
 	/** Setting the player health on the front end
 	 * 
@@ -387,23 +368,6 @@ public class Player {
 			AppConstants.callSleep(100);
 
 		}
-	
-	/** This method check whether the player's avatar occupies the given tile or not
-	 * 
-	 * @param tilex
-	 * @param tiley
-	 * @return
-	 */
-	public boolean isAvatarOnTile(int tilex, int tiley) {
-		// TODO Auto-generated method stub
-		AppConstants.printLog("------> isAvatarOnTile:: POS: "+currentXpos+","+currentYpos);
-
-		if (currentXpos==tilex && currentYpos==tiley) // occupied by avatar
-			return true;
-		else
-			return false;
-	}
-
 	
 	
 	
