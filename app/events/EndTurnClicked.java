@@ -20,10 +20,13 @@ import commands.BasicCommands;
  */
 public class EndTurnClicked implements EventProcessor{
 
+	public JsonNode cardClick;//variable to hold the Json message that comes in when a click is made
+
 	@Override
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
 		if(gameState.isGameActive){ // if the frontend connection is active
-
+			cardClick=message.get("messagetype");//message to keep track of previous click on front-end
+			AppConstants.printLog("------> message type:---->"+gameState.clickMessage);
 			if(gameState.player1Turn==true){//if it was player's turn then only they can use end turn
 				
 				endPlayer1Turn(out,gameState);
