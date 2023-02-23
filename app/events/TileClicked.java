@@ -11,6 +11,7 @@ import akka.actor.ActorRef;
 import commands.BasicCommands;
 
 import structures.GameState;
+
 import structures.basic.Player;
 import structures.basic.Tile;
 import structures.basic.Unit;
@@ -44,8 +45,7 @@ import static actions.PerformAction.moveUnit;
 public class TileClicked implements EventProcessor {
 
     public static Tile startTile; // start tile
-    public JsonNode cardClick;//variable to hold the Json message that comes in when a click is made
-
+    
     @Override
 
     public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
@@ -54,17 +54,22 @@ public class TileClicked implements EventProcessor {
         if (gameState.isGameActive) // if the frontend connection is active
 
         {
-            gameState.clickMessage=message.get("messagetype");//message to keep track of previous click on front-end
-			AppConstants.printLog("------> message type:---->"+gameState.clickMessage);
+
             int tilex = message.get("tilex").asInt();
 
             int tiley = message.get("tiley").asInt();
 
             Tile clickedTile = gameState.board.returnTile(tilex, tiley); // clicked tile object
-            gameState.startTile=clickedTile;//added to keep track of the start tile on the board
-            
-            if (gameState.player1Turn == true){ // Player 1 clicked the tile
-                highlightAndMove(out, gameState, clickedTile, gameState.player1);
+
+            if (gameState.player1Turn == true) // Player 1 clicked the tile
+
+            {
+
+                highlightAndMove(out, gameState, clickedTile, gameState.player1); // add turns
+            }
+            else {
+                highlightAndMove(out, gameState, clickedTile, gameState.player2);
+
             }
             
 
