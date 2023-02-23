@@ -32,6 +32,10 @@ public class Unit {
 	int unitAttack;
 
 	int isPlayer; // human = 1 ai = 2 this is to just check the unit is player to the playerId when interacting with units
+	
+	boolean moved=false; // variable to check whether the unit has already moved or not
+	boolean attacked=false; // variable to check whether the unit has already attacked other units or not
+	
 	public Unit() {}
 	
 	public Unit(int id, UnitAnimationSet animations, ImageCorrection correction) {
@@ -42,6 +46,7 @@ public class Unit {
 		position = new Position(0,0,0,0);
 		this.correction = correction;
 		this.animations = animations;
+		
 	}
 	
 	public Unit(int id, UnitAnimationSet animations, ImageCorrection correction, Tile currentTile) {
@@ -135,6 +140,21 @@ public class Unit {
 		this.isPlayer = isPlayer;
 	}
 
+	public boolean getMoved() {
+		return moved;
+	}
+	public void setMoved(boolean moved) {
+		this.moved = moved;
+	}
+	
+	
+	public boolean getAttacked() {
+		return attacked;
+	}
+	public void setAttacked(boolean attacked) {
+		this.attacked = attacked;
+	}
+	
 	// this is a method that can be called to remove a unit from the board. this will be used in another method 'isAlive()' to check if the unit is alive during the game.
 	// this could be achieved by using the basicCommands.deletUnit() directly, however this will allow us to more easily call that function.
 	public void unitRemoval(ActorRef out){
