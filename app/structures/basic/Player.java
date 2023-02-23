@@ -368,10 +368,13 @@ public class Player {
 
 					BasicCommands.drawUnit(out, unit, tile);
 					AppConstants.callSleep(100);
+					BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_summon), tile);
+					AppConstants.callSleep(100);
 					BasicCommands.setUnitHealth(out, unit, unit.getHealth());
 					AppConstants.callSleep(100);
 					BasicCommands.setUnitAttack(out, unit, unit.getAttack());
 					AppConstants.callSleep(100);
+					tile.setUnitToTile(unit);
 
 				}
 			}
