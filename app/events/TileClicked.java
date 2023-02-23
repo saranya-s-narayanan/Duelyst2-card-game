@@ -45,7 +45,7 @@ import static actions.PerformAction.moveUnit;
 public class TileClicked implements EventProcessor {
 
     public static Tile startTile; // start tile
-    
+    public JsonNode cardClick;//variable to hold the Json message that comes in when a click is made
 
     @Override
 
@@ -55,7 +55,8 @@ public class TileClicked implements EventProcessor {
         if (gameState.isGameActive) // if the frontend connection is active
 
         {
-
+            gameState.clickMessage=message.get("messagetype");//message to keep track of previous click on front-end
+			AppConstants.printLog("------> message type:---->"+gameState.clickMessage);
             int tilex = message.get("tilex").asInt();
 
             int tiley = message.get("tiley").asInt();
