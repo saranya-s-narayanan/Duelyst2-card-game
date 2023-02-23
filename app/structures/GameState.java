@@ -42,6 +42,8 @@ public class GameState {
     public int handPosClicked=-1;
     public ArrayList<Tile> SummonTileList = null;//variable to hold summonable tile list
     public JsonNode clickMessage;//variable to hold the message type
+    public ArrayList<Unit> summonedUnits = new ArrayList<Unit>();
+
     
   
 	/*

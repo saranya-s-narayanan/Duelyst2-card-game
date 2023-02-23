@@ -6,6 +6,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import akka.actor.ActorRef;
 import commands.BasicCommands;
 import structures.GameState;
+
+
+import structures.basic.Card;
+
 import structures.basic.Player;
 import structures.basic.Tile;
 import utils.AppConstants;
@@ -96,6 +100,7 @@ public class CardClicked implements EventProcessor {
         BasicCommands.drawCard(out, card1, gameState.handPosClicked, 0);//dehighlight the previous position
         gameState.handPosClicked=-1;//set the gameState hand position to -1
     }
+
 
 
 }
