@@ -8,6 +8,7 @@ import structures.basic.ComputerPlayer;
 import structures.basic.Player;
 import structures.basic.Tile;
 import com.fasterxml.jackson.databind.JsonNode;
+import structures.basic.Unit;
 
 /**
  * This class can be used to hold information about the on-going game.
