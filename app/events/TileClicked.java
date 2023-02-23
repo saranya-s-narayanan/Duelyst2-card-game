@@ -11,7 +11,7 @@ import akka.actor.ActorRef;
 import commands.BasicCommands;
 
 import structures.GameState;
-
+import structures.basic.Player;
 import structures.basic.Tile;
 import structures.basic.Unit;
 import utils.AppConstants;
@@ -64,7 +64,7 @@ public class TileClicked implements EventProcessor {
             gameState.startTile=clickedTile;//added to keep track of the start tile on the board
             
             if (gameState.player1Turn == true){ // Player 1 clicked the tile
-                highlightAndMove(out, gameState, clickedTile);
+                highlightAndMove(out, gameState, clickedTile, gameState.player1);
             }
             
 
