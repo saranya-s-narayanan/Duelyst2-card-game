@@ -74,8 +74,6 @@ public class TileClicked implements EventProcessor {
     }
 
 
-    private void highlightAndMove(ActorRef out, GameState gameState, Tile clickedTile, Player player) {
-
     private void highlightAndMove(ActorRef out, GameState gameState, Tile clickedTile) {
         if (startTile == null) { // if the start tile hasn't been set yet
             Unit selectedUnit = clickedTile.getUnitFromTile(); // get the unit from the clicked tile
