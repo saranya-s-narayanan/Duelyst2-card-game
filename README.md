@@ -42,6 +42,7 @@ tiles(board) and player and returns an ArrayList of tiles that contain a unit be
 
 # Card Clicked Highlighting
 
+When a card in the hand is clicked, the miniCard will be highlighted using `highlightMiniCard(ActorRef out, int position, GameState gameState)` method. The hand position is being tracked in gameState using the int variable `handPosClicked`.
 I have added a method called `highlightSummonableTiles(ActorRef, GameState)` in the `CardClicked` class. When a card
 is clicked in the front end this method is called and it will call `getTilesWithUnits()`, which will be fed into the method
 `getTilesToAttack()` method to return a list of all adjacent tiles which will then be passed though the `highlightTilesWhite()`
