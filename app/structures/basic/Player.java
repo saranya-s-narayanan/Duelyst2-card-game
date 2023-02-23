@@ -368,6 +368,9 @@ public class Player {
 			AppConstants.callSleep(100);
 
 		}
+		public Card getCardByHandPos(int i) {
+			return hand.get(i);
+		}
 	
 	
 	
