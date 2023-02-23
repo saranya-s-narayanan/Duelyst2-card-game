@@ -83,6 +83,9 @@ public class Initalize implements EventProcessor {
         AppConstants.callSleep(200);
         // AppConstants.printLog("------> Initialize :: Card draw complete");
 
+        // loading the units for player 1
+        gameState.player1.createPlayer1Units(out);
+
         
 
         //************************************// COMPUTER PLAYER //******************************************
@@ -112,7 +115,9 @@ public class Initalize implements EventProcessor {
         //Setting the hand as an ArrayList
         gameState.player2.setHand(out,2);
         AppConstants.callSleep(200);
-        
+
+        // loading the units for player 2
+        gameState.player2.createPlayer2Units(out);
         
         // Add Player avatars to summoned Units arraylist
         gameState.summonedUnits.add(avatar);
