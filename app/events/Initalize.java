@@ -30,10 +30,13 @@ import structures.basic.BetterUnit;
  */
 public class Initalize implements EventProcessor {
 
+
     @Override
     public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
 
         gameState.gameInitalised = true;
+        gameState.clickMessage=message.get("messagetype");//initializing the clickMessage here
+		AppConstants.printLog("------> message type:---->"+gameState.clickMessage);
 
         AppConstants.printLog("------> Initialize :: creating board..");
 
