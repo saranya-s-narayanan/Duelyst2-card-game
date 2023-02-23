@@ -64,25 +64,24 @@ public class Heartbeat implements EventProcessor{
 	        		gameState.player1.setPlayerHealth(out);
 	        		gameState.player2.syncHealth(); 
 	        		gameState.player2.setPlayerHealth(out); 
-//	        		AppConstants.printLog("------> Heartbeat:: Syncing player and avatar health ! Updating front end !!");
+	        		AppConstants.printLog("------> Heartbeat:: Syncing player and avatar health ! Updating front end !!");
 	            
 	            	//to check if the game ended or not
 					PerformAction.gameEnd(out, gameState);
-//					if(gameState.isGameOver==true){
-//						{
-//							AppConstants.printLog("------> Heartbeat1:: Game ended ! Resetting Backend !!");
-//							gameState.clearStateVariables();
-//							stopGameTaskTimer();
-//							
-//						}
-//					}
+					if(gameState.isGameOver==true){
+						{
+							AppConstants.printLog("------> Heartbeat1:: Game ended ! Resetting Backend !!");
+							gameState.clearStateVariables();
+							stopGameTaskTimer();
+							
+						}
+					}
 	            	// Calculate the time gap between the latest heartbeat receival time and current time
 	            	long timeDifference = System.currentTimeMillis()-gameState.lastHeartbeatTime;
 	            	// If the time gap is more than the allowed time gap, reset game variables and stop timer.
 	            	if(timeDifference>AppConstants.allowedHeartbeatTimeGap || gameState.isGameOver==true)
 	            	{
 	        			AppConstants.printLog("------> Heartbeat:: Game is NOT active ! Resetting Backend !!");
-	        			gameState.isGameActive=false;
 	            		gameState.clearStateVariables();
 	            		stopGameTaskTimer();
 	            		

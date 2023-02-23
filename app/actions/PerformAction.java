@@ -1,7 +1,5 @@
 package actions;
 
-import java.util.ArrayList;
-
 import akka.actor.ActorRef;
 import commands.BasicCommands;
 import events.TileClicked;
@@ -30,29 +28,70 @@ public class PerformAction {
 			StaticConfFiles.f1_summon
 	};
 	
-	
-	
-	/** This method implements attack function of players
-	 * @param out 
-	 * @param avatar 
-	 * 
+	/** This method is used to check the available actions (highlight/move/attack) upon a tile click and perform
+	 * one action
+	 * @param player
+	 * @param out
 	 * @param tilex
 	 * @param tiley
 	 * @param gameState
 	 */
-	public static void attackUnit(ActorRef out, Unit unit, Tile enemyTile , GameState gameState) {
+
+	public static void highlightTiles(Player player, ActorRef out, int tilex, int tiley, GameState gameState) {
 		// TODO Auto-generated method stub
 		
+		if(player.getMoved()==false || player.getAttacked()==false) // player not moved or attacked yet
+		{
+
+			if(player.getHighlighted()==false) // Not highlighted yet
+			{
+		        // AppConstants.printLog("------> PerformAction :: checkAction:: Hightlighting...");
+
+
+		        if(player.getMoved()==true) // already moved, highlight only adjacent tiles to attack
+			        gameState.board.highlightTilesWhite(out, gameState.board.getAdjacentTilesToAttack(out,gameState.board.returnTile(tilex ,tiley)));
+		        else // not moved, highlight tiles to move and attack
+		        	gameState.board.highlightTilesWhite(out, gameState.board.getAdjacentTilesToMoveAndAttack(out,gameState.board,gameState.board.returnTile(tilex ,tiley)));
+
+				player.setHighlighted(true);
+				AppConstants.callSleep(50);
+				
+				
+			}else { // 
+		        // AppConstants.printLog("------> PerformAction :: checkAction:: Resetting highlight!");
+				player.setHighlighted(false);
+				AppConstants.callSleep(50);
+			}
+		
+		}
+	}
+	
+	
+	
+	/** This method implements attack function of players
+	 * @param player 
+	 * @param avatar 
+	 * 
+	 * @param out
+	 * @param tilex
+	 * @param tiley
+	 * @param gameState
+	 */
+	public static void attackUnit(Player player, BetterUnit avatar, ActorRef out, int tilex, int tiley, GameState gameState) {
+		// TODO Auto-generated method stub
+		
+		// Fetch the tile object of the clicked position
+		Tile enemyTile=gameState.board.returnTile(tilex, tiley);
 		
 		// Retrieve the unit from the corresponding tile position
 		Unit enemyUnit=enemyTile.getUnitFromTile();
 		
 		if(enemyUnit!=null)
 		{
-			BasicCommands.playUnitAnimation(out, unit, UnitAnimationType.attack); // unit attacks enemy
-		    AppConstants.callSleep(1000);
+			BasicCommands.playUnitAnimation(out, avatar, UnitAnimationType.attack); // avatar attacks enemy
+		    AppConstants.callSleep(3000);
 
-		    enemyUnit.setHealth(enemyUnit.getHealth()-unit.getAttack());  // update enemy's health
+		    enemyUnit.setHealth(enemyUnit.getHealth()-avatar.getAttack()); 
 		
 			// update front end
 			BasicCommands.setUnitHealth(out, enemyUnit, enemyUnit.getHealth());
@@ -63,8 +102,6 @@ public class PerformAction {
 		    
 		    if(enemyUnit.getHealth()<=0) // enemy unit dead, clear tile and update front end
 		    {
-                gameState.summonedUnits.remove(enemyUnit);
-
 				BasicCommands.playUnitAnimation(out, enemyUnit, UnitAnimationType.death);
 			    AppConstants.callSleep(1000);
 			    EffectAnimation ef = BasicObjectBuilders.loadEffect(effects[2]);
@@ -77,36 +114,43 @@ public class PerformAction {
 		    }else { //enemy survived, counter attack
 		    	
 		    	BasicCommands.playUnitAnimation(out, enemyUnit, UnitAnimationType.attack); // enemy attacks avatar
-			    AppConstants.callSleep(1000);
+			    AppConstants.callSleep(3000);
 
-			    unit.setHealth(unit.getHealth()-enemyUnit.getAttack()); // update unit health
+		    	avatar.setHealth(avatar.getHealth()-enemyUnit.getAttack()); 
 					
 		    	// update front end
-				BasicCommands.setUnitHealth(out, unit, unit.getHealth());
+				BasicCommands.setUnitHealth(out, avatar, avatar.getHealth());
 			    AppConstants.callSleep(100);
 			        
-			    BasicCommands.setUnitAttack(out, unit, unit.getAttack());
+			    BasicCommands.setUnitAttack(out, avatar, avatar.getAttack());
 			    AppConstants.callSleep(100);
 			    
 			    
-			    if(unit.getHealth()<=0) //unit dead 
+			    if(avatar.getHealth()<=0) //avatar dead --> player is dead, game over, other player won
 			    {
-			    	BasicCommands.playUnitAnimation(out, unit, UnitAnimationType.death);
+			    	BasicCommands.playUnitAnimation(out, avatar, UnitAnimationType.death);
 				    AppConstants.callSleep(1000);
 				    EffectAnimation ef = BasicObjectBuilders.loadEffect(effects[2]);
 					BasicCommands.playEffectAnimation(out, ef, enemyTile);
 				    AppConstants.callSleep(1000);
 				    //enemyTile.setUnitToTile(null);
-					BasicCommands.deleteUnit(out, unit);
+					BasicCommands.deleteUnit(out, avatar);
 				    AppConstants.callSleep(100);
 				    
-				    if(unit.getId()==1 || unit.getId()==2) // if the unit is player1 or player 2 , set gameOver=true
+				    if(player.getID()==1)
 				    {
-					    gameState.isGameOver=true; // update state variable
-		    	   	
+				    	BasicCommands.addPlayer1Notification(out, "Game Over. Player 2 won !", 2);
+				    	AppConstants.callSleep(100);
 				    	
+				    	
+				    }else {
+				    	BasicCommands.addPlayer1Notification(out, "Game Over. Player 1 won !", 2);
+				    	AppConstants.callSleep(100);
+				    	
+				    
 				    }
 				    
+				    gameState.isGameOver=true; // update state variable
 				  
 			    
 			    }
@@ -143,9 +187,9 @@ public class PerformAction {
 			return;
 		}
 
-		startTile.setUnitToTile(null); //Update starttile unit to null
-		
 		// Move the unit to the end tile
+		startTile.removeUnitFromTile(unitToMove);
+		AppConstants.callSleep(50);
 		gameState.board.addUnitToBoard(endTile.getTilex(), endTile.getTiley(), unitToMove);
 		AppConstants.callSleep(50);
 		BasicCommands.moveUnitToTile(out, unitToMove, endTile);
@@ -174,20 +218,9 @@ public class PerformAction {
 			}
 			
         }
+    	// AppConstants.printLog("------> gameEnd:: After- gameState.isGameOver: "+gameState.isGameOver);
 
     }
-	public static int getUnitIndexFromSummonedUnitlist(Unit selectedUnit, ArrayList<Unit> summonedUnits) {
-		// TODO Auto-generated method stub
-    
-		for(int i=0;i<summonedUnits.size();i++)
-		{
-			if(summonedUnits.get(i).getId()==selectedUnit.getId())
-			{
-				return i;
-			}
-		}
-		return -1;
-	}
 
 
 

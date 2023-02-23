@@ -26,7 +26,6 @@ corresponding card will be deleted from the deck. The method is part of the `dra
 
 # Player attack ability
 
-An arraylist 'summonedUnits' will be used to keep track of movements and attacks of all the units on board in a turn
 
 A 'PerformAction' class has been introduced to include the methods for the implementation of available
 actions (highlight/move/attack) and perfrom appropriate tasks in order
@@ -36,8 +35,6 @@ actions (highlight/move/attack) and perfrom appropriate tasks in order
 	
 	- Added attackUnit() to implement the avatar attack logic on an enemy unit and handling counter attack
 
-
-
 # Get tiles containing units
 
 `getTilesWithUnits(ActorRef,Tile[][], Player)` is a method in the board class that takes in the 2d array of 
@@ -45,6 +42,7 @@ tiles(board) and player and returns an ArrayList of tiles that contain a unit be
 
 # Card Clicked Highlighting
 
+When a card in the hand is clicked, the miniCard will be highlighted using `highlightMiniCard(ActorRef out, int position, GameState gameState)` method. The hand position is being tracked in gameState using the int variable `handPosClicked`.
 I have added a method called `highlightSummonableTiles(ActorRef, GameState)` in the `CardClicked` class. When a card
 is clicked in the front end this method is called and it will call `getTilesWithUnits()`, which will be fed into the method
 `getTilesToAttack()` method to return a list of all adjacent tiles which will then be passed though the `highlightTilesWhite()`
