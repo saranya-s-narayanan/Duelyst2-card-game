@@ -360,8 +360,9 @@ public class Player {
 		}
 
 		// method to draw the unit to the board and set the front end attack and health. Updated to take an id and draw the unit with that Id
-		public void drawUnitToBoard(ActorRef out, Unit unit,Tile tile, int unitId) {
+		public void drawUnitToBoard(ActorRef out, Unit unit,Tile tile, int unitId, Player player) {
 
+		if (player.getID() == 1) {
 			for (Unit u : player1Units) {
 
 				if (u.getId() == unitId) {
@@ -378,6 +379,26 @@ public class Player {
 
 				}
 			}
+		}
+		else {
+			for (Unit u : player2Units) {
+
+				if (u.getId() == unitId) {
+
+					BasicCommands.drawUnit(out, unit, tile);
+					AppConstants.callSleep(100);
+					BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_summon), tile);
+					AppConstants.callSleep(100);
+					BasicCommands.setUnitHealth(out, unit, unit.getHealth());
+					AppConstants.callSleep(100);
+					BasicCommands.setUnitAttack(out, unit, unit.getAttack());
+					AppConstants.callSleep(100);
+					tile.setUnitToTile(unit);
+
+				}
+			}
+
+		}
 		}
 
 
