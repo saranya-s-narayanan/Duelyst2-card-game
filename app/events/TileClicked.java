@@ -12,7 +12,6 @@ import commands.BasicCommands;
 
 import structures.GameState;
 
-import structures.basic.Player;
 import structures.basic.Tile;
 import structures.basic.Unit;
 import utils.AppConstants;
@@ -62,16 +61,10 @@ public class TileClicked implements EventProcessor {
             int tiley = message.get("tiley").asInt();
 
             Tile clickedTile = gameState.board.returnTile(tilex, tiley); // clicked tile object
-
-            if (gameState.player1Turn == true) // Player 1 clicked the tile
-
-            {
-
-                highlightAndMove(out, gameState, clickedTile, gameState.player1); // add turns
-            }
-            else {
-                highlightAndMove(out, gameState, clickedTile, gameState.player2);
-
+            gameState.startTile=clickedTile;//added to keep track of the start tile on the board
+            
+            if (gameState.player1Turn == true){ // Player 1 clicked the tile
+                highlightAndMove(out, gameState, clickedTile);
             }
             
 
@@ -83,6 +76,7 @@ public class TileClicked implements EventProcessor {
 
     private void highlightAndMove(ActorRef out, GameState gameState, Tile clickedTile, Player player) {
 
+    private void highlightAndMove(ActorRef out, GameState gameState, Tile clickedTile) {
         if (startTile == null) { // if the start tile hasn't been set yet
             Unit selectedUnit = clickedTile.getUnitFromTile(); // get the unit from the clicked tile
             AppConstants.printLog("------> UnitClicked :: On tile " + clickedTile.getTilex() + " " + clickedTile.getTiley() + " by player 1");
@@ -113,13 +107,8 @@ public class TileClicked implements EventProcessor {
                 BasicCommands.addPlayer1Notification(out, "Please select a tile with a unit.", 2); // if the unit is null
 
             }
-            AppConstants.callSleep(100);
+        } else if (startTile.getUnitFromTile().getIsPlayer() == 1 ){ // Second click moves the unit to the clicked tile
 
-        } else if (startTile.getUnitFromTile().getIsPlayer() == player.getID()){ // Second click moves the unit to the clicked tile
-
-        	// Get the unit index from the summoned arraylist position
-            int unitIdx=PerformAction.getUnitIndexFromSummonedUnitlist(startTile.getUnitFromTile(),gameState.summonedUnits);
-   		
             gameState.board.clearTileHighlighting(out, gameState.board.getAdjacentTiles(out, startTile)); // clear the highlighting once move is clicked
             AppConstants.callSleep(200);
             
