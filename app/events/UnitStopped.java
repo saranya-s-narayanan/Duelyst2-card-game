@@ -21,10 +21,14 @@ import utils.AppConstants;
  */
 public class UnitStopped implements EventProcessor{
 
+	public JsonNode cardClick;//variable to hold the Json message that comes in when a click is made
+
 	@Override
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
 		if(gameState.isGameActive) // if the frontend connection is active
 		{
+			gameState.clickMessage=message.get("messagetype");//message to keep track of previous click on front-end
+			AppConstants.printLog("------> message type:---->"+gameState.clickMessage);
 			AppConstants.printLog("------> TileClicked :: Game is active ! ");
 			int unitid = message.get("id").asInt();
 		}

@@ -1,10 +1,14 @@
 package structures;
 
+import java.util.ArrayList;
+
 import structures.basic.BetterUnit;
 import structures.basic.Board;
 import structures.basic.ComputerPlayer;
 import structures.basic.Player;
 import structures.basic.Tile;
+import com.fasterxml.jackson.databind.JsonNode;
+import structures.basic.Unit;
 
 /**
  * This class can be used to hold information about the on-going game.
@@ -35,6 +39,9 @@ public class GameState {
     public boolean isGameOver = false; // Variable used for checking game ending
     public Tile startTile=null;
     public boolean startTrue=false;//boolean to know if we need to move or not
+    public int handPosClicked=-1;
+    public ArrayList<Tile> SummonTileList = null;//variable to hold summonable tile list
+    public JsonNode clickMessage;//variable to hold the message type
     
   
 	/*
