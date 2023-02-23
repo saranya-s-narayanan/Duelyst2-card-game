@@ -27,14 +27,13 @@ public class Player {
 	int position = 1;//variable to set card position in hand
 	
 	boolean highlighted=false; 
-	
 
 	String[] cardsFiles; //  of cards 
 	
 //	int currentXpos=0,currentYpos=0;
 
-	public List<Card> deck;// deck of card
-	public List<Card> hand;// hand containing card
+	public List<Card> deck;// deck of cards
+	public List<Card> hand;// hand containing cards
 
 	/** constructor to create a player with set health and mana which calls setPlayer to place the data on the front end.
 	 * 
