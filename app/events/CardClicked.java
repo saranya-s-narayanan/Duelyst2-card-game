@@ -6,8 +6,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import akka.actor.ActorRef;
 import commands.BasicCommands;
 import structures.GameState;
+
+
 import structures.basic.Card;
-import structures.basic.Card;
+
 import structures.basic.Player;
 import structures.basic.Tile;
 import utils.AppConstants;
@@ -42,13 +44,10 @@ public class CardClicked implements EventProcessor {
                 gameState.clickMessage=cardClick;
             }
             if (gameState.player1Turn) { // for the first player
-
+                
                 handPosition = message.get("position").asInt();//get hand position
                 AppConstants.printLog("------> CardClicked:: Game is active !");
-                
-                //method call to highlight card
-                highlightMiniCard(out, handPosition, gameState);
-                //method to highlight tiles on which card can be summoned
+
                 highlightSummonableTiles(out, gameState, gameState.player1);
 
             }

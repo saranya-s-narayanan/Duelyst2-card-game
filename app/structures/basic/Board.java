@@ -214,126 +214,6 @@ public class Board {
         return adjacentTiles;
     }
 
-    /**
-     * This method will take in a tile and return an ArrayList of the two cardinal and
-     * one diagonal tiles available for a standard move and attack thereafter in the game
-     *
-     * @param out
-     * @param board
-     * @param tile
-     * @return
-     */
-    public ArrayList<Tile> getAdjacentTilesToMoveAndAttack(ActorRef out, Board board, Tile tile) {
-
-        // arrayList to store the available tiles
-        ArrayList<Tile> adjacentTiles = new ArrayList<Tile>();
-
-        // tile co-ordinates
-        int x = tile.getTilex();
-        int y = tile.getTiley();
-
-        // for the cardinal tiles I will check if the tile if either 2 or 1 tiles away from the edge of the board so
-        // we avoid any nullPointExceptions
-
-        // checking for the top-most tiles
-        if (y > 2) {
-            adjacentTiles.add(returnTile(x, y - 1));
-            adjacentTiles.add(returnTile(x, y - 2));
-
-            if (board.tiles[x][y - 3].getUnitFromTile() != null) // adding the tile,which can be attacked after the movement
-                adjacentTiles.add(returnTile(x, y - 3));
-
-        } else if (y > 1) {
-            adjacentTiles.add(returnTile(x, y - 1));
-            adjacentTiles.add(returnTile(x, y - 2));
-        } else if (y == 1) {
-            adjacentTiles.add(returnTile(x, y - 1));
-        }
-
-
-        // checking for the right-most tiles
-        if (x < AppConstants.boardWidth - 3) {
-            adjacentTiles.add(returnTile(x + 1, y));
-            adjacentTiles.add(returnTile(x + 2, y));
-
-            if (board.tiles[x + 3][y].getUnitFromTile() != null) // adding the tile,which can be attacked after the movement
-                adjacentTiles.add(returnTile(x + 3, y));
-
-        } else if (x < AppConstants.boardWidth - 2) {
-            adjacentTiles.add(returnTile(x + 1, y));
-            adjacentTiles.add(returnTile(x + 2, y));
-        } else if (x == AppConstants.boardWidth - 2) {
-            adjacentTiles.add(returnTile(x + 1, y));
-        }
-
-
-        // checking for the bottom-most tiles
-        if (y < AppConstants.boardHeight - 3) {
-            adjacentTiles.add(returnTile(x, y + 1));
-            adjacentTiles.add(returnTile(x, y + 2));
-
-            if (board.tiles[x][y + 3].getUnitFromTile() != null) // adding the tile,which can be attacked after the movement
-                adjacentTiles.add(returnTile(x, y + 3));
-
-        } else if (y < AppConstants.boardHeight - 2) {
-            adjacentTiles.add(returnTile(x, y + 1));
-            adjacentTiles.add(returnTile(x, y + 2));
-        } else if (y == AppConstants.boardHeight - 2) {
-            adjacentTiles.add(returnTile(x, y + 1));
-        }
-
-
-        // checking for the left-most tiles
-        if (x > 2) {
-            adjacentTiles.add(returnTile(x - 1, y));
-            adjacentTiles.add(returnTile(x - 2, y));
-
-            if (board.tiles[x - 3][y].getUnitFromTile() != null) // adding the tile,which can be attacked after the movement
-                adjacentTiles.add(returnTile(x - 3, y));
-
-        } else if (x > 1) {
-            adjacentTiles.add(returnTile(x - 1, y));
-            adjacentTiles.add(returnTile(x - 2, y));
-        } else if (x == 1) {
-            adjacentTiles.add(returnTile(x - 1, y));
-        }
-
-
-        // top-right
-        if (x < AppConstants.boardWidth - 1 && y > 0) {
-            adjacentTiles.add(returnTile(x + 1, y - 1));
-        }
-        if (x < AppConstants.boardWidth - 2 && y > 0) {
-            if (board.tiles[x + 2][y - 1].getUnitFromTile() != null) // adding the tile,which can be attacked after the movement
-                adjacentTiles.add(returnTile(x + 2, y - 1));
-        }
-
-        // bottom-right
-        if (x < AppConstants.boardWidth - 1 && y < AppConstants.boardHeight - 1) {
-            adjacentTiles.add(returnTile(x + 1, y + 1));
-        }
-        if (x < AppConstants.boardWidth - 2 && y < AppConstants.boardHeight - 1) {
-            if (board.tiles[x + 2][y + 1].getUnitFromTile() != null) // adding the tile,which can be attacked after the movement
-                adjacentTiles.add(returnTile(x + 2, y + 1));
-        }
-
-        // bottom-left
-        if (x > 0 && y < AppConstants.boardHeight - 1) {
-            adjacentTiles.add(returnTile(x - 1, y + 1));
-        }
-        if (x > 0 && y < AppConstants.boardHeight - 2) {
-            if (board.tiles[x + 2][y + 1].getUnitFromTile() != null) // adding the tile,which can be attacked after the movement
-                adjacentTiles.add(returnTile(x - 1, y + 2));
-        }
-
-        // top-left
-        if (x > 0 && y > 0) {
-            adjacentTiles.add(returnTile(x - 1, y - 1));
-        }
-
-
-        return adjacentTiles;
-    }
 
     /**
      * method to iterate through the arrayList of adjacent tiles and drawTile() with white highlighting
@@ -381,19 +261,21 @@ public class Board {
 
     }
 
-    public void addDummyUnitsonBoard(ActorRef out) {
+    public void addDummyUnitsonBoard(ActorRef out, GameState gameState) {
         // TODO Auto-generated method stub
 
 
         // Place a unit with attack:3 and health:2 at [2,2]
         int x = 2, y = 2;
-        Unit unit1 = BasicObjectBuilders.loadUnit(StaticConfFiles.u_fire_spitter, 3, Unit.class); // changed ID to 3, as every unit must have a unique ID
+        Unit unit1 = BasicObjectBuilders.loadUnit(StaticConfFiles.u_pyromancer, gameState.summonedUnits.size()+1, Unit.class); // changed ID to 3, as every unit must have a unique ID
         unit1.setAttack(3);
         unit1.setHealth(2);
         unit1.setIsPlayer(1); // set to player 1
         addUnitToBoard(x, y, unit1);
+        
+        gameState.summonedUnits.add(unit1);
 
-        unit1.setPositionByTile(tiles[2][2]);
+        unit1.setPositionByTile(tiles[x][y]);
         BasicCommands.drawUnit(out, unit1, tiles[x][y]);
         AppConstants.callSleep(100);
 
@@ -403,6 +285,28 @@ public class Board {
         BasicCommands.setUnitAttack(out, unit1, unit1.getAttack());
         AppConstants.callSleep(100);
         AppConstants.printLog("------> addDummyUnitsonBoard :: Placed unit at [2,2]");
+        
+     // Place a unit with attack:3 and health:2 at [2,1]
+        x = 2;
+        y = 1;
+        unit1 = BasicObjectBuilders.loadUnit(StaticConfFiles.u_serpenti, gameState.summonedUnits.size()+1, Unit.class); // changed ID to 3, as every unit must have a unique ID
+        unit1.setAttack(2);
+        unit1.setHealth(1);
+        unit1.setIsPlayer(1); // set to player 1
+        addUnitToBoard(x, y, unit1);
+        
+        gameState.summonedUnits.add(unit1); //add unit to arraylist
+
+        unit1.setPositionByTile(tiles[x][y]);
+        BasicCommands.drawUnit(out, unit1, tiles[x][y]);
+        AppConstants.callSleep(100);
+
+        BasicCommands.setUnitHealth(out, unit1, unit1.getHealth());
+        AppConstants.callSleep(100);
+
+        BasicCommands.setUnitAttack(out, unit1, unit1.getAttack());
+        AppConstants.callSleep(100);
+        AppConstants.printLog("------> addDummyUnitsonBoard :: Placed unit at [2,1]");
 
 
     }
