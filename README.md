@@ -26,7 +26,7 @@ corresponding card will be deleted from the deck. The method is part of the `dra
 
 # Player attack ability
 
-
+An arraylist 'summonedUnits' will be used to keep track of movements and attacks of all the units on board in a turn
 A 'PerformAction' class has been introduced to include the methods for the implementation of available
 actions (highlight/move/attack) and perfrom appropriate tasks in order
 	
