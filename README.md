@@ -68,6 +68,13 @@ we need to execute core game logic.
 
 # Clearing highlighting with otherClicked
 
+The otherClicked compares `gameState.clickMessage` with `cardClick` JsonNode variable for every event class.
+The gameState keeps track of the last click and if it not then a number of methods will be called in order 
+to prepare the game for appropriate actions. 
+Till now we are clearing card highlighting and subsequent tile highlighting by checking if the `gameState.SummonTileList` 
+is null or not, if it is then `clearCardClicked( ActorRef out, GameState gameState, Player player)` will be 
+called. This method has two helper methods `CardClicked.clearHighlightMiniCard` and `gameState.board.clearTileHighlighting`
+
 I have created a method `clearHighlighting(ActorRef, Board)` which is called in the otherClicked class as well as in the tileClicked class
 int places which simply reloads the tiles with the mode '0'. 
 
