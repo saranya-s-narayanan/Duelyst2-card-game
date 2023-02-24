@@ -28,21 +28,24 @@ import java.util.ArrayList;
 public class CardClicked implements EventProcessor {
 
     public int handPosition;//variable to hold hand position
+    public JsonNode cardClick;//variable to hold the Json message that comes in when a click is made
 
     @Override
     public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
 
         if (gameState.isGameActive) // if the frontend connection is active
         {
+            cardClick=message.get("messagetype");//message to keep track of previous click on front-end
+            AppConstants.printLog("------> message type:---->"+gameState.clickMessage);
+            if(gameState.clickMessage != cardClick){
+                gameState.clickMessage=cardClick;
+            }
             if (gameState.player1Turn) { // for the first player
 
                 handPosition = message.get("position").asInt();//get hand position
                 AppConstants.printLog("------> CardClicked:: Game is active !");
-
                  //method call to highlight card
- 
                  highlightMiniCard(out, handPosition, gameState);
- 
                  //method to highlight tiles on which card can be summoned
                 highlightSummonableTiles(out, gameState, gameState.player1);
 
@@ -55,16 +58,17 @@ public class CardClicked implements EventProcessor {
     }
 
     public void highlightSummonableTiles(ActorRef out, GameState gameState, Player player) {
-        ArrayList<Tile> list = new ArrayList<>();
+        
+        if(gameState.SummonTileList==null){
 
+            // list of the tiles with units
+            ArrayList<Tile> list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);
 
-        // list of the tiles with units
-        list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);
-
-        // iteration through the list and highlight adjacent tiles
-        for (int i = 0; i < list.size(); i++) {
-
-            gameState.board.highlightTilesWhite(out, gameState.board.getAdjacentTilesToAttack(out, list.get(i)));
+            // iteration through the list and highlight adjacent tiles
+            for (Tile items: list) {
+                    gameState.SummonTileList=gameState.board.getAdjacentTiles(out, items);
+                    gameState.board.highlightTilesWhite(out, gameState.board.getAdjacentTilesToAttack(out, items));
+                }
         }
     }
 
@@ -78,7 +82,6 @@ public class CardClicked implements EventProcessor {
             Card card1 = gameState.player1.getCardByHandPos(position-1);//get the card at the hand position
             BasicCommands.drawCard(out, card1, gameState.handPosClicked, 1);//highlight the card
         }
- 
         else if(position != gameState.handPosClicked){//check if another card is clicked
  
             Card card2 = gameState.player1.getCardByHandPos(position-1);//get the card at the new position
@@ -86,10 +89,19 @@ public class CardClicked implements EventProcessor {
             BasicCommands.drawCard(out, card1, gameState.handPosClicked, 0);//dehighlight the previous position
             BasicCommands.drawCard(out, card2, position, 1);//highlight the new postion
             gameState.handPosClicked=position;//set the new position to gameState
- 
         }
- 
+        else{//this is not done yet
+            clearHighlightMiniCard(out, gameState);
+            gameState.board.clearTileHighlighting(out, gameState.SummonTileList);
+        }
 	}
+
+    //method to clear all highlights
+    public static void clearHighlightMiniCard(ActorRef out, GameState gameState) {
+        Card card1 = gameState.player1.getCardByHandPos(gameState.handPosClicked-1);//get the card at earlier position
+        BasicCommands.drawCard(out, card1, gameState.handPosClicked, 0);//dehighlight the previous position
+        gameState.handPosClicked=-1;//set the gameState hand position to -1
+    }
  
 
 

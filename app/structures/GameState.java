@@ -1,7 +1,7 @@
 package structures;
 
 import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import structures.basic.BetterUnit;
 import structures.basic.Board;
@@ -41,6 +41,8 @@ public class GameState {
     public boolean startTrue=false;//boolean to know if we need to move or not
     public int handPosClicked=-1;//varibale to hold hand position in gameState
     public ArrayList<Unit> summonedUnits=new ArrayList<Unit>(); //ArrayList for summoned units on board
+    public ArrayList<Tile> SummonTileList = null;//variable to hold summonable tile list
+    public JsonNode clickMessage;//variable to hold the message type
     
     
   
