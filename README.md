@@ -26,7 +26,7 @@ corresponding card will be deleted from the deck. The method is part of the `dra
 
 # Player attack ability
 
-
+An arraylist 'summonedUnits' will be used to keep track of movements and attacks of all the units on board in a turn
 A 'PerformAction' class has been introduced to include the methods for the implementation of available
 actions (highlight/move/attack) and perfrom appropriate tasks in order
 	
@@ -42,6 +42,7 @@ tiles(board) and player and returns an ArrayList of tiles that contain a unit be
 
 # Card Clicked Highlighting
 
+When a card in the hand is clicked, the miniCard will be highlighted using `highlightMiniCard(ActorRef out, int position, GameState gameState)` method. The hand position is being tracked in gameState using the int variable `handPosClicked`.
 I have added a method called `highlightSummonableTiles(ActorRef, GameState)` in the `CardClicked` class. When a card
 is clicked in the front end this method is called and it will call `getTilesWithUnits()`, which will be fed into the method
 `getTilesToAttack()` method to return a list of all adjacent tiles which will then be passed though the `highlightTilesWhite()`
@@ -66,6 +67,13 @@ isPlayer is the same as the current playerID. There may be a better way to do th
 we need to execute core game logic.
 
 # Clearing highlighting with otherClicked
+
+The otherClicked compares `gameState.clickMessage` with `cardClick` JsonNode variable for every event class.
+The gameState keeps track of the last click and if it not then a number of methods will be called in order 
+to prepare the game for appropriate actions. 
+Till now we are clearing card highlighting and subsequent tile highlighting by checking if the `gameState.SummonTileList` 
+is null or not, if it is then `clearCardClicked( ActorRef out, GameState gameState, Player player)` will be 
+called. This method has two helper methods `CardClicked.clearHighlightMiniCard` and `gameState.board.clearTileHighlighting`
 
 I have created a method `clearHighlighting(ActorRef, Board)` which is called in the otherClicked class as well as in the tileClicked class
 int places which simply reloads the tiles with the mode '0'. 
