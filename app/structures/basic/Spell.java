@@ -33,7 +33,7 @@ public class Spell {
     }
 
     // basic representation of the spells and unfinished logic as to how they will effect the game
-    public void playSpell(ActorRef out, Card card, GameState gameState, Tile tile, BetterUnit avatar) {
+    public void playSpell(ActorRef out, Card card, Tile tile, BetterUnit avatar) { // removed gameState
 
         Spell truestrike = new Spell(out, 1, 4);
 
