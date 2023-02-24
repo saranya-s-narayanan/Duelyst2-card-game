@@ -26,9 +26,11 @@ public class Player {
 	int cardID;//variable to set card id
 	int position = 1;//variable to set card position in hand
 	
-	boolean highlighted=false; 
-	
+	boolean highlighted=false;
 
+	List <Unit> player2Units = new ArrayList<Unit>();
+
+	List <Unit> player1Units = new ArrayList<Unit>();
 	String[] cardsFiles; //  of cards 
 	
 //	int currentXpos=0,currentYpos=0;
@@ -267,7 +269,7 @@ public class Player {
 
 	// Two lists to store the Loaded units and set their health and attack
 		public List<Unit> createPlayer1Units(ActorRef out) {
-			List <Unit> player1Units = new ArrayList<Unit>();
+
 
 			Unit comodoCharger = BasicObjectBuilders.loadUnit(StaticConfFiles.u_comodo_charger, 0, Unit.class);
 			comodoCharger.setIsPlayer(1);
@@ -314,7 +316,7 @@ public class Player {
 		}
 		public List<Unit> createPlayer2Units(ActorRef out) {
 
-			List <Unit> player2Units = new ArrayList<Unit>();
+
 
 			Unit rockPulveriser = BasicObjectBuilders.loadUnit(StaticConfFiles.u_rock_pulveriser, 20, Unit.class);
 			rockPulveriser.setIsPlayer(2);
@@ -361,18 +363,50 @@ public class Player {
 
 		}
 
-		// method to draw the unit to the board and set the front end attack and health
-		public void drawUnitToBoard(ActorRef out, Unit unit,Tile tile) {
+		// method to draw the unit to the board and set the front end attack and health. Updated to take an id and draw the unit with that Id
+		public void drawUnitToBoard(ActorRef out, Unit unit,Tile tile, Card card, Player player) {
+			
+		if ( player.getID() == 1) {
+			for (Unit u : player1Units) {
 
-			BasicCommands.drawUnit(out, unit, tile);
-			AppConstants.callSleep(100);
-			BasicCommands.setUnitHealth(out, unit, unit.getHealth());
-			AppConstants.callSleep(100);
-			BasicCommands.setUnitAttack(out, unit, unit.getAttack());
-			AppConstants.callSleep(100);
+				if (u.getId() == card.getId() || u.getId() == card.getId() + 10) { // check the two possible card ids
 
+					BasicCommands.drawUnit(out, unit, tile);
+					AppConstants.callSleep(100);
+					BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_summon), tile);
+					AppConstants.callSleep(100);
+					BasicCommands.setUnitHealth(out, unit, unit.getHealth());
+					AppConstants.callSleep(100);
+					BasicCommands.setUnitAttack(out, unit, unit.getAttack());
+					AppConstants.callSleep(100);
+					tile.setUnitToTile(unit);
+
+				}
+			}
 		}
-	
-	
+		else {
+			for (Unit u : player2Units) {
+
+				if (u.getId() == card.getId() || u.getId() == card.getId() + 10) {
+
+					BasicCommands.drawUnit(out, unit, tile);
+					AppConstants.callSleep(100);
+					BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_summon), tile);
+					AppConstants.callSleep(100);
+					BasicCommands.setUnitHealth(out, unit, unit.getHealth());
+					AppConstants.callSleep(100);
+					BasicCommands.setUnitAttack(out, unit, unit.getAttack());
+					AppConstants.callSleep(100);
+					tile.setUnitToTile(unit);
+
+				}
+			}
+			
+		}
+		}
+
+
+
+
 	
 }

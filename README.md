@@ -84,3 +84,16 @@ A method to check if the game has ended, when the players reach 0 health or have
 created in the PerformAction class `gameEnd(ActorRef out, GameState gameState)`. the method returns a boolean
 and also sets `gameState.isGameOver`, it is being called in the Heartbeat.java to periodically check the state.
 
+# Loading and drawing units
+
+`createPlayerUnits(ActorRef)` (player1 and player 2) loads the units into an arrayList and sets their health and attack and isPlayer value.
+`drawUnitToBoard(ActorRef,Unit,Card,TilePlayer)` checks which player is being used to call the method, then takes in the cardId and checks it 
+against the unit id as it iterates through the arrayList. if a match (there should always be), the unit is drawn onto the board and the front end 
+features are added such as heal attack and summoning animation. finally, the unit is set to the tile.
+
+# Spells
+
+This is a new Class for now. This is used to create spell objects and play them once the cards are played. The only current method is
+`playSpell(ActorRef, Card, Tile, BetterUnit)` which creates 4 spell objects, then checks the cardId's to the spell objects Id
+and triggers some fundamental logic required from the spells. As a side not, both this method and `drawUnitToBoard()` checks the cardID and
+also checks the cardId+10 as there are duplicate cards and the second card has an id of the first + 10.
