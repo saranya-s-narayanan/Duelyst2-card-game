@@ -32,29 +32,29 @@ public class AppConstants {
 
 	//string array of player 1 deck
 	public static String[] deck1Cards = {
-		StaticConfFiles.c_comodo_charger,	
-		StaticConfFiles.c_hailstone_golem,
+		StaticConfFiles.c_comodo_charger,
 		StaticConfFiles.c_pureblade_enforcer,
-		StaticConfFiles.c_azure_herald,
+		StaticConfFiles.c_fire_spitter,
 		StaticConfFiles.c_silverguard_knight,
-		StaticConfFiles.c_azurite_lion,
-		StaticConfFiles.c_fire_spitter,	
+		StaticConfFiles.c_truestrike,
+		StaticConfFiles.c_azure_herald,
 		StaticConfFiles.c_ironcliff_guardian,
-		StaticConfFiles.c_truestrike,	
-		StaticConfFiles.c_sundrop_elixir
+		StaticConfFiles.c_azurite_lion,
+		StaticConfFiles.c_sundrop_elixir,
+		StaticConfFiles.c_hailstone_golem
 	};
 		
 	public static String[] deck2Cards = {
-		StaticConfFiles.c_planar_scout,
-		StaticConfFiles.c_rock_pulveriser,	
-		StaticConfFiles.c_pyromancer,
+		StaticConfFiles.c_rock_pulveriser,
 		StaticConfFiles.c_bloodshard_golem,
+		StaticConfFiles.c_staff_of_ykir,
 		StaticConfFiles.c_blaze_hound,
 		StaticConfFiles.c_windshrike,
-		StaticConfFiles.c_hailstone_golem,
+		StaticConfFiles.c_pyromancer,
 		StaticConfFiles.c_serpenti,
-		StaticConfFiles.c_staff_of_ykir,
 		StaticConfFiles.c_entropic_decay,
+		StaticConfFiles.c_planar_scout,
+		StaticConfFiles.c_hailstone_golem
 	};
 	
 	
