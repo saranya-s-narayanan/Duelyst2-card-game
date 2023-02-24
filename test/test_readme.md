@@ -33,3 +33,11 @@ This test is to confirm that the human player's initial health (`gameState.playe
 # InitalizationTest
 
 This test was written by the Professor and was included in our source code. It creates a new `GameState` and a new `Initialize` event processor. Then it verifies that `gameState.gameInitalised` returns true (the game state is updated) once an initialize message is received. 
+
+# AIInitialHandSize
+
+This test confirms that the initial number of cards in the AI player's hand (`gameState.player2.hand.size()`) is 3 (`AppConstants.minCardsInHand`). 
+
+# PlayerInitialHandSize
+
+This test confirms that the initial number of cards in the human player's hand (`gameState.player1.hand.size()`) is 3 (`AppConstants.minCardsInHand`). 
