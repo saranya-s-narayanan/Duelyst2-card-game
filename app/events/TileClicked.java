@@ -114,8 +114,9 @@ public class TileClicked implements EventProcessor {
                 {
                 	// Unit not moved or attacked yet
                     AppConstants.printLog("------> UnitClicked :: Unit has NOT moved yet!");
-                	gameState.board.highlightTilesWhite(out, gameState.board.getAdjacentTiles(out, startTile)); // highlight tiles to move and attack
-                	
+//                	gameState.board.highlightTilesWhite(out, gameState.board.getAdjacentTiles(out, startTile)); // highlight tiles to move and attack
+                	gameState.board.highlightTilesMoveAndAttack(out, startTile); // highlight tiles to move and attack
+
                 }else if(gameState.summonedUnits.get(unitIdx).getAttacked()==false){
                 	// Unit has moved,but not attacked yet
                     AppConstants.printLog("------> UnitClicked :: Unit has moved, but NOT attacked yet!");
