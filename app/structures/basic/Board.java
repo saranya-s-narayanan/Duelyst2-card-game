@@ -236,26 +236,44 @@ public class Board {
         		
         		newx=x+i;
         		newy=y+j;
-        		AppConstants.printLog("New xy: ["+newx+","+newy+"]");
 
         		if((newx>=0 && newx<AppConstants.boardWidth)&&(newy>=0 && newy<AppConstants.boardHeight))
         		{
         			newTile=returnTile(newx, newy);
-        			
+            		
         			if(newTile!=tile) // No need to highlight starttile
         			{
         				if(j==(-1*idx) || j==idx) // Check for attackable units
         				{
-        					ArrayList<Tile> attackableTiles=getAdjacentTilesToAttack(player, out, newTile);
+        					ArrayList<Tile> attackableTiles=getAdjacentTilesToAttack(player, out, tile,newTile);
         					adjacentTiles.addAll(attackableTiles);
         					
         					if(mode==1) //highlight , else clear
         						gameState.board.highlightTilesRed(out,attackableTiles); // update front end
         				}
-    					adjacentTiles.add(newTile);
+
+        				
+        				if(newTile.getUnitFromTile()!=null)
+        				{
+	        				if(newTile.getUnitFromTile().getIsPlayer()!=player.getID())
+	        				{
+      					
+	            				adjacentTiles.add(newTile);
+
+	        					if(mode==1)
+	        					{
+	        							BasicCommands.drawTile(out, newTile, 2); // update front end
+	        						
+	        					}
+	        						
+	        				}
+        				}else {
+            				adjacentTiles.add(newTile);
+
+        					if(mode==1)
+        						BasicCommands.drawTile(out, newTile, 1); // update front end
+        				}
     					
-    					if(mode==1)
-    						BasicCommands.drawTile(out, newTile, 1); // update front end
         			}
 
         		}
@@ -304,7 +322,7 @@ public class Board {
         		{
         			newTile=returnTile(newx, newy);
 
-        			if(newTile.getUnitFromTile()!=null) // Check if the attackable tile has any unit present
+        			if(newTile!=tile && newTile.getUnitFromTile()!=null) // Check if the attackable tile has any unit present
         			{
                 		AppConstants.printLog("newUnit: "+newTile.getUnitFromTile().getIsPlayer()+", player id: "+player.getID());
 
@@ -324,6 +342,58 @@ public class Board {
         return adjacentTiles;
     }
 
+    /**
+     * This method will take in a tile and return an ArrayList of the two cardinal and
+     * one diagonal tiles available for a standard attack in the game
+     *
+     * @param out
+     * @param tile
+     * @return
+     */
+    public ArrayList<Tile> getAdjacentTilesToAttack(Player player,ActorRef out, Tile startTile,Tile tile) {
+
+        // arrayList to store the available tiles
+        ArrayList<Tile> adjacentTiles = new ArrayList<Tile>();
+
+        // tile co-ordinates
+        int x = tile.getTilex();
+        int y = tile.getTiley();
+        int newx;
+        int newy;
+        Tile newTile;
+        
+        for(int i=-1;i<2;i++)
+        {
+        	for(int j=-1;j<2;j++)
+        	{
+        		
+        		newx=x+i;
+        		newy=y+j;
+        		AppConstants.printLog("New xy: ["+newx+","+newy+"]");
+
+        		if((newx>=0 && newx<AppConstants.boardWidth)&&(newy>=0 && newy<AppConstants.boardHeight))
+        		{
+        			newTile=returnTile(newx, newy);
+
+        			if(newTile!=startTile && newTile!=tile && newTile.getUnitFromTile()!=null) // Check if the attackable tile has any unit present
+        			{
+                		AppConstants.printLog("newUnit: "+newTile.getUnitFromTile().getIsPlayer()+", player id: "+player.getID());
+
+        				if(newTile.getUnitFromTile().getIsPlayer()!=player.getID())
+            			adjacentTiles.add(newTile);
+
+        			}
+
+        		}
+
+        		
+        	}
+        }
+
+
+
+        return adjacentTiles;
+    }
 
     /**
      * method to iterate through the arrayList of adjacent tiles and drawTile() with white highlighting
