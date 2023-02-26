@@ -1,6 +1,7 @@
 package structures.basic;
 
 import akka.actor.ActorRef;
+import akka.util.Collections;
 import commands.BasicCommands;
 import structures.GameState;
 import utils.AppConstants;
@@ -152,8 +153,71 @@ public class Board {
         return adjacentTiles;
     }
 
+//    public ArrayList<Tile> highlightTilesOptimized(ActorRef out, Tile tile) {
+//
+//    	 // arrayList to store the available tiles
+//        ArrayList<Tile> adjacentTiles = new ArrayList<Tile>();
+//
+//		 // tile co-ordinates
+//       int x = tile.getTilex();
+//       int y = tile.getTiley();
+//       int newx;
+//       int newy;
+//       Tile newTile;
+//
+//       
+//       int idx=0;
+//       for(int i=-2;i<3;i++)
+//       {
+//       	
+//       	for(int j=(-1*idx);j<=idx;j++)
+//       	{
+//       		
+//       		newx=x+i;
+//       		newy=y+j;
+//       		AppConstants.printLog("New xy: ["+newx+","+newy+"]");
+//
+//       		if((newx>=0 && newx<AppConstants.boardWidth)&&(newy>=0 && newy<AppConstants.boardHeight))
+//       		{
+//       			newTile=returnTile(newx, newy);
+//       			
+//       			if(newTile!=tile) // No need to highlight starttile
+//       			{
+//       				adjacentTiles.add(newTile);
+//       			}
+//
+//       		}
+//
+//       		
+//       	}
+//       	if(i<0)
+//       		idx++;
+//       	else
+//       		idx--;
+//       }	
+//       return adjacentTiles;
+//	}
+    
+    /** This method will take a tile and finds it's adjacent tiles to move and it will find the 
+     * attackable unit (if present) to those adjacent tiles and highlight those tiles.
+     * 
+     * Note: if mode==0, this function only returns the tiles list 
+     * 		 if mode==1, this function returns the tiles list and updated front end from here itself.
+     * 
+     * @param mode --> if mode==1, highlighitng | if mode==0, clearhighlighting
+     * @param player
+     * @param out
+     * @param tile
+     * @param gameState
+     * @return
+     */
+    
 
-	public void highlightTilesMoveAndAttack(ActorRef out, Tile tile) {
+	public ArrayList<Tile> highlightTilesMoveAndAttack(int mode, Player player, ActorRef out, Tile tile, GameState gameState) {
+
+		
+		 // arrayList to store the available tiles
+        ArrayList<Tile> adjacentTiles = new ArrayList<Tile>();
 
 		 // tile co-ordinates
         int x = tile.getTilex();
@@ -177,8 +241,22 @@ public class Board {
         		if((newx>=0 && newx<AppConstants.boardWidth)&&(newy>=0 && newy<AppConstants.boardHeight))
         		{
         			newTile=returnTile(newx, newy);
-        			if(newTile!=tile)
-        			BasicCommands.drawTile(out, newTile, 1);
+        			
+        			if(newTile!=tile) // No need to highlight starttile
+        			{
+        				if(j==(-1*idx) || j==idx) // Check for attackable units
+        				{
+        					ArrayList<Tile> attackableTiles=getAdjacentTilesToAttack(player, out, newTile);
+        					adjacentTiles.addAll(attackableTiles);
+        					
+        					if(mode==1) //highlight , else clear
+        						gameState.board.highlightTilesRed(out,attackableTiles); // update front end
+        				}
+    					adjacentTiles.add(newTile);
+    					
+    					if(mode==1)
+    						BasicCommands.drawTile(out, newTile, 1); // update front end
+        			}
 
         		}
 
@@ -188,7 +266,9 @@ public class Board {
         		idx++;
         	else
         		idx--;
-        }		
+        }
+        
+        return adjacentTiles;
 	}
 
     /**
@@ -316,8 +396,8 @@ public class Board {
         AppConstants.printLog("------> addDummyUnitsonBoard :: Placed unit at [2,2]");
         
      // Place enemy unit with attack:2 and health:1 at [2,1]
-        x = 2;
-        y = 1;
+        x = 0;
+        y = 0;
         unit1 = gameState.player2.getPlayerUnits().get(0);
         unit1.setSummonedID(gameState.summonedUnits.size()+1);
         addUnitToBoard(x, y, unit1);       

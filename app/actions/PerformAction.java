@@ -55,7 +55,13 @@ public class PerformAction {
 				// Check whether the unit is a friendly unit or not
 				if(enemyUnit.getIsPlayer()!=player.getID())
 				{
-					if(gameState.board.getAdjacentTilesToAttack(player,out, startTile).contains(enemyTile)) 
+					ArrayList<Tile> tilesList;
+					if(startTile.getUnitFromTile().getMoved()==true)
+						tilesList=gameState.board.getAdjacentTilesToAttack(player,out, startTile);
+					else
+						tilesList=gameState.board.highlightTilesMoveAndAttack(0,player,out, startTile,gameState);
+						
+					if(tilesList.contains(enemyTile)) 
 					{
 						// Not a friendly unit --> attack
 						BasicCommands.playUnitAnimation(out, unit, UnitAnimationType.attack); // unit attacks enemy
