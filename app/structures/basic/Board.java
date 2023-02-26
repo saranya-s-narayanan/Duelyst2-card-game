@@ -153,6 +153,40 @@ public class Board {
     }
 
 
+	public void highlightTilesMoveAndAttack(ActorRef out, Tile tile) {
+
+		 // tile co-ordinates
+        int x = tile.getTilex();
+        int y = tile.getTiley();
+        int newx;
+        int newy;
+        
+        int idx=0;
+        for(int i=-2;i<3;i++)
+        {
+        	
+        	for(int j=(-1*idx);j<=idx;j++)
+        	{
+        		
+        		//newx=x+i;
+        		//newy=y+j;
+        		AppConstants.printLog("New xy: [x+"+i+",y+"+j+"]");
+
+//        		if((newx>=0 && newx<AppConstants.boardWidth)&&(newy>=0 && newy<AppConstants.boardHeight))
+//        		{
+//        			
+//
+//        		}
+
+        		
+        	}
+        	if(i<0)
+        		idx++;
+        	else
+        		idx--;
+        }		
+	}
+
     /**
      * This method will take in a tile and return an ArrayList of the two cardinal and
      * one diagonal tiles available for a standard attack in the game
@@ -180,13 +214,11 @@ public class Board {
         		
         		newx=x+i;
         		newy=y+j;
-        		//newTile=returnTile(newx, newy);
         		AppConstants.printLog("New xy: ["+newx+","+newy+"]");
 
         		if((newx>=0 && newx<AppConstants.boardWidth)&&(newy>=0 && newy<AppConstants.boardHeight))
         		{
         			newTile=returnTile(newx, newy);
-            		//AppConstants.printLog("New unit: "+newTile.getUnitFromTile());
 
         			if(newTile.getUnitFromTile()!=null) // Check if the attackable tile has any unit present
         			{
@@ -196,7 +228,6 @@ public class Board {
             			adjacentTiles.add(newTile);
 
         			}
-        			//adjacentTiles.add(newTile);
 
         		}
 
@@ -204,46 +235,7 @@ public class Board {
         	}
         }
 
-//
-//        // checking for the top-most tiles
-//        if (y > 0) {
-//            adjacentTiles.add(returnTile(x, y - 1));
-//        }
-//
-//        // checking for the right-most tiles
-//        if (x < AppConstants.boardWidth - 2) {
-//            adjacentTiles.add(returnTile(x + 1, y));
-//        }
-//
-//        // checking for the bottom-most tiles
-//        if (y < AppConstants.boardHeight - 1) {
-//            adjacentTiles.add(returnTile(x, y + 1));
-//        }
-//
-//        // checking for the left-most tiles
-//        if (x > 0) {
-//            adjacentTiles.add(returnTile(x - 1, y));
-//        }
-//
-//        // top-right
-//        if (x < AppConstants.boardWidth - 2 && y > 0) {
-//            adjacentTiles.add(returnTile(x + 1, y - 1));
-//        }
-//
-//        // bottom-right
-//        if (x < AppConstants.boardWidth - 1 && y < AppConstants.boardHeight - 1) {
-//            adjacentTiles.add(returnTile(x + 1, y + 1));
-//        }
-//
-//        // bottom-left
-//        if (x > 0 && y < AppConstants.boardHeight - 1) {
-//            adjacentTiles.add(returnTile(x - 1, y + 1));
-//        }
-//
-//        // top-left
-//        if (x > 0 && y > 0) {
-//            adjacentTiles.add(returnTile(x - 1, y - 1));
-//        }
+
 
         return adjacentTiles;
     }
@@ -301,9 +293,7 @@ public class Board {
 
         // Place a unit with attack:3 and health:2 at [2,2]
         int x = 2, y = 2;
-        Unit unit1 = BasicObjectBuilders.loadUnit(StaticConfFiles.u_pyromancer, gameState.summonedUnits.size()+1, Unit.class); // changed ID to 3, as every unit must have a unique ID
-        unit1.setAttack(3);
-        unit1.setHealth(2);
+        Unit unit1 = gameState.player1.getPlayerUnits().get(0);
         unit1.setSummonedID(gameState.summonedUnits.size()+1); 
         unit1.setIsPlayer(1); // set to player 1
         addUnitToBoard(x, y, unit1);
@@ -324,11 +314,8 @@ public class Board {
      // Place enemy unit with attack:2 and health:1 at [2,1]
         x = 2;
         y = 1;
-        unit1 = BasicObjectBuilders.loadUnit(StaticConfFiles.u_serpenti, gameState.summonedUnits.size()+1, Unit.class); 
-        unit1.setAttack(2);
-        unit1.setHealth(2);
+        unit1 = gameState.player2.getPlayerUnits().get(0);
         unit1.setSummonedID(gameState.summonedUnits.size()+1);
-        unit1.setIsPlayer(2); // set to player 1
         addUnitToBoard(x, y, unit1);       
         gameState.summonedUnits.add(unit1); //add unit to arraylist
 
@@ -347,11 +334,8 @@ public class Board {
         // Place enemy unit with attack:21 and health:2 at [2,4]
         x = 2;
         y = 4;
-        unit1 = BasicObjectBuilders.loadUnit(StaticConfFiles.u_planar_scout, gameState.summonedUnits.size()+1, Unit.class); // changed ID to 3, as every unit must have a unique ID
-        unit1.setAttack(23);
-        unit1.setHealth(6);
+        unit1 = gameState.player2.getPlayerUnits().get(1);
         unit1.setSummonedID(gameState.summonedUnits.size()+1);
-        unit1.setIsPlayer(2); // set to player 1
         addUnitToBoard(x, y, unit1);       
         gameState.summonedUnits.add(unit1); //add unit to arraylist
 
@@ -389,6 +373,7 @@ public class Board {
 
         return tilesWithUnits;
     }
+
 
 
 }
