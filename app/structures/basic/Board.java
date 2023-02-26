@@ -160,6 +160,8 @@ public class Board {
         int y = tile.getTiley();
         int newx;
         int newy;
+        Tile newTile;
+
         
         int idx=0;
         for(int i=-2;i<3;i++)
@@ -168,15 +170,17 @@ public class Board {
         	for(int j=(-1*idx);j<=idx;j++)
         	{
         		
-        		//newx=x+i;
-        		//newy=y+j;
-        		AppConstants.printLog("New xy: [x+"+i+",y+"+j+"]");
+        		newx=x+i;
+        		newy=y+j;
+        		AppConstants.printLog("New xy: ["+newx+","+newy+"]");
 
-//        		if((newx>=0 && newx<AppConstants.boardWidth)&&(newy>=0 && newy<AppConstants.boardHeight))
-//        		{
-//        			
-//
-//        		}
+        		if((newx>=0 && newx<AppConstants.boardWidth)&&(newy>=0 && newy<AppConstants.boardHeight))
+        		{
+        			newTile=returnTile(newx, newy);
+        			if(newTile!=tile)
+        			BasicCommands.drawTile(out, newTile, 1);
+
+        		}
 
         		
         	}
