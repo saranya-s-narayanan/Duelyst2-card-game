@@ -56,6 +56,34 @@ public class AppConstants {
 		StaticConfFiles.c_planar_scout,
 		StaticConfFiles.c_hailstone_golem
 	};
+
+	//string array of player 1 units
+	public static String[] p1unit = {
+		StaticConfFiles.u_comodo_charger,
+		StaticConfFiles.u_pureblade_enforcer,
+		StaticConfFiles.u_fire_spitter,
+		StaticConfFiles.u_silverguard_knight,
+		// StaticConfFiles.u_truestrike,
+		StaticConfFiles.u_azure_herald,
+		StaticConfFiles.u_ironcliff_guardian,
+		StaticConfFiles.u_azurite_lion,
+		// StaticConfFiles.u_sundrop_elixir,
+		StaticConfFiles.u_hailstone_golem
+	};
+
+	//string array of player 2 units
+	public static String[] p2unit = {
+		StaticConfFiles.u_rock_pulveriser,
+		StaticConfFiles.u_bloodshard_golem,
+		// StaticConfFiles.u_staff_of_ykir,
+		StaticConfFiles.u_blaze_hound,
+		StaticConfFiles.u_windshrike,
+		StaticConfFiles.u_pyromancer,
+		StaticConfFiles.u_serpenti,
+		// StaticConfFiles.u_entropic_decay,
+		StaticConfFiles.u_planar_scout,
+		StaticConfFiles.u_hailstone_golem
+	};
 	
 	
 	
