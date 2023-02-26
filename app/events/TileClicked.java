@@ -19,6 +19,7 @@ import utils.AppConstants;
 
 import static actions.PerformAction.moveUnit;
 
+import java.util.ArrayList;
 import java.util.logging.Handler;
 
 
@@ -67,11 +68,13 @@ public class TileClicked implements EventProcessor {
 
             {
                 if(gameState.clickMessage.asText().equals("cardclicked") ){//summoning
-                    System.out.println("summon");
-                    
                     summonCard(out,gameState,clickedTile,gameState.player1);
+                    gameState.clickMessage=cardClick;//updating the new click to tile clicked
                 }
-                // highlightAndMove(out, gameState, clickedTile, gameState.player1); // add turns
+                else if(cardClick.asText().equals("tileclicked")){
+                    highlightAndMove(out, gameState, clickedTile, gameState.player1); // add turns
+                }
+                
             }
             else {
                 highlightAndMove(out, gameState, clickedTile, gameState.player2);
@@ -177,16 +180,37 @@ public class TileClicked implements EventProcessor {
             
             player.setMana(player.getMana()-handCard.getManacost());//decrease the mana
             player.setPlayer(out);//reflecting the mana on board
-            OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
+            player.deleteCardInHand(out, player.getID(), gameState);//delete the card in hand
             AppConstants.callSleep(200);
-            player.drawUnitToBoard(out, unitSummon, clicked, handCard, player);//draw unit on board
-            // System.out.println("Draw unit done!");
+            clearTileHighSummon(out, gameState, player);//clear the tile summoning
+            player.drawUnitToBoard(out, unitSummon, clicked, handCard, player, gameState);//draw unit on board
+            AppConstants.callSleep(200);
+            BasicCommands.addPlayer1Notification(out, "Summoning Complete", 2);
         }
         else {//if not enough mana then a notification is given to the player
             BasicCommands.addPlayer1Notification(out, "Not enough Mana", 2);
             OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
         }
     }
+
+
+    /** This method only clears the tile, added as the other method was not clearing the tiles properly
+     * 
+     * @param out
+     * @param gameState
+     * 
+     * @param player
+     * 
+     */
+    public static void clearTileHighSummon( ActorRef out, GameState gameState, Player player){
+		ArrayList<Tile> list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);
+		// iteration through the list and de-highlight adjacent tiles
+		for (Tile items: list) {
+			gameState.board.clearTileHighlighting(out, gameState.board.getAdjacentTilesToAttack(out, items));
+		}
+		gameState.SummonTileList=null;
+		AppConstants.callSleep(200);
+	}
 
 
 }

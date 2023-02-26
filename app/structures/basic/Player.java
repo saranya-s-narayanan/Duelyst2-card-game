@@ -112,6 +112,16 @@ public class Player {
 		}
 		else return player2Units.get(i);
 	}
+
+	//method to get total cards in the deck
+	public int getCardInDeck(){
+		return deck.size();
+	}
+
+	//method to get total cards in hand
+	public int getCardInHand() {
+		return hand.size();
+	}
 	
 	
 	
@@ -202,15 +212,16 @@ public class Player {
 		}
 	}
 
-	//method to get total cards in the deck
-	public int getCardInDeck(){
-		return deck.size();
-	}
+	//these are moved above for bunching up the getters and setters
+	// //method to get total cards in the deck
+	// public int getCardInDeck(){
+	// 	return deck.size();
+	// }
 
-	//method to get total cards in hand
-	public int getCardInHand() {
-		return hand.size();
-	}
+	// //method to get total cards in hand
+	// public int getCardInHand() {
+	// 	return hand.size();
+	// }
 	
 	/** This method sets the hand of the corresponding player object
 	 * @param playerID
@@ -282,12 +293,40 @@ public class Player {
 		
 	}
 
+
+	/** This method deletes the card from the hand position
+	 * @param ActorRef out
+	 * @param playerID
+	 * @param position
+	 */
+	public void deleteCardInHand(ActorRef out, int playerID, GameState gameState) {
+		if(playerID==1){
+			System.out.println("inside Delete card func");
+			System.out.println("position to delete: "+ gameState.handPosClicked);
+			BasicCommands.deleteCard(out, gameState.handPosClicked);
+			AppConstants.callSleep(200);
+			for(int i=gameState.handPosClicked;i<position-1;i++){
+				Card c = getCardByHandPos(i);
+				BasicCommands.drawCard(out, c , i, 0);
+				AppConstants.callSleep(500);
+			}
+			BasicCommands.deleteCard(out, position-1);
+			AppConstants.callSleep(200);
+			gameState.handPosClicked=-1;
+			// // decrement the position
+			position--;
+			System.out.println("delete card finished");
+		}
+		
+	}
+
 	//my understanding of creating units for both player and AI
 	 /** This method creates a list of units
 	 *
      * 
      * @param player
      */
+
 	public void createUnits(Player player){
 		// System.out.println("Inside create units");
 		int j=0;
@@ -405,13 +444,17 @@ public class Player {
 		// }
 
 		// method to draw the unit to the board and set the front end attack and health. Updated to take an id and draw the unit with that Id
-		public void drawUnitToBoard(ActorRef out, Unit unit,Tile tile, Card card, Player player) {
+		public void drawUnitToBoard(ActorRef out, Unit unit,Tile tile, Card card, Player player,GameState gameState) {
 			
 		if ( player.getID() == 1) {
 			for (Unit u : player1Units) {
 
 				if (u.getId() == card.getId() || u.getId() == card.getId() + 10) { // check the two possible card ids
-
+					//added these in order to summon the unit on board rather than in the top left corner
+					tile.setUnitToTile(unit);
+					gameState.board.addUnitToBoard(tile.getTilex(), tile.getTiley(), unit);
+					gameState.summonedUnits.add(unit);
+					unit.setPositionByTile(tile);
 					BasicCommands.drawUnit(out, unit, tile);
 					AppConstants.callSleep(100);
 					BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_summon), tile);
@@ -420,8 +463,6 @@ public class Player {
 					AppConstants.callSleep(100);
 					BasicCommands.setUnitAttack(out, unit, unit.getAttack());
 					AppConstants.callSleep(100);
-					tile.setUnitToTile(unit);
-
 				}
 			}
 		}
@@ -430,6 +471,10 @@ public class Player {
 
 				if (u.getId() == card.getId() || u.getId() == card.getId() + 10) {
 
+					tile.setUnitToTile(unit);
+					gameState.board.addUnitToBoard(tile.getTilex(), tile.getTiley(), unit);
+					gameState.summonedUnits.add(unit);
+					unit.setPositionByTile(tile);
 					BasicCommands.drawUnit(out, unit, tile);
 					AppConstants.callSleep(100);
 					BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_summon), tile);
