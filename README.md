@@ -97,3 +97,11 @@ This is a new Class for now. This is used to create spell objects and play them 
 `playSpell(ActorRef, Card, Tile, BetterUnit)` which creates 4 spell objects, then checks the cardId's to the spell objects Id
 and triggers some fundamental logic required from the spells. As a side not, both this method and `drawUnitToBoard()` checks the cardID and
 also checks the cardId+10 as there are duplicate cards and the second card has an id of the first + 10.
+
+# Summoning on the board
+
+A unit would be summoned if a card is clicked in hand and a subsequent tile is clicked which
+ is highlighted. `summonCard(ActorRef out, GameState gameState, Tile clicked, Player player)`
+ was added in the TileClicked class. the player class was modified to add certain helper 
+ method such as `Unit getUnitbyCard(int i, Player p)` , `deleteCardInHand(ActorRef out, int playerID, GameState gameState)`
+ and `createUnits(Player player)` whose tasks are evident of their names. 
