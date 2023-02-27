@@ -55,7 +55,13 @@ public class PerformAction {
 				// Check whether the unit is a friendly unit or not
 				if(enemyUnit.getIsPlayer()!=player.getID())
 				{
-					if(gameState.board.getAdjacentTilesToAttack(player,out, startTile).contains(enemyTile)) 
+					ArrayList<Tile> tilesList;
+					if(startTile.getUnitFromTile().getMoved()==true)
+						tilesList=gameState.board.getAdjacentTilesToAttack(player,out, startTile);
+					else
+						tilesList=gameState.board.highlightTilesMoveAndAttack(0,player,out, startTile,gameState);
+						
+					if(tilesList.contains(enemyTile)) 
 					{
 						// Not a friendly unit --> attack
 						BasicCommands.playUnitAnimation(out, unit, UnitAnimationType.attack); // unit attacks enemy
@@ -121,25 +127,36 @@ public class PerformAction {
 					    	BasicCommands.playUnitAnimation(out, enemyUnit, UnitAnimationType.attack); // enemy attacks avatar
 						    AppConstants.callSleep(AppConstants.attackSleepTime);
 			
-						    if(unit.getSummonedID()==41) // Should update avatar health
+						    if(unit.getSummonedID()==41) // Should update avatar health of player1
 						    {
 						    	attackVal=gameState.player1.getAvatar().getHealth()-enemyUnit.getAttack();
 						    	gameState.player1.getAvatar().setHealth(attackVal);
+//						    	gameState.player1.setHealth(attackVal);
 						    	
 						    	
 							    // To avoid negative values as health
 							    if(gameState.player1.getAvatar().getHealth()<0)
+							    {
 							    	gameState.player1.getAvatar().setHealth(0);
+//							    	gameState.player1.setHealth(0);
+
+							    }
 						    	
-						    }else if(unit.getSummonedID()==42) // Should update avatar health
+						    }else if(unit.getSummonedID()==42) // Should update avatar health of player2
 						    {
 						    	attackVal=gameState.player2.getAvatar().getHealth()-enemyUnit.getAttack();
 						    	gameState.player2.getAvatar().setHealth(attackVal);
+//						    	gameState.player2.setHealth(attackVal);
+
 						    	
 						    	
 							    // To avoid negative values as health
 							    if(gameState.player2.getAvatar().getHealth()<0)
+							    {
 							    	gameState.player2.getAvatar().setHealth(0);
+//							    	gameState.player2.setHealth(0);
+
+							    }
 						    	
 						    }else {
 						    	attackVal=unit.getHealth()-enemyUnit.getAttack();
