@@ -91,7 +91,7 @@ public class Initalize implements EventProcessor {
 
         //Praharsh's create unit for summoning
         // loading the units for player 1
-        //gameState.player1.createPlayerUnits(out);
+        gameState.player1.createPlayerUnits(out);//changes here for conflict resolution
 
 
         
@@ -129,7 +129,7 @@ public class Initalize implements EventProcessor {
         // gameState.player2.createPlayer2Units(out);
 
         //Praharsh's create unit for summoning
-        //gameState.player2.createPlayerUnits(out);
+        gameState.player2.createPlayerUnits(out);//changes here for conflict resolution
 
         
         // Add Player avatars to summoned Units arraylist

@@ -228,8 +228,8 @@ public class TileClicked implements EventProcessor {
     public static void clearTileHighSummon( ActorRef out, GameState gameState, Player player){
 		ArrayList<Tile> list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);
 		// iteration through the list and de-highlight adjacent tiles
-		for (Tile items: list) {
-			gameState.board.clearTileHighlighting(out, gameState.board.getAdjacentTilesToAttack(out, items));
+		for (Tile items: list) {//changes here for conflict resolution
+			gameState.board.clearTileHighlighting(out, gameState.board.getAdjacentTilesToAttack(player,out, items));
 		}
 		gameState.SummonTileList=null;
 		AppConstants.callSleep(200);

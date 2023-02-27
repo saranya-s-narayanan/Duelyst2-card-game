@@ -99,15 +99,21 @@ public class Player {
 
 	public Unit getUnitbyCard(int i, Player p){
 		Unit unit=null;
-		if(p.getID()==1){
-			Card c=hand.get(i);
-			for (Unit u : player1Units) {
-				if(u.getId()==c.getId())  unit=u;
-				//trying to return the unit for that particular card
-			}
-			return unit;
+		// if(p.getID()==1){//changes here for conflict resolution
+		// 	Card c=hand.get(i);
+		// 	for (Unit u : player1Units) {
+		// 		if(u.getId()==c.getId())  unit=u;
+		// 		//trying to return the unit for that particular card
+		// 	}
+		// 	return unit;
+		// }
+		// else return player2Units.get(i);
+		Card c=hand.get(i);//changes here for conflict resolution
+		for (Unit u : playerUnits) {
+			if(u.getId()==c.getId())  unit=u;
+			//trying to return the unit for that particular card
 		}
-		else return player2Units.get(i);
+		return unit;
 	}
 
 	//method to get total cards in the deck
@@ -338,8 +344,9 @@ public class Player {
 				u.setIsPlayer(player.playerID);
 				u.setHealth(c.getBigCard().getHealth());
 				u.setAttack(c.getBigCard().getAttack());
-				if(player.getID()==1) player1Units.add(u);
-				else player2Units.add(u);
+				playerUnits.add(u);//changes here for conflict resolution
+				// if(player.getID()==1) player1Units.add(u);
+				// else player2Units.add(u);
 				j++;
 			}
 		}
