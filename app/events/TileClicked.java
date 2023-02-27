@@ -199,7 +199,9 @@ public class TileClicked implements EventProcessor {
         // System.out.println("Id of the unit to summoned: "+unitSummon.getId());
         // System.out.println("player mana: "+ player.getMana());
         // System.out.println("mana cost: "+ handCard.getManacost());
-        if(player.getMana()>=handCard.getManacost()){//checking mana cost
+
+        // added the conditions of checking if the tile has a unit on it already and that the summonable tile list contains the clicked tile ontop of checking mana cost
+        if(player.getMana()>=handCard.getManacost() && clicked.getUnitFromTile() == null &&  CardClicked.getSummonableTiles(out, gameState, player).contains(clicked)){
             
             player.setMana(player.getMana()-handCard.getManacost());//decrease the mana
             player.setPlayer(out);//reflecting the mana on board

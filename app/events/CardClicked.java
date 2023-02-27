@@ -58,7 +58,7 @@ public class CardClicked implements EventProcessor {
     }
 
     public void highlightSummonableTiles(ActorRef out, GameState gameState, Player player) {
-        
+
         if(gameState.SummonTileList==null){
 
             // list of the tiles with units
@@ -67,9 +67,26 @@ public class CardClicked implements EventProcessor {
             // iteration through the list and highlight adjacent tiles
             for (Tile items: list) {
                     gameState.SummonTileList=gameState.board.getAdjacentTiles(out, items);
-                    gameState.board.highlightTilesWhite(out, gameState.board.getAdjacentTilesToAttack(player,out, items));
+                    gameState.board.highlightTilesWhite(out, gameState.board.summonableTiles(out, items));
                 }
         }
+    }
+
+    public static ArrayList<Tile> getSummonableTiles(ActorRef out, GameState gameState, Player player) {  // method used to retreives a list of the summonable tiles
+
+        if(gameState.SummonTileList==null){
+
+            // list of the tiles with units
+            ArrayList<Tile> list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);
+
+            // iteration through the list and highlight adjacent tiles
+            for (Tile items: list) {
+                gameState.SummonTileList=gameState.board.summonableTiles(out, items);
+
+            }
+        }
+        return gameState.SummonTileList;
+
     }
 
     /** This method highlights MiniCards in hand
