@@ -45,7 +45,7 @@ public class OtherClicked implements EventProcessor{
 
 	//method to clear the cardClicked functionality
  
-	public void clearCardClicked( ActorRef out, GameState gameState, Player player){
+	public static void clearCardClicked( ActorRef out, GameState gameState, Player player){
 		CardClicked.clearHighlightMiniCard(out, gameState);//clear highlighting of miniCards
 		ArrayList<Tile> list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);
 		// iteration through the list and highlight adjacent tiles

@@ -44,9 +44,9 @@ public class CardClicked implements EventProcessor {
 
                 handPosition = message.get("position").asInt();//get hand position
                 AppConstants.printLog("------> CardClicked:: Game is active !");
-                 //method call to highlight card
-                 highlightMiniCard(out, handPosition, gameState);
-                 //method to highlight tiles on which card can be summoned
+                //method call to highlight card
+                highlightMiniCard(out, handPosition, gameState);
+                //method to highlight tiles on which card can be summoned
                 highlightSummonableTiles(out, gameState, gameState.player1);
 
             }
@@ -72,8 +72,13 @@ public class CardClicked implements EventProcessor {
         }
     }
 
-    //method to heighlight MiniCards
- 
+    /** This method highlights MiniCards in hand
+     * 
+     * @param out
+     * @param position
+     * @param gameState
+     * 
+     */
     public void highlightMiniCard(ActorRef out, int position, GameState gameState) {
  
         if(gameState.handPosClicked<0){//check if its the first click

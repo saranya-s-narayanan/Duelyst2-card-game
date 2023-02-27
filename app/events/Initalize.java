@@ -70,7 +70,7 @@ public class Initalize implements EventProcessor {
         avatar.setIsPlayer(1);
         avatar.setSummonedID(41);
         // creating the player object and passing the avatar object to allow the players health to be set to the avatars.
-        gameState.player1 = new Player(1,out,gameState.avatar,AppConstants.deck1Cards);
+        gameState.player1 = new Player(1,out,gameState.avatar,AppConstants.deck1Cards, AppConstants.p1unit);
         AppConstants.callSleep(200);
         gameState.player1Turn=true;
 		
@@ -79,13 +79,20 @@ public class Initalize implements EventProcessor {
         gameState.player1.createDeck();
         AppConstants.callSleep(200);
         
+        // loading the units for player 1
+        // gameState.player1.createPlayer1Units(out);
+        AppConstants.printLog("------> Initialize :: creating units !");
+        gameState.player1.createUnits(gameState.player1);
+
         //Setting the hand as an ArrayList
         gameState.player1.setHand(out,1);
         AppConstants.callSleep(200);
         // AppConstants.printLog("------> Initialize :: Card draw complete");
 
+        //Praharsh's create unit for summoning
         // loading the units for player 1
-        gameState.player1.createPlayerUnits(out);
+        //gameState.player1.createPlayerUnits(out);
+
 
         
 
@@ -101,7 +108,7 @@ public class Initalize implements EventProcessor {
         aiAvatar.setSummonedID(42);
 
         // creating the player object and passing the avatar object to allow the players health to be set to the avatars.
-        gameState.player2 = new ComputerPlayer(2,out, gameState.aiAvatar,AppConstants.deck2Cards);
+        gameState.player2 = new ComputerPlayer(2,out, gameState.aiAvatar,AppConstants.deck2Cards, AppConstants.p2unit);
         AppConstants.callSleep(200);
 
 
@@ -118,7 +125,12 @@ public class Initalize implements EventProcessor {
         AppConstants.callSleep(200);
 
         // loading the units for player 2
-        gameState.player2.createPlayerUnits(out);
+
+        // gameState.player2.createPlayer2Units(out);
+
+        //Praharsh's create unit for summoning
+        //gameState.player2.createPlayerUnits(out);
+
         
         // Add Player avatars to summoned Units arraylist
         gameState.summonedUnits.add(avatar);

@@ -433,7 +433,7 @@ public class Board {
         for (Tile tile : tiles) {
             BasicCommands.drawTile(out, tile, 0);
         }
-
+        AppConstants.callSleep(50);//added this in order to stop bufferoverflow
     }
 
     public void addUnitToBoard(int x, int y, Unit unit) {

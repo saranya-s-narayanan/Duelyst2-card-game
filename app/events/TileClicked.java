@@ -11,13 +11,16 @@ import akka.actor.ActorRef;
 import commands.BasicCommands;
 
 import structures.GameState;
-
+import structures.basic.Card;
 import structures.basic.Player;
 import structures.basic.Tile;
 import structures.basic.Unit;
 import utils.AppConstants;
 
 import static actions.PerformAction.moveUnit;
+
+import java.util.ArrayList;
+import java.util.logging.Handler;
 
 
 /**
@@ -55,20 +58,23 @@ public class TileClicked implements EventProcessor {
         if (gameState.isGameActive) // if the frontend connection is active
 
         {
-            gameState.clickMessage=message.get("messagetype");//message to keep track of previous click on front-end
-			AppConstants.printLog("------> message type:---->"+gameState.clickMessage);
-            
+            cardClick=message.get("messagetype");//message to keep track of previous click on front-end
+			AppConstants.printLog("------> message type:---->"+cardClick.asText());
             int tilex = message.get("tilex").asInt();
-
             int tiley = message.get("tiley").asInt();
-
             Tile clickedTile = gameState.board.returnTile(tilex, tiley); // clicked tile object
 
             if (gameState.player1Turn == true) // Player 1 clicked the tile
 
             {
-
-                highlightAndMove(out, gameState, clickedTile, gameState.player1); // add turns
+                if(gameState.clickMessage.asText().equals("cardclicked") ){//summoning
+                    summonCard(out,gameState,clickedTile,gameState.player1);
+                    gameState.clickMessage=cardClick;//updating the new click to tile clicked
+                }
+                else if(cardClick.asText().equals("tileclicked")){
+                    highlightAndMove(out, gameState, clickedTile, gameState.player1); // add turns
+                }
+                
             }
             else {
                 highlightAndMove(out, gameState, clickedTile, gameState.player2);
@@ -175,6 +181,59 @@ public class TileClicked implements EventProcessor {
     public static void setStartTile(boolean bool){
         if(bool==false) startTile=null;
     }
+
+
+    /** This method summons the card to the board
+     * 
+     * @param out
+     * @param gameState
+     * @param clciked
+     * @param player
+     * 
+     */
+    public void summonCard(ActorRef out, GameState gameState, Tile clicked, Player player) {
+        // System.out.println("inside summon function");
+        Card handCard = player.getCardByHandPos(gameState.handPosClicked-1);//getting the card by hand position
+        // System.out.println("Card name: "+handCard.getCardname());
+        Unit unitSummon = player.getUnitbyCard(gameState.handPosClicked-1, player);//getting the unit by hand position
+        // System.out.println("Id of the unit to summoned: "+unitSummon.getId());
+        // System.out.println("player mana: "+ player.getMana());
+        // System.out.println("mana cost: "+ handCard.getManacost());
+        if(player.getMana()>=handCard.getManacost()){//checking mana cost
+            
+            player.setMana(player.getMana()-handCard.getManacost());//decrease the mana
+            player.setPlayer(out);//reflecting the mana on board
+            player.deleteCardInHand(out, player.getID(), gameState);//delete the card in hand
+            AppConstants.callSleep(200);
+            clearTileHighSummon(out, gameState, player);//clear the tile summoning
+            player.drawUnitToBoard(out, unitSummon, clicked, handCard, player, gameState);//draw unit on board
+            AppConstants.callSleep(200);
+            BasicCommands.addPlayer1Notification(out, "Summoning Complete", 2);
+        }
+        else {//if not enough mana then a notification is given to the player
+            BasicCommands.addPlayer1Notification(out, "Not enough Mana", 2);
+            OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
+        }
+    }
+
+
+    /** This method only clears the tile, added as the other method was not clearing the tiles properly
+     * 
+     * @param out
+     * @param gameState
+     * 
+     * @param player
+     * 
+     */
+    public static void clearTileHighSummon( ActorRef out, GameState gameState, Player player){
+		ArrayList<Tile> list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);
+		// iteration through the list and de-highlight adjacent tiles
+		for (Tile items: list) {
+			gameState.board.clearTileHighlighting(out, gameState.board.getAdjacentTilesToAttack(out, items));
+		}
+		gameState.SummonTileList=null;
+		AppConstants.callSleep(200);
+	}
 
 
 }
