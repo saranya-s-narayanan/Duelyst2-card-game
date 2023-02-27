@@ -67,7 +67,7 @@ public class CardClicked implements EventProcessor {
             // iteration through the list and highlight adjacent tiles
             for (Tile items: list) {
                     gameState.SummonTileList=gameState.board.getAdjacentTiles(out, items);
-                    gameState.board.highlightTilesWhite(out, gameState.board.getAdjacentTilesToAttack(player,out, items));
+                    gameState.board.highlightTilesWhite(out, gameState.board.summonableTiles(out, items));
                 }
         }
     }
@@ -81,7 +81,7 @@ public class CardClicked implements EventProcessor {
 
             // iteration through the list and highlight adjacent tiles
             for (Tile items: list) {
-                gameState.SummonTileList=gameState.board.getAdjacentTiles(out, items);
+                gameState.SummonTileList=gameState.board.summonableTiles(out, items);
 
             }
         }

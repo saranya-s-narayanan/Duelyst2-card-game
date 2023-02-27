@@ -153,6 +153,60 @@ public class Board {
         return adjacentTiles;
     }
 
+    public ArrayList<Tile> summonableTiles(ActorRef out, Tile tile) { // reteive list of summonable tiles
+
+        // arrayList to store the available tiles
+        ArrayList<Tile> adjacentTiles = new ArrayList<Tile>();
+
+        // tile co-ordinates
+        int x = tile.getTilex();
+        int y = tile.getTiley();
+
+
+        // checking for the top-most tiles
+        if (y > 0) {
+            adjacentTiles.add(returnTile(x, y - 1));
+        }
+
+        // checking for the right-most tiles
+        if (x < AppConstants.boardWidth - 2) {
+            adjacentTiles.add(returnTile(x + 1, y));
+        }
+
+        // checking for the bottom-most tiles
+        if (y < AppConstants.boardHeight - 1) {
+            adjacentTiles.add(returnTile(x, y + 1));
+        }
+
+        // checking for the left-most tiles
+        if (x > 0) {
+            adjacentTiles.add(returnTile(x - 1, y));
+        }
+
+        // top-right
+        if (x < AppConstants.boardWidth - 2 && y > 0) {
+            adjacentTiles.add(returnTile(x + 1, y - 1));
+        }
+
+        // bottom-right
+        if (x < AppConstants.boardWidth - 1 && y < AppConstants.boardHeight - 1) {
+            adjacentTiles.add(returnTile(x + 1, y + 1));
+        }
+
+        // bottom-left
+        if (x > 0 && y < AppConstants.boardHeight - 1) {
+            adjacentTiles.add(returnTile(x - 1, y + 1));
+        }
+
+        // top-left
+        if (x > 0 && y > 0) {
+            adjacentTiles.add(returnTile(x - 1, y - 1));
+        }
+
+        return adjacentTiles;
+    }
+
+
 //    public ArrayList<Tile> highlightTilesOptimized(ActorRef out, Tile tile) {
 //
 //    	 // arrayList to store the available tiles
@@ -470,6 +524,7 @@ public class Board {
         y = 0;
         unit1 = gameState.player2.getPlayerUnits().get(0);
         unit1.setSummonedID(gameState.summonedUnits.size()+1);
+        unit1.setIsPlayer(2); // set to player 2
         addUnitToBoard(x, y, unit1);       
         gameState.summonedUnits.add(unit1); //add unit to arraylist
 
@@ -490,6 +545,7 @@ public class Board {
         y = 4;
         unit1 = gameState.player2.getPlayerUnits().get(1);
         unit1.setSummonedID(gameState.summonedUnits.size()+1);
+        unit1.setIsPlayer(2); // set to player 2
         addUnitToBoard(x, y, unit1);       
         gameState.summonedUnits.add(unit1); //add unit to arraylist
 
