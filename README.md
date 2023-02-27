@@ -30,10 +30,9 @@ An arraylist 'summonedUnits' will be used to keep track of movements and attacks
 A 'PerformAction' class has been introduced to include the methods for the implementation of available
 actions (highlight/move/attack) and perfrom appropriate tasks in order
 	
-	- Added highlightTiles() to highlight or unhighlight the available tiles to move or attack upon clicking
-	on avatar.
-	
-	- Added attackUnit() to implement the avatar attack logic on an enemy unit and handling counter attack
+Added highlightTiles() to highlight or unhighlight the available tiles to move or attack upon clicking on avatar.
+
+Added attackUnit() to implement the avatar attack logic on an enemy unit and handling counter attack
 
 # Get tiles containing units
 
@@ -59,6 +58,12 @@ through the tiles in the same way.
 The `highlightAndMove(ActorRef, GameState, Tile)` method is called in the TileClicked class and is used to first highlight the
 available units moves and then on the second click (if a friendly unit), will execute the movement. If it is an enemy unit, 
 it will just clear the highlighting and the player will be able to click another unit again.
+
+# Move and attack units
+
+The `highlightMoveAndAttack(mode,player,ActorRef, Tile,GameState)` method is called in the TileClicked class and is used to first highlight the
+available units to move along with the attackable units adjacent to it. On the second click of the same unit, will execute the movement or attack or both.
+If it is not the same unit, it will just clear the highlighting and the player will be able to click another unit again.
 
 # Linking players to units
 

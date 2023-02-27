@@ -14,7 +14,7 @@ public class AppConstants {
 	public static boolean isDebugMode=true; // variable to view system logs, set this to false to hide logs from the terminal
 	
 	public static  long gameTaskInterval= 5000; // 5 seconds
-	public static long allowedHeartbeatTimeGap = 10000; //10 seconds
+	public static long allowedHeartbeatTimeGap = 30000; //30 seconds
 	
 	// Board constants
 	public static int boardWidth=9;
@@ -30,6 +30,11 @@ public class AppConstants {
 	// Player constants
 	public static int playerMaxHealth=20;
 
+	//Sleep time constants
+	public static long attackSleepTime=1500;
+	public static long deathSleepTime=2000;
+	public static long effectSleepTime=500;
+	
 	//string array of player 1 deck
 	public static String[] deck1Cards = {
 		StaticConfFiles.c_comodo_charger,
@@ -85,6 +90,13 @@ public class AppConstants {
 		StaticConfFiles.u_hailstone_golem
 	};
 	
+	
+	public static String[] effects = {
+			StaticConfFiles.f1_buff,
+			StaticConfFiles.f1_inmolation,
+			StaticConfFiles.f1_martyrdom,
+			StaticConfFiles.f1_summon
+	};
 	
 	
 	

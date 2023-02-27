@@ -1,7 +1,5 @@
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-
-//This file was used to draft the other tests, please ignore (will delete later) 17/2/23
-
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -11,22 +9,24 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import events.Initalize;
 import play.libs.Json;
 import structures.GameState;
+import utils.AppConstants;
 
-public class InitializationTest2 {
-	
+public class AIInitialHandSize {
+
 	@Test
-	public void checkInitialized2() {
-		
+	public void AIInitialHandSize() {
+
 		GameState gameState = new GameState();
 		Initalize initializeProcessor = new Initalize();
-		
+
 		assertFalse(gameState.gameInitalised);
-		
+
 		ObjectNode eventmessage = Json.newObject();
 		initializeProcessor.processEvent(null, gameState, eventmessage);
-		
-		assertTrue(gameState.gameInitalised);
-		
+
+		// Tests that the initial number of cards in the AI player's hand is 3
+		assertEquals(AppConstants.minCardsInHand, gameState.player2.hand.size());
+
 	}
 
 }

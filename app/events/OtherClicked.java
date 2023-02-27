@@ -50,7 +50,7 @@ public class OtherClicked implements EventProcessor{
 		ArrayList<Tile> list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);
 		// iteration through the list and highlight adjacent tiles
 		for (Tile items: list) {
-			gameState.board.clearTileHighlighting(out, gameState.board.getAdjacentTilesToAttack(out, items));
+			gameState.board.clearTileHighlighting(out, gameState.board.getAdjacentTilesToAttack(player,out, items));
 		}
 		gameState.SummonTileList=null;
 		AppConstants.callSleep(200);

@@ -36,13 +36,15 @@ public class Unit {
 	boolean moved=false; // variable to check whether the unit has already moved or not
 	boolean attacked=false; // variable to check whether the unit has already attacked other units or not
 	
+	int summonedID;
+//	int ownerPlayer;
+	
 	public Unit() {}
 	
 	public Unit(int id, UnitAnimationSet animations, ImageCorrection correction) {
 		super();
 		this.id = id;
-		this.animation = UnitAnimationType.idle;
-		
+		this.animation = UnitAnimationType.idle;	
 		position = new Position(0,0,0,0);
 		this.correction = correction;
 		this.animations = animations;
@@ -154,6 +156,39 @@ public class Unit {
 	public void setAttacked(boolean attacked) {
 		this.attacked = attacked;
 	}
+	
+	/** Method to get the summoned id of a particular unit on the board
+	 * 
+	 * @return
+	 */
+	public int getSummonedID() {
+		return summonedID;
+	}
+	
+	/** Method to set the id for  a particular unit while summoning on the board
+	 * 
+	 * @return
+	 */
+	
+	public void setSummonedID(int summonedID) {
+		this.summonedID = summonedID;
+	}
+	
+	/** Method to get the owner id of a summoned unit 
+	 * 
+	 * @return
+	 */
+//	public int getOwnerPlayerID() {
+//		return ownerPlayer;
+//	}
+	
+	/** Method to assign 
+	 * 
+	 * @return
+	 */
+//	public void setOwnerPlayerID(int ownerPlayer) {
+//		this.ownerPlayer = ownerPlayer;
+//	}
 	
 	// this is a method that can be called to remove a unit from the board. this will be used in another method 'isAlive()' to check if the unit is alive during the game.
 	// this could be achieved by using the basicCommands.deletUnit() directly, however this will allow us to more easily call that function.

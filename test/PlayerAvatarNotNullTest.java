@@ -26,7 +26,7 @@ public class PlayerAvatarNotNullTest {
 		GameState gameState = new GameState();
 		Initalize initializeProcessor = new Initalize();
 
-		assertFalse(gameState.gameInitalised); // check we have not initalized
+		assertFalse(gameState.gameInitalised); // check we have not initialized
 
 		ObjectNode eventmessage = Json.newObject();
 		initializeProcessor.processEvent(null, gameState, eventmessage);

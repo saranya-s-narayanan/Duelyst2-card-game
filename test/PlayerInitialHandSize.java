@@ -1,6 +1,5 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -12,12 +11,10 @@ import play.libs.Json;
 import structures.GameState;
 import utils.AppConstants;
 
-//Previous test commented out - see below for more details. No test in here currently.
-
-public class PlayerInitialPositionTest {
+public class PlayerInitialHandSize {
 
 	@Test
-	public void PlayerInitialPositionTest() {
+	public void PlayerInitialHandSize() {
 
 		GameState gameState = new GameState();
 		Initalize initializeProcessor = new Initalize();
@@ -27,11 +24,8 @@ public class PlayerInitialPositionTest {
 		ObjectNode eventmessage = Json.newObject();
 		initializeProcessor.processEvent(null, gameState, eventmessage);
 
-		// This test is to confirm that the Player's initial x and y positions are 1 and 2 once the game is initialized
-		// assertEquals(1, gameState.player1.getCurrentXpos());
-		// assertEquals(2, gameState.player1.getCurrentYpos());
-				
-		// As of 2/23, the previous test was no longer running because the position is determined in the BetterUnit constructor
+		// Tests that the initial number of cards in the human player's hand is 3
+		assertEquals(AppConstants.minCardsInHand, gameState.player1.hand.size());
 
 	}
 

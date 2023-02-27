@@ -8,8 +8,6 @@ import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;//importing for cards in deck and hand
 import java.util.*;
 
-import java.util.ArrayList;
-
 /**
  * A basic representation of of the Player. A player
  * has health and mana.
@@ -28,9 +26,8 @@ public class Player {
 	
 	boolean highlighted=false;
 
-	List <Unit> player2Units = new ArrayList<Unit>();
+	List <Unit> playerUnits = new ArrayList<Unit>();
 
-	List <Unit> player1Units = new ArrayList<Unit>();
 	String[] cardsFiles; //  of cards 
 	String[] unitFiles;
 	
@@ -294,6 +291,7 @@ public class Player {
 	}
 
 
+
 	/** This method deletes the card from the hand position
 	 * @param ActorRef out
 	 * @param playerID
@@ -443,11 +441,213 @@ public class Player {
 
 		// }
 
+	
+	
+	//method to get units of a player
+		public List<Unit> getPlayerUnits(){
+			return playerUnits;
+		}
+		
+	// Two lists to store the Loaded units and set their health and attack
+	public void createPlayerUnits(ActorRef out) {
+
+		if(playerID==1) // Load Player 1 units
+		{
+
+			playerUnits=new ArrayList<Unit>();
+			
+			Unit comodoCharger = BasicObjectBuilders.loadUnit(StaticConfFiles.u_comodo_charger, 0, Unit.class);
+			comodoCharger.setIsPlayer(1);
+			comodoCharger.setHealth(3);
+			comodoCharger.setAttack(1);
+			playerUnits.add(comodoCharger);
+			Unit pureBladeEnforcer = BasicObjectBuilders.loadUnit(StaticConfFiles.u_pureblade_enforcer, 1, Unit.class);
+			pureBladeEnforcer.setIsPlayer(1);
+			pureBladeEnforcer.setHealth(4);
+			pureBladeEnforcer.setAttack(1);
+			playerUnits.add(pureBladeEnforcer);
+			Unit fireSpitter = BasicObjectBuilders.loadUnit(StaticConfFiles.u_fire_spitter, 2, Unit.class);
+			fireSpitter.setIsPlayer(1);
+			fireSpitter.setHealth(2);
+			fireSpitter.setAttack(3);
+			playerUnits.add(fireSpitter);
+			Unit silverguardKnight = BasicObjectBuilders.loadUnit(StaticConfFiles.u_silverguard_knight, 3, Unit.class);
+			silverguardKnight.setIsPlayer(1);
+			silverguardKnight.setHealth(5);
+			silverguardKnight.setAttack(1);
+			playerUnits.add(silverguardKnight);
+			Unit azureHerald = BasicObjectBuilders.loadUnit(StaticConfFiles.u_azure_herald, 5, Unit.class);
+			azureHerald.setIsPlayer(1);
+			azureHerald.setHealth(4);
+			azureHerald.setAttack(1);
+			playerUnits.add(azureHerald);
+			Unit ironcliffGuardian = BasicObjectBuilders.loadUnit(StaticConfFiles.u_ironcliff_guardian, 6, Unit.class);
+			ironcliffGuardian.setIsPlayer(1);
+			ironcliffGuardian.setHealth(10);
+			ironcliffGuardian.setAttack(3);
+			playerUnits.add(ironcliffGuardian);
+			Unit azuriteLion = BasicObjectBuilders.loadUnit(StaticConfFiles.u_azurite_lion, 7, Unit.class);
+			azuriteLion.setIsPlayer(1);
+			azuriteLion.setHealth(3);
+			azuriteLion.setAttack(2);
+			playerUnits.add(azuriteLion);
+			Unit hailstoneGolem = BasicObjectBuilders.loadUnit(StaticConfFiles.u_hailstone_golem, 9, Unit.class);
+			hailstoneGolem.setIsPlayer(1);
+			hailstoneGolem.setHealth(6);
+			hailstoneGolem.setAttack(4);
+			playerUnits.add(hailstoneGolem);
+			
+		}else { // Load player 2 units
+			
+			playerUnits=new ArrayList<Unit>();
+
+			Unit rockPulveriser = BasicObjectBuilders.loadUnit(StaticConfFiles.u_rock_pulveriser, 20, Unit.class);
+			rockPulveriser.setIsPlayer(2);
+			rockPulveriser.setHealth(4);
+			rockPulveriser.setAttack(1);
+			playerUnits.add(rockPulveriser);
+			Unit bloodshardGolem = BasicObjectBuilders.loadUnit(StaticConfFiles.u_bloodshard_golem, 21, Unit.class);
+			bloodshardGolem.setIsPlayer(2);
+			bloodshardGolem.setHealth(3);
+			bloodshardGolem.setAttack(4);
+			playerUnits.add(bloodshardGolem);
+			Unit blazeHound = BasicObjectBuilders.loadUnit(StaticConfFiles.u_blaze_hound, 23, Unit.class);
+			blazeHound.setIsPlayer(2);
+			blazeHound.setHealth(3);
+			blazeHound.setAttack(4);
+			playerUnits.add(blazeHound);
+			Unit windshrike = BasicObjectBuilders.loadUnit(StaticConfFiles.u_windshrike, 24, Unit.class);
+			windshrike.setIsPlayer(2);
+			windshrike.setHealth(3);
+			windshrike.setAttack(4);
+			playerUnits.add(windshrike);
+			Unit pyromancer = BasicObjectBuilders.loadUnit(StaticConfFiles.u_pyromancer, 25, Unit.class);
+			pyromancer.setIsPlayer(2);
+			pyromancer.setHealth(1);
+			pyromancer.setAttack(2);
+			playerUnits.add(pyromancer);
+			Unit serpenti = BasicObjectBuilders.loadUnit(StaticConfFiles.u_serpenti, 26, Unit.class);
+			serpenti.setIsPlayer(2);
+			serpenti.setHealth(4);
+			serpenti.setAttack(7);
+			playerUnits.add(serpenti);
+			Unit planarScout = BasicObjectBuilders.loadUnit(StaticConfFiles.u_planar_scout, 28, Unit.class);
+			planarScout.setIsPlayer(2);
+			planarScout.setHealth(1);
+			planarScout.setAttack(2);
+			playerUnits.add(planarScout);
+			Unit hailstoneGolemR = BasicObjectBuilders.loadUnit(StaticConfFiles.u_hailstone_golemR, 29, Unit.class);
+			hailstoneGolemR.setIsPlayer(2);
+			hailstoneGolemR.setHealth(6);
+			hailstoneGolemR.setAttack(4);
+			playerUnits.add(hailstoneGolemR);
+		}
+
+	} 
+
+//	<------- Below code has been modified to above method - SS ---------->
+	// Two lists to store the Loaded units and set their health and attack
+//		public List<Unit> createPlayer1Units(ActorRef out) {
+//
+//
+//			Unit comodoCharger = BasicObjectBuilders.loadUnit(StaticConfFiles.u_comodo_charger, 0, Unit.class);
+//			comodoCharger.setIsPlayer(1);
+//			comodoCharger.setHealth(3);
+//			comodoCharger.setAttack(1);
+//			player1Units.add(comodoCharger);
+//			Unit pureBladeEnforcer = BasicObjectBuilders.loadUnit(StaticConfFiles.u_pureblade_enforcer, 1, Unit.class);
+//			pureBladeEnforcer.setIsPlayer(1);
+//			pureBladeEnforcer.setHealth(4);
+//			pureBladeEnforcer.setAttack(1);
+//			player1Units.add(pureBladeEnforcer);
+//			Unit fireSpitter = BasicObjectBuilders.loadUnit(StaticConfFiles.u_fire_spitter, 2, Unit.class);
+//			fireSpitter.setIsPlayer(1);
+//			fireSpitter.setHealth(2);
+//			fireSpitter.setAttack(3);
+//			player1Units.add(fireSpitter);
+//			Unit silverguardKnight = BasicObjectBuilders.loadUnit(StaticConfFiles.u_silverguard_knight, 3, Unit.class);
+//			silverguardKnight.setIsPlayer(1);
+//			silverguardKnight.setHealth(5);
+//			silverguardKnight.setAttack(1);
+//			player1Units.add(silverguardKnight);
+//			Unit azureHerald = BasicObjectBuilders.loadUnit(StaticConfFiles.u_azure_herald, 5, Unit.class);
+//			azureHerald.setIsPlayer(1);
+//			azureHerald.setHealth(4);
+//			azureHerald.setAttack(1);
+//			player1Units.add(azureHerald);
+//			Unit ironcliffGuardian = BasicObjectBuilders.loadUnit(StaticConfFiles.u_ironcliff_guardian, 6, Unit.class);
+//			ironcliffGuardian.setIsPlayer(1);
+//			ironcliffGuardian.setHealth(10);
+//			ironcliffGuardian.setAttack(3);
+//			player1Units.add(ironcliffGuardian);
+//			Unit azuriteLion = BasicObjectBuilders.loadUnit(StaticConfFiles.u_azurite_lion, 7, Unit.class);
+//			azuriteLion.setIsPlayer(1);
+//			azuriteLion.setHealth(3);
+//			azuriteLion.setAttack(2);
+//			player1Units.add(azuriteLion);
+//			Unit hailstoneGolem = BasicObjectBuilders.loadUnit(StaticConfFiles.u_hailstone_golem, 9, Unit.class);
+//			hailstoneGolem.setIsPlayer(1);
+//			hailstoneGolem.setHealth(6);
+//			hailstoneGolem.setAttack(4);
+//			player1Units.add(hailstoneGolem);
+//
+//			return player1Units;
+//		}
+//		public List<Unit> createPlayer2Units(ActorRef out) {
+//
+//
+//
+//			Unit rockPulveriser = BasicObjectBuilders.loadUnit(StaticConfFiles.u_rock_pulveriser, 20, Unit.class);
+//			rockPulveriser.setIsPlayer(2);
+//			rockPulveriser.setHealth(4);
+//			rockPulveriser.setAttack(1);
+//			player2Units.add(rockPulveriser);
+//			Unit bloodshardGolem = BasicObjectBuilders.loadUnit(StaticConfFiles.u_bloodshard_golem, 21, Unit.class);
+//			bloodshardGolem.setIsPlayer(2);
+//			bloodshardGolem.setHealth(3);
+//			bloodshardGolem.setAttack(4);
+//			player2Units.add(bloodshardGolem);
+//			Unit blazeHound = BasicObjectBuilders.loadUnit(StaticConfFiles.u_blaze_hound, 23, Unit.class);
+//			blazeHound.setIsPlayer(2);
+//			blazeHound.setHealth(3);
+//			blazeHound.setAttack(4);
+//			player2Units.add(blazeHound);
+//			Unit windshrike = BasicObjectBuilders.loadUnit(StaticConfFiles.u_windshrike, 24, Unit.class);
+//			windshrike.setIsPlayer(2);
+//			windshrike.setHealth(3);
+//			windshrike.setAttack(4);
+//			player2Units.add(windshrike);
+//			Unit pyromancer = BasicObjectBuilders.loadUnit(StaticConfFiles.u_pyromancer, 25, Unit.class);
+//			pyromancer.setIsPlayer(2);
+//			pyromancer.setHealth(1);
+//			pyromancer.setAttack(2);
+//			player2Units.add(pyromancer);
+//			Unit serpenti = BasicObjectBuilders.loadUnit(StaticConfFiles.u_serpenti, 26, Unit.class);
+//			serpenti.setIsPlayer(2);
+//			serpenti.setHealth(4);
+//			serpenti.setAttack(7);
+//			player2Units.add(serpenti);
+//			Unit planarScout = BasicObjectBuilders.loadUnit(StaticConfFiles.u_planar_scout, 28, Unit.class);
+//			planarScout.setIsPlayer(2);
+//			planarScout.setHealth(1);
+//			planarScout.setAttack(2);
+//			player2Units.add(planarScout);
+//			Unit hailstoneGolemR = BasicObjectBuilders.loadUnit(StaticConfFiles.u_hailstone_golemR, 29, Unit.class);
+//			hailstoneGolemR.setIsPlayer(2);
+//			hailstoneGolemR.setHealth(6);
+//			hailstoneGolemR.setAttack(4);
+//			player2Units.add(hailstoneGolemR);
+//
+//			return player2Units;
+//
+//		}
+
+
 		// method to draw the unit to the board and set the front end attack and health. Updated to take an id and draw the unit with that Id
 		public void drawUnitToBoard(ActorRef out, Unit unit,Tile tile, Card card, Player player,GameState gameState) {
 			
 		if ( player.getID() == 1) {
-			for (Unit u : player1Units) {
+			for (Unit u : playerUnits) {
 
 				if (u.getId() == card.getId() || u.getId() == card.getId() + 10) { // check the two possible card ids
 					//added these in order to summon the unit on board rather than in the top left corner
@@ -467,7 +667,7 @@ public class Player {
 			}
 		}
 		else {
-			for (Unit u : player2Units) {
+			for (Unit u : playerUnits) {
 
 				if (u.getId() == card.getId() || u.getId() == card.getId() + 10) {
 
