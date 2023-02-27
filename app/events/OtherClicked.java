@@ -25,7 +25,8 @@ public class OtherClicked implements EventProcessor{
 
 	@Override
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
-		
+        AppConstants.printLog("------> Otherclicked :: gameState.isGameActive -> "+gameState.isGameActive);
+
 		if(gameState.isGameActive) // if the frontend connection is active
 		{
 			cardClick=message.get("messagetype");//message to keep track of current click on front-end
