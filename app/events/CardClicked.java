@@ -32,6 +32,7 @@ public class CardClicked implements EventProcessor {
 
     @Override
     public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
+        AppConstants.printLog("------> CardClicked:: gameState.isGameActive ->"+gameState.isGameActive);
 
         if (gameState.isGameActive) // if the frontend connection is active
         {

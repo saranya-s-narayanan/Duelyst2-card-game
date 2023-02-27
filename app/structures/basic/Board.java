@@ -259,6 +259,7 @@ public class Board {
      * 		 if mode==1, this function returns the tiles list and updated front end from here itself.
      * 
      * @param mode --> if mode==1, highlighitng | if mode==0, clearhighlighting
+     * 
      * @param player
      * @param out
      * @param tile
@@ -370,7 +371,7 @@ public class Board {
         		
         		newx=x+i;
         		newy=y+j;
-        		AppConstants.printLog("New xy: ["+newx+","+newy+"]");
+//        		AppConstants.printLog("New xy: ["+newx+","+newy+"]");
 
         		if((newx>=0 && newx<AppConstants.boardWidth)&&(newy>=0 && newy<AppConstants.boardHeight))
         		{
@@ -397,10 +398,16 @@ public class Board {
     }
 
     /**
-     * This method will take in a tile and return an ArrayList of the two cardinal and
+     * This method is used only for
+     * 		- Highlight move and attack tiles
+     * 		- attack tiles after moving (not direct attack)
+     * 
+     * This method will take in a tile (from loop) and an actual startTile(where unit is clicked) and return an ArrayList of the two cardinal and
      * one diagonal tiles available for a standard attack in the game
      *
+     * @param player
      * @param out
+     * @param startTile
      * @param tile
      * @return
      */
@@ -423,10 +430,11 @@ public class Board {
         		
         		newx=x+i;
         		newy=y+j;
-        		AppConstants.printLog("New xy: ["+newx+","+newy+"]");
 
         		if((newx>=0 && newx<AppConstants.boardWidth)&&(newy>=0 && newy<AppConstants.boardHeight))
         		{
+            		AppConstants.printLog("New xy: ["+newx+","+newy+"]");
+
         			newTile=returnTile(newx, newy);
 
         			if(newTile!=startTile && newTile!=tile && newTile.getUnitFromTile()!=null) // Check if the attackable tile has any unit present
@@ -449,6 +457,65 @@ public class Board {
         return adjacentTiles;
     }
 
+    /**
+     * This method is used only to
+     * 		- retrieve nearby tiles in attack pattern
+     * 
+     * 
+     * This method will take in a tile (from loop) and return an ArrayList of the tiles
+     * in the attackable pattern.
+     * Even if the tile contains unit on it, it will return that tile
+     *
+     * @param player
+     * @param out
+     * @param startTile
+     * @param tile
+     * @return
+     */
+    
+	public ArrayList<Tile> retrieveAdjacentTilesToAttackPosition(ActorRef out, Tile tile) {
+
+		// arrayList to store the available tiles
+        ArrayList<Tile> adjacentTiles = new ArrayList<Tile>();
+
+        // tile co-ordinates
+        int x = tile.getTilex();
+        int y = tile.getTiley();
+        int newx;
+        int newy;
+        Tile newTile;
+        
+        for(int i=-1;i<2;i++)
+        {
+        	for(int j=-1;j<2;j++)
+        	{
+        		
+        		newx=x+i;
+        		newy=y+j;
+//        		AppConstants.printLog("New xy: ["+newx+","+newy+"]");
+
+        		if((newx>=0 && newx<AppConstants.boardWidth)&&(newy>=0 && newy<AppConstants.boardHeight))
+        		{
+        			newTile=returnTile(newx, newy);
+
+        			if(newTile!=tile) // Check if the attackable tile has any unit present
+        			{
+              			adjacentTiles.add(newTile);
+
+        			}
+
+        		}
+
+        		
+        	}
+        }
+
+
+
+        return adjacentTiles;
+	}
+
+	
     /**
      * method to iterate through the arrayList of adjacent tiles and drawTile() with white highlighting
      *
@@ -583,6 +650,7 @@ public class Board {
 
         return tilesWithUnits;
     }
+
 
 
 

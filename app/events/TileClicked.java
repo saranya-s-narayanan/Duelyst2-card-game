@@ -120,7 +120,6 @@ public class TileClicked implements EventProcessor {
                 {
                 	// Unit not moved or attacked yet
                     AppConstants.printLog("------> UnitClicked :: Unit has NOT moved yet!");
-//                	gameState.board.highlightTilesWhite(out, gameState.board.getAdjacentTiles(out, startTile)); // highlight tiles to move and attack
                 	gameState.board.highlightTilesMoveAndAttack(1,player,out, startTile,gameState); // highlight tiles to move and attack
 
                 }else if(gameState.summonedUnits.get(unitIdx).getAttacked()==false){
@@ -141,7 +140,7 @@ public class TileClicked implements EventProcessor {
             
             AppConstants.callSleep(100);
 
-        } else if (startTile.getUnitFromTile().getIsPlayer() == player.getID()){ // Second click moves the unit to the clicked tile
+        } else if (startTile.getUnitFromTile().getIsPlayer() == player.getID()){ // Second click moves the unit to the clicked tile or attack
 
         	// Get the unit index from the summoned arraylist position
             int unitIdx=PerformAction.getUnitIndexFromSummonedUnitlist(startTile.getUnitFromTile(),gameState.summonedUnits);

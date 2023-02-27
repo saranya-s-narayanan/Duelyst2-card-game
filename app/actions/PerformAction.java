@@ -49,153 +49,61 @@ public class PerformAction {
 		
 		// Retrieve the unit from the corresponding tile position
 		Unit enemyUnit=enemyTile.getUnitFromTile();
+		gameState.startTile=startTile;
 		
 		if(enemyUnit!=null)
 		{	
 				// Check whether the unit is a friendly unit or not
 				if(enemyUnit.getIsPlayer()!=player.getID())
 				{
-					ArrayList<Tile> tilesList;
-					if(startTile.getUnitFromTile().getMoved()==true)
-						tilesList=gameState.board.getAdjacentTilesToAttack(player,out, startTile);
-					else
-						tilesList=gameState.board.highlightTilesMoveAndAttack(0,player,out, startTile,gameState);
-						
+					ArrayList<Tile> tilesList=gameState.board.getAdjacentTilesToAttack(player,out, startTile);
+					
+					// If the enemyTile is in range of the startTile, attack directly
 					if(tilesList.contains(enemyTile)) 
 					{
-						// Not a friendly unit --> attack
-						BasicCommands.playUnitAnimation(out, unit, UnitAnimationType.attack); // unit attacks enemy
-					    AppConstants.callSleep(AppConstants.attackSleepTime);
-					    
-					    int attackVal;
-			
-					    if(enemyUnit.getSummonedID()==41) // Should update player 1 avatar health
-					    {
-					    	attackVal=gameState.player1.getAvatar().getHealth()-unit.getAttack();
-					    	
-					    	gameState.player1.getAvatar().setHealth(attackVal);  // update enemy's health
-							
-						    // To avoid negative values as health
-						    if(gameState.player1.getAvatar().getHealth()<0)
-						    	gameState.player1.getAvatar().setHealth(0);
-					    	
-					    }else  if(enemyUnit.getSummonedID()==42) // Should update player2 avatar health
-					    {
+						return attackDirectly(player,out,unit,startTile,enemyTile,gameState,enemyUnit);
 
-					    	attackVal=gameState.player2.getAvatar().getHealth()-unit.getAttack();
-					    	gameState.player2.getAvatar().setHealth(attackVal);  // update enemy's health
-							
-						    // To avoid negative values as health
-						    if(gameState.player2.getAvatar().getHealth()<0)
-						    	gameState.player2.getAvatar().setHealth(0);
-					    	
-					    }else {
-					    	attackVal=enemyUnit.getHealth()-unit.getAttack();
-					    	enemyUnit.setHealth(attackVal);  // update enemy's health
 						
-						    // To avoid negative values as health
-						    if(enemyUnit.getHealth()<0)
-						    	enemyUnit.setHealth(0);
-					    }
-					    
-						// update front end
-						BasicCommands.setUnitHealth(out, enemyUnit, enemyUnit.getHealth());
-					    AppConstants.callSleep(100);
-					        
-					    BasicCommands.setUnitAttack(out, enemyUnit, enemyUnit.getAttack());
-					    AppConstants.callSleep(100);
-					    
-					    EffectAnimation ef = BasicObjectBuilders.loadEffect(AppConstants.effects[2]);
-					    
-					    if(attackVal<=0) // enemy unit dead, clear tile and update front end
-					    {
-			                gameState.summonedUnits.remove(enemyUnit);
-			
-							BasicCommands.playUnitAnimation(out, enemyUnit, UnitAnimationType.death);
-						    AppConstants.callSleep(AppConstants.deathSleepTime);
-						  
-							BasicCommands.playEffectAnimation(out, ef, enemyTile);
-						    AppConstants.callSleep(AppConstants.effectSleepTime);
-						    enemyTile.setUnitToTile(null);
-							BasicCommands.deleteUnit(out, enemyUnit);
-						    AppConstants.callSleep(3000);
-			
-					    }else { //enemy survived, counter attack
-					    	
-					    	attackVal=-1;
-					    	
-					    	BasicCommands.playUnitAnimation(out, enemyUnit, UnitAnimationType.attack); // enemy attacks avatar
-						    AppConstants.callSleep(AppConstants.attackSleepTime);
-			
-						    if(unit.getSummonedID()==41) // Should update avatar health of player1
-						    {
-						    	attackVal=gameState.player1.getAvatar().getHealth()-enemyUnit.getAttack();
-						    	gameState.player1.getAvatar().setHealth(attackVal);
-//						    	gameState.player1.setHealth(attackVal);
-						    	
-						    	
-							    // To avoid negative values as health
-							    if(gameState.player1.getAvatar().getHealth()<0)
-							    {
-							    	gameState.player1.getAvatar().setHealth(0);
-//							    	gameState.player1.setHealth(0);
-
-							    }
-						    	
-						    }else if(unit.getSummonedID()==42) // Should update avatar health of player2
-						    {
-						    	attackVal=gameState.player2.getAvatar().getHealth()-enemyUnit.getAttack();
-						    	gameState.player2.getAvatar().setHealth(attackVal);
-//						    	gameState.player2.setHealth(attackVal);
-
-						    	
-						    	
-							    // To avoid negative values as health
-							    if(gameState.player2.getAvatar().getHealth()<0)
-							    {
-							    	gameState.player2.getAvatar().setHealth(0);
-//							    	gameState.player2.setHealth(0);
-
-							    }
-						    	
-						    }else {
-						    	attackVal=unit.getHealth()-enemyUnit.getAttack();
-							    unit.setHealth(attackVal); // update unit health
-									
-							    // To avoid negative values as health
-							    if(unit.getHealth()<0)
-							    	unit.setHealth(0);
-						    }
-						    
-					    	// update front end
-							BasicCommands.setUnitHealth(out, unit, unit.getHealth());
-						    AppConstants.callSleep(100);
-						        
-						    BasicCommands.setUnitAttack(out, unit, unit.getAttack());
-						    AppConstants.callSleep(100);
-						    
-						    
-						    if(attackVal<=0) //unit dead 
-						    {
-						    	BasicCommands.playUnitAnimation(out, unit, UnitAnimationType.death);
-							    AppConstants.callSleep(AppConstants.deathSleepTime);
-
-							    BasicCommands.playEffectAnimation(out, ef, startTile);
-							    AppConstants.callSleep(AppConstants.effectSleepTime);
-//							    startTile.setUnitToTile(null);
-								BasicCommands.deleteUnit(out, unit);
-							    AppConstants.callSleep(100);
-							  
-						    }
-					    	
-					    }
-					    return true;
-			    
-				}else {
-					BasicCommands.addPlayer1Notification(out, "Enemy not in range! ", 2);
-					AppConstants.callSleep(100);
+					}else {
+						// Enemytile is not in range for direct attack, have to move and then attack
+						
+						tilesList=gameState.board.highlightTilesMoveAndAttack(0,player,out, startTile,gameState);
+						
+						if(tilesList.contains(enemyTile)) // have to move,then attack
+						{
+							tilesList= new ArrayList<>();
+							tilesList=gameState.board.getAdjacentTiles(out, startTile); // Get the adjacent tiles to just move
+							
+							// Get the attackable tiles of the enemy tile and check whether any of those tiles comes inside the adjacenttiles of the start tile
+							ArrayList<Tile> enemyAdjacentTiles=gameState.board.retrieveAdjacentTilesToAttackPosition(out, enemyTile);
 	
-				}
+			                AppConstants.printLog("------> TileClicked :: PerFormAction :: Move and attack :: enemyAdjacentTiles : " +enemyAdjacentTiles.size() );
+	
+	
+							Tile tileToMove = null;
+							
+							for(int i=0;i<tilesList.size();i++)
+							{
+								tileToMove=tilesList.get(i);
+								
+								// If any vacant tile is in the list of tilesTomove list of startTile, return that tile
+								if(enemyAdjacentTiles.contains(tileToMove) && tileToMove.getUnitFromTile()==null)
+									break;
+							}
+	
+							// Move to the adjacent tile
+							moveUnit(out, startTile, tileToMove, gameState);
+							
+							AppConstants.callSleep(1000); // To allow movement to finish before attacking
+							attackDirectly(player,out,unit,tileToMove,enemyTile,gameState,enemyUnit);
+							
+						}else {
+							
+							BasicCommands.addPlayer1Notification(out, "Enemy not in range! ", 2);
+							AppConstants.callSleep(100);
+						}	
+		
+					}
 			}else {
 				BasicCommands.addPlayer1Notification(out, "Please select an enemy unit to attack! ", 2);
 				AppConstants.callSleep(100);
@@ -206,6 +114,142 @@ public class PerformAction {
 		return false;
 
 		
+
+	}
+	private static boolean attackDirectly(Player player, ActorRef out, Unit unit, Tile startTile, Tile enemyTile,
+			GameState gameState, Unit enemyUnit) {
+
+		// Not a friendly unit --> attack
+		BasicCommands.playUnitAnimation(out, unit, UnitAnimationType.attack); // unit attacks enemy
+	    AppConstants.callSleep(AppConstants.attackSleepTime);
+	    
+	    int attackVal;
+
+	    if(enemyUnit.getSummonedID()==41) // Should update player 1 avatar health
+	    {
+	    	attackVal=gameState.player1.getAvatar().getHealth()-unit.getAttack();
+	    	
+	    	gameState.player1.getAvatar().setHealth(attackVal);  // update enemy's health
+			
+		    // To avoid negative values as health
+		    if(gameState.player1.getAvatar().getHealth()<0)
+		    	gameState.player1.getAvatar().setHealth(0);
+	    	
+	    }else  if(enemyUnit.getSummonedID()==42) // Should update player2 avatar health
+	    {
+
+	    	attackVal=gameState.player2.getAvatar().getHealth()-unit.getAttack();
+	    	gameState.player2.getAvatar().setHealth(attackVal);  // update enemy's health
+			
+		    // To avoid negative values as health
+		    if(gameState.player2.getAvatar().getHealth()<0)
+		    	gameState.player2.getAvatar().setHealth(0);
+	    	
+	    }else {
+	    	attackVal=enemyUnit.getHealth()-unit.getAttack();
+	    	enemyUnit.setHealth(attackVal);  // update enemy's health
+		
+		    // To avoid negative values as health
+		    if(enemyUnit.getHealth()<0)
+		    	enemyUnit.setHealth(0);
+	    }
+	    
+		// update front end
+		BasicCommands.setUnitHealth(out, enemyUnit, enemyUnit.getHealth());
+	    AppConstants.callSleep(100);
+	        
+	    BasicCommands.setUnitAttack(out, enemyUnit, enemyUnit.getAttack());
+	    AppConstants.callSleep(100);
+	    
+	    EffectAnimation ef = BasicObjectBuilders.loadEffect(AppConstants.effects[2]);
+	    
+	    if(attackVal<=0) // enemy unit dead, clear tile and update front end
+	    {
+            gameState.summonedUnits.remove(enemyUnit);
+
+			BasicCommands.playUnitAnimation(out, enemyUnit, UnitAnimationType.death);
+		    AppConstants.callSleep(AppConstants.deathSleepTime);
+		  
+			BasicCommands.playEffectAnimation(out, ef, enemyTile);
+		    AppConstants.callSleep(AppConstants.effectSleepTime);
+		    enemyTile.setUnitToTile(null);
+			BasicCommands.deleteUnit(out, enemyUnit);
+		    AppConstants.callSleep(3000);
+
+	    }else { //enemy survived, counter attack
+	    	
+	    	attackVal=-1;
+	    	
+	    	BasicCommands.playUnitAnimation(out, enemyUnit, UnitAnimationType.attack); // enemy attacks avatar
+		    AppConstants.callSleep(AppConstants.attackSleepTime);
+
+		    if(unit.getSummonedID()==41) // Should update avatar health of player1
+		    {
+
+		    	attackVal=gameState.player1.getAvatar().getHealth()-enemyUnit.getAttack();
+		    	gameState.player1.getAvatar().setHealth(attackVal);
+//		    	gameState.player1.setHealth(attackVal);
+		    	
+		    	
+			    // To avoid negative values as health
+			    if(gameState.player1.getAvatar().getHealth()<0)
+			    {
+			    	gameState.player1.getAvatar().setHealth(0);
+//			    	gameState.player1.setHealth(0);
+
+			    }
+		    	
+		    }else if(unit.getSummonedID()==42) // Should update avatar health of player2
+		    {
+
+		    	attackVal=gameState.player2.getAvatar().getHealth()-enemyUnit.getAttack();
+		    	gameState.player2.getAvatar().setHealth(attackVal);
+//		    	gameState.player2.setHealth(attackVal);
+
+		    	
+		    	
+			    // To avoid negative values as health
+			    if(gameState.player2.getAvatar().getHealth()<0)
+			    {
+			    	gameState.player2.getAvatar().setHealth(0);
+//			    	gameState.player2.setHealth(0);
+
+			    }
+		    	
+		    }else {
+		    	attackVal=unit.getHealth()-enemyUnit.getAttack();
+			    unit.setHealth(attackVal); // update unit health
+					
+			    // To avoid negative values as health
+			    if(unit.getHealth()<0)
+			    	unit.setHealth(0);
+		    }
+		    
+	    	// update front end
+			BasicCommands.setUnitHealth(out, unit, unit.getHealth());
+		    AppConstants.callSleep(100);
+		        
+		    BasicCommands.setUnitAttack(out, unit, unit.getAttack());
+		    AppConstants.callSleep(100);
+		    
+		    
+		    if(attackVal<=0) //unit dead 
+		    {
+	            gameState.summonedUnits.remove(unit);
+
+		    	BasicCommands.playUnitAnimation(out, unit, UnitAnimationType.death);
+			    AppConstants.callSleep(AppConstants.deathSleepTime);
+
+			    BasicCommands.playEffectAnimation(out, ef, startTile);
+			    AppConstants.callSleep(AppConstants.effectSleepTime);
+			    startTile.setUnitToTile(null);
+				BasicCommands.deleteUnit(out, unit);
+			    AppConstants.callSleep(100);
+			  
+		    }
+	    	
+	    }
+	    return true;
 
 	}
 	public static void moveUnit(ActorRef out, Tile startTile, Tile endTile,GameState gameState) {
