@@ -49,6 +49,7 @@ public class PerformAction {
 		
 		// Retrieve the unit from the corresponding tile position
 		Unit enemyUnit=enemyTile.getUnitFromTile();
+		gameState.startTile=startTile;
 		
 		if(enemyUnit!=null)
 		{	
@@ -56,10 +57,10 @@ public class PerformAction {
 				if(enemyUnit.getIsPlayer()!=player.getID())
 				{
 					ArrayList<Tile> tilesList;
-					if(startTile.getUnitFromTile().getMoved()==true)
+//					if(startTile.getUnitFromTile().getMoved()==true)
 						tilesList=gameState.board.getAdjacentTilesToAttack(player,out, startTile);
-					else
-						tilesList=gameState.board.highlightTilesMoveAndAttack(0,player,out, startTile,gameState);
+//					else
+//						tilesList=gameState.board.highlightTilesMoveAndAttack(0,player,out, startTile,gameState);
 						
 					if(tilesList.contains(enemyTile)) 
 					{
@@ -192,8 +193,41 @@ public class PerformAction {
 					    return true;
 			    
 				}else {
-					BasicCommands.addPlayer1Notification(out, "Enemy not in range! ", 2);
-					AppConstants.callSleep(100);
+					
+					tilesList=gameState.board.highlightTilesMoveAndAttack(0,player,out, startTile,gameState);
+					
+					if(tilesList.contains(enemyTile)) // have to move,then attack
+					{
+						tilesList= new ArrayList<>();
+						tilesList=gameState.board.getAdjacentTiles(out, startTile); // Get the adjacent tiles to just move
+						
+						gameState.board.highlightTilesWhite(out, tilesList);
+						// Get the attackable tiles of the enemy tile and check whether any of those tiles comes inside the adjacenttiles of the start tile
+						ArrayList<Tile> enemyAdjacentTiles=gameState.board.retrieveAdjacentTilesToAttackPosition(out, enemyTile);
+
+		                AppConstants.printLog("------> TileClicked :: PerFormAction :: Move and attack :: enemyAdjacentTiles : " +enemyAdjacentTiles.size() );
+
+						gameState.board.highlightTilesRed(out, enemyAdjacentTiles);
+
+						Tile tileToMove = null;
+						
+						for(int i=0;i<enemyAdjacentTiles.size();i++)
+						{
+							tileToMove=enemyAdjacentTiles.get(i);
+							
+							// If any vacant tile is in the list of tilesTomove list of startTile, return that tile
+							if(tilesList.contains(tileToMove) && tileToMove.getUnitFromTile()==null)
+								break;
+						}
+		                AppConstants.printLog("------> TileClicked :: PerFormAction :: Move and attack :: tileToMove : " +tileToMove );
+
+						// Move to the adjacent tile
+						moveUnit(out, startTile, tileToMove, gameState);
+						
+					}else {
+						BasicCommands.addPlayer1Notification(out, "Enemy not in range! ", 2);
+						AppConstants.callSleep(100);
+					}	
 	
 				}
 			}else {
