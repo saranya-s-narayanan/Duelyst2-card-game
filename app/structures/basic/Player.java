@@ -299,27 +299,25 @@ public class Player {
 
 
 	/** This method deletes the card from the hand position
-	 * @param ActorRef out
+	 * @param ActorRef 
 	 * @param playerID
-	 * @param position
+	 * @param GameState 
 	 */
 	public void deleteCardInHand(ActorRef out, int playerID, GameState gameState) {
 		if(playerID==1){
-			System.out.println("inside Delete card func");
-			System.out.println("position to delete: "+ gameState.handPosClicked);
-			BasicCommands.deleteCard(out, gameState.handPosClicked);
+			BasicCommands.deleteCard(out, gameState.handPosClicked);//delete card
 			AppConstants.callSleep(200);
-			for(int i=gameState.handPosClicked;i<position-1;i++){
+			for(int i=gameState.handPosClicked;i<position-1;i++){//redrawing the card to fill in the hand position
 				Card c = getCardByHandPos(i);
 				BasicCommands.drawCard(out, c , i, 0);
-				AppConstants.callSleep(500);
+				AppConstants.callSleep(200);
 			}
-			BasicCommands.deleteCard(out, position-1);
+			BasicCommands.deleteCard(out, position-1);//delete the last card
 			AppConstants.callSleep(200);
-			gameState.handPosClicked=-1;
+			hand.remove(gameState.handPosClicked-1);//removing card from hand position
+			gameState.handPosClicked=-1;//setting the hand postion in gamestate to initial value
 			// // decrement the position
 			position--;
-			System.out.println("delete card finished");
 		}
 		
 	}
@@ -660,6 +658,7 @@ public class Player {
 					//added these in order to summon the unit on board rather than in the top left corner
 					tile.setUnitToTile(unit);
 					gameState.board.addUnitToBoard(tile.getTilex(), tile.getTiley(), unit);
+					unit.setSummonedID(gameState.summonedUnits.size()+1);//unique summonedID
 					gameState.summonedUnits.add(unit);
 					unit.setPositionByTile(tile);
 					BasicCommands.drawUnit(out, unit, tile);
