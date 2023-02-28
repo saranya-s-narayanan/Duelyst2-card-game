@@ -209,11 +209,23 @@ public class TileClicked implements EventProcessor {
             clearTileHighSummon(out, gameState, player);//clear the tile summoning
             player.drawUnitToBoard(out, unitSummon, clicked, handCard, player, gameState);//draw unit on board
             AppConstants.callSleep(200);
+            unitSummon.setMoved(true);//restricting move
+            unitSummon.setAttacked(true);//restricting attack
             BasicCommands.addPlayer1Notification(out, "Summoning Complete", 2);
         }
-        else {//if not enough mana then a notification is given to the player
-            BasicCommands.addPlayer1Notification(out, "Not enough Mana", 2);
-            OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
+        else {//if conditions are not met
+            if(player.getMana()<handCard.getManacost()){//if not enough mana
+                BasicCommands.addPlayer1Notification(out, "Not enough Mana", 2);
+                OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
+            }
+            else if(clicked.getUnitFromTile() != null){//if tile already occupied
+                BasicCommands.addPlayer1Notification(out, "Tile Already occupied", 2);
+                OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
+            }
+            else if(!CardClicked.getSummonableTiles(out, gameState, player).contains(clicked)){//if outside the summon tile list
+                BasicCommands.addPlayer1Notification(out, "Outside Summonable area", 2);
+                OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
+            }
         }
     }
 
@@ -230,7 +242,7 @@ public class TileClicked implements EventProcessor {
 		ArrayList<Tile> list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);
 		// iteration through the list and de-highlight adjacent tiles
 		for (Tile items: list) {//changes here for conflict resolution
-			gameState.board.clearTileHighlighting(out, gameState.board.getAdjacentTilesToAttack(player,out, items));
+			gameState.board.clearTileHighlighting(out, gameState.board.summonableTiles(out, items));
 		}
 		gameState.SummonTileList=null;
 		AppConstants.callSleep(200);
