@@ -658,6 +658,7 @@ public class Player {
 					//added these in order to summon the unit on board rather than in the top left corner
 					tile.setUnitToTile(unit);
 					gameState.board.addUnitToBoard(tile.getTilex(), tile.getTiley(), unit);
+					unit.setSummonedID(gameState.summonedUnits.size()+1);//unique summonedID
 					gameState.summonedUnits.add(unit);
 					unit.setPositionByTile(tile);
 					BasicCommands.drawUnit(out, unit, tile);
