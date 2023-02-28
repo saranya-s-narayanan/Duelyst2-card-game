@@ -209,6 +209,8 @@ public class TileClicked implements EventProcessor {
             clearTileHighSummon(out, gameState, player);//clear the tile summoning
             player.drawUnitToBoard(out, unitSummon, clicked, handCard, player, gameState);//draw unit on board
             AppConstants.callSleep(200);
+            unitSummon.setMoved(true);//restricting move
+            unitSummon.setAttacked(true);//restricting attack
             BasicCommands.addPlayer1Notification(out, "Summoning Complete", 2);
         }
         else {//if conditions are not met
