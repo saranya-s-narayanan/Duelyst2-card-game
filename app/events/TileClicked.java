@@ -211,9 +211,19 @@ public class TileClicked implements EventProcessor {
             AppConstants.callSleep(200);
             BasicCommands.addPlayer1Notification(out, "Summoning Complete", 2);
         }
-        else {//if not enough mana then a notification is given to the player
-            BasicCommands.addPlayer1Notification(out, "Not enough Mana", 2);
-            OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
+        else {//if conditions are not met
+            if(player.getMana()<handCard.getManacost()){//if not enough mana
+                BasicCommands.addPlayer1Notification(out, "Not enough Mana", 2);
+                OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
+            }
+            else if(clicked.getUnitFromTile() != null){//if tile already occupied
+                BasicCommands.addPlayer1Notification(out, "Tile Already occupied", 2);
+                OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
+            }
+            else if(!CardClicked.getSummonableTiles(out, gameState, player).contains(clicked)){//if outside the summon tile list
+                BasicCommands.addPlayer1Notification(out, "Outside Summonable area", 2);
+                OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
+            }
         }
     }
 
