@@ -650,10 +650,22 @@ public class Board {
 
         return tilesWithUnits;
     }
+    
+    // Method similar to getTilesWithUnits but returns all tiles on the board without units
+    public ArrayList<Tile> getTilesWithoutUnits(ActorRef out, Tile[][] tiles) {
 
-
-
-
+        ArrayList<Tile> tilesWithoutUnits = new ArrayList<>();
+       
+        for (int i = 0; i < AppConstants.boardWidth; i++) {
+            for (int j = 0; j < AppConstants.boardHeight; j++) {
+                Tile tile = tiles[i][j];
+                if (tile.getUnitFromTile() == null) {
+                    tilesWithoutUnits.add(tile);
+                }
+            }
+        }
+        return tilesWithoutUnits;
+    }
 }
 
 
