@@ -95,7 +95,7 @@ public class PerformAction {
 							moveUnit(out, startTile, tileToMove, gameState);
 							
 							AppConstants.callSleep(1000); // To allow movement to finish before attacking
-							attackDirectly(player,out,unit,tileToMove,enemyTile,gameState,enemyUnit);
+							return attackDirectly(player,out,unit,tileToMove,enemyTile,gameState,enemyUnit);
 							
 						}else {
 							
