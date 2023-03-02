@@ -526,6 +526,7 @@ public class Board {
         for (Tile tile : tiles) {
             if (tile.getUnitFromTile() == null)  // i added this condition as tiles with units should never be highlighted in white only red
                 BasicCommands.drawTile(out, tile, 1);
+            	AppConstants.callSleep(10);
         }
     }
 
@@ -553,8 +554,9 @@ public class Board {
     public void clearTileHighlighting(ActorRef out, ArrayList<Tile> tiles) {  // method to clear the highlighted tiles changed to git rid of BufferOverflow Exception
         for (Tile tile : tiles) {
             BasicCommands.drawTile(out, tile, 0);
+            AppConstants.callSleep(10);
         }
-        AppConstants.callSleep(50);//added this in order to stop bufferoverflow
+       // AppConstants.callSleep(50);//added this in order to stop bufferoverflow
     }
 
     public void addUnitToBoard(int x, int y, Unit unit) {
@@ -659,6 +661,7 @@ public class Board {
        
         for (int i = 0; i < AppConstants.boardWidth; i++) {
             for (int j = 0; j < AppConstants.boardHeight; j++) {
+            	AppConstants.callSleep(50);
                 Tile tile = tiles[i][j];
                 if (tile.getUnitFromTile() == null) {
                     tilesWithoutUnits.add(tile);
@@ -666,40 +669,6 @@ public class Board {
             }
         }
         return tilesWithoutUnits;
-    }
-    
-    // Testing to see if this way is less overflowy
-    public ArrayList<Tile> allTiles() {
-
-        // arrayList to store the available tiles
-        ArrayList<Tile> allTiles = new ArrayList<Tile>();
-
-        // Iterate through the tiles array using AppConstants to get the board size
-        for (int i = 0; i < AppConstants.boardWidth; i++) {
-            for (int j = 0; j < AppConstants.boardHeight; j++) {
-                // Add the tile to the array list
-                allTiles.add(returnTile(i, j));
-            }
-        }
-        return allTiles;
-    }
-    
-    public void highlightAirdropTiles(ActorRef out) {
-        for (int i = 0; i < AppConstants.boardWidth; i++) {
-            for (int j = 0; j < AppConstants.boardHeight; j++) {
-                if(tiles[i][j].getUnitFromTile()==null) {
-                    BasicCommands.drawTile(out, tiles[i][j], 1);
-                }
-            }
-        }
-    }
-    
-    public void clearAirdropTiles(ActorRef out) {
-        for (int i = 0; i < AppConstants.boardWidth; i++) {
-            for (int j = 0; j < AppConstants.boardHeight; j++) {
-                    BasicCommands.drawTile(out, tiles[i][j], 0);
-            }
-        }
     }
 }
 

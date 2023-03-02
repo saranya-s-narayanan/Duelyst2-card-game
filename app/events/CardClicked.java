@@ -64,14 +64,9 @@ public class CardClicked implements EventProcessor {
         	
         	// This is just to test that getTilesWithoutUnits is working and that it is possible to highlight
         	// all of the tiles on the board without units and summon a unit on any of these tiles 
-        	
-//        	// List of all tiles on the board without units
-        	gameState.SummonTileList = gameState.board.getTilesWithoutUnits(out, gameState.board.getTiles(), player);
-        	gameState.board.highlightAirdropTiles(out);
-        	
-        	// Testing another way to see if either is less overflowy
-        	// gameState.board.highlightTilesWhite(out, gameState.board.allTiles());
 
+        	gameState.SummonTileList = gameState.board.getTilesWithoutUnits(out, gameState.board.getTiles(), player);
+        	gameState.board.highlightTilesWhite(out, gameState.SummonTileList);
 
             // list of the tiles with units
            //  ArrayList<Tile> list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);

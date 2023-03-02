@@ -206,7 +206,8 @@ public class TileClicked implements EventProcessor {
             player.setPlayer(out);//reflecting the mana on board
             player.deleteCardInHand(out, player.getID(), gameState);//delete the card in hand
             AppConstants.callSleep(200);
-            clearTileHighSummon(out, gameState, player);//clear the tile summoning
+            gameState.board.clearTileHighlighting(out, gameState.SummonTileList);
+         // clearTileHighSummon(out, gameState, player);//clear the tile summoning
             player.drawUnitToBoard(out, unitSummon, clicked, handCard, player, gameState);//draw unit on board
             AppConstants.callSleep(200);
             unitSummon.setMoved(true);//restricting move
@@ -238,15 +239,13 @@ public class TileClicked implements EventProcessor {
      * @param player
      * 
      */
-    public static void clearTileHighSummon( ActorRef out, GameState gameState, Player player){
-		ArrayList<Tile> list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);
-		// iteration through the list and de-highlight adjacent tiles
-		for (Tile items: list) {//changes here for conflict resolution
-			gameState.board.clearTileHighlighting(out, gameState.board.summonableTiles(out, items));
-		}
-		gameState.SummonTileList=null;
-		AppConstants.callSleep(200);
-	}
-
-
+//    public static void clearTileHighSummon( ActorRef out, GameState gameState, Player player){
+//		ArrayList<Tile> list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);
+//		// iteration through the list and de-highlight adjacent tiles
+//		for (Tile items: list) {//changes here for conflict resolution
+//			gameState.board.clearTileHighlighting(out, gameState.board.summonableTiles(out, items));
+//		}
+//		gameState.SummonTileList=null;
+//		AppConstants.callSleep(200);
+//	}
 }

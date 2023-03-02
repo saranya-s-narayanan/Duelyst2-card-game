@@ -53,9 +53,10 @@ public class OtherClicked implements EventProcessor{
 //		for (Tile items: list) {
 //			gameState.board.clearTileHighlighting(out, gameState.board.summonableTiles(out, items));  // using summonableTiles() isntead now
 //		}
+		
+		//Airdrop Testing
+		gameState.board.clearTileHighlighting(out, gameState.SummonTileList);
 		gameState.SummonTileList=null;
-		gameState.board.clearAirdropTiles(out);
-		AppConstants.callSleep(200);
 	}
 
 }
