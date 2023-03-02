@@ -200,7 +200,7 @@ public class TileClicked implements EventProcessor {
         // System.out.println("mana cost: "+ handCard.getManacost());
 
         // added the conditions of checking if the tile has a unit on it already and that the summonable tile list contains the clicked tile ontop of checking mana cost
-        if(player.getMana()>=handCard.getManacost() && clicked.getUnitFromTile() == null &&  gameState.SummonTileList.contains(clicked)){
+        if(player.getMana()>=handCard.getManacost() && clicked.getUnitFromTile() == null &&  CardClicked.getSummonableTiles(out, gameState, player).contains(clicked)){
             
             player.setMana(player.getMana()-handCard.getManacost());//decrease the mana
             player.setPlayer(out);//reflecting the mana on board
@@ -223,7 +223,7 @@ public class TileClicked implements EventProcessor {
                 BasicCommands.addPlayer1Notification(out, "Tile Already occupied", 2);
                 OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
             }
-            else if(!gameState.SummonTileList.contains(clicked)){//if outside the summon tile list
+            else if(!CardClicked.getSummonableTiles(out, gameState, player).contains(clicked)){//if outside the summon tile list
                 BasicCommands.addPlayer1Notification(out, "Outside Summonable area", 2);
                 OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
             }

@@ -29,8 +29,9 @@ public class UnitStopped implements EventProcessor{
 		{
 			gameState.clickMessage=message.get("messagetype");//message to keep track of previous click on front-end
 			AppConstants.printLog("------> message type:---->"+gameState.clickMessage);
-			AppConstants.printLog("------> TileClicked :: Game is active ! ");
 			int unitid = message.get("id").asInt();
+			AppConstants.printLog("------> UnitStopped :: unitid : "+unitid);
+
 		}
 		
 	}
