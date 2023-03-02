@@ -136,14 +136,4 @@ public class CardClicked implements EventProcessor {
         BasicCommands.drawCard(out, card1, gameState.handPosClicked, 0);//dehighlight the previous position
         gameState.handPosClicked=-1;//set the gameState hand position to -1
     }
-<<<<<<< HEAD
 }
-=======
- 
-
-
-
-
-
-}
->>>>>>> e8468156a98ee430de0453cc5e3880c51b48f4d1

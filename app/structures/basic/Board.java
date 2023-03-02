@@ -682,8 +682,6 @@ public class Board {
         }
         return tilesWithoutUnits;
     }
-    
-<<<<<<< HEAD
     public ArrayList<Tile> allTiles() {
         ArrayList<Tile> allTiles = new ArrayList<>();
         for (int i = 0; i < AppConstants.boardWidth; i++) {
@@ -692,12 +690,10 @@ public class Board {
             }
         }
         return allTiles;
-=======
-    public void drawTileWithSleep(ActorRef out,Tile tile,int mode,long timee) {
+    }
+
+    public void drawTileWithSleep(ActorRef out,Tile tile,int mode,long time) {
     	BasicCommands.drawTile(out, tile, mode);
-    	AppConstants.callSleep(timee);
->>>>>>> e8468156a98ee430de0453cc5e3880c51b48f4d1
+    	AppConstants.callSleep(time);
     }
 }
-
-
