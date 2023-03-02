@@ -17,6 +17,8 @@ import utils.AppConstants;
 import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
 
+import static structures.basic.UnitAnimationType.idle;
+
 /** This class contains methods used for implementing logic for various actions such as
  * highlight,move,attack and so on.
  * This class can be used for both players
@@ -165,6 +167,7 @@ public class PerformAction {
 	    AppConstants.callSleep(100);
 	    
 	    EffectAnimation ef = BasicObjectBuilders.loadEffect(AppConstants.effects[2]);
+		BasicCommands.playUnitAnimation(out, unit, UnitAnimationType.idle); // resets to idle after attack
 	    
 	    if(attackVal<=0) // enemy unit dead, clear tile and update front end
 	    {
@@ -236,6 +239,8 @@ public class PerformAction {
 		        
 		    BasicCommands.setUnitAttack(out, unit, unit.getAttack());
 		    AppConstants.callSleep(100);
+
+			BasicCommands.playUnitAnimation(out, enemyUnit, UnitAnimationType.idle); // resets to idle after attack
 		    
 		    
 		    if(attackVal<=0) //unit dead 
