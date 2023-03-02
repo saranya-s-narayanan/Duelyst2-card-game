@@ -3,6 +3,7 @@ package actions;
 import java.util.ArrayList;
 
 import akka.actor.ActorRef;
+import com.fasterxml.jackson.databind.introspect.TypeResolutionContext;
 import commands.BasicCommands;
 import events.TileClicked;
 import structures.GameState;
@@ -15,6 +16,8 @@ import structures.basic.UnitAnimationType;
 import utils.AppConstants;
 import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
+
+import static structures.basic.UnitAnimationType.idle;
 
 /** This class contains methods used for implementing logic for various actions such as
  * highlight,move,attack and so on.
@@ -130,6 +133,7 @@ public class PerformAction {
 	    	attackVal=gameState.player1.getAvatar().getHealth()-unit.getAttack();
 	    	
 	    	gameState.player1.getAvatar().setHealth(attackVal);  // update enemy's health
+			enemyUnit.setHealth(attackVal); // update enemy's health front end
 			
 		    // To avoid negative values as health
 		    if(gameState.player1.getAvatar().getHealth()<0)
@@ -140,6 +144,7 @@ public class PerformAction {
 
 	    	attackVal=gameState.player2.getAvatar().getHealth()-unit.getAttack();
 	    	gameState.player2.getAvatar().setHealth(attackVal);  // update enemy's health
+			enemyUnit.setHealth(attackVal); // update enemy's health front end
 			
 		    // To avoid negative values as health
 		    if(gameState.player2.getAvatar().getHealth()<0)
@@ -162,6 +167,7 @@ public class PerformAction {
 	    AppConstants.callSleep(100);
 	    
 	    EffectAnimation ef = BasicObjectBuilders.loadEffect(AppConstants.effects[2]);
+		BasicCommands.playUnitAnimation(out, unit, UnitAnimationType.idle); // resets to idle after attack
 	    
 	    if(attackVal<=0) // enemy unit dead, clear tile and update front end
 	    {
@@ -189,6 +195,7 @@ public class PerformAction {
 		    	attackVal=gameState.player1.getAvatar().getHealth()-enemyUnit.getAttack();
 		    	gameState.player1.getAvatar().setHealth(attackVal);
 //		    	gameState.player1.setHealth(attackVal);
+				unit.setHealth(attackVal); // update enemy's health front end
 		    	
 		    	
 			    // To avoid negative values as health
@@ -205,6 +212,7 @@ public class PerformAction {
 		    	attackVal=gameState.player2.getAvatar().getHealth()-enemyUnit.getAttack();
 		    	gameState.player2.getAvatar().setHealth(attackVal);
 //		    	gameState.player2.setHealth(attackVal);
+				unit.setHealth(attackVal); // update enemy's health front end
 
 		    	
 		    	
@@ -231,6 +239,8 @@ public class PerformAction {
 		        
 		    BasicCommands.setUnitAttack(out, unit, unit.getAttack());
 		    AppConstants.callSleep(100);
+
+			BasicCommands.playUnitAnimation(out, enemyUnit, UnitAnimationType.idle); // resets to idle after attack
 		    
 		    
 		    if(attackVal<=0) //unit dead 
