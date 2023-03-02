@@ -60,4 +60,3 @@ public class OtherClicked implements EventProcessor{
 
 }
 
-

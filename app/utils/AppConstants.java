@@ -34,6 +34,7 @@ public class AppConstants {
 	public static long attackSleepTime=1500;
 	public static long deathSleepTime=2000;
 	public static long effectSleepTime=500;
+	public static long drawTileSleepTime=10;
 	
 	//string array of player 1 deck
 	public static String[] deck1Cards = {

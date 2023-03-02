@@ -6,6 +6,11 @@ This is a backend developed for a tactical card game application in Java
 
 A Board class has been created to accomodate different tile objects and its methods ,which constitutes the board
 
+# Drawing tiles
+
+A method called "drawTileWithSleep(ActorRef out,Tile tile,int mode,long sleepTime)" has been added to control the sleep time
+after updating DrawTile on the front end.
+
 # Player creation
 
 The constructor method has been modified to differentiate both players' attributes and methods

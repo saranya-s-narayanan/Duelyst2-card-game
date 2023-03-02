@@ -47,8 +47,8 @@ public class Board {
                 tiles[i][j] = tile;
 
                 // Draw the tile on the front end
-                BasicCommands.drawTile(out, tile, 0);
-
+//                BasicCommands.drawTile(out, tile, 0);
+                drawTileWithSleep(out, tile, 0, AppConstants.drawTileSleepTime);
 
             }
         }
@@ -317,7 +317,8 @@ public class Board {
 
 	        					if(mode==1)
 	        					{
-	        							BasicCommands.drawTile(out, newTile, 2); // update front end
+//	        							BasicCommands.drawTile(out, newTile, 2); // update front end
+	        			                drawTileWithSleep(out, newTile, 2, AppConstants.drawTileSleepTime);
 	        						
 	        					}
 	        						
@@ -326,7 +327,11 @@ public class Board {
             				adjacentTiles.add(newTile);
 
         					if(mode==1)
-        						BasicCommands.drawTile(out, newTile, 1); // update front end
+        					{
+//        						BasicCommands.drawTile(out, newTile, 1); // update front end
+        						drawTileWithSleep(out, newTile, 1, AppConstants.drawTileSleepTime);
+        					}
+
         				}
     					
         			}
@@ -524,9 +529,12 @@ public class Board {
      */
     public void highlightTilesWhite(ActorRef out, ArrayList<Tile> tiles) {
         for (Tile tile : tiles) {
-            if (tile.getUnitFromTile() == null)  // i added this condition as tiles with units should never be highlighted in white only red
-                BasicCommands.drawTile(out, tile, 1);
-            	AppConstants.callSleep(10);
+            if (tile.getUnitFromTile() == null) {  // i added this condition as tiles with units should never be highlighted in white only red
+//                BasicCommands.drawTile(out, tile, 1);
+                drawTileWithSleep(out, tile, 1, AppConstants.drawTileSleepTime);
+
+            }
+            	
         }
     }
 
@@ -539,7 +547,10 @@ public class Board {
     public void highlightTilesRed(ActorRef out, ArrayList<Tile> tiles) {
 
         for (Tile tile : tiles) {
-            BasicCommands.drawTile(out, tile, 2);
+        	
+//            BasicCommands.drawTile(out, tile, 2);
+            drawTileWithSleep(out, tile, 2, AppConstants.drawTileSleepTime);
+
         }
     }
 
@@ -553,8 +564,9 @@ public class Board {
     // }
     public void clearTileHighlighting(ActorRef out, ArrayList<Tile> tiles) {  // method to clear the highlighted tiles changed to git rid of BufferOverflow Exception
         for (Tile tile : tiles) {
-            BasicCommands.drawTile(out, tile, 0);
-            AppConstants.callSleep(10);
+//            BasicCommands.drawTile(out, tile, 0);
+            drawTileWithSleep(out, tile, 0, AppConstants.drawTileSleepTime);
+
         }
        // AppConstants.callSleep(50);//added this in order to stop bufferoverflow
     }
@@ -671,6 +683,7 @@ public class Board {
         return tilesWithoutUnits;
     }
     
+<<<<<<< HEAD
     public ArrayList<Tile> allTiles() {
         ArrayList<Tile> allTiles = new ArrayList<>();
         for (int i = 0; i < AppConstants.boardWidth; i++) {
@@ -679,6 +692,11 @@ public class Board {
             }
         }
         return allTiles;
+=======
+    public void drawTileWithSleep(ActorRef out,Tile tile,int mode,long timee) {
+    	BasicCommands.drawTile(out, tile, mode);
+    	AppConstants.callSleep(timee);
+>>>>>>> e8468156a98ee430de0453cc5e3880c51b48f4d1
     }
 }
 
