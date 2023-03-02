@@ -66,24 +66,23 @@ public class CardClicked implements EventProcessor {
         	// all of the tiles on the board without units and summon a unit on any of these tiles 
         	
 //        	// List of all tiles on the board without units
-//        	ArrayList<Tile> list = gameState.board.getTilesWithoutUnits(out, gameState.board.getTiles());
-//        	
-//    
-//            	gameState.SummonTileList=list;
-//            	gameState.board.highlightTilesWhite(out, list);
-                
+        	gameState.SummonTileList = gameState.board.getTilesWithoutUnits(out, gameState.board.getTiles(), player);
+        	gameState.board.highlightAirdropTiles(out);
+        	
+        	// Testing another way to see if either is less overflowy
+        	// gameState.board.highlightTilesWhite(out, gameState.board.allTiles());
 
 
             // list of the tiles with units
-             ArrayList<Tile> list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);
+           //  ArrayList<Tile> list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);
 
             // iteration through the list and highlight adjacent tiles
-            for (Tile items: list) {
-            	
-            	
-                    gameState.SummonTileList=gameState.board.getAdjacentTiles(out, items);
-                    gameState.board.highlightTilesWhite(out, gameState.board.summonableTiles(out, items));
-                }
+//            for (Tile items: list) {
+//            	
+//            	
+//                    gameState.SummonTileList=gameState.board.getAdjacentTiles(out, items);
+//                    gameState.board.highlightTilesWhite(out, gameState.board.summonableTiles(out, items));
+//                }
         }
     }
 

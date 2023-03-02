@@ -652,7 +652,8 @@ public class Board {
     }
     
     // Method similar to getTilesWithUnits but returns all tiles on the board without units
-    public ArrayList<Tile> getTilesWithoutUnits(ActorRef out, Tile[][] tiles) {
+    public ArrayList<Tile> getTilesWithoutUnits(ActorRef out, Tile[][] tiles, Player player) {
+    	
 
         ArrayList<Tile> tilesWithoutUnits = new ArrayList<>();
        
@@ -665,6 +666,40 @@ public class Board {
             }
         }
         return tilesWithoutUnits;
+    }
+    
+    // Testing to see if this way is less overflowy
+    public ArrayList<Tile> allTiles() {
+
+        // arrayList to store the available tiles
+        ArrayList<Tile> allTiles = new ArrayList<Tile>();
+
+        // Iterate through the tiles array using AppConstants to get the board size
+        for (int i = 0; i < AppConstants.boardWidth; i++) {
+            for (int j = 0; j < AppConstants.boardHeight; j++) {
+                // Add the tile to the array list
+                allTiles.add(returnTile(i, j));
+            }
+        }
+        return allTiles;
+    }
+    
+    public void highlightAirdropTiles(ActorRef out) {
+        for (int i = 0; i < AppConstants.boardWidth; i++) {
+            for (int j = 0; j < AppConstants.boardHeight; j++) {
+                if(tiles[i][j].getUnitFromTile()==null) {
+                    BasicCommands.drawTile(out, tiles[i][j], 1);
+                }
+            }
+        }
+    }
+    
+    public void clearAirdropTiles(ActorRef out) {
+        for (int i = 0; i < AppConstants.boardWidth; i++) {
+            for (int j = 0; j < AppConstants.boardHeight; j++) {
+                    BasicCommands.drawTile(out, tiles[i][j], 0);
+            }
+        }
     }
 }
 

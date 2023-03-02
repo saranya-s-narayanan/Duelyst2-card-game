@@ -48,12 +48,13 @@ public class OtherClicked implements EventProcessor{
  
 	public static void clearCardClicked( ActorRef out, GameState gameState, Player player){
 		CardClicked.clearHighlightMiniCard(out, gameState);//clear highlighting of miniCards
-		ArrayList<Tile> list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);
-		// iteration through the list and highlight adjacent tiles
-		for (Tile items: list) {
-			gameState.board.clearTileHighlighting(out, gameState.board.summonableTiles(out, items));  // using summonableTiles() isntead now
-		}
+//		ArrayList<Tile> list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);
+//		// iteration through the list and highlight adjacent tiles
+//		for (Tile items: list) {
+//			gameState.board.clearTileHighlighting(out, gameState.board.summonableTiles(out, items));  // using summonableTiles() isntead now
+//		}
 		gameState.SummonTileList=null;
+		gameState.board.clearAirdropTiles(out);
 		AppConstants.callSleep(200);
 	}
 
