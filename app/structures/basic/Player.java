@@ -342,6 +342,7 @@ public class Player {
 				u.setIsPlayer(player.playerID);
 				u.setHealth(c.getBigCard().getHealth());
 				u.setAttack(c.getBigCard().getAttack());
+				u.setName(c.getCardname()); 
 				playerUnits.add(u);//changes here for conflict resolution
 				// if(player.getID()==1) player1Units.add(u);
 				// else player2Units.add(u);
