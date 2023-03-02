@@ -65,19 +65,20 @@ public class CardClicked implements EventProcessor {
         	// This is just to test that getTilesWithoutUnits is working and that it is possible to highlight
         	// all of the tiles on the board without units and summon a unit on any of these tiles 
 
-        	gameState.SummonTileList = gameState.board.getTilesWithoutUnits(out, gameState.board.getTiles(), player);
-        	gameState.board.highlightTilesWhite(out, gameState.SummonTileList);
+        	
+//        	gameState.SummonTileList = gameState.board.getTilesWithoutUnits(out, gameState.board.getTiles(), player);
+//        	gameState.board.highlightTilesWhite(out, gameState.SummonTileList);
 
             // list of the tiles with units
-           //  ArrayList<Tile> list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);
+             ArrayList<Tile> list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);
 
             // iteration through the list and highlight adjacent tiles
-//            for (Tile items: list) {
-//            	
-//            	
-//                    gameState.SummonTileList=gameState.board.getAdjacentTiles(out, items);
-//                    gameState.board.highlightTilesWhite(out, gameState.board.summonableTiles(out, items));
-//                }
+            for (Tile items: list) {
+            	
+            	
+                    gameState.SummonTileList=gameState.board.getAdjacentTiles(out, items);
+                    gameState.board.highlightTilesWhite(out, gameState.board.summonableTiles(out, items));
+                }
         }
     }
 
