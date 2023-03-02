@@ -670,6 +670,16 @@ public class Board {
         }
         return tilesWithoutUnits;
     }
+    
+    public ArrayList<Tile> allTiles() {
+        ArrayList<Tile> allTiles = new ArrayList<>();
+        for (int i = 0; i < AppConstants.boardWidth; i++) {
+            for (int j = 0; j < AppConstants.boardHeight; j++) {
+                allTiles.add(tiles[i][j]);
+            }
+        }
+        return allTiles;
+    }
 }
 
 

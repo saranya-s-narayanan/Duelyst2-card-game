@@ -206,12 +206,14 @@ public class TileClicked implements EventProcessor {
             player.setPlayer(out);//reflecting the mana on board
             player.deleteCardInHand(out, player.getID(), gameState);//delete the card in hand
             AppConstants.callSleep(200);
-            gameState.board.clearTileHighlighting(out, gameState.SummonTileList);
+            gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
+            gameState.SummonTileList=null;
             // clearTileHighSummon(out, gameState, player);//clear the tile summoning
             player.drawUnitToBoard(out, unitSummon, clicked, handCard, player, gameState);//draw unit on board
             AppConstants.callSleep(200);
             unitSummon.setMoved(true);//restricting move
             unitSummon.setAttacked(true);//restricting attack
+            // gameState.SummonTileList=null;
             BasicCommands.addPlayer1Notification(out, "Summoning Complete", 2);
         }
         else {//if conditions are not met
