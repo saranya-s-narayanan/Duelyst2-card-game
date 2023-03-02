@@ -59,17 +59,28 @@ public class CardClicked implements EventProcessor {
     }
 
     public void highlightSummonableTiles(ActorRef out, GameState gameState, Player player) {
+    	
+        if(gameState.SummonTileList==null){ 
 
-        if(gameState.SummonTileList==null){
+        	// Get the card that has just been clicked
+        	Card clickedCard = gameState.player1.getCardByHandPos(gameState.handPosClicked-1);
+            // If the card ID is 6, 16, 28 or 38 (IronCliff Guardian or Planar Scout)
+            if(clickedCard.getId() == 6 || clickedCard.getId() == 16 || clickedCard.getId() == 28 || clickedCard.getId() == 38) {
+            	gameState.SummonTileList = gameState.board.getTilesWithoutUnits(out, gameState.board.getTiles(), player);
+            	gameState.board.highlightTilesWhite(out, gameState.SummonTileList);
+            }
+            else {
+            	// list of the tiles with units
+                ArrayList<Tile> list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);
 
-            // list of the tiles with units
-            ArrayList<Tile> list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);
-
-            // iteration through the list and highlight adjacent tiles
-            for (Tile items: list) {
-                    gameState.SummonTileList=gameState.board.getAdjacentTiles(out, items);
-                    gameState.board.highlightTilesWhite(out, gameState.board.summonableTiles(out, items));
-                }
+               // iteration through the list and highlight adjacent tiles
+               for (Tile items: list) {
+               	
+               	
+                       gameState.SummonTileList=gameState.board.getAdjacentTiles(out, items);
+                       gameState.board.highlightTilesWhite(out, gameState.board.summonableTiles(out, items));
+                   }
+            }
         }
     }
 
@@ -125,10 +136,4 @@ public class CardClicked implements EventProcessor {
         BasicCommands.drawCard(out, card1, gameState.handPosClicked, 0);//dehighlight the previous position
         gameState.handPosClicked=-1;//set the gameState hand position to -1
     }
- 
-
-
-
-
-
 }

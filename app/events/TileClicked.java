@@ -206,11 +206,14 @@ public class TileClicked implements EventProcessor {
             player.setPlayer(out);//reflecting the mana on board
             player.deleteCardInHand(out, player.getID(), gameState);//delete the card in hand
             AppConstants.callSleep(200);
-            clearTileHighSummon(out, gameState, player);//clear the tile summoning
+            gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
+            gameState.SummonTileList=null;
+            // clearTileHighSummon(out, gameState, player);//clear the tile summoning
             player.drawUnitToBoard(out, unitSummon, clicked, handCard, player, gameState);//draw unit on board
             AppConstants.callSleep(200);
             unitSummon.setMoved(true);//restricting move
             unitSummon.setAttacked(true);//restricting attack
+            // gameState.SummonTileList=null;
             BasicCommands.addPlayer1Notification(out, "Summoning Complete", 2);
         }
         else {//if conditions are not met
@@ -238,15 +241,13 @@ public class TileClicked implements EventProcessor {
      * @param player
      * 
      */
-    public static void clearTileHighSummon( ActorRef out, GameState gameState, Player player){
-		ArrayList<Tile> list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);
-		// iteration through the list and de-highlight adjacent tiles
-		for (Tile items: list) {//changes here for conflict resolution
-			gameState.board.clearTileHighlighting(out, gameState.board.summonableTiles(out, items));
-		}
-		gameState.SummonTileList=null;
-		AppConstants.callSleep(200);
-	}
-
-
+//    public static void clearTileHighSummon( ActorRef out, GameState gameState, Player player){
+//		ArrayList<Tile> list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);
+//		// iteration through the list and de-highlight adjacent tiles
+//		for (Tile items: list) {//changes here for conflict resolution
+//			gameState.board.clearTileHighlighting(out, gameState.board.summonableTiles(out, items));
+//		}
+//		gameState.SummonTileList=null;
+//		AppConstants.callSleep(200);
+//	}
 }
