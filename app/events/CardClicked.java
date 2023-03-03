@@ -70,16 +70,18 @@ public class CardClicked implements EventProcessor {
             	gameState.board.highlightTilesWhite(out, gameState.SummonTileList);
             }
             else {
+                gameState.SummonTileList= new ArrayList<Tile>();
             	// list of the tiles with units
                 ArrayList<Tile> list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);
 
-               // iteration through the list and highlight adjacent tiles
-               for (Tile items: list) {
-               	
-               	
-                       gameState.SummonTileList=gameState.board.getAdjacentTiles(out, items);
-                       gameState.board.highlightTilesWhite(out, gameState.board.summonableTiles(out, items));
-                   }
+                // iteration through the list and highlight adjacent tiles
+                for (Tile items: list) {
+                    ArrayList<Tile> listItem=gameState.board.summonableTiles(out, items);
+                    for (Tile tile : listItem) {
+                        gameState.SummonTileList.add(tile);
+                    }
+                }
+                gameState.board.highlightTilesWhite(out, gameState.SummonTileList);
             }
         }
     }
@@ -87,13 +89,16 @@ public class CardClicked implements EventProcessor {
     public static ArrayList<Tile> getSummonableTiles(ActorRef out, GameState gameState, Player player) {  // method used to retreives a list of the summonable tiles
 
         if(gameState.SummonTileList==null){
-
+            gameState.SummonTileList= new ArrayList<Tile>();
             // list of the tiles with units
             ArrayList<Tile> list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);
 
             // iteration through the list and highlight adjacent tiles
             for (Tile items: list) {
-                gameState.SummonTileList=gameState.board.summonableTiles(out, items);
+                ArrayList<Tile> listItem=gameState.board.summonableTiles(out, items);
+                for (Tile tile : listItem) {
+                    gameState.SummonTileList.add(tile);
+                }
 
             }
         }
