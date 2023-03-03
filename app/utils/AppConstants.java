@@ -38,7 +38,6 @@ public class AppConstants {
 	
 	// AI action codes
 	public static String move="move";
-	public static String moveAndAttack="moveAndAttack";
 	public static String attack="attack";
 	public static String drawCard="drawCard";
 

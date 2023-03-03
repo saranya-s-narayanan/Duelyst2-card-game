@@ -643,12 +643,11 @@ public class Board {
         
        
         
-        // Place enemy unit with attack:21 and health:2 at [2,4]
         x = 7;
-        y = 0;
-        unit1 = gameState.player2.getPlayerUnits().get(3);
+        y = 1;
+        unit1 = gameState.player1.getPlayerUnits().get(4);
         unit1.setSummonedID(gameState.summonedUnits.size()+1);
-        unit1.setIsPlayer(2); // set to player 2
+        unit1.setIsPlayer(1); // set to player 2
         addUnitToBoard(x, y, unit1);       
         gameState.summonedUnits.add(unit1); //add unit to arraylist
 
@@ -663,7 +662,25 @@ public class Board {
         AppConstants.callSleep(100);
         AppConstants.printLog("------> addDummyUnitsonBoard :: Placed unit at [2,4]");
         
+        x = 5;
+        y = 4;
+        unit1 = gameState.player1.getPlayerUnits().get(6);
+        unit1.setSummonedID(gameState.summonedUnits.size()+1);
+        unit1.setIsPlayer(1); // set to player 2
+        addUnitToBoard(x, y, unit1);       
+        gameState.summonedUnits.add(unit1); //add unit to arraylist
 
+        unit1.setPositionByTile(tiles[x][y]);
+        BasicCommands.drawUnit(out, unit1, tiles[x][y]);
+        AppConstants.callSleep(100);
+
+        BasicCommands.setUnitHealth(out, unit1, unit1.getHealth());
+        AppConstants.callSleep(100);
+
+        BasicCommands.setUnitAttack(out, unit1, unit1.getAttack());
+        AppConstants.callSleep(100);
+        AppConstants.printLog("------> addDummyUnitsonBoard :: Placed unit at [2,4]");
+        
 
     }
 

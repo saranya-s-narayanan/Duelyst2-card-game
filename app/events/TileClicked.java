@@ -76,16 +76,17 @@ public class TileClicked implements EventProcessor {
             	//Since no highlighting is needed for player 2, no need of performing clearhighlighting
             	if(message.get("action")!=null)
             	{
+            		tilex = message.get("start_tilex").asInt();
+                    tiley = message.get("start_tiley").asInt();
+                    startTile = gameState.board.returnTile(tilex, tiley); // clicked tile object
+                    
+            		// Get the unit index from the summoned arraylist position
+                    int unitIdx=PerformAction.getUnitIndexFromSummonedUnitlist(startTile.getUnitFromTile(),gameState.summonedUnits);
+                    
 	                // Check for the action code and perform step
 	            	if(message.get("action").asText().equalsIgnoreCase(AppConstants.move)) // Movement only
 	            	{
-	            		tilex = message.get("start_tilex").asInt();
-	                    tiley = message.get("start_tiley").asInt();
-	                    startTile = gameState.board.returnTile(tilex, tiley); // clicked tile object
-	                    
-	            		// Get the unit index from the summoned arraylist position
-	                    int unitIdx=PerformAction.getUnitIndexFromSummonedUnitlist(startTile.getUnitFromTile(),gameState.summonedUnits);
-	                    
+	            		             
 	                    // Move unit
 	                    PerformAction.moveUnit(0,out, startTile, clickedTile, gameState); 
 	                    
@@ -96,6 +97,14 @@ public class TileClicked implements EventProcessor {
 	                    AppConstants.callSleep(200);
 	                   
 	
+	            	}else if(message.get("action").asText().equalsIgnoreCase(AppConstants.attack)) // Movement only
+	            	{
+	            		 boolean attackStatus=false;
+	                     
+	                     attackStatus=PerformAction.attackUnit(gameState.player2,out,gameState.summonedUnits.get(unitIdx),startTile,clickedTile, gameState);
+	                     
+	                     if(gameState.summonedUnits.get(unitIdx)!=null && unitIdx<gameState.summonedUnits.size())
+	                     	gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
 	            	}
             	}
             	 startTile=null;

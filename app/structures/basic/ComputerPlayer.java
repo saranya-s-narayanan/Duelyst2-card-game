@@ -41,7 +41,29 @@ public class ComputerPlayer extends Player{
 	public void startAILogic(ActorRef out, GameState gameState) {
 
 		
-		checkMovement(out,gameState);
+//		checkMovement(out,gameState);
+		
+		checkAttack(out,gameState);
+	}
+
+	private void checkAttack(ActorRef out, GameState gameState) {
+		Tile tileToAttack=new Tile(); // The tile to move 
+		
+		//-------------- Logic to identify a tile to move---------
+		
+		
+		// To test direct attack
+//		tileToAttack.tilex=7;
+//		tileToAttack.tiley=1;
+		
+		//To test move and attack
+		tileToAttack.tilex=5;
+		tileToAttack.tiley=4;
+				
+		// If movement is finalized, and move 
+		attackAIUnit(out, gameState, currentTile, tileToAttack);
+		
+		
 	}
 
 	/** This method will check for an optimal movement to perform and updates front end
@@ -90,7 +112,7 @@ public class ComputerPlayer extends Player{
 	 * @param out
 	 * @param gameState
 	 */
-	private void directAttackAIUnit(ActorRef out, GameState gameState,Tile startTile,Tile tileToAttack) {
+	private void attackAIUnit(ActorRef out, GameState gameState,Tile startTile,Tile tileToAttack) {
 		ObjectNode eventMessage = Json.newObject();
 		eventMessage.put("messagetype", "tileclicked");
 		eventMessage.put("start_tilex",""+startTile.getTilex());
@@ -104,24 +126,7 @@ public class ComputerPlayer extends Player{
 
 	}
 
-	/**
-	 * This method will programmatically perform move and attack for a player 2's unit 
-	 * @param out
-	 * @param gameState
-	 */
-	private void moveAndAttackAIUnit(ActorRef out, GameState gameState,Tile startTile,Tile tileToAttack) {
-		ObjectNode eventMessage = Json.newObject();
-		eventMessage.put("messagetype", "tileclicked");
-		eventMessage.put("start_tilex",""+startTile.getTilex());
-		eventMessage.put("start_tiley", ""+startTile.getTiley());
-		eventMessage.put("tilex",""+tileToAttack.getTilex());
-		eventMessage.put("tiley", ""+tileToAttack.getTiley());
-		eventMessage.put("action", AppConstants.moveAndAttack);
-
-		TileClicked tc=new TileClicked();
-		tc.processEvent(out, gameState, eventMessage); // send it to the initalize event processor
-
-	}
+	
 
 	
 	

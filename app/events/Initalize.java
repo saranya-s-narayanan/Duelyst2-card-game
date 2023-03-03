@@ -139,7 +139,7 @@ public class Initalize implements EventProcessor {
         gameState.summonedUnits.add(aiAvatar);
         
         
-//        gameState.board.addDummyUnitsonBoard(out,gameState);
+        gameState.board.addDummyUnitsonBoard(out,gameState);
         
         
         
