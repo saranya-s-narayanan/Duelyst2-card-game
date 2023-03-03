@@ -37,6 +37,7 @@ public class PerformAction {
 	
 	
 	/** This method implements attack function of players
+	 * @param mode 
 	 * @param player 
 	 * @param out 
 	 * @param avatar 
@@ -46,7 +47,7 @@ public class PerformAction {
 	 * @param gameState
 	 * @return 
 	 */
-	public static boolean attackUnit(Player player, ActorRef out, Unit unit, Tile startTile, Tile enemyTile , GameState gameState) {
+	public static boolean attackUnit(int mode, Player player, ActorRef out, Unit unit, Tile startTile, Tile enemyTile , GameState gameState) {
 		// TODO Auto-generated method stub
 		
 		
@@ -105,15 +106,21 @@ public class PerformAction {
 							return attackDirectly(player,out,unit,tileToMove,enemyTile,gameState,enemyUnit);
 							
 						}else {
-							
-							BasicCommands.addPlayer1Notification(out, "Enemy not in range! ", 2);
-							AppConstants.callSleep(100);
+							if(mode==1) 
+							{
+								BasicCommands.addPlayer1Notification(out, "Enemy not in range! ", 2);
+								AppConstants.callSleep(100);
+							}
 						}	
 		
 					}
 			}else {
-				BasicCommands.addPlayer1Notification(out, "Please select an enemy unit to attack! ", 2);
-				AppConstants.callSleep(100);
+				
+				if(mode==1)
+				{
+					BasicCommands.addPlayer1Notification(out, "Please select an enemy unit to attack! ", 2);
+					AppConstants.callSleep(100);
+				}
 
 			}
 

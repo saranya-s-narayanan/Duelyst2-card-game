@@ -101,7 +101,7 @@ public class TileClicked implements EventProcessor {
 	            	{
 	            		 boolean attackStatus=false;
 	                     
-	                     attackStatus=PerformAction.attackUnit(gameState.player2,out,gameState.summonedUnits.get(unitIdx),startTile,clickedTile, gameState);
+	                     attackStatus=PerformAction.attackUnit(0,gameState.player2,out,gameState.summonedUnits.get(unitIdx),startTile,clickedTile, gameState);
 	                     
 	                     if(gameState.summonedUnits.get(unitIdx)!=null && unitIdx<gameState.summonedUnits.size())
 	                     	gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
@@ -192,7 +192,7 @@ public class TileClicked implements EventProcessor {
                 AppConstants.printLog("------> TileClicked :: Attacking unit at tile " + clickedTile.getTilex() + " " + clickedTile.getTiley());
                 boolean attackStatus=false;
                 
-                attackStatus=PerformAction.attackUnit(player,out,gameState.summonedUnits.get(unitIdx),startTile,clickedTile, gameState);
+                attackStatus=PerformAction.attackUnit(1,player,out,gameState.summonedUnits.get(unitIdx),startTile,clickedTile, gameState);
                 
                 if(gameState.summonedUnits.get(unitIdx)!=null && unitIdx<gameState.summonedUnits.size())
                 	gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
