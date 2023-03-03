@@ -40,7 +40,7 @@ public class GameState {
     public Tile startTile=null;
     public boolean startTrue=false;//boolean to know if we need to move or not
     public int handPosClicked=-1;//varibale to hold hand position in gameState
-    public ArrayList<Unit> summonedUnits=new ArrayList<Unit>(); //ArrayList for summoned units on board
+    public ArrayList<Unit> summonedUnits=new ArrayList<Unit>(); //ArrayList for summoned units on board (constains all units of both player1 and 2)
     public ArrayList<Tile> SummonTileList = null;//variable to hold summonable tile list
     public JsonNode clickMessage;//variable to hold the message type
     
