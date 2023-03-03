@@ -361,11 +361,12 @@ public class Player {
 			
 		if ( player.getID() == 1) {
 			for (Unit u : playerUnits) {
-				if (u.getId() == card.getId() || u.getId() == card.getId() + 10) { // check the two possible card ids
+				if (u.getId() == card.getId()) { // check the card ids
 					//added these in order to summon the unit on board rather than in the top left corner
-					tile.setUnitToTile(unit);
-					gameState.board.addUnitToBoard(tile.getTilex(), tile.getTiley(), unit);
+					// tile.setUnitToTile(unit);
 					unit.setSummonedID(gameState.summonedUnits.size()+1);//unique summonedID
+					unit.setIsPlayer(1);
+					gameState.board.addUnitToBoard(tile.getTilex(), tile.getTiley(), unit);
 					gameState.summonedUnits.add(unit);
 					unit.setPositionByTile(tile);
 					BasicCommands.drawUnit(out, unit, tile);
@@ -382,9 +383,10 @@ public class Player {
 		else {
 			for (Unit u : playerUnits) {
 				if (u.getId() == card.getId() || u.getId() == card.getId() + 10) {
-					tile.setUnitToTile(unit);
-					gameState.board.addUnitToBoard(tile.getTilex(), tile.getTiley(), unit);
+					// tile.setUnitToTile(unit);
 					unit.setSummonedID(gameState.summonedUnits.size()+1);//unique summonedID
+					unit.setIsPlayer(2);
+					gameState.board.addUnitToBoard(tile.getTilex(), tile.getTiley(), unit);
 					gameState.summonedUnits.add(unit);
 					unit.setPositionByTile(tile);
 					BasicCommands.drawUnit(out, unit, tile);
