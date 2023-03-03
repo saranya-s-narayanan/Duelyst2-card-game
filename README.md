@@ -115,3 +115,11 @@ A unit would be summoned if a card is clicked in hand and a subsequent tile is c
  was added in the TileClicked class. the player class was modified to add certain helper 
  method such as `Unit getUnitbyCard(int i, Player p)` , `deleteCardInHand(ActorRef out, int playerID, GameState gameState)`
  and `createUnits(Player player)` whose tasks are evident of their names. 
+ 
+# Computer Player
+
+checkMovement method is added to find an optimal movement option for the player 2 avatar units. 'moveAIUnit' method will simulate TileClicked
+event with customized ObjectNode parameters.
+
+
+
