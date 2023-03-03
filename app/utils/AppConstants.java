@@ -36,6 +36,15 @@ public class AppConstants {
 	public static long effectSleepTime=500;
 	public static long drawTileSleepTime=10;
 	
+	// AI action codes
+	public static String move="move";
+	public static String moveAndAttack="moveAndAttack";
+	public static String attack="attack";
+	public static String drawCard="drawCard";
+
+
+
+	
 	//string array of player 1 deck
 	public static String[] deck1Cards = {
 		StaticConfFiles.c_comodo_charger,

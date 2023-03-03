@@ -106,11 +106,13 @@ public class Initalize implements EventProcessor {
         gameState.aiAvatar = new BetterUnit(out, aiAvatar, gameState.board.returnTile(7,2), gameState.board);
         aiAvatar.setIsPlayer(2);
         aiAvatar.setSummonedID(2);
+        
 
         // creating the player object and passing the avatar object to allow the players health to be set to the avatars.
         gameState.player2 = new ComputerPlayer(2,out, gameState.aiAvatar,AppConstants.deck2Cards, AppConstants.p2unit);
         AppConstants.callSleep(200);
 
+        gameState.player2.setCurrentTile(gameState.board.returnTile(7,2));
 
         //print message to the terminal notifying the start of the draw card method
         // AppConstants.printLog("------> Initialize :: creating deck for AI");

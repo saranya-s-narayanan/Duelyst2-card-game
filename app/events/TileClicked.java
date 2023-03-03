@@ -45,12 +45,14 @@ public class TileClicked implements EventProcessor {
 
     public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
 
+		AppConstants.printLog("------> TileClicked : "+message.toPrettyString());
+
+    	// For testing summonedUnits arraylist
     	for(Unit unit: gameState.summonedUnits)
 			AppConstants.printLog("------> Summoned ID :---->"+unit.getSummonedID()+", unitid: "+unit.getId());
 
 
         if (gameState.isGameActive) // if the frontend connection is active
-
         {
             cardClick=message.get("messagetype");//message to keep track of previous click on front-end
 			AppConstants.printLog("------> message type:---->"+cardClick.asText());
@@ -71,7 +73,32 @@ public class TileClicked implements EventProcessor {
                 
             }
             else {
-                highlightAndMove(out, gameState, clickedTile, gameState.player2);
+            	//Since no highlighting is needed for player 2, no need of performing clearhighlighting
+            	if(message.get("action")!=null)
+            	{
+	                // Check for the action code and perform step
+	            	if(message.get("action").asText().equalsIgnoreCase(AppConstants.move)) // Movement only
+	            	{
+	            		tilex = message.get("start_tilex").asInt();
+	                    tiley = message.get("start_tiley").asInt();
+	                    startTile = gameState.board.returnTile(tilex, tiley); // clicked tile object
+	                    
+	            		// Get the unit index from the summoned arraylist position
+	                    int unitIdx=PerformAction.getUnitIndexFromSummonedUnitlist(startTile.getUnitFromTile(),gameState.summonedUnits);
+	                    
+	                    // Move unit
+	                    PerformAction.moveUnit(0,out, startTile, clickedTile, gameState); 
+	                    
+	                    gameState.player2.setCurrentTile(clickedTile); // Update location of avatar
+	                    // Update unit movement status
+	                    gameState.summonedUnits.get(unitIdx).setMoved(true);
+	                    
+	                    AppConstants.callSleep(200);
+	                   
+	
+	            	}
+            	}
+            	 startTile=null;
 
             }
             
@@ -148,7 +175,7 @@ public class TileClicked implements EventProcessor {
             {
                 AppConstants.printLog("------> TileClicked :: Moving unit to tile " + clickedTile.getTilex() + " " + clickedTile.getTiley());
 
-                moveUnit(out, startTile, clickedTile, gameState); // move the unit to the clicked tile
+                moveUnit(1,out, startTile, clickedTile, gameState); // move the unit to the clicked tile
                 gameState.summonedUnits.get(unitIdx).setMoved(true);
                 
             }else if(clickedTile.getUnitFromTile()!=null && gameState.summonedUnits.get(unitIdx).getAttacked()==false){ // Clicked an occupied tile --> attack
@@ -158,7 +185,7 @@ public class TileClicked implements EventProcessor {
                 
                 attackStatus=PerformAction.attackUnit(player,out,gameState.summonedUnits.get(unitIdx),startTile,clickedTile, gameState);
                 
-                if(gameState.summonedUnits.get(unitIdx)!=null)
+                if(gameState.summonedUnits.get(unitIdx)!=null && unitIdx<gameState.summonedUnits.size())
                 	gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
             	
             }

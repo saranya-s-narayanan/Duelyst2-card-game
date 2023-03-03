@@ -95,7 +95,11 @@ public class PerformAction {
 							}
 	
 							// Move to the adjacent tile
-							moveUnit(out, startTile, tileToMove, gameState);
+							if(player.getID()==1)
+								moveUnit(1,out, startTile, tileToMove, gameState); // show player notifications (mode 1)
+							else
+								moveUnit(0,out, startTile, tileToMove, gameState);
+
 							
 							AppConstants.callSleep(1000); // To allow movement to finish before attacking
 							return attackDirectly(player,out,unit,tileToMove,enemyTile,gameState,enemyUnit);
@@ -262,29 +266,47 @@ public class PerformAction {
 	    return true;
 
 	}
-	public static void moveUnit(ActorRef out, Tile startTile, Tile endTile,GameState gameState) {
+	
+	/** Method to move a unit to a tile
+	 * 
+	 * @param mode -0 (when player notifications are needed) & 1 (when player notifications are not needed)
+	 * @param out
+	 * @param startTile
+	 * @param endTile
+	 * @param gameState
+	 */
+	public static void moveUnit(int mode, ActorRef out, Tile startTile, Tile endTile,GameState gameState) {
 
 		Unit unitToMove = startTile.getUnitFromTile();
 
 		// Check if there is a unit on the start tile
 		if(unitToMove == null) {
-			BasicCommands.addPlayer1Notification(out, "No unit on the starting tile", 2);
-			AppConstants.callSleep(200);
+			if(mode==1)
+			{
+				BasicCommands.addPlayer1Notification(out, "No unit on the starting tile", 2);
+				AppConstants.callSleep(200);
+			}
 			return;
 		}
 
 		// Check if the end tile is empty
 		if(endTile.getUnitFromTile() != null) {
-			BasicCommands.addPlayer1Notification(out, "The end tile is already occupied", 2);
-			AppConstants.callSleep(200);
+			if(mode==1)
+			{
+				BasicCommands.addPlayer1Notification(out, "The end tile is already occupied", 2);
+				AppConstants.callSleep(200);
+			}
 			return;
 		}
 
 
 		// Check if the unit can move to the end tile
 		if(!gameState.board.getAdjacentTiles(out, startTile).contains(endTile)) {
-			BasicCommands.addPlayer1Notification(out, "Unit cannot move to the end tile", 2);
-			AppConstants.callSleep(200);
+			if(mode==1)
+			{
+				BasicCommands.addPlayer1Notification(out, "Unit cannot move to the end tile", 2);
+				AppConstants.callSleep(200);
+			}
 			return;
 		}
 

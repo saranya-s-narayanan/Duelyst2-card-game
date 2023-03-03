@@ -90,6 +90,12 @@ public class EndTurnClicked implements EventProcessor{
 		BasicCommands.addPlayer1Notification(out, "Passing Turn Over", 2);
 		gameState.player1.setPlayerMana(out);//updating mana on the front end
 		gameState.player2.setPlayerMana(out);//updating mana on the front end 
+		
+		
+		//<------------ DO AI LOGIC --------------->
+		gameState.player2.startAILogic(out,gameState);
+		
+		
 	}
 
 }
