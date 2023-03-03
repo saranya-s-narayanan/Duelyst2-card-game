@@ -118,8 +118,13 @@ A unit would be summoned if a card is clicked in hand and a subsequent tile is c
  
 # Computer Player
 
-checkMovement method is added to find an optimal movement option for the player 2 avatar units. 'moveAIUnit' method will simulate TileClicked
-event with customized ObjectNode parameters.
+'checkMovement' method is added to find an optimal movement option for the player 2 avatar units. 'moveAIUnit' method will simulate TileClicked
+event with customized ObjectNode parameters for performing movement.
+
+'directAttackAIUnit' method simulate TileClicked event with customized ObjectNode parameters for performing direct attack
+
+'moveAndAttackAIUnit' method simulate TileClicked event with customized Objectnode parameters for performing move and attack
+
 
 
 

@@ -67,15 +67,15 @@ public class ComputerPlayer extends Player{
 	}
 
 	/**
-	 * This method will programmatically move a player 2's unit 
+	 * This method will programmatically perform move for a player 2's unit 
 	 * @param out
 	 * @param gameState
 	 */
 	private void moveAIUnit(ActorRef out, GameState gameState,Tile startTile,Tile tileToMove) {
 		ObjectNode eventMessage = Json.newObject();
 		eventMessage.put("messagetype", "tileclicked");
-		eventMessage.put("start_tilex",""+currentTile.getTilex());
-		eventMessage.put("start_tiley", ""+currentTile.getTiley());
+		eventMessage.put("start_tilex",""+startTile.getTilex());
+		eventMessage.put("start_tiley", ""+startTile.getTiley());
 		eventMessage.put("tilex",""+tileToMove.getTilex());
 		eventMessage.put("tiley", ""+tileToMove.getTiley());
 		eventMessage.put("action", AppConstants.move);
@@ -85,4 +85,44 @@ public class ComputerPlayer extends Player{
 
 	}
 
+	/**
+	 * This method will programmatically perform move for a player 2's unit 
+	 * @param out
+	 * @param gameState
+	 */
+	private void directAttackAIUnit(ActorRef out, GameState gameState,Tile startTile,Tile tileToAttack) {
+		ObjectNode eventMessage = Json.newObject();
+		eventMessage.put("messagetype", "tileclicked");
+		eventMessage.put("start_tilex",""+startTile.getTilex());
+		eventMessage.put("start_tiley", ""+startTile.getTiley());
+		eventMessage.put("tilex",""+tileToAttack.getTilex());
+		eventMessage.put("tiley", ""+tileToAttack.getTiley());
+		eventMessage.put("action", AppConstants.attack);
+
+		TileClicked tc=new TileClicked();
+		tc.processEvent(out, gameState, eventMessage); // send it to the initalize event processor
+
+	}
+
+	/**
+	 * This method will programmatically perform move and attack for a player 2's unit 
+	 * @param out
+	 * @param gameState
+	 */
+	private void moveAndAttackAIUnit(ActorRef out, GameState gameState,Tile startTile,Tile tileToAttack) {
+		ObjectNode eventMessage = Json.newObject();
+		eventMessage.put("messagetype", "tileclicked");
+		eventMessage.put("start_tilex",""+startTile.getTilex());
+		eventMessage.put("start_tiley", ""+startTile.getTiley());
+		eventMessage.put("tilex",""+tileToAttack.getTilex());
+		eventMessage.put("tiley", ""+tileToAttack.getTiley());
+		eventMessage.put("action", AppConstants.moveAndAttack);
+
+		TileClicked tc=new TileClicked();
+		tc.processEvent(out, gameState, eventMessage); // send it to the initalize event processor
+
+	}
+
+	
+	
 }
