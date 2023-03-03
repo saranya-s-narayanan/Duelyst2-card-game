@@ -59,10 +59,10 @@ public class Initalize implements EventProcessor {
 		//************************************// HUMAN PLAYER //******************************************
 		
         
-        
+        AppConstants.printLog("------> Initialize :: initializing player 1 !");
 
         // creating the avatar object
-        Unit avatar = BasicObjectBuilders.loadUnit(StaticConfFiles.humanAvatar, 1, Unit.class);
+        Unit avatar = BasicObjectBuilders.loadUnit(StaticConfFiles.humanAvatar, 40, Unit.class);
 
         // Change by using the returnTile method instead of creating tile objects here
         // placing avatar on board and setting stats
@@ -70,18 +70,18 @@ public class Initalize implements EventProcessor {
         avatar.setIsPlayer(1);
         avatar.setSummonedID(1);
         // creating the player object and passing the avatar object to allow the players health to be set to the avatars.
-        gameState.player1 = new Player(1,out,gameState.avatar,AppConstants.deck1Cards, AppConstants.p1unit);
+        gameState.player1 = new Player(1,out,gameState.avatar, AppConstants.p1unit);
         AppConstants.callSleep(200);
         gameState.player1Turn=true;
 		
         
         //setting the deck as an ArrayList
-        gameState.player1.createDeck();
+        gameState.player1.createDeck(gameState.player1.getID());
         AppConstants.callSleep(200);
         
         // loading the units for player 1
         // gameState.player1.createPlayer1Units(out);
-        AppConstants.printLog("------> Initialize :: creating units !");
+        AppConstants.printLog("------> Initialize :: creating Player 1 units !");
         gameState.player1.createUnits(gameState.player1);
 
         //Setting the hand as an ArrayList
@@ -91,15 +91,15 @@ public class Initalize implements EventProcessor {
 
         //Praharsh's create unit for summoning
         // loading the units for player 1
-        gameState.player1.createPlayerUnits(out);//changes here for conflict resolution
+        // gameState.player1.createPlayerUnits(out);//changes here for conflict resolution
 
 
         
 
         //************************************// COMPUTER PLAYER //******************************************
-		
+		AppConstants.printLog("------> Initialize :: Initializing player 2 !");
 		// creating ai avatar object
-        Unit aiAvatar = BasicObjectBuilders.loadUnit(StaticConfFiles.aiAvatar, 2, Unit.class);
+        Unit aiAvatar = BasicObjectBuilders.loadUnit(StaticConfFiles.aiAvatar, 41, Unit.class);
 
         // Change by using the returnTile method instead of creating tile objects here
         // placing avatar on board and setting stats
@@ -109,7 +109,7 @@ public class Initalize implements EventProcessor {
         
 
         // creating the player object and passing the avatar object to allow the players health to be set to the avatars.
-        gameState.player2 = new ComputerPlayer(2,out, gameState.aiAvatar,AppConstants.deck2Cards, AppConstants.p2unit);
+        gameState.player2 = new ComputerPlayer(2,out, gameState.aiAvatar, AppConstants.p2unit);
         AppConstants.callSleep(200);
 
         gameState.player2.setCurrentTile(gameState.board.returnTile(7,2));
@@ -117,8 +117,13 @@ public class Initalize implements EventProcessor {
         //print message to the terminal notifying the start of the draw card method
         // AppConstants.printLog("------> Initialize :: creating deck for AI");
         //setting the deck as an ArrayList
-        gameState.player2.createDeck();
+        gameState.player2.createDeck(gameState.player2.getID());
         AppConstants.callSleep(200);
+
+        // loading the units for player 2
+        // gameState.player2.createPlayer2Units(out);
+        AppConstants.printLog("------> Initialize :: creating Player 2 units !");
+        gameState.player2.createUnits(gameState.player2);
         // AppConstants.printLog("------> Initialize :: deck created");
         
         // AppConstants.printLog("------> Initialize :: Drawing 3 cards from the deck for AI");
@@ -131,7 +136,7 @@ public class Initalize implements EventProcessor {
         // gameState.player2.createPlayer2Units(out);
 
         //Praharsh's create unit for summoning
-        gameState.player2.createPlayerUnits(out);//changes here for conflict resolution
+        // gameState.player2.createPlayerUnits(out);//changes here for conflict resolution
 
         
         // Add Player avatars to summoned Units arraylist
@@ -143,7 +148,8 @@ public class Initalize implements EventProcessor {
         
         
         
-
+        //give notification to player that initialization is done
+        BasicCommands.addPlayer1Notification(out, "Game Started, Your Turn", 2);
         // User 1 makes a change
         //CommandDemo.executeDemo(out); // this executes the command demo, comment out this when implementing your solution
         //CheckMoveLogic.executeDemo(out);
