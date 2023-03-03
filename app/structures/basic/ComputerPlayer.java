@@ -25,8 +25,8 @@ public class ComputerPlayer extends Player{
      * @param avatar
      * @param deck2Cards
      */
-    public ComputerPlayer(int playerID, ActorRef out, BetterUnit avatar, String[] deck2Cards, String[] unitFiles) {
-        super(playerID, out, avatar, deck2Cards, unitFiles);
+    public ComputerPlayer(int playerID, ActorRef out, BetterUnit avatar, String[] unitFiles) {
+        super(playerID, out, avatar, unitFiles);
        
     }
     
