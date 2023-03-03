@@ -438,13 +438,13 @@ public class Board {
 
         		if((newx>=0 && newx<AppConstants.boardWidth)&&(newy>=0 && newy<AppConstants.boardHeight))
         		{
-            		AppConstants.printLog("New xy: ["+newx+","+newy+"]");
+//            		AppConstants.printLog("New xy: ["+newx+","+newy+"]");
 
         			newTile=returnTile(newx, newy);
 
         			if(newTile!=startTile && newTile!=tile && newTile.getUnitFromTile()!=null) // Check if the attackable tile has any unit present
         			{
-                		AppConstants.printLog("newUnit: "+newTile.getUnitFromTile().getIsPlayer()+", player id: "+player.getID());
+//                		AppConstants.printLog("newUnit: "+newTile.getUnitFromTile().getIsPlayer()+", player id: "+player.getID());
 
         				if(newTile.getUnitFromTile().getIsPlayer()!=player.getID())
             			adjacentTiles.add(newTile);
@@ -640,6 +640,29 @@ public class Board {
         BasicCommands.setUnitAttack(out, unit1, unit1.getAttack());
         AppConstants.callSleep(100);
         AppConstants.printLog("------> addDummyUnitsonBoard :: Placed unit at [2,4]");
+        
+       
+        
+        // Place enemy unit with attack:21 and health:2 at [2,4]
+        x = 7;
+        y = 0;
+        unit1 = gameState.player2.getPlayerUnits().get(3);
+        unit1.setSummonedID(gameState.summonedUnits.size()+1);
+        unit1.setIsPlayer(2); // set to player 2
+        addUnitToBoard(x, y, unit1);       
+        gameState.summonedUnits.add(unit1); //add unit to arraylist
+
+        unit1.setPositionByTile(tiles[x][y]);
+        BasicCommands.drawUnit(out, unit1, tiles[x][y]);
+        AppConstants.callSleep(100);
+
+        BasicCommands.setUnitHealth(out, unit1, unit1.getHealth());
+        AppConstants.callSleep(100);
+
+        BasicCommands.setUnitAttack(out, unit1, unit1.getAttack());
+        AppConstants.callSleep(100);
+        AppConstants.printLog("------> addDummyUnitsonBoard :: Placed unit at [2,4]");
+        
 
 
     }

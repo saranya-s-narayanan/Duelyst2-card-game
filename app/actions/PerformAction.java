@@ -128,7 +128,7 @@ public class PerformAction {
 	    
 	    int attackVal;
 
-	    if(enemyUnit.getSummonedID()==41) // Should update player 1 avatar health
+	    if(enemyUnit.getSummonedID()==1) // Should update player 1 avatar health
 	    {
 	    	attackVal=gameState.player1.getAvatar().getHealth()-unit.getAttack();
 	    	
@@ -139,7 +139,7 @@ public class PerformAction {
 		    if(gameState.player1.getAvatar().getHealth()<0)
 		    	gameState.player1.getAvatar().setHealth(0);
 	    	
-	    }else  if(enemyUnit.getSummonedID()==42) // Should update player2 avatar health
+	    }else  if(enemyUnit.getSummonedID()==2) // Should update player2 avatar health
 	    {
 
 	    	attackVal=gameState.player2.getAvatar().getHealth()-unit.getAttack();
@@ -189,7 +189,7 @@ public class PerformAction {
 	    	BasicCommands.playUnitAnimation(out, enemyUnit, UnitAnimationType.attack); // enemy attacks avatar
 		    AppConstants.callSleep(AppConstants.attackSleepTime);
 
-		    if(unit.getSummonedID()==41) // Should update avatar health of player1
+		    if(unit.getSummonedID()==1) // Should update avatar health of player1
 		    {
 
 		    	attackVal=gameState.player1.getAvatar().getHealth()-enemyUnit.getAttack();
@@ -206,7 +206,7 @@ public class PerformAction {
 
 			    }
 		    	
-		    }else if(unit.getSummonedID()==42) // Should update avatar health of player2
+		    }else if(unit.getSummonedID()==2) // Should update avatar health of player2
 		    {
 
 		    	attackVal=gameState.player2.getAvatar().getHealth()-enemyUnit.getAttack();
@@ -304,7 +304,7 @@ public class PerformAction {
      */
     public static void gameEnd(ActorRef out, GameState gameState) {
         
-    	 AppConstants.printLog("------> gameEnd:: Before- gameState.isGameOver: "+gameState.isGameOver);
+//    	 AppConstants.printLog("------> gameEnd:: Before- gameState.isGameOver: "+gameState.isGameOver);
         if(gameState.isGameActive==true){
 			//check if player 1 health is 0 or not
 			if(gameState.player1.getHealth()<=0 || (gameState.player1.getCardInDeck()==0 && gameState.player1.getCardInHand()==0)){
@@ -330,11 +330,11 @@ public class PerformAction {
     }
 	public static int getUnitIndexFromSummonedUnitlist(Unit selectedUnit, ArrayList<Unit> summonedUnits) {
 		// TODO Auto-generated method stub
-    	AppConstants.printLog("------> getUnitIndexFromSummonedUnitlist:: BB selectedUnit id : "+selectedUnit.getId()+", summonid: "+selectedUnit.getSummonedID());
+//    	AppConstants.printLog("------> getUnitIndexFromSummonedUnitlist:: BB selectedUnit id : "+selectedUnit.getId()+", summonid: "+selectedUnit.getSummonedID());
 
 		for(int i=0;i<summonedUnits.size();i++)
 		{
-	    	AppConstants.printLog("------> getUnitIndexFromSummonedUnitlist:: selectedUnit id : "+summonedUnits.get(i).getId()+", summonid: "+summonedUnits.get(i).getSummonedID());
+//	    	AppConstants.printLog("------> getUnitIndexFromSummonedUnitlist:: selectedUnit id : "+summonedUnits.get(i).getId()+", summonid: "+summonedUnits.get(i).getSummonedID());
 
 			if(summonedUnits.get(i).getSummonedID()==selectedUnit.getSummonedID())
 			{

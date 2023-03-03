@@ -25,21 +25,12 @@ import java.util.logging.Handler;
 
 /**
  * Indicates that the user has clicked an object on the game canvas, in this case a tile.
- * <p>
  * The event returns the x (horizontal) and y (vertical) indices of the tile that was
- * <p>
  * clicked. Tile indices start at 1.
- * <p>
- * <p>
- * <p>
  * {
- * <p>
  * messageType = “tileClicked”
- * <p>
  * tilex = <x index of the tile>
- * <p>
  * tiley = <y index of the tile>
- * <p>
  * }
  *
  * @author Dr. Richard McCreadie
@@ -53,6 +44,9 @@ public class TileClicked implements EventProcessor {
     @Override
 
     public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
+
+    	for(Unit unit: gameState.summonedUnits)
+			AppConstants.printLog("------> Summoned ID :---->"+unit.getSummonedID()+", unitid: "+unit.getId());
 
 
         if (gameState.isGameActive) // if the frontend connection is active
@@ -141,6 +135,7 @@ public class TileClicked implements EventProcessor {
             AppConstants.callSleep(100);
 
         } else if (startTile.getUnitFromTile().getIsPlayer() == player.getID()){ // Second click moves the unit to the clicked tile or attack
+            AppConstants.printLog("------> UnitClicked ::startTile: " + startTile.getTilex() + " " + startTile.getTiley() + " by player 1");
 
         	// Get the unit index from the summoned arraylist position
             int unitIdx=PerformAction.getUnitIndexFromSummonedUnitlist(startTile.getUnitFromTile(),gameState.summonedUnits);
@@ -163,7 +158,8 @@ public class TileClicked implements EventProcessor {
                 
                 attackStatus=PerformAction.attackUnit(player,out,gameState.summonedUnits.get(unitIdx),startTile,clickedTile, gameState);
                 
-                gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
+                if(gameState.summonedUnits.get(unitIdx)!=null)
+                	gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
             	
             }
             
