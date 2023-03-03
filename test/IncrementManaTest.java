@@ -18,10 +18,10 @@ import structures.basic.Board;
 import structures.basic.Player;
 import utils.AppConstants;
 
-public class ManaTest {
+public class IncrementManaTest {
 
 	@Test
-	public void ManaTest() {
+	public void EndTurnTest() {
 
 		CheckMessageIsNotNullOnTell altTell = new CheckMessageIsNotNullOnTell(); // create an alternative tell
 		BasicCommands.altTell = altTell; // specify that the alternative tell should be used
