@@ -1,5 +1,7 @@
 package structures.basic;
 
+import java.util.List;
+
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import akka.actor.ActorRef;
@@ -42,8 +44,18 @@ public class ComputerPlayer extends Player{
 
 		
 //		checkMovement(out,gameState);
+		checkHand();//checking the cards in the hand
 		
 		checkAttack(out,gameState);
+	}
+
+	//method the check the cards in the hand
+	//use map or dict to store these in order to utilize later when deciding which card to summon
+	public void checkHand(){
+		List <Card> cardInHand=super.hand;
+		for (Card card : cardInHand) {
+			System.out.println("card in AI's hand: "+ card.getCardname()+ " with Mana cost: "+ card.getManacost());
+		}
 	}
 
 	private void checkAttack(ActorRef out, GameState gameState) {
