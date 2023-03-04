@@ -52,7 +52,7 @@ public class CardClicked implements EventProcessor {
 
             }
             else {
-                highlightSummonableTiles(out, gameState, gameState.player2);
+                // highlightSummonableTiles(out, gameState, gameState.player2);
             }
         }
 
