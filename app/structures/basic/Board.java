@@ -169,7 +169,7 @@ public class Board {
         }
 
         // checking for the right-most tiles
-        if (x < AppConstants.boardWidth - 2) {
+        if (x < AppConstants.boardWidth - 1) {
             adjacentTiles.add(returnTile(x + 1, y));
         }
 
@@ -184,7 +184,7 @@ public class Board {
         }
 
         // top-right
-        if (x < AppConstants.boardWidth - 2 && y > 0) {
+        if (x < AppConstants.boardWidth - 1 && y > 0) {
             adjacentTiles.add(returnTile(x + 1, y - 1));
         }
 
