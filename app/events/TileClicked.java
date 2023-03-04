@@ -70,6 +70,10 @@ public class TileClicked implements EventProcessor {
                 else if(cardClick.asText().equals("tileclicked")){
                     highlightAndMove(out, gameState, clickedTile, gameState.player1); // add turns
                 }
+                else if(gameState.clickMessage.asText().equals("initalize")){
+                    gameState.clickMessage=cardClick;//updating the new click to tile clicked
+                    highlightAndMove(out, gameState, clickedTile, gameState.player1);
+                }
                 
             }
             else {

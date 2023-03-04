@@ -41,7 +41,6 @@ public class OtherClicked implements EventProcessor{
 			AppConstants.printLog("------> OtherClicked :: Game is active ! ");
 			// gameState.board.clearTileHighlighting(out, gameState.board.getAdjacentTiles(out, gameState.startTile));
 			gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
-			gameState.SummonTileList=null;
 			TileClicked.setStartTile(false) ;//to set the move to false
 		}
 	}
