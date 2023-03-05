@@ -39,7 +39,8 @@ public class AppConstants {
 	// AI action codes
 	public static String move="move";
 	public static String attack="attack";
-	public static String drawCard="drawCard";
+	public static String drawCardSummon="drawCardSummon";
+	public static String drawCardSpell="drawCardSpell";
 
 
 	//string array of player 1 units
