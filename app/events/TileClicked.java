@@ -238,6 +238,20 @@ public class TileClicked implements EventProcessor {
         // added the conditions of checking if the tile has a unit on it already and that the summonable tile list contains the clicked tile ontop of checking mana cost
         if(player.getMana()>=handCard.getManacost() && clicked.getUnitFromTile() == null &&  CardClicked.getSummonableTiles(out, gameState, player).contains(clicked)){
             
+        	// Azure Herald special ability (When this unit is summoned give your avatar +3 health (maximum 20)
+        	if(unitSummon.getId() == 5 || unitSummon.getId() == 15) {
+        		// If +3 increase would make avatar health greater than max health, set avatar health to max health
+        		if(gameState.summonedUnits.get(0).getHealth() + 3 > AppConstants.playerMaxHealth) {
+        			gameState.summonedUnits.get(0).setHealth(AppConstants.playerMaxHealth);
+        			BasicCommands.setUnitHealth(out, gameState.summonedUnits.get(0), gameState.summonedUnits.get(0).getHealth());
+        		}
+        		else {
+        			// Increase avatar health by 3
+        			gameState.summonedUnits.get(0).setHealth(gameState.summonedUnits.get(0).getHealth() + 3);
+            		// Update on front end
+        			BasicCommands.setUnitHealth(out, gameState.summonedUnits.get(0), gameState.summonedUnits.get(0).getHealth());
+        		}
+        	}
             player.setMana(player.getMana()-handCard.getManacost());//decrease the mana
             player.setPlayer(out);//reflecting the mana on board
             player.deleteCardInHand(out, player.getID(), gameState);//delete the card in hand

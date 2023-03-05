@@ -59,11 +59,12 @@ public class Player {
 	}
 	
 	public BetterUnit getAvatar() {
-		return avatar;
+		return this.avatar;
 	}
 	public void setAvatar(BetterUnit avatar) {
 		this.avatar = avatar;
 	}
+	
 	public int getID() {
 		return playerID;
 	}
@@ -140,8 +141,9 @@ public class Player {
 //	}
 
 	// This method syncs up the Player health with the health of their Avatar
-	public void syncHealth() {
-		this.health = this.avatar.getHealth();
+	public void syncHealth(GameState gameState) {
+		//this.health = this.avatar.getHealth();
+		this.health = gameState.summonedUnits.get(0).getHealth();
 	}
 	
 	/** Setting the player health on the front end
