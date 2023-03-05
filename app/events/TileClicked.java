@@ -58,7 +58,6 @@ public class TileClicked implements EventProcessor {
             Tile clickedTile = gameState.board.returnTile(tilex, tiley); // clicked tile object
 
             if (gameState.player1Turn == true) // Player 1 clicked the tile
-
             {
                 if(gameState.clickMessage.asText().equals("cardclicked") ){//summoning
                     summonCard(out,gameState,clickedTile,gameState.player1);
@@ -108,6 +107,23 @@ public class TileClicked implements EventProcessor {
 
 	                     if(gameState.summonedUnits.get(unitIdx)!=null && unitIdx<gameState.summonedUnits.size())
 	                     	gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
+	                     
+	            	}else if(message.get("action").asText().equalsIgnoreCase(AppConstants.drawCardSummon)) // Summon unit
+	            	{
+	            		gameState.handPosClicked=message.get("position").asInt();
+	            		 // Summon the unit
+	                    summonCard(out,gameState,clickedTile,gameState.player2);
+	                    
+//	                    for(Card card:gameState.player2.hand)
+//	            			AppConstants.printLog("<-------- AI :: After summoning :: hand card: "+card.getCardname());
+
+
+	            		
+	            	}else if(message.get("action").asText().equalsIgnoreCase(AppConstants.drawCardSpell)) // Cast spell
+	            	{
+	            		 // Do logic / call method
+	            		
+	            		
 	            	}
             	}
             	 startTile=null;
@@ -260,7 +276,7 @@ public class TileClicked implements EventProcessor {
         // System.out.println("mana cost: "+ handCard.getManacost());
 
         // added the conditions of checking if the tile has a unit on it already and that the summonable tile list contains the clicked tile ontop of checking mana cost
-        if(player.getMana()>=handCard.getManacost() && clicked.getUnitFromTile() == null &&  CardClicked.getSummonableTiles(out, gameState, player).contains(clicked)){
+        if(player.getMana()>=handCard.getManacost() && clicked.getUnitFromTile() == null &&  PerformAction.getSummonableTiles(out, gameState, player).contains(clicked)){
 
             player.setMana(player.getMana()-handCard.getManacost());//decrease the mana
             player.setPlayer(out);//reflecting the mana on board
@@ -274,20 +290,31 @@ public class TileClicked implements EventProcessor {
             unitSummon.setMoved(true);//restricting move
             unitSummon.setAttacked(true);//restricting attack
             // gameState.SummonTileList=null;
+            
+            if(player.getID()==1)//Notifications active for only player1
             BasicCommands.addPlayer1Notification(out, "Summoning Complete", 2);
         }
         else {//if conditions are not met
             if(player.getMana()<handCard.getManacost()){//if not enough mana
-                BasicCommands.addPlayer1Notification(out, "Not enough Mana", 2);
-                OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
+                if(player.getID()==1)//Notifications active for only player1
+                {
+                	BasicCommands.addPlayer1Notification(out, "Not enough Mana", 2);
+                	OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
+                }
             }
             else if(clicked.getUnitFromTile() != null){//if tile already occupied
-                BasicCommands.addPlayer1Notification(out, "Tile Already occupied", 2);
-                OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
+            	if(player.getID()==1)//Notifications active for only player1
+                {
+            		BasicCommands.addPlayer1Notification(out, "Tile Already occupied", 2);
+            		OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
+                }
             }
-            else if(!CardClicked.getSummonableTiles(out, gameState, player).contains(clicked)){//if outside the summon tile list
-                BasicCommands.addPlayer1Notification(out, "Outside Summonable area", 2);
-                OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
+            else if(!PerformAction.getSummonableTiles(out, gameState, player).contains(clicked)){//if outside the summon tile list
+            	if(player.getID()==1)//Notifications active for only player1
+                {
+            		BasicCommands.addPlayer1Notification(out, "Outside Summonable area", 2);
+            		OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
+                }
             }
         }
     }
