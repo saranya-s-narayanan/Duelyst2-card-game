@@ -41,3 +41,15 @@ This test confirms that the initial number of cards in the AI player's hand (`ga
 # PlayerInitialHandSize
 
 This test confirms that the initial number of cards in the human player's hand (`gameState.player1.hand.size()`) is 3 (`AppConstants.minCardsInHand`). 
+
+# Player1TurnTest
+
+This test confirms that it is player1's turn when (`gameState.player1Turn`) is set to true and that it is the AI's turn when (`gameState.player1Turn`) is set to false.
+
+# IsGameOverTest
+
+This test confirms that the game ends when the human or computer player's health reaches 0, or either player runs out of cards. 
+
+# IncrementManaTest
+
+This test confirms that the mana for both players is equal to turn + 1 with each new turn.  

@@ -14,7 +14,7 @@ import structures.basic.Board;
 import structures.basic.Tile;
 import utils.AppConstants;
 
-public class IsGameOver {
+public class IsGameOverTest {
 
 	@Test
 	public void IsGameOver() {

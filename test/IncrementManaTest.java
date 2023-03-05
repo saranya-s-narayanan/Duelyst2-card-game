@@ -31,27 +31,26 @@ public class IncrementManaTest {
 
 		assertFalse(gameState.gameInitalised); // check we have not initalized
 
-		//This sets up the GameState and initializes the players. See Initialize.java to confirm what is instantiated
+		// This sets up the GameState and initializes the players. See Initialize.java
+		// to confirm what is instantiated
 		ObjectNode eventmessage = Json.newObject();
 		initializeProcessor.processEvent(null, gameState, eventmessage);
-				
-		// Creating a new EndTurnClicked object to get to processEvent, which has the logic for switching the player turns
+
+		// Creating a new EndTurnClicked object to get to processEvent, which has the
+		// logic for switching the player turns
 		EndTurnClicked e = new EndTurnClicked();
-		
-		//Ends player1's turn 
+
+		// Ends player1's turn
 		e.processEvent(null, gameState, eventmessage);
-		
-		//Checks that human player's getMana equals the turn number + 1 as the turn changes 
-		assertTrue(gameState.player1.getMana() == gameState.playerTurnNumber+1);
-		
-		//Ends player2's turn 
+
+		// Checks that human player's getMana equals the turn number + 1 as the turn changes
+		assertTrue(gameState.player1.getMana() == gameState.playerTurnNumber + 1);
+
+		// Ends player2's turn
 		e.processEvent(null, gameState, eventmessage);
-		
-		//Checks that AI player's getMana equals the turn number + 1 as the turn changes 
-		assertTrue(gameState.player2.getMana()== gameState.compTurnNumber+1);
-		
-		//**Need to add this test and IsGameOver to the README**
-		
+
+		// Checks that AI player's getMana equals the turn number + 1 as the turn changes
+		assertTrue(gameState.player2.getMana() == gameState.compTurnNumber + 1);
 	}
 
 }

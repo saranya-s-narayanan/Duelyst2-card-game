@@ -19,10 +19,10 @@ import structures.basic.Board;
 import structures.basic.Player;
 import utils.AppConstants;
 
-public class EndTurnTest {
+public class Player1TurnTest {
 
 	@Test
-	public void EndTurnTest() {
+	public void Player1TurnTest() {
 
 		CheckMessageIsNotNullOnTell altTell = new CheckMessageIsNotNullOnTell(); // create an alternative tell
 		BasicCommands.altTell = altTell; // specify that the alternative tell should be used
