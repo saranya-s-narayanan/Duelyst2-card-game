@@ -239,7 +239,8 @@ public class Player {
 				AppConstants.callSleep(500);
 				// increment the position
 				position++;
-			}
+			}else
+				position++; // For player 2 hand tracking
             
         }
     }
@@ -313,6 +314,10 @@ public class Player {
 			hand.remove(gameState.handPosClicked-1);//removing card from hand position
 			gameState.handPosClicked=-1;//setting the hand postion in gamestate to initial value
 			// // decrement the position
+			position--;
+		}else {
+			hand.remove(gameState.handPosClicked-1);//removing card from hand position
+			gameState.handPosClicked=-1;//setting the hand postion in gamestate to initial value
 			position--;
 		}
 		
