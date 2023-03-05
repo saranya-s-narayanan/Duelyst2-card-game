@@ -191,7 +191,7 @@ public class TileClicked implements EventProcessor {
                 gameState.summonedUnits.get(unitIdx).setMoved(true);
 
                 // checks if the unit is fire Spitter , if so trigger ranged attack
-            }else if(clickedTile.getUnitFromTile()!=null && gameState.summonedUnits.get(unitIdx).getAttacked()==false && gameState.summonedUnits.get(unitIdx).getName().equals("Fire Spitter")){
+            }else if(clickedTile.getUnitFromTile()!=null && gameState.summonedUnits.get(unitIdx).getAttacked()==false && (gameState.summonedUnits.get(unitIdx).getName().equals("Fire Spitter"))||gameState.summonedUnits.get(unitIdx).getName().equals("Pyromancer")){
                 // Clicked an occupied tile --> attack
             	boolean attackStatus=false;
                 attackStatus = SpecialAbilities.attackUnitRanged(1, player,out, gameState.summonedUnits.get(unitIdx),startTile,clickedTile,gameState);

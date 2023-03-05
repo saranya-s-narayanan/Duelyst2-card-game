@@ -24,7 +24,7 @@ public class SpecialAbilities {
 
         int attackVal;
 
-        if (enemyUnit.getSummonedID() == 41) // Should update player 1 avatar health
+        if (enemyUnit.getSummonedID() == 1) // Should update player 1 avatar health
         {
             attackVal = gameState.player1.getAvatar().getHealth() - unit.getAttack();
 
@@ -35,7 +35,7 @@ public class SpecialAbilities {
             if (gameState.player1.getAvatar().getHealth() < 0)
                 gameState.player1.getAvatar().setHealth(0);
 
-        } else if (enemyUnit.getSummonedID() == 42) // Should update player2 avatar health
+        } else if (enemyUnit.getSummonedID() == 2) // Should update player2 avatar health
         {
 
             attackVal = gameState.player2.getAvatar().getHealth() - unit.getAttack();
@@ -78,14 +78,14 @@ public class SpecialAbilities {
             BasicCommands.deleteUnit(out, enemyUnit);
             AppConstants.callSleep(3000);
 
-        } else if (gameState.board.summonableTiles(out, enemyTile).contains(unit)){ //enemy survived, counter attack
+        } else if (gameState.board.summonableTiles(out,startTile).contains(enemyTile)){ //enemy survived and is in range, counter attack
 
             attackVal = -1;
 
             BasicCommands.playUnitAnimation(out, enemyUnit, UnitAnimationType.attack); // enemy attacks avatar
             AppConstants.callSleep(AppConstants.attackSleepTime);
 
-            if (unit.getSummonedID() == 41) // Should update avatar health of player1
+            if (unit.getSummonedID() == 1) // Should update avatar health of player1
             {
 
                 attackVal = gameState.player1.getAvatar().getHealth() - enemyUnit.getAttack();
@@ -101,7 +101,7 @@ public class SpecialAbilities {
 
                 }
 
-            } else if (unit.getSummonedID() == 42) // Should update avatar health of player2
+            } else if (unit.getSummonedID() == 2) // Should update avatar health of player2
             {
 
                 attackVal = gameState.player2.getAvatar().getHealth() - enemyUnit.getAttack();
