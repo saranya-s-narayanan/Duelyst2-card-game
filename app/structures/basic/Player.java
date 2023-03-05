@@ -46,7 +46,8 @@ public class Player {
 		this.avatar = avatar;
 		this.playerID=playerID;
 		this.health = avatar.getHealth();
-		this.mana = 2; // this will be set to player turn +1 once we have player turn available
+		// set to 5 for quicker summon testing
+		this.mana = 5; // this will be set to player turn +1 once we have player turn available
 		this.hand= new ArrayList<Card>();
 		this.deck = new ArrayList<Card>();
 		this.unitFiles=unitFiles;
@@ -240,7 +241,8 @@ public class Player {
 				AppConstants.callSleep(500);
 				// increment the position
 				position++;
-			}
+			}else
+				position++; // For player 2 hand tracking
             
         }
     }
@@ -314,6 +316,10 @@ public class Player {
 			hand.remove(gameState.handPosClicked-1);//removing card from hand position
 			gameState.handPosClicked=-1;//setting the hand postion in gamestate to initial value
 			// // decrement the position
+			position--;
+		}else {
+			hand.remove(gameState.handPosClicked-1);//removing card from hand position
+			gameState.handPosClicked=-1;//setting the hand postion in gamestate to initial value
 			position--;
 		}
 		
