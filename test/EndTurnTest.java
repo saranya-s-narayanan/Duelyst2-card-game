@@ -18,10 +18,13 @@ import structures.basic.Board;
 import structures.basic.Player;
 import utils.AppConstants;
 
+import akka.actor.ActorRef;
+//This should allow me to get the ActorRef done
+
 public class EndTurnTest {
 
 	@Test
-	public void ManaTest() {
+	public void EndTurnTest() {
 
 		CheckMessageIsNotNullOnTell altTell = new CheckMessageIsNotNullOnTell(); // create an alternative tell
 		BasicCommands.altTell = altTell; // specify that the alternative tell should be used
@@ -37,18 +40,20 @@ public class EndTurnTest {
 				
 		// Creating a new EndTurnClicked object to get to processEvent, which has the logic for switching the player turns
 		EndTurnClicked e = new EndTurnClicked();
+		
+		ActorRef out;
 				
 		//Ends player1's turn 
-		e.processEvent(null, gameState, eventmessage);
+		e.processEvent(out, gameState, eventmessage);
 		
 		//Checks that player1's turn ends once this event is processed
-//		assertFalse(gameState.player1Turn);
+		assertFalse(gameState.player1Turn);
 		
 		//Ends player2's turn 
-		e.processEvent(null, gameState, eventmessage);
+		e.processEvent(out, gameState, eventmessage);
 		
 		//Checks that player2's turn ends once this event is processed
-//		assertTrue(gameState.player1Turn);
+		assertTrue(gameState.player1Turn);
 
 		//**Need to add this test and IsGameOver to the README**
 		
