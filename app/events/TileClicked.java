@@ -151,14 +151,25 @@ public class TileClicked implements EventProcessor {
                 // Check whether that unit has moved or attacked in the turn
                 if(gameState.summonedUnits.get(unitIdx).getMoved()==false && gameState.summonedUnits.get(unitIdx).getAttacked()==false) // Unit hasn't moved or attacked yet
                 {
+
                 	// Unit not moved or attacked yet
                     AppConstants.printLog("------> UnitClicked :: Unit has NOT moved yet!");
                 	gameState.board.highlightTilesMoveAndAttack(1,player,out, startTile,gameState); // highlight tiles to move and attack
+
+                    // checks for ranged units and highlights all enemy units
+                    if (gameState.summonedUnits.get(unitIdx).getName().equals("Fire Spitter") || gameState.summonedUnits.get(unitIdx).getName().equals("Pyromancer")){
+                        gameState.board.highlightTilesRed(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));
+                    }
 
                 }else if(gameState.summonedUnits.get(unitIdx).getAttacked()==false){
                 	// Unit has moved,but not attacked yet
                     AppConstants.printLog("------> UnitClicked :: Unit has moved, but NOT attacked yet!");
                 	gameState.board.highlightTilesRed(out, gameState.board.getAdjacentTilesToAttack(player,out, startTile)); // highlight tiles to attack only
+
+                    // check if ranged unit then highlights enemy units
+                    if (gameState.summonedUnits.get(unitIdx).getName().equals("Fire Spitter") || gameState.summonedUnits.get(unitIdx).getName().equals("Pyromancer")){
+                        gameState.board.highlightTilesRed(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));
+                    }
 
                 }else {
                 	//Unit has already moved or attacked
@@ -183,6 +194,11 @@ public class TileClicked implements EventProcessor {
             gameState.board.clearTileHighlighting(out, gameState.board.highlightTilesMoveAndAttack(0,player,out, startTile,gameState));
             AppConstants.callSleep(200);
 
+            // checks if ranged unit and clears the extra highlighted tiles
+            if (gameState.summonedUnits.get(unitIdx).getName().equals("Fire Spitter")|| gameState.summonedUnits.get(unitIdx).getName().equals("Pyromancer")){
+                gameState.board.clearTileHighlighting(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));
+            }
+
             if(clickedTile.getUnitFromTile()==null && gameState.summonedUnits.get(unitIdx).getMoved()==false) // Clicked an empty tile --> movement
             {
                 AppConstants.printLog("------> TileClicked :: Moving unit to tile " + clickedTile.getTilex() + " " + clickedTile.getTiley());
@@ -191,7 +207,8 @@ public class TileClicked implements EventProcessor {
                 gameState.summonedUnits.get(unitIdx).setMoved(true);
 
                 // checks if the unit is fire Spitter , if so trigger ranged attack
-            }else if(clickedTile.getUnitFromTile()!=null && gameState.summonedUnits.get(unitIdx).getAttacked()==false && (gameState.summonedUnits.get(unitIdx).getName().equals("Fire Spitter"))||gameState.summonedUnits.get(unitIdx).getName().equals("Pyromancer")){
+            }else if(clickedTile.getUnitFromTile()!=null && gameState.summonedUnits.get(unitIdx).getAttacked()==false &&
+                    (gameState.summonedUnits.get(unitIdx).getName().equals("Fire Spitter"))||gameState.summonedUnits.get(unitIdx).getName().equals("Pyromancer")){
                 // Clicked an occupied tile --> attack
             	boolean attackStatus=false;
                 attackStatus = SpecialAbilities.attackUnitRanged(1, player,out, gameState.summonedUnits.get(unitIdx),startTile,clickedTile,gameState);
@@ -273,6 +290,18 @@ public class TileClicked implements EventProcessor {
                 OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
             }
         }
+    }
+
+    // Method to return the opposing player (useful for highlighting opposing players units etc) (can be moved)
+    public static Player opposingPlayer(GameState gameState, Player player){
+        Player playerOp;
+        if (player.getID() == 1){
+            playerOp = gameState.player2;
+        }
+        else{
+            playerOp = gameState.player1;
+        }
+        return playerOp;
     }
 
 

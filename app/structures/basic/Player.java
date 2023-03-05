@@ -46,7 +46,8 @@ public class Player {
 		this.avatar = avatar;
 		this.playerID=playerID;
 		this.health = avatar.getHealth();
-		this.mana = 2; // this will be set to player turn +1 once we have player turn available
+		// set to 5 for quicker summon testing
+		this.mana = 5; // this will be set to player turn +1 once we have player turn available
 		this.hand= new ArrayList<Card>();
 		this.deck = new ArrayList<Card>();
 		this.unitFiles=unitFiles;

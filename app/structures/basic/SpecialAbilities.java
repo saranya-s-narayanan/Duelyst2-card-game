@@ -2,6 +2,7 @@ package structures.basic;
 
 import akka.actor.ActorRef;
 import commands.BasicCommands;
+import events.TileClicked;
 import structures.GameState;
 import utils.AppConstants;
 import utils.BasicObjectBuilders;
@@ -163,23 +164,16 @@ public class SpecialAbilities {
         // Retrieve the unit from the corresponding tile position
         Unit enemyUnit=enemyTile.getUnitFromTile();
         gameState.startTile=startTile;
-        Player playerOp;
 
         if(enemyUnit!=null)
         {
             // Check whether the unit is a friendly unit or not
             if(enemyUnit.getIsPlayer()!=player.getID())
             {
-                // this is so i can return enemy units from the board, not friendly units
-                if (gameState.player1Turn){
-                    playerOp = gameState.player2;
-                }
-                else{
-                    playerOp = gameState.player1;
-                }
-                ArrayList<Tile> tilesList=gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), playerOp);
 
-                // If the enemyTile is in range of the startTile, attack directly
+                ArrayList<Tile> tilesList=gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), TileClicked.opposingPlayer(gameState,player));
+
+                // If the enemyTile is in range of the startTile, attack
                 if(tilesList.contains(enemyTile))
                 {
                     return rangedAttack(out, gameState,unit,enemyUnit,enemyTile,startTile);
