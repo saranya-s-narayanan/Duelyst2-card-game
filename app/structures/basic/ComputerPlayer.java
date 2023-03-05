@@ -45,8 +45,8 @@ public class ComputerPlayer extends Player{
 		
 //		checkMovement(out,gameState);
 		checkHand();//checking the cards in the hand
-		
-		checkAttack(out,gameState);
+		checkUnitTiles(out,gameState);
+		// checkAttack(out,gameState);
 	}
 
 	//method the check the cards in the hand
@@ -55,6 +55,22 @@ public class ComputerPlayer extends Player{
 		List <Card> cardInHand=super.hand;
 		for (Card card : cardInHand) {
 			System.out.println("card in AI's hand: "+ card.getCardname()+ " with Mana cost: "+ card.getManacost());
+		}
+	}
+
+	// method to get the tiles with the units on the board
+	public void checkUnitTiles(ActorRef out,GameState gameState) {
+		//AI unit's tile
+		List <Tile> tileWithMyUnit=gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), gameState.player2);
+		for (Tile tile : tileWithMyUnit) {
+			if(tile.getUnitFromTile().getId()==41) System.out.println("Tiles with AI units: "+tile.getTilex()+" "+ tile.getTiley()+ " with unit AI_Aviatar and id: " + tile.getUnitFromTile().getId());
+			else System.out.println("Tiles with AI units: "+tile.getTilex()+" "+ tile.getTiley()+ " with unit: "+ tile.getUnitFromTile().getName()+ " and id: " + tile.getUnitFromTile().getId());
+		}
+		//player unit's tile
+		List<Tile> tileWithPlayerUnits = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), gameState.player1);
+		for (Tile tile : tileWithPlayerUnits) {
+			if(tile.getUnitFromTile().getId()==40) System.out.println("Tiles with Player units: "+tile.getTilex()+" "+ tile.getTiley()+ " with unit Human_Avatar and id: " + tile.getUnitFromTile().getId());
+			else System.out.println("Tiles with Player units: "+tile.getTilex()+" "+ tile.getTiley()+ " with unit: "+ tile.getUnitFromTile().getName()+ " and id: " + tile.getUnitFromTile().getId());
 		}
 	}
 
