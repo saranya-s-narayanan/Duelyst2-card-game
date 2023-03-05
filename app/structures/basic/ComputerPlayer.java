@@ -48,7 +48,8 @@ public class ComputerPlayer extends Player{
 //		checkMovement(out,gameState); //to check movement possibilities
 		
 //		checkAttack(out,gameState); // To check attack possibilities
-
+		checkHand();//checking the cards in the hand
+		checkUnitTiles(out,gameState);
 		drawCard(out,gameState); // To check drawcard possibilities
 		
 		
@@ -95,8 +96,7 @@ public class ComputerPlayer extends Player{
 		drawCardAI(handIdx,out,gameState,currentTile,tileToSummon);
 		
 //		checkMovement(out,gameState);
-		checkHand();//checking the cards in the hand
-		checkUnitTiles(out,gameState);
+		
 		// checkAttack(out,gameState);
 	}
 
