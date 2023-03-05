@@ -26,7 +26,20 @@ public class EndTurnClicked implements EventProcessor{
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
 		if(gameState.isGameActive){ // if the frontend connection is active
 			cardClick=message.get("messagetype");//message to keep track of previous click on front-end
-			AppConstants.printLog("------> message type:---->"+gameState.clickMessage);
+			AppConstants.printLog("------> previous message type:---->"+gameState.clickMessage);
+			
+			if(gameState.clickMessage.asText().equals("cardclicked")){
+				if(gameState.SummonTileList != null){//to check if cardClick happened
+					if(gameState.player1Turn) OtherClicked.clearCardClicked(out, gameState, gameState.player1);//clear for player1
+				}
+			}
+			else if(gameState.clickMessage.asText().equals("tileclicked")){//check if tile click happened
+				gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
+			}
+			else if(gameState.clickMessage.asText().equals("initalize")){//check if initialise state but still clear highlight
+				gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
+			}
+			
 			if(gameState.player1Turn==true){//if it was player's turn then only they can use end turn
 				
 				endPlayer1Turn(out,gameState);
@@ -90,6 +103,12 @@ public class EndTurnClicked implements EventProcessor{
 		BasicCommands.addPlayer1Notification(out, "Passing Turn Over", 2);
 		gameState.player1.setPlayerMana(out);//updating mana on the front end
 		gameState.player2.setPlayerMana(out);//updating mana on the front end 
+		
+		
+		//<------------ DO AI LOGIC --------------->
+		gameState.player2.startAILogic(out,gameState);
+		
+		
 	}
 
 }

@@ -34,12 +34,13 @@ public class OtherClicked implements EventProcessor{
             if(gameState.clickMessage != cardClick){
 				if(gameState.SummonTileList != null){//to check if cardClick happened
 					if(gameState.player1Turn) clearCardClicked(out, gameState, gameState.player1);//clear for player1
-					else clearCardClicked(out, gameState, gameState.player2);//clear for player2 will be useful later though it might not be needed
+					// else clearCardClicked(out, gameState, gameState.player2);//clear for player2 will be useful later though it might not be needed
 				}
                 gameState.clickMessage=cardClick;//update the gameState on this click
             }
 			AppConstants.printLog("------> OtherClicked :: Game is active ! ");
 			// gameState.board.clearTileHighlighting(out, gameState.board.getAdjacentTiles(out, gameState.startTile));
+			gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
 			TileClicked.setStartTile(false) ;//to set the move to false
 		}
 	}

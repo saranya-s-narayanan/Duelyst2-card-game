@@ -37,6 +37,7 @@ public class PerformAction {
 	
 	
 	/** This method implements attack function of players
+	 * @param mode 
 	 * @param player 
 	 * @param out 
 	 * @param avatar 
@@ -46,7 +47,7 @@ public class PerformAction {
 	 * @param gameState
 	 * @return 
 	 */
-	public static boolean attackUnit(Player player, ActorRef out, Unit unit, Tile startTile, Tile enemyTile , GameState gameState) {
+	public static boolean attackUnit(int mode, Player player, ActorRef out, Unit unit, Tile startTile, Tile enemyTile , GameState gameState) {
 		// TODO Auto-generated method stub
 		
 		
@@ -95,21 +96,31 @@ public class PerformAction {
 							}
 	
 							// Move to the adjacent tile
-							moveUnit(out, startTile, tileToMove, gameState);
+							if(player.getID()==1)
+								moveUnit(1,out, startTile, tileToMove, gameState); // show player notifications (mode 1)
+							else
+								moveUnit(0,out, startTile, tileToMove, gameState);
+
 							
 							AppConstants.callSleep(1000); // To allow movement to finish before attacking
 							return attackDirectly(player,out,unit,tileToMove,enemyTile,gameState,enemyUnit);
 							
 						}else {
-							
-							BasicCommands.addPlayer1Notification(out, "Enemy not in range! ", 2);
-							AppConstants.callSleep(100);
+							if(mode==1) 
+							{
+								BasicCommands.addPlayer1Notification(out, "Enemy not in range! ", 2);
+								AppConstants.callSleep(100);
+							}
 						}	
 		
 					}
 			}else {
-				BasicCommands.addPlayer1Notification(out, "Please select an enemy unit to attack! ", 2);
-				AppConstants.callSleep(100);
+				
+				if(mode==1)
+				{
+					BasicCommands.addPlayer1Notification(out, "Please select an enemy unit to attack! ", 2);
+					AppConstants.callSleep(100);
+				}
 
 			}
 
@@ -128,7 +139,7 @@ public class PerformAction {
 	    
 	    int attackVal;
 
-	    if(enemyUnit.getSummonedID()==41) // Should update player 1 avatar health
+	    if(enemyUnit.getSummonedID()==1) // Should update player 1 avatar health
 	    {
 	    	attackVal=gameState.player1.getAvatar().getHealth()-unit.getAttack();
 	    	
@@ -139,7 +150,7 @@ public class PerformAction {
 		    if(gameState.player1.getAvatar().getHealth()<0)
 		    	gameState.player1.getAvatar().setHealth(0);
 	    	
-	    }else  if(enemyUnit.getSummonedID()==42) // Should update player2 avatar health
+	    }else  if(enemyUnit.getSummonedID()==2) // Should update player2 avatar health
 	    {
 
 	    	attackVal=gameState.player2.getAvatar().getHealth()-unit.getAttack();
@@ -189,7 +200,7 @@ public class PerformAction {
 	    	BasicCommands.playUnitAnimation(out, enemyUnit, UnitAnimationType.attack); // enemy attacks avatar
 		    AppConstants.callSleep(AppConstants.attackSleepTime);
 
-		    if(unit.getSummonedID()==41) // Should update avatar health of player1
+		    if(unit.getSummonedID()==1) // Should update avatar health of player1
 		    {
 
 		    	attackVal=gameState.player1.getAvatar().getHealth()-enemyUnit.getAttack();
@@ -206,7 +217,7 @@ public class PerformAction {
 
 			    }
 		    	
-		    }else if(unit.getSummonedID()==42) // Should update avatar health of player2
+		    }else if(unit.getSummonedID()==2) // Should update avatar health of player2
 		    {
 
 		    	attackVal=gameState.player2.getAvatar().getHealth()-enemyUnit.getAttack();
@@ -262,29 +273,47 @@ public class PerformAction {
 	    return true;
 
 	}
-	public static void moveUnit(ActorRef out, Tile startTile, Tile endTile,GameState gameState) {
+	
+	/** Method to move a unit to a tile
+	 * 
+	 * @param mode -0 (when player notifications are needed) & 1 (when player notifications are not needed)
+	 * @param out
+	 * @param startTile
+	 * @param endTile
+	 * @param gameState
+	 */
+	public static void moveUnit(int mode, ActorRef out, Tile startTile, Tile endTile,GameState gameState) {
 
 		Unit unitToMove = startTile.getUnitFromTile();
 
 		// Check if there is a unit on the start tile
 		if(unitToMove == null) {
-			BasicCommands.addPlayer1Notification(out, "No unit on the starting tile", 2);
-			AppConstants.callSleep(200);
+			if(mode==1)
+			{
+				BasicCommands.addPlayer1Notification(out, "No unit on the starting tile", 2);
+				AppConstants.callSleep(200);
+			}
 			return;
 		}
 
 		// Check if the end tile is empty
 		if(endTile.getUnitFromTile() != null) {
-			BasicCommands.addPlayer1Notification(out, "The end tile is already occupied", 2);
-			AppConstants.callSleep(200);
+			if(mode==1)
+			{
+				BasicCommands.addPlayer1Notification(out, "The end tile is already occupied", 2);
+				AppConstants.callSleep(200);
+			}
 			return;
 		}
 
 
 		// Check if the unit can move to the end tile
 		if(!gameState.board.getAdjacentTiles(out, startTile).contains(endTile)) {
-			BasicCommands.addPlayer1Notification(out, "Unit cannot move to the end tile", 2);
-			AppConstants.callSleep(200);
+			if(mode==1)
+			{
+				BasicCommands.addPlayer1Notification(out, "Unit cannot move to the end tile", 2);
+				AppConstants.callSleep(200);
+			}
 			return;
 		}
 
@@ -304,7 +333,7 @@ public class PerformAction {
      */
     public static void gameEnd(ActorRef out, GameState gameState) {
         
-    	 AppConstants.printLog("------> gameEnd:: Before- gameState.isGameOver: "+gameState.isGameOver);
+//    	 AppConstants.printLog("------> gameEnd:: Before- gameState.isGameOver: "+gameState.isGameOver);
         if(gameState.isGameActive==true){
 			//check if player 1 health is 0 or not
 			if(gameState.player1.getHealth()<=0 || (gameState.player1.getCardInDeck()==0 && gameState.player1.getCardInHand()==0)){
@@ -330,11 +359,11 @@ public class PerformAction {
     }
 	public static int getUnitIndexFromSummonedUnitlist(Unit selectedUnit, ArrayList<Unit> summonedUnits) {
 		// TODO Auto-generated method stub
-    	AppConstants.printLog("------> getUnitIndexFromSummonedUnitlist:: BB selectedUnit id : "+selectedUnit.getId()+", summonid: "+selectedUnit.getSummonedID());
+//    	AppConstants.printLog("------> getUnitIndexFromSummonedUnitlist:: BB selectedUnit id : "+selectedUnit.getId()+", summonid: "+selectedUnit.getSummonedID());
 
 		for(int i=0;i<summonedUnits.size();i++)
 		{
-	    	AppConstants.printLog("------> getUnitIndexFromSummonedUnitlist:: selectedUnit id : "+summonedUnits.get(i).getId()+", summonid: "+summonedUnits.get(i).getSummonedID());
+//	    	AppConstants.printLog("------> getUnitIndexFromSummonedUnitlist:: selectedUnit id : "+summonedUnits.get(i).getId()+", summonid: "+summonedUnits.get(i).getSummonedID());
 
 			if(summonedUnits.get(i).getSummonedID()==selectedUnit.getSummonedID())
 			{
