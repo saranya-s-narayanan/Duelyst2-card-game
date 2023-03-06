@@ -163,9 +163,14 @@ public class TileClicked implements EventProcessor {
                 
                 // Get the unit index from the summoned arraylist position
                 int unitIdx=PerformAction.getUnitIndexFromSummonedUnitlist(startTile.getUnitFromTile(),gameState.summonedUnits);
-        		
-                // Testing attack twice on comodo charger 
-                if(gameState.summonedUnits.get(unitIdx).getId() == 7 || gameState.summonedUnits.get(unitIdx).getId() == 17 || gameState.summonedUnits.get(unitIdx).getId() == 26 || gameState.summonedUnits.get(unitIdx).getId() == 36) {
+                
+                // checks for ranged units and highlights all enemy units
+                if (gameState.summonedUnits.get(unitIdx).getName().equals("Fire Spitter") || gameState.summonedUnits.get(unitIdx).getName().equals("Pyromancer")){
+                    gameState.board.highlightTilesRed(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));
+                }
+
+                // If the unit is Azurite Lion or Serpenti, implement Attack Twice logic
+                else if(gameState.summonedUnits.get(unitIdx).getId() == 7 || gameState.summonedUnits.get(unitIdx).getId() == 17 || gameState.summonedUnits.get(unitIdx).getId() == 26 || gameState.summonedUnits.get(unitIdx).getId() == 36) {
                 	
                 	// If the unit has attacked twice already
             		if(gameState.summonedUnits.get(unitIdx).getAttackedTwice() == true) {
@@ -227,8 +232,19 @@ public class TileClicked implements EventProcessor {
             gameState.board.clearTileHighlighting(out, gameState.board.highlightTilesMoveAndAttack(0,player,out, startTile,gameState)); 
             AppConstants.callSleep(200);
             
+            // checks if the unit is fire Spitter , if so trigger ranged attack
+            if(clickedTile.getUnitFromTile()!=null && gameState.summonedUnits.get(unitIdx).getAttacked()==false &&
+                (gameState.summonedUnits.get(unitIdx).getName().equals("Fire Spitter"))||gameState.summonedUnits.get(unitIdx).getName().equals("Pyromancer")){
+            // Clicked an occupied tile --> attack
+        	boolean attackStatus=false;
+        	gameState.board.clearTileHighlighting(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));
+            attackStatus = SpecialAbilities.attackUnitRanged(1, player,out, gameState.summonedUnits.get(unitIdx),startTile,clickedTile,gameState);
+            if(gameState.summonedUnits.get(unitIdx)!=null && unitIdx<gameState.summonedUnits.size())
+                gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
+            }
+            
             // If the unit is Azurite Lion or Serpenti, implement Attack Twice logic
-            if(gameState.summonedUnits.get(unitIdx).getId() == 7 || gameState.summonedUnits.get(unitIdx).getId() == 17 || gameState.summonedUnits.get(unitIdx).getId() == 26 || gameState.summonedUnits.get(unitIdx).getId() == 36) {
+            else if(gameState.summonedUnits.get(unitIdx).getId() == 7 || gameState.summonedUnits.get(unitIdx).getId() == 17 || gameState.summonedUnits.get(unitIdx).getId() == 26 || gameState.summonedUnits.get(unitIdx).getId() == 36) {
             	
             	 // If it is not the unit with attack twice ability, proceed normally
                  // If an empty tile is clicked, and the player unit has not moved or attacked twice yet, move to the tile, set moved to true
