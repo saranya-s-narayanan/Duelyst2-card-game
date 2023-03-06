@@ -57,7 +57,7 @@ public class EndTurnClicked implements EventProcessor{
 				gameState.summonedUnits.get(i).setMoved(false);
 				gameState.summonedUnits.get(i).setAttacked(false);
 
-				if(gameState.summonedUnits.get(i).getId() == 0 || gameState.summonedUnits.get(i).getId() == 0) {
+				if(gameState.summonedUnits.get(i).getId() == 7 || gameState.summonedUnits.get(i).getId() == 17 || gameState.summonedUnits.get(i).getId() == 26 || gameState.summonedUnits.get(i).getId() == 36) {
 					gameState.summonedUnits.get(i).setAttackedOnce(false);
 					gameState.summonedUnits.get(i).setAttackedTwice(false);
 				}

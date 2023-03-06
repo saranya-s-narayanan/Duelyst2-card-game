@@ -165,38 +165,33 @@ public class TileClicked implements EventProcessor {
                 int unitIdx=PerformAction.getUnitIndexFromSummonedUnitlist(startTile.getUnitFromTile(),gameState.summonedUnits);
         		
                 // Testing attack twice on comodo charger 
-                if(gameState.summonedUnits.get(unitIdx).getId() == 0 || gameState.summonedUnits.get(unitIdx).getId() == 12) {
+                if(gameState.summonedUnits.get(unitIdx).getId() == 7 || gameState.summonedUnits.get(unitIdx).getId() == 17 || gameState.summonedUnits.get(unitIdx).getId() == 26 || gameState.summonedUnits.get(unitIdx).getId() == 36) {
                 	
                 	// If the unit has attacked twice already
             		if(gameState.summonedUnits.get(unitIdx).getAttackedTwice() == true) {
             			AppConstants.printLog("------> UnitClicked :: Unit has already attacked twice!");
-            			BasicCommands.addPlayer1Notification(out, "Unit has attacked twice!", 2);
             		}
                 	// If the unit has not moved or attacked once yet
             		else if(gameState.summonedUnits.get(unitIdx).getMoved() == false && gameState.summonedUnits.get(unitIdx).getAttackedOnce() == false) {
                         AppConstants.printLog("------> UnitClicked :: Unit has NOT moved or attacked yet!");
                     	gameState.board.highlightTilesMoveAndAttack(1,player,out, startTile,gameState); // highlight tiles to move and attack
-                    	BasicCommands.addPlayer1Notification(out, "Attack Twice Unit clicked", 2);
                     // If the unit has attacked once but not moved
                 	}else if(gameState.summonedUnits.get(unitIdx).getAttackedOnce() == true && gameState.summonedUnits.get(unitIdx).getMoved() == false) {
                 		AppConstants.printLog("------> UnitClicked :: Unit has attacked once but has NOT moved yet!");
                     	gameState.board.highlightTilesMoveAndAttack(1,player,out, startTile,gameState); // highlight tiles to move and attack
-                    	BasicCommands.addPlayer1Notification(out, "Unit has attacked once but not moved ", 2);
                 	}
                 	// If the unit has moved but has not attacked once yet
                 	else if(gameState.summonedUnits.get(unitIdx).getMoved() == true && gameState.summonedUnits.get(unitIdx).getAttackedOnce() == false) {
                 		AppConstants.printLog("------> UnitClicked :: Unit has moved, but NOT attacked once yet!");
                     	gameState.board.highlightTilesRed(out, gameState.board.getAdjacentTilesToAttack(player,out, startTile)); // highlight tiles to attack only
-                    	BasicCommands.addPlayer1Notification(out, "Unit has moved but not attacked yet", 2);
                 	// If the unit has moved and has attacked once already but not twice yet
                 	}else if(gameState.summonedUnits.get(unitIdx).getMoved() == true && gameState.summonedUnits.get(unitIdx).getAttackedOnce() == true && gameState.summonedUnits.get(unitIdx).getAttackedTwice() == false) {
                 		 AppConstants.printLog("------> UnitClicked :: Unit has moved, but NOT attacked yet!");
                      	gameState.board.highlightTilesRed(out, gameState.board.getAdjacentTilesToAttack(player,out, startTile)); // highlight tiles to attack only
-                     	BasicCommands.addPlayer1Notification(out, "Unit has moved but only attacked once", 2);
                 	}
                 }	
                 
-                // If it is not the attack twice unit, proceed normally
+                // Else, proceed normally
                 // Check whether that unit has moved or attacked in the turn
                 else if (gameState.summonedUnits.get(unitIdx).getMoved()==false && gameState.summonedUnits.get(unitIdx).getAttacked()==false) // Unit hasn't moved or attacked yet
                 {
@@ -212,7 +207,7 @@ public class TileClicked implements EventProcessor {
                 }else {
                 	//Unit has already moved or attacked
                     AppConstants.printLog("------> UnitClicked :: Unit has already attacked!");
-                    BasicCommands.addPlayer1Notification(out, "No moves left! Moved = " + gameState.summonedUnits.get(unitIdx).getMoved(), 2);
+                    BasicCommands.addPlayer1Notification(out, "No moves left!", 2);
                 }
             
             } else {
@@ -232,8 +227,8 @@ public class TileClicked implements EventProcessor {
             gameState.board.clearTileHighlighting(out, gameState.board.highlightTilesMoveAndAttack(0,player,out, startTile,gameState)); 
             AppConstants.callSleep(200);
             
-            // If it is the unit with attack twice ability
-            if(gameState.summonedUnits.get(unitIdx).getId() == 0 || gameState.summonedUnits.get(unitIdx).getId() == 12) {
+            // If the unit is Azurite Lion or Serpenti, implement Attack Twice logic
+            if(gameState.summonedUnits.get(unitIdx).getId() == 7 || gameState.summonedUnits.get(unitIdx).getId() == 17 || gameState.summonedUnits.get(unitIdx).getId() == 26 || gameState.summonedUnits.get(unitIdx).getId() == 36) {
             	
             	 // If it is not the unit with attack twice ability, proceed normally
                  // If an empty tile is clicked, and the player unit has not moved or attacked twice yet, move to the tile, set moved to true
@@ -278,11 +273,11 @@ public class TileClicked implements EventProcessor {
                     	}
                  	
                  }else if(clickedTile.getUnitFromTile()!=null && gameState.summonedUnits.get(unitIdx).getAttackedTwice() == true) {
-                	 BasicCommands.addPlayer1Notification(out, "You already attacked twice bro!", 2);
+                	 BasicCommands.addPlayer1Notification(out, "Already attacked twice", 2);
                  }
             }
             
-            // If it is not the unit with attack twice ability, proceed normally
+            // Else, proceed normally
             // If an empty tile is clicked, and the player unit has not moved or attacked yet, move to the tile, set moved to true
             else if(clickedTile.getUnitFromTile()==null && gameState.summonedUnits.get(unitIdx).getMoved()==false && gameState.summonedUnits.get(unitIdx).getAttacked()==false) // Clicked an empty tile --> movement
             {
@@ -381,7 +376,7 @@ public class TileClicked implements EventProcessor {
             unitSummon.setMoved(true);//restricting move
             unitSummon.setAttacked(true);//restricting attack
             // Restricting units with the attack twice special ability
-            if(unitSummon.getId() == 0 || unitSummon.getId() == 12) {
+            if(unitSummon.getId() == 7 || unitSummon.getId() == 17 || unitSummon.getId() == 26 || unitSummon.getId() == 36) {
             	unitSummon.setAttackedOnce(true);
             	unitSummon.setAttackedTwice(true);
             }
