@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import actions.PerformAction;
 import akka.actor.ActorRef;
 import commands.BasicCommands;
 import events.CardClicked;
@@ -19,7 +20,10 @@ import utils.AppConstants;
 public class ComputerPlayer extends Player{
 
 	Tile currentTile; // To keep track of avatar's tile
-	
+	List <Card> cardInHand;//to keep track of card in the hand
+	List <Tile> tileWithMyUnit;//to keep track of tiles occupied by AI units
+	List <Tile> tileWithPlayerUnits;//to keep track of human player units
+	List <Tile> possibleSummonList;
     /** constructor to create a player with set health and mana which calls 
      * setPlayer to place the data on the front end.
      * 
@@ -50,6 +54,11 @@ public class ComputerPlayer extends Player{
 //		checkAttack(out,gameState); // To check attack possibilities
 		checkHand();//checking the cards in the hand
 		checkUnitTiles(out,gameState);
+		Boolean movesLeft=true;
+		if(movesLeft){
+			movesLeft=listPossibleMove(out,gameState);
+		}
+		
 		drawCard(out,gameState); // To check drawcard possibilities
 		
 		
@@ -103,7 +112,7 @@ public class ComputerPlayer extends Player{
 	//method the check the cards in the hand
 	//use map or dict to store these in order to utilize later when deciding which card to summon
 	public void checkHand(){
-		List <Card> cardInHand=super.hand;
+		cardInHand=super.hand;
 		for (Card card : cardInHand) {
 			System.out.println("card in AI's hand: "+ card.getCardname()+ " with Mana cost: "+ card.getManacost());
 		}
@@ -112,13 +121,13 @@ public class ComputerPlayer extends Player{
 	// method to get the tiles with the units on the board
 	public void checkUnitTiles(ActorRef out,GameState gameState) {
 		//AI unit's tile
-		List <Tile> tileWithMyUnit=gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), gameState.player2);
+		tileWithMyUnit=gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), gameState.player2);
 		for (Tile tile : tileWithMyUnit) {
 			if(tile.getUnitFromTile().getId()==41) System.out.println("Tiles with AI units: "+tile.getTilex()+" "+ tile.getTiley()+ " with unit AI_Aviatar and id: " + tile.getUnitFromTile().getId());
 			else System.out.println("Tiles with AI units: "+tile.getTilex()+" "+ tile.getTiley()+ " with unit: "+ tile.getUnitFromTile().getName()+ " and id: " + tile.getUnitFromTile().getId());
 		}
 		//player unit's tile
-		List<Tile> tileWithPlayerUnits = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), gameState.player1);
+		tileWithPlayerUnits = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), gameState.player1);
 		for (Tile tile : tileWithPlayerUnits) {
 			if(tile.getUnitFromTile().getId()==40) System.out.println("Tiles with Player units: "+tile.getTilex()+" "+ tile.getTiley()+ " with unit Human_Avatar and id: " + tile.getUnitFromTile().getId());
 			else System.out.println("Tiles with Player units: "+tile.getTilex()+" "+ tile.getTiley()+ " with unit: "+ tile.getUnitFromTile().getName()+ " and id: " + tile.getUnitFromTile().getId());
@@ -228,7 +237,40 @@ public class ComputerPlayer extends Player{
 		tc.processEvent(out, gameState, eventMessage); // send it to the Tileclicked event processor
 	}
 	
-
+	public Boolean listPossibleMove(ActorRef out, GameState gameState) {
+		//need to list all possible moves for the AI player
+		Boolean done =false;//boolean to send back
+		int handindex=-1;
+		//first check which cards can be played
+		for (Card card : cardInHand) {
+			handindex =cardInHand.indexOf(card)+1;
+			//check if mana cost of card is more than the mana of the AI
+			if(super.getMana()>=card.getManacost()){
+				System.out.println("card with hand position: "+ handindex+" name: "+ card.getCardname()+" can be played");
+				//get summonable tiles
+				possibleSummonList= PerformAction.getSummonableTiles(out, gameState, gameState.player2);
+				Tile mostForwardTile= new Tile();
+				for (Tile tile : possibleSummonList) {
+					// System.out.println("Possible summon tiles: ["+ tile.getTilex()+","+tile.getTiley()+"]");
+					int maxTileX=9;
+					int maxTileY=9;
+					if(tile.getTilex()<=maxTileX){
+						if(tile.getTiley()<=maxTileY) mostForwardTile=tile;
+					}
+				}
+				System.out.println("Most forward Tile: ["+ mostForwardTile.getTilex()+","+mostForwardTile.getTiley()+"]");
+			}
+		}
+		//possible moves if the unit has not moved or attacked
+		for (Unit u : gameState.summonedUnits) {
+			if(u.getId()>19 && u.getId()!=40){//checking if they are AI units or not
+				if(u.getMoved()==false || u.getAttacked()==false){//checking if the unit has not moved or attacked
+					System.out.println("unit: "+u.getName()+" with id: "+u.getId()+" has not attacked or moved");
+				}
+			}
+		}
+		return done;
+	}
 	
 	
 }
