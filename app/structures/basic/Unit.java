@@ -22,6 +22,8 @@ public class Unit {
 	@JsonIgnore
 	protected static ObjectMapper mapper = new ObjectMapper(); // Jackson Java Object Serializer, is used to read java objects from a file
 	
+	boolean attackedOnce = false;
+	boolean attackedTwice = false;
 	String name;
 	int id;
 	UnitAnimationType animation;
@@ -142,6 +144,22 @@ public class Unit {
 	
 	public void setAttack(int unitAttack) {
 		this.unitAttack = unitAttack;
+	}
+	
+	public boolean getAttackedOnce() {
+		return attackedOnce;
+	}
+
+	public void setAttackedOnce(boolean attackedOnce) {
+		this.attackedOnce = attackedOnce;
+	}
+
+	public boolean getAttackedTwice() {
+		return attackedTwice;
+	}
+
+	public void setAttackedTwice(boolean attackedTwice) {
+		this.attackedTwice = attackedTwice;
 	}
 
 	public int getIsPlayer() {
