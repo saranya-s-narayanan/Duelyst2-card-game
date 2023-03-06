@@ -196,6 +196,25 @@ public class SpecialAbilities {
 
     }
 
+    // this method checks if one of two instances of the silverguard knight is on the board, and if so increase attack by 2. this will be called after the avatar takes damage
+    public static void SilverguardKnightAbility(ActorRef out, GameState gameState){
+
+        for (Unit unit: gameState.summonedUnits) {
+
+            if (unit.getId()==3){
+                unit.setAttack(unit.getAttack() + 2);
+                AppConstants.callSleep(50);
+                BasicCommands.setUnitAttack(out, unit, unit.getAttack());
+            }
+            if (unit.getId()==10){
+                unit.setAttack(unit.getAttack() + 2);
+                AppConstants.callSleep(50);
+                BasicCommands.setUnitAttack(out, unit, unit.getAttack());
+            }
+
+        }
+    }
+
 
 }
 
