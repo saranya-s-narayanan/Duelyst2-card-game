@@ -190,7 +190,7 @@ public class TileClicked implements EventProcessor {
                 }else {
                 	//Unit has already moved or attacked
                     AppConstants.printLog("------> UnitClicked :: Unit has already attacked!");
-                    BasicCommands.addPlayer1Notification(out, "No moves left!", 2);
+                    BasicCommands.addPlayer1Notification(out, "No moves left! Moved = " + gameState.summonedUnits.get(unitIdx).getMoved(), 2);
                 }
 
             } else {
@@ -232,15 +232,31 @@ public class TileClicked implements EventProcessor {
                     gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
 
             }
+            // If a tile with an enemy unit is clicked, the player has not attacked or moved yet, and the enemy unit is not adjacent.
+            // It is an attack-and-move, thus moved and attacked should both be set to true. This action should only be possible if moved is still false.
             else if(clickedTile.getUnitFromTile()!=null && clickedTile.getUnitFromTile().getIsPlayer() != player.getID() && gameState.summonedUnits.get(unitIdx).getAttacked()==false && gameState.summonedUnits.get(unitIdx).getMoved()==false && !gameState.board.getAdjacentTilesToAttack(player,out, startTile).contains(clickedTile)){
                 AppConstants.printLog("------> TileClicked :: Attacking unit at tile " + clickedTile.getTilex() + " " + clickedTile.getTiley());
                 boolean attackStatus=false;
+                gameState.summonedUnits.get(unitIdx).setMoved(true);
 
                 attackStatus=PerformAction.attackUnit(1,player,out,gameState.summonedUnits.get(unitIdx),startTile,clickedTile, gameState);
 
                 if(gameState.summonedUnits.get(unitIdx)!=null && unitIdx<gameState.summonedUnits.size())
                 	gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
 
+            }
+            // If a tile with an enemy unit is clicked and it is adjacent, and the player has not attacked yet
+            // It is a direct attack, only attack should be set to true
+            else if(clickedTile.getUnitFromTile()!=null && clickedTile.getUnitFromTile().getIsPlayer() != player.getID() && gameState.summonedUnits.get(unitIdx).getAttacked()==false && gameState.board.getAdjacentTilesToAttack(player,out, startTile).contains(clickedTile)){ // Clicked an occupied tile --> attack
+            	
+                AppConstants.printLog("------> TileClicked :: Attacking unit at tile " + clickedTile.getTilex() + " " + clickedTile.getTiley());
+                boolean attackStatus=false;
+                
+                attackStatus=PerformAction.attackUnit(1,player,out,gameState.summonedUnits.get(unitIdx),startTile,clickedTile, gameState);
+                
+                if(gameState.summonedUnits.get(unitIdx)!=null && unitIdx<gameState.summonedUnits.size())
+                	gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
+            	
             }
 
             startTile = null; // Reset the start tile to no unit
