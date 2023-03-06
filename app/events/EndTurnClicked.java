@@ -69,6 +69,8 @@ public class EndTurnClicked implements EventProcessor{
 		gameState.playerTurnNumber++;//incrementing the turn number the player will have
 		AppConstants.printLog("------> End turn Clicked by the AI :: player turn incremented !");
 		
+		gameState.player2.drawAnotherCard(out,2);//draw a card from the deck
+
 		gameState.player2.setMana(0);//flushing the mana
 		AppConstants.printLog("------> End turn Clicked by the AI :: mana set to 0 !");
 		

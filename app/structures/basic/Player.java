@@ -46,7 +46,8 @@ public class Player {
 		this.avatar = avatar;
 		this.playerID=playerID;
 		this.health = avatar.getHealth();
-		this.mana = 2; // this will be set to player turn +1 once we have player turn available
+		// set to 5 for quicker summon testing
+		this.mana = 5; // this will be set to player turn +1 once we have player turn available
 		this.hand= new ArrayList<Card>();
 		this.deck = new ArrayList<Card>();
 		this.unitFiles=unitFiles;
@@ -59,11 +60,12 @@ public class Player {
 	}
 	
 	public BetterUnit getAvatar() {
-		return avatar;
+		return this.avatar;
 	}
 	public void setAvatar(BetterUnit avatar) {
 		this.avatar = avatar;
 	}
+	
 	public int getID() {
 		return playerID;
 	}
@@ -140,8 +142,9 @@ public class Player {
 //	}
 
 	// This method syncs up the Player health with the health of their Avatar
-	public void syncHealth() {
-		this.health = this.avatar.getHealth();
+	public void syncHealth(GameState gameState) {
+		//this.health = this.avatar.getHealth();
+		this.health = gameState.summonedUnits.get(0).getHealth();
 	}
 	
 	/** Setting the player health on the front end
@@ -238,7 +241,8 @@ public class Player {
 				AppConstants.callSleep(500);
 				// increment the position
 				position++;
-			}
+			}else
+				position++; // For player 2 hand tracking
             
         }
     }
@@ -313,6 +317,10 @@ public class Player {
 			gameState.handPosClicked=-1;//setting the hand postion in gamestate to initial value
 			// // decrement the position
 			position--;
+		}else {
+			hand.remove(gameState.handPosClicked-1);//removing card from hand position
+			gameState.handPosClicked=-1;//setting the hand postion in gamestate to initial value
+			position--;
 		}
 		
 	}
@@ -363,7 +371,7 @@ public class Player {
 			for (Unit u : playerUnits) {
 				if (u.getId() == card.getId()) { // check the card ids
 					//added these in order to summon the unit on board rather than in the top left corner
-					// tile.setUnitToTile(unit);
+					tile.setUnitToTile(unit);
 					unit.setSummonedID(gameState.summonedUnits.size()+1);//unique summonedID
 					unit.setIsPlayer(1);
 					gameState.board.addUnitToBoard(tile.getTilex(), tile.getTiley(), unit);
@@ -383,7 +391,7 @@ public class Player {
 		else {
 			for (Unit u : playerUnits) {
 				if (u.getId() == card.getId() || u.getId() == card.getId() + 10) {
-					// tile.setUnitToTile(unit);
+					tile.setUnitToTile(unit);
 					unit.setSummonedID(gameState.summonedUnits.size()+1);//unique summonedID
 					unit.setIsPlayer(2);
 					gameState.board.addUnitToBoard(tile.getTilex(), tile.getTiley(), unit);

@@ -69,6 +69,7 @@ public class Initalize implements EventProcessor {
         gameState.avatar =  new BetterUnit(out,avatar, gameState.board.returnTile(1,2), gameState.board);
         avatar.setIsPlayer(1);
         avatar.setSummonedID(1);
+        avatar.setName("Avatar"); // needs name set otherwise it throw null pointer exception when checking unit names
         // creating the player object and passing the avatar object to allow the players health to be set to the avatars.
         gameState.player1 = new Player(1,out,gameState.avatar, AppConstants.p1unit);
         AppConstants.callSleep(200);
@@ -106,7 +107,7 @@ public class Initalize implements EventProcessor {
         gameState.aiAvatar = new BetterUnit(out, aiAvatar, gameState.board.returnTile(7,2), gameState.board);
         aiAvatar.setIsPlayer(2);
         aiAvatar.setSummonedID(2);
-        
+        aiAvatar.setName("AI Avatar"); // needs name set otherwise it throw null pointer exception when checking unit names
 
         // creating the player object and passing the avatar object to allow the players health to be set to the avatars.
         gameState.player2 = new ComputerPlayer(2,out, gameState.aiAvatar, AppConstants.p2unit);
@@ -144,7 +145,7 @@ public class Initalize implements EventProcessor {
         gameState.summonedUnits.add(aiAvatar);
         
         
-        gameState.board.addDummyUnitsonBoard(out,gameState);
+        //gameState.board.addDummyUnitsonBoard(out,gameState);
         
         
         

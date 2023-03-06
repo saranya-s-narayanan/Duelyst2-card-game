@@ -32,18 +32,19 @@ public class CardClicked implements EventProcessor {
 
     @Override
     public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
-        AppConstants.printLog("------> CardClicked:: gameState.isGameActive ->"+gameState.isGameActive);
+        AppConstants.printLog("------> CardClicked:: message ->"+message.toPrettyString());
 
         if (gameState.isGameActive) // if the frontend connection is active
         {
             cardClick=message.get("messagetype");//message to keep track of previous click on front-end
+            handPosition = message.get("position").asInt();//get hand position
+
             AppConstants.printLog("------> message type:---->"+gameState.clickMessage);
             if(gameState.clickMessage != cardClick){
                 gameState.clickMessage=cardClick;
             }
             if (gameState.player1Turn) { // for the first player
 
-                handPosition = message.get("position").asInt();//get hand position
                 AppConstants.printLog("------> CardClicked:: Game is active !");
                 //method call to highlight card
                 highlightMiniCard(out, handPosition, gameState);
@@ -52,7 +53,9 @@ public class CardClicked implements EventProcessor {
 
             }
             else {
-                // highlightSummonableTiles(out, gameState, gameState.player2);
+
+            	
+            
             }
         }
 
@@ -86,25 +89,7 @@ public class CardClicked implements EventProcessor {
         }
     }
 
-    public static ArrayList<Tile> getSummonableTiles(ActorRef out, GameState gameState, Player player) {  // method used to retreives a list of the summonable tiles
-
-        if(gameState.SummonTileList==null){
-            gameState.SummonTileList= new ArrayList<Tile>();
-            // list of the tiles with units
-            ArrayList<Tile> list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);
-
-            // iteration through the list and highlight adjacent tiles
-            for (Tile items: list) {
-                ArrayList<Tile> listItem=gameState.board.summonableTiles(out, items);
-                for (Tile tile : listItem) {
-                    gameState.SummonTileList.add(tile);
-                }
-
-            }
-        }
-        return gameState.SummonTileList;
-
-    }
+    
 
     /** This method highlights MiniCards in hand
      * 
