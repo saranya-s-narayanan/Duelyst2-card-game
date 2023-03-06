@@ -142,9 +142,13 @@ public class Player {
 //	}
 
 	// This method syncs up the Player health with the health of their Avatar
-	public void syncHealth(GameState gameState) {
+	public void syncPlayerHealth(GameState gameState) {
 		//this.health = this.avatar.getHealth();
 		this.health = gameState.summonedUnits.get(0).getHealth();
+	}
+	// This method syncs up the AI health with the health of their Avatar
+	public void syncAIHealth(GameState gameState) {
+		this.health = gameState.summonedUnits.get(1).getHealth();
 	}
 	
 	/** Setting the player health on the front end
