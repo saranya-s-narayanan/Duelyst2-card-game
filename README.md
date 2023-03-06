@@ -125,6 +125,15 @@ event with customized ObjectNode parameters for performing movement.
 
 'moveAndAttackAIUnit' method simulate TileClicked event with customized Objectnode parameters for performing move and attack
 
+# Ranged attack
 
+`rangedAttack(ActorRef out, GameState gameState, Unit unit, Unit enemyUnit, Tile enemyTile, Tile startTile)` method has been created which is an edited
+version of `attackUnit()` method. It will execute the ranged attack logic and will be called inside `attackUnitRanged()`. I have also added additional 
+checks inside the `TileClicked` class to implement different subroutines of highlighting if the clicked units is one that has ranged attack.
 
+# Silverguard Knight ability
+
+The method `SilverguardKnightAbility(ActorRef out, GameState gameState)` has been added which checks if a silverguard Knight is on the board, and if so,
+increased the attck of the unit by 2. this is called inside the attack method which checks if the avatar has been damaged. this will also need to be 
+called inside any spell logic which checks for the avatar being damaged.
 
