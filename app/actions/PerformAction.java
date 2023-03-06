@@ -7,12 +7,7 @@ import com.fasterxml.jackson.databind.introspect.TypeResolutionContext;
 import commands.BasicCommands;
 import events.TileClicked;
 import structures.GameState;
-import structures.basic.BetterUnit;
-import structures.basic.EffectAnimation;
-import structures.basic.Player;
-import structures.basic.Tile;
-import structures.basic.Unit;
-import structures.basic.UnitAnimationType;
+import structures.basic.*;
 import utils.AppConstants;
 import utils.BasicObjectBuilders;
 import utils.StaticConfFiles;
@@ -145,6 +140,8 @@ public class PerformAction {
 	    	
 	    	gameState.player1.getAvatar().setHealth(attackVal);  // update enemy's health
 			enemyUnit.setHealth(attackVal); // update enemy's health front end
+
+			SpecialAbilities.SilverguardKnightAbility(out, gameState); // calls the silverguard knight ability
 			
 		    // To avoid negative values as health
 		    if(gameState.player1.getAvatar().getHealth()<0)
@@ -207,8 +204,9 @@ public class PerformAction {
 		    	gameState.player1.getAvatar().setHealth(attackVal);
 //		    	gameState.player1.setHealth(attackVal);
 				unit.setHealth(attackVal); // update enemy's health front end
-		    	
-		    	
+
+				SpecialAbilities.SilverguardKnightAbility(out, gameState); // calls the silverguard knight ability
+
 			    // To avoid negative values as health
 			    if(gameState.player1.getAvatar().getHealth()<0)
 			    {
