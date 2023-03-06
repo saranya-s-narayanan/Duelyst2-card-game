@@ -232,7 +232,7 @@ public class TileClicked implements EventProcessor {
                     gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
 
             }
-            else if(clickedTile.getUnitFromTile()!=null && gameState.summonedUnits.get(unitIdx).getAttacked()==false){
+            else if(clickedTile.getUnitFromTile()!=null && clickedTile.getUnitFromTile().getIsPlayer() != player.getID() && gameState.summonedUnits.get(unitIdx).getAttacked()==false && gameState.summonedUnits.get(unitIdx).getMoved()==false && !gameState.board.getAdjacentTilesToAttack(player,out, startTile).contains(clickedTile)){
                 AppConstants.printLog("------> TileClicked :: Attacking unit at tile " + clickedTile.getTilex() + " " + clickedTile.getTiley());
                 boolean attackStatus=false;
 
