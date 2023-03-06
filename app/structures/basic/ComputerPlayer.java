@@ -1,6 +1,7 @@
 package structures.basic;
 
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -24,6 +25,7 @@ public class ComputerPlayer extends Player{
 	List <Tile> tileWithMyUnit;//to keep track of tiles occupied by AI units
 	List <Tile> tileWithPlayerUnits;//to keep track of human player units
 	List <Tile> possibleSummonList;
+	Tile avatarTile;
     /** constructor to create a player with set health and mana which calls 
      * setPlayer to place the data on the front end.
      * 
@@ -240,6 +242,17 @@ public class ComputerPlayer extends Player{
 	public Boolean listPossibleMove(ActorRef out, GameState gameState) {
 		//need to list all possible moves for the AI player
 		Boolean done =false;//boolean to send back
+		possibleSummon(out,gameState);
+		possibleMoveAttack(out,gameState);
+		return done;
+	}
+
+	/**
+	 * This method will give possible summon cards and a list of tiles on which it can be summoned
+	 * @param out
+	 * @param gameState
+	 */
+	public void possibleSummon(ActorRef out, GameState gameState){
 		int handindex=-1;
 		//first check which cards can be played
 		for (Card card : cardInHand) {
@@ -261,15 +274,57 @@ public class ComputerPlayer extends Player{
 				System.out.println("Most forward Tile: ["+ mostForwardTile.getTilex()+","+mostForwardTile.getTiley()+"]");
 			}
 		}
+	}
+
+	public void possibleMoveAttack(ActorRef out, GameState gameState) {
 		//possible moves if the unit has not moved or attacked
 		for (Unit u : gameState.summonedUnits) {
 			if(u.getId()>19 && u.getId()!=40){//checking if they are AI units or not
 				if(u.getMoved()==false || u.getAttacked()==false){//checking if the unit has not moved or attacked
-					System.out.println("unit: "+u.getName()+" with id: "+u.getId()+" has not attacked or moved");
+					if(u.getId()==41){
+						System.out.println("Avatar unit: "+u.getName()+" with id: "+u.getId()+" has not attacked or moved");
+						//possible move/attack tiles
+						for (Tile unitTile : tileWithMyUnit) {
+							List <Tile> possibleTilesForMove = gameState.board.highlightTilesMoveAndAttack(0, gameState.player2, out, unitTile, gameState);
+							Tile mostBackwardTile= new Tile();
+							for (Tile tile : possibleTilesForMove) {
+								int minTileX=-1;
+								int minTileY=-1;
+								if(tile.getTilex()>=minTileX){
+									if(tile.getTiley()>=minTileY) mostBackwardTile=tile;
+								}
+								System.out.println("Possible moves attack/move for unit: "+u.getName() + " to tile: ["+tile.getTilex()+","+tile.getTiley()+"]");
+								System.out.println("Most Backward Tile: ["+ mostBackwardTile.getTilex()+","+mostBackwardTile.getTiley()+"]");	
+							}
+
+						}
+					}
+					else{
+						System.out.println("unit: "+u.getName()+" with id: "+u.getId()+" has not attacked or moved");
+						//possible move/attack tiles
+						Tile mostForwardTile= new Tile();
+						for (Tile unitTile : tileWithMyUnit) {
+							List <Tile> possibleTilesForMove = gameState.board.highlightTilesMoveAndAttack(0, gameState.player2, out, unitTile, gameState);
+							for (Tile tile : possibleTilesForMove) {
+								System.out.println("Possible moves attack/move for unit: "+u.getName() + " to tile: ["+tile.getTilex()+","+tile.getTiley()+"]");	
+							}
+						}
+						
+						for (Tile tile : possibleSummonList) {
+							// System.out.println("Possible summon tiles: ["+ tile.getTilex()+","+tile.getTiley()+"]");
+							int maxTileX=9;
+							int maxTileY=9;
+							if(tile.getTilex()<=maxTileX){
+								if(tile.getTiley()<=maxTileY) mostForwardTile=tile;
+							}
+						}
+						System.out.println("Most forward Tile: ["+ mostForwardTile.getTilex()+","+mostForwardTile.getTiley()+"]");
+					}
+					
+					
 				}
 			}
 		}
-		return done;
 	}
 	
 	
