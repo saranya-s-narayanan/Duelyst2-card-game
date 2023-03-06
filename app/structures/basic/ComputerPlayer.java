@@ -61,7 +61,7 @@ public class ComputerPlayer extends Player{
 			movesLeft=listPossibleMove(out,gameState);
 		}
 		
-		drawCard(out,gameState); // To check drawcard possibilities
+		// drawCard(out,gameState); // To check drawcard possibilities
 		
 		
 	}
@@ -239,6 +239,12 @@ public class ComputerPlayer extends Player{
 		tc.processEvent(out, gameState, eventMessage); // send it to the Tileclicked event processor
 	}
 	
+
+	/**
+	 * This method will give a list of possible moves like summon or move/attack
+	 * @param out
+	 * @param gameState
+	 */
 	public Boolean listPossibleMove(ActorRef out, GameState gameState) {
 		//need to list all possible moves for the AI player
 		Boolean done =false;//boolean to send back
@@ -276,52 +282,28 @@ public class ComputerPlayer extends Player{
 		}
 	}
 
+
+	/**
+	 * This method will give a list of possible moves/attack for all the AI units
+	 * @param out
+	 * @param gameState
+	 */
 	public void possibleMoveAttack(ActorRef out, GameState gameState) {
 		//possible moves if the unit has not moved or attacked
-		for (Unit u : gameState.summonedUnits) {
-			if(u.getId()>19 && u.getId()!=40){//checking if they are AI units or not
-				if(u.getMoved()==false || u.getAttacked()==false){//checking if the unit has not moved or attacked
-					if(u.getId()==41){
-						System.out.println("Avatar unit: "+u.getName()+" with id: "+u.getId()+" has not attacked or moved");
-						//possible move/attack tiles
-						for (Tile unitTile : tileWithMyUnit) {
-							List <Tile> possibleTilesForMove = gameState.board.highlightTilesMoveAndAttack(0, gameState.player2, out, unitTile, gameState);
-							Tile mostBackwardTile= new Tile();
-							for (Tile tile : possibleTilesForMove) {
-								int minTileX=-1;
-								int minTileY=-1;
-								if(tile.getTilex()>=minTileX){
-									if(tile.getTiley()>=minTileY) mostBackwardTile=tile;
-								}
-								System.out.println("Possible moves attack/move for unit: "+u.getName() + " to tile: ["+tile.getTilex()+","+tile.getTiley()+"]");
-								System.out.println("Most Backward Tile: ["+ mostBackwardTile.getTilex()+","+mostBackwardTile.getTiley()+"]");	
-							}
-
-						}
+		for (Tile tile : tileWithMyUnit) {
+			System.out.println("Tile with my unit: "+ tile.toString());
+			if(tile.getUnitFromTile().getId()==41){//for AI avatar
+				System.out.println("Unit: "+tile.getUnitFromTile().getName()+" with id: "+tile.getUnitFromTile().getId()+" has not attacked or moved");
+				System.out.println("need to defend Avatar");
+				//add method to move the avatar around to defend to be done
+			}
+			else{//for other units of AI
+				List <Tile> possibleTilesForMove = gameState.board.highlightTilesMoveAndAttack(0, gameState.player2, out, tile, gameState);
+				for (Tile tileToMove : possibleTilesForMove) {
+					if(tileToMove.getUnitFromTile()!= null && (tileToMove.getUnitFromTile().getId()<20 || tileToMove.getUnitFromTile().getId()==40)){
+						System.out.println("Possible moves: Attack for unit: "+tile.getUnitFromTile().getName() + " to tile: "+tileToMove.toString());		
 					}
-					else{
-						System.out.println("unit: "+u.getName()+" with id: "+u.getId()+" has not attacked or moved");
-						//possible move/attack tiles
-						Tile mostForwardTile= new Tile();
-						for (Tile unitTile : tileWithMyUnit) {
-							List <Tile> possibleTilesForMove = gameState.board.highlightTilesMoveAndAttack(0, gameState.player2, out, unitTile, gameState);
-							for (Tile tile : possibleTilesForMove) {
-								System.out.println("Possible moves attack/move for unit: "+u.getName() + " to tile: ["+tile.getTilex()+","+tile.getTiley()+"]");	
-							}
-						}
-						
-						for (Tile tile : possibleSummonList) {
-							// System.out.println("Possible summon tiles: ["+ tile.getTilex()+","+tile.getTiley()+"]");
-							int maxTileX=9;
-							int maxTileY=9;
-							if(tile.getTilex()<=maxTileX){
-								if(tile.getTiley()<=maxTileY) mostForwardTile=tile;
-							}
-						}
-						System.out.println("Most forward Tile: ["+ mostForwardTile.getTilex()+","+mostForwardTile.getTiley()+"]");
-					}
-					
-					
+					System.out.println("Possible moves: Move for unit: "+tile.getUnitFromTile().getName() + " to tile: "+tileToMove.toString());	
 				}
 			}
 		}
