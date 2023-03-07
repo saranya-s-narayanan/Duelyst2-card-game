@@ -49,9 +49,8 @@ public class ComputerPlayer extends Player{
 		
 		Tile tileToSummon=gameState.board.returnTile(6, 3); // The tile to move 
 		
-		//To test move and attack
-//		tileToSummon.tilex=6;  //-------> change tileX to test
-//		tileToSummon.tiley=3;  //-------> change tileY to test
+		//To test summon
+
 		drawCardAI(handIdx+1,out,gameState,currentTile,tileToSummon);
 
 	}

@@ -121,6 +121,7 @@ public class EndTurnClicked implements EventProcessor{
 		
 //		gameState.player2.testMovement(out, gameState);
 //		gameState.player2.testAttack(out, gameState);
+		
 //		gameState.player2.testCardSummon(out, gameState);
 
 		
