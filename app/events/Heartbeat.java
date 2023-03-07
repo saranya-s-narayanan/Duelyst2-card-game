@@ -35,7 +35,7 @@ public class Heartbeat implements EventProcessor{
 		
 		
 		// When the first Heartbeat message is received, update the received time and start the timer
-		if(gameState.lastHeartbeatTime==0) {
+		if(gameState.lastHeartbeatTime==0 && gameState.isGameOver==false) {
 			gameState.lastHeartbeatTime=System.currentTimeMillis();
 			gameState.isGameActive=true;
 			startHeartbeatTaskTimer(out,gameState);
