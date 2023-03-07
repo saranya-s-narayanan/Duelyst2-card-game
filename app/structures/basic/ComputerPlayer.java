@@ -25,7 +25,10 @@ public class ComputerPlayer extends Player{
 	List <Tile> tileWithMyUnit;//to keep track of tiles occupied by AI units
 	List <Tile> tileWithPlayerUnits;//to keep track of human player units
 	List <Tile> possibleSummonList;
+
 	Tile avatarTile;
+	
+	boolean movesEnd=false,cardsDrawEnd=false;
     /** constructor to create a player with set health and mana which calls 
      * setPlayer to place the data on the front end.
      * 
@@ -45,14 +48,10 @@ public class ComputerPlayer extends Player{
 
 		// Logic to decide what action to perform can be written here
 		
-		checkHand();//checking the cards in the hand
+		
 		checkUnitTiles(out,gameState);
 		
-		Tile tileTomove=new Tile();
-		tileTomove.setTilex(4);
-		tileTomove.setTiley(2);
 		
-
 
 		// Check if avatar is in range of any enemy unit - SS
 		ArrayList<Tile> dangerTiles=checkIfUnitInDanger(currentTile,out,gameState);
@@ -90,7 +89,26 @@ public class ComputerPlayer extends Player{
 		}else {
 			AppConstants.printLog("<-------- AI :: startAILogic():: Avatar is NOT in danger ! ");
 
-			// Avatar is safe from direct or indirect unit attacks. Can proceed with other units
+			// Avatar is safe from direct or indirect unit attacks. Can proceed with other units or cards
+			
+			if(tileWithMyUnit.size()<2) // No units are summoned yet
+			{
+				AppConstants.printLog("<-------- AI :: startAILogic():: Summon a unit !");
+
+				// check cards and summon unit
+				int handIdxToUse=checkHand(1);//checking the cards in the hand (mode==1 --> retrieve index of card with only units)
+				AppConstants.printLog("<-------- AI :: startAILogic():: handIdxToUse : "+handIdxToUse);
+
+				if(handIdxToUse>-1)
+				{
+					// We have a unit to summon, now find for a possible tile to summon
+					Tile tileToSummon=findAtileToSummon(currentTile,out,gameState);
+					
+				}else {
+					cardsDrawEnd=true; //Cannot draw further cards in this turn
+				}
+			}
+			
 		}
 		
 
@@ -102,6 +120,51 @@ public class ComputerPlayer extends Player{
 
 		
 	}
+	
+	
+	/** Method finds a tile to summon a unit on board
+	 * 
+	 * @param currentTile
+	 * @param gameState 
+	 * @param out 
+	 * @return
+	 */
+
+	private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameState) {
+		
+		Tile tileToSummon = null;
+		
+		possibleSummonList= PerformAction.getSummonableTiles(out, gameState, gameState.player2);
+		
+//		for(Tile tile:possibleSummonList)
+//		{
+//			AppConstants.printLog("<-------- AI :: startAILogic():: findAtileToSummon : tile: ["+tile.getTilex()+","+tile.getTiley()+"]");
+//			
+//			if(tile.getUnitFromTile()==null)
+//			{
+//				tileToSummon=tile;
+//			}
+//
+//		}
+		
+		// All summonable tiles are already occupied
+		if(tileToSummon==null)
+		{
+			for(int i=0;i<AppConstants.boardWidth;i++)
+			{
+				for(int j=0;j<AppConstants.boardHeight;j++)
+				{
+					AppConstants.printLog("<-------- AI :: startAILogic():: findAtileToSummon : tile: ["+i+","+j+"]");
+
+				}
+			}
+		}
+
+		//gameState.board.highlightTilesRed(out, (ArrayList<Tile>) possibleSummonList);
+		
+		return tileToSummon;
+	}
+
 
 	private void drawCard(ActorRef out, GameState gameState) {
 
@@ -150,11 +213,40 @@ public class ComputerPlayer extends Player{
 
 	//method the check the cards in the hand
 	//use map or dict to store these in order to utilize later when deciding which card to summon
-	public void checkHand(){
+	
+	/** Method to check cards and return the first match handindex to use
+	 * 
+	 * @param mode -> 0 - unit/spell, 1- only unit, 2- only spell
+	 */
+	public int checkHand(int mode){
 //		cardInHand=hand; --> similar as hand
-		for (Card card : hand) {
-			System.out.println("card in AI's hand: "+ card.getCardname()+ " with Mana cost: "+ card.getManacost());
+		for (int i=0;i<hand.size();i++) {
+
+			Card c=hand.get(i);
+			
+			if(mode==1) // can be only unit
+			{
+				if(c.getManacost()<=getMana()) //  check mana
+				{
+					return i; // return index
+				}
+			}else if(mode==2) { // can be only spell
+				if(c.getId()==4 || c.getId()==8 || c.getId()==14 || c.getId()==18 || c.getId()==22 || c.getId()==27 || c.getId()==32 || c.getId()==37)
+				{
+					if(c.getManacost()<=getMana())
+					{
+						return i;
+					}
+				}
+			}else { // can be either unit or spell
+				if(c.getManacost()<=getMana()) //  check mana
+				{
+					return i; // return index
+				}
+			}
+			
 		}
+		return -1;
 	}
 
 	// method to get the tiles with the units on the board
@@ -428,6 +520,17 @@ public class ComputerPlayer extends Player{
 				}
 			}
 		}
+	}
+	
+	/** Method returns a random number between min and max
+	 * 
+	 * @param Min
+	 * @param Max
+	 * @return
+	 */
+	public static int random_int(int Min, int Max)
+	{
+	     return (int) (Math.random()*(Max-Min))+Min;
 	}
 	
 	
