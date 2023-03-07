@@ -95,8 +95,8 @@ public class ComputerPlayer extends Player{
 	
 		
 		boolean isContinue=true; //boolean to keep track of how long loop should continue
-		
-		while(isContinue==true)
+		int i=0;//running the loop only ten times per turn for now to handle infinite loop
+		while(isContinue)
 		{
 			checkUnitTiles(out,gameState);
 
@@ -124,10 +124,12 @@ public class ComputerPlayer extends Player{
 					AppConstants.printLog("<-------- AI :: startAILogic():: Find possible moves! ");
 
 					// Get list of possible backward moves respect to current avatar tile position
-//					ArrayList<Tile> possibleTilesToMove=possibleMoves("backward",currentTile,out,gameState);
+					// ArrayList<Tile> possibleTilesToMove=possibleMoves("backward",currentTile,out,gameState);
 					
 
-				}		
+				}
+				i++;
+				if(i>10) isContinue=false;		
 				
 			}else {
 				AppConstants.printLog("<-------- AI :: startAILogic():: Avatar is NOT in danger ! ");
@@ -280,21 +282,30 @@ public class ComputerPlayer extends Player{
 			
 			if(mode==1) // can be only unit
 			{
-				if(c.getManacost()<=getMana() && c.getId()!=4 || c.getId()!=8 || c.getId()!=14 || c.getId()!=18 || c.getId()!=22 || c.getId()!=27 || c.getId()!=32 || c.getId()!=37) //  check mana
+				if(c.getManacost()<=getMana() && c.getId()!=22 || c.getId()!=27 || c.getId()!=32 || c.getId()!=37) //  check mana
 				{
+					System.out.println("return hand position "+i+" with unit card: "+ c.getCardname());
 					return i; // return index
 				}
 			}else if(mode==2) { // can be only spell
-				if(c.getId()==4 || c.getId()==8 || c.getId()==14 || c.getId()==18 || c.getId()==22 || c.getId()==27 || c.getId()==32 || c.getId()==37)
+				if(c.getId()==22 || c.getId()==27 || c.getId()==32 || c.getId()==37)
 				{
 					if(c.getManacost()<=getMana())
 					{
+						System.out.println("return hand position "+i+" with spell card: "+ c.getCardname());
 						return i;
 					}
 				}
-			}else { // can be either unit or spell
+			}
+			else { // can be either unit or spell
 				if(c.getManacost()<=getMana()) //  check mana
 				{
+					if(c.getId()==22 || c.getId()==27 || c.getId()==32 || c.getId()==37){//encountered spell
+						System.out.println("Encontered Spell card at hand position: "+i);
+						// i++;//adding to skip spell card
+						continue;
+					}
+					System.out.println("return hand position "+i+" with card: "+ c.getCardname());
 					return i; // return index
 				}
 			}
@@ -303,7 +314,12 @@ public class ComputerPlayer extends Player{
 		return -1;
 	}
 
-	// method to get the tiles with the units on the board
+	/** Methods to get the tiles with the units on the board
+	 * 
+	 * @param out
+	 * @param gameState
+	 * @return
+	 */
 	public void checkUnitTiles(ActorRef out,GameState gameState) {
 		//AI unit's tile
 		tileWithMyUnit=gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), gameState.player2);
