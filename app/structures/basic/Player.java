@@ -261,16 +261,29 @@ public class Player {
      */
     
 	public void drawAnotherCard(ActorRef out, int playerID) {
-		if(position<=AppConstants.maxCardsInHand){
+		if(position<=AppConstants.maxCardsInHand && deck.size()>0){
 			//move the top card from deck to hand
-			hand.add(position-1, deck.get(0));
-			deck.remove(0);
-			if(playerID==1){
-				//draw the card
-				BasicCommands.drawCard(out, hand.get(position-1) , position, 0);
-				AppConstants.callSleep(500);
-				//increment the position
-				position++;
+			if((position-1)>1){//added to manage index out of bound exception
+				hand.add(position-1, deck.get(0));
+				deck.remove(0);
+				if(playerID==1){
+					//draw the card
+					BasicCommands.drawCard(out, hand.get(position-1) , position, 0);
+					AppConstants.callSleep(500);
+					//increment the position
+					position++;
+				}
+			}
+			else{
+				hand.add(1, deck.get(0));
+				deck.remove(0);
+				if(playerID==1){
+					//draw the card
+					BasicCommands.drawCard(out, hand.get(position-1) , position, 0);
+					AppConstants.callSleep(500);
+					//increment the position
+					position++;
+				}
 			}
 			
 		}
@@ -294,7 +307,14 @@ public class Player {
 					AppConstants.callSleep(500);
 				}
 			}else {
-				// To do deck empty scenario
+				// deck empty scenario
+				if(playerID==1){
+					BasicCommands.addPlayer1Notification(out, "No more cards in deck", 2);
+					AppConstants.callSleep(200);
+				}
+				else{
+					AppConstants.printLog("<-------- AI :: drawCardAndProcessAction():: Deck Empty");
+				}
 			}
 				
 		}
@@ -396,7 +416,7 @@ public class Player {
 		}
 		else {
 			for (Unit u : playerUnits) {
-				if (u.getId() == card.getId() || u.getId() == card.getId() + 10) {
+				if (u.getId() == card.getId()) {
 					tile.setUnitToTile(unit);
 					unit.setSummonedID(gameState.summonedUnits.size()+1);//unique summonedID
 					unit.setIsPlayer(2);
@@ -411,7 +431,6 @@ public class Player {
 					AppConstants.callSleep(100);
 					BasicCommands.setUnitAttack(out, unit, unit.getAttack());
 					AppConstants.callSleep(100);
-					tile.setUnitToTile(unit);
 				}
 			}
 			
