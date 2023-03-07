@@ -30,10 +30,12 @@ public class Player {
 
 	String[] unitFiles;
 	
-//	int currentXpos=0,currentYpos=0;
 
 	public List<Card> deck;// deck of card
 	public List<Card> hand;// hand containing card
+	
+	Tile currentTile; // To keep track of avatar's tile
+
 
 	/** constructor to create a player with set health and mana which calls setPlayer to place the data on the front end.
 	 * 
@@ -85,6 +87,14 @@ public class Player {
 		this.mana = mana;
 	}
 	
+	public void setCurrentTile(Tile currentTile) {
+	    	this.currentTile=currentTile;
+	}
+	    
+	 public Tile getCurrentTile() {
+	    	return currentTile;
+	 }
+
 	public boolean getHighlighted() {
 		return highlighted;
 	}
@@ -125,30 +135,22 @@ public class Player {
 		return hand.size();
 	}
 	
-	
-	
-		
-//	public int getCurrentXpos() {
-//		return currentXpos;
-//	}
-//	public void setCurrentXpos(int currentXpos) {
-//		this.currentXpos = currentXpos;
-//	}
-//	public int getCurrentYpos() {
-//		return currentYpos;
-//	}
-//	public void setCurrentYpos(int currentYpos) {
-//		this.currentYpos = currentYpos;
-//	}
+
 
 	// This method syncs up the Player health with the health of their Avatar
 	public void syncPlayerHealth(GameState gameState) {
+		if(gameState.summonedUnits.size()>0) // To tackle IndexOutofBoundException
+		{
 		//this.health = this.avatar.getHealth();
 		this.health = gameState.summonedUnits.get(0).getHealth();
+		}
 	}
 	// This method syncs up the AI health with the health of their Avatar
 	public void syncAIHealth(GameState gameState) {
+		if(gameState.summonedUnits.size()>1) // To tackle IndexOutofBoundException
+		{
 		this.health = gameState.summonedUnits.get(1).getHealth();
+		}
 	}
 	
 	/** Setting the player health on the front end

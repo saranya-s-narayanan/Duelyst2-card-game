@@ -75,7 +75,8 @@ public class Initalize implements EventProcessor {
         AppConstants.callSleep(200);
         gameState.player1Turn=true;
 		
-        
+        gameState.player1.setCurrentTile(gameState.board.returnTile(1,2)); // Set player current tile
+
         //setting the deck as an ArrayList
         gameState.player1.createDeck(gameState.player1.getID());
         AppConstants.callSleep(200);
@@ -113,7 +114,7 @@ public class Initalize implements EventProcessor {
         gameState.player2 = new ComputerPlayer(2,out, gameState.aiAvatar, AppConstants.p2unit);
         AppConstants.callSleep(200);
 
-        gameState.player2.setCurrentTile(gameState.board.returnTile(7,2));
+        gameState.player2.setCurrentTile(gameState.board.returnTile(7,2)); // Set player current tile
 
         //print message to the terminal notifying the start of the draw card method
         // AppConstants.printLog("------> Initialize :: creating deck for AI");
@@ -145,7 +146,7 @@ public class Initalize implements EventProcessor {
         gameState.summonedUnits.add(aiAvatar);
         
         
-        gameState.board.addDummyUnitsonBoard(out,gameState);
+//        gameState.board.addDummyUnitsonBoard(out,gameState);
         
         
         
