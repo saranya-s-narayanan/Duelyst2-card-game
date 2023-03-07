@@ -69,6 +69,11 @@ public class GameState {
         this.aiAvatar = null;
         this.lastHeartbeatTime = 0;
         this.startTile=null;
+        startTrue=false;
+        handPosClicked=-1;
+        summonedUnits=new ArrayList<Unit>(); 
+        SummonTileList = null;
+        clickMessage=null;
 
     }
 
