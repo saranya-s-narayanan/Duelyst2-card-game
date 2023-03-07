@@ -52,18 +52,7 @@ public class ComputerPlayer extends Player{
 		tileTomove.setTilex(4);
 		tileTomove.setTiley(2);
 		
-//		//--------------- test------------
-//		AppConstants.printLog("<-------- AI :: startAILogic():: Moving player avatar to test !");
-//
-//		moveAIUnit(out, gameState, gameState.player1.currentTile, tileTomove);
-//		
-//		AppConstants.printLog("<-------- AI :: startAILogic():: Setting player avatar to health to 2 !");
-//
-//		gameState.player1.getAvatar().setHealth(2);  // update enemy's health
-//		gameState.player1.setHealth(2); 
-//		
-//		AppConstants.callSleep(1000);
-//		AppConstants.printLog("<-------- AI :: startAILogic():: Check AVATAR danger status...!");
+
 
 		// Check if avatar is in range of any enemy unit - SS
 		ArrayList<Tile> dangerTiles=checkIfUnitInDanger(currentTile,out,gameState);
@@ -74,15 +63,13 @@ public class ComputerPlayer extends Player{
 			
 			// Avatar is in danger, need to move away or attack the enemy
 			
-			// If the player avatar is nearby and it's health <= AI attack value, attack
+			// If the player avatar is nearby and it's health <= AI attack value, attack and thus game over
 			if(dangerTiles.contains(gameState.player1.getCurrentTile()))
 			{
-				AppConstants.printLog("<-------- AI :: startAILogic():: gameState.player1.getAvatar().getHealth() :  "+gameState.player1.getAvatar().getHealth());
-				AppConstants.printLog("<-------- AI :: startAILogic():: getAvatar().getAttack() :  "+getAvatar().getAttack());
 
 				// Test
-				gameState.player1.getAvatar().setHealth(2);
-				gameState.player1.setHealth(2);
+//				gameState.player1.getAvatar().setHealth(2);
+//				gameState.player1.setHealth(2);
 				
 				if(gameState.player1.getAvatar().getHealth()<=getAvatar().getAttack())
 				{
