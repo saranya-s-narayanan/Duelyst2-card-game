@@ -79,11 +79,12 @@ public class ComputerPlayer extends Player{
 				}
 			}else {
 				// Otherwise,try defensive way, move backward
-				AppConstants.printLog("<-------- AI :: startAILogic():: Fine possible moves! ");
+				AppConstants.printLog("<-------- AI :: startAILogic():: Find possible moves! ");
 
 				// Get list of possible backward moves respect to current avatar tile position
-				possibleMoves("backward",currentTile,out,gameState);
+//				ArrayList<Tile> possibleTilesToMove=possibleMoves("backward",currentTile,out,gameState);
 				
+
 			}		
 			
 		}else {
@@ -349,53 +350,54 @@ public class ComputerPlayer extends Player{
 
 	/**
 	 * This method will give a list of possible moves for all the AI units
-	 * @param verticalDirection --> 0- no change, 1 - forward, -1 -  backward
-	 * @param horizontalDirection --> 0- no change, 1-  upward, -1 - downward
+	 * @param verticalDirection --> "downward" or "upward"
+	 * @param horizontalDirection --> "backward" or "forward"
 	 * @param out
 	 * @param gameState
 	 */
-	public ArrayList<Tile> possibleMoves(String code, Tile tile, ActorRef out, GameState gameState) {
-		//possible moves if the unit has not moved or attacked
-		
-		ArrayList <Tile> possibleTilesForMove = gameState.board.highlightTilesMoveAndAttack(0, gameState.player2, out, tile, gameState);
-		
-		// Get possible moves w.r.t horizontal direction
-		if(code.equals("backward") || code.equals("forward"))
-		{
-		for (Tile tileToMove : possibleTilesForMove) {
-				if(tileToMove.getUnitFromTile()== null ){
-					if(code.equals("backward")) { // get backward tiles to move
-						if(tileToMove.getTilex()>tile.getTilex())
-							possibleTilesForMove.add(tileToMove);
-					}else if(code.equals("forward")) { // get forward tiles to move
-						if(tileToMove.getTilex()<tile.getTilex())
-							possibleTilesForMove.add(tileToMove);
-					}else {
-						possibleTilesForMove.add(tileToMove);
-
-					}
-					}
-			}
-		}else // Get possible moves w.r.t vertical direction
-			if(code.equals("upward") || code.equals("downward"))
-			{
-			for (Tile tileToMove : possibleTilesForMove) {
-					if(tileToMove.getUnitFromTile()== null ){
-						if(code.equals("downward")) { // get downward tiles to move
-							if(tileToMove.getTiley()>tile.getTiley())
-								possibleTilesForMove.add(tileToMove);
-						}else if(code.equals("upward")) { // get forward tiles to move
-							if(tileToMove.getTiley()<tile.getTiley())
-								possibleTilesForMove.add(tileToMove);
-						}else {
-							possibleTilesForMove.add(tileToMove);
-
-						}
-						}
-				}
-			}
-		return possibleTilesForMove;	
-		}
+//	public ArrayList<Tile> possibleMoves(String code, Tile tile, ActorRef out, GameState gameState) {
+//		//possible moves if the unit has not moved or attacked
+//		
+//		ArrayList <Tile> possibleTilesForMove = gameState.board.highlightTilesMoveAndAttack(0, gameState.player2, out, tile, gameState);
+//		AppConstants.printLog("<-------- AI :: drawCard():: possibleTilesForMove size : "+possibleTilesForMove.size());
+//
+//		// Get possible moves w.r.t horizontal direction
+//		if(code.equals("backward") || code.equals("forward"))
+//		{
+//		for (Tile tileToMove : possibleTilesForMove) {
+//				if(tileToMove.getUnitFromTile()== null ){
+//					if(code.equals("backward")) { // get backward tiles to move
+//						if(tileToMove.getTilex()>tile.getTilex())
+//							possibleTilesForMove.add(tileToMove);
+//					}else if(code.equals("forward")) { // get forward tiles to move
+//						if(tileToMove.getTilex()<tile.getTilex())
+//							possibleTilesForMove.add(tileToMove);
+//					}else {
+//						possibleTilesForMove.add(tileToMove);
+//
+//					}
+//					}
+//			}
+//		}else // Get possible moves w.r.t vertical direction
+//			if(code.equals("upward") || code.equals("downward"))
+//			{
+//			for (Tile tileToMove : possibleTilesForMove) {
+//					if(tileToMove.getUnitFromTile()== null ){
+//						if(code.equals("downward")) { // get downward tiles to move
+//							if(tileToMove.getTiley()>tile.getTiley())
+//								possibleTilesForMove.add(tileToMove);
+//						}else if(code.equals("upward")) { // get forward tiles to move
+//							if(tileToMove.getTiley()<tile.getTiley())
+//								possibleTilesForMove.add(tileToMove);
+//						}else {
+//							possibleTilesForMove.add(tileToMove);
+//
+//						}
+//						}
+//				}
+//			}
+//		return possibleTilesForMove;	
+//		}
 	
 	
 	/**
