@@ -95,6 +95,9 @@ public class Tile {
 	public void setTiley(int tiley) {
 		this.tiley = tiley;
 	}
+	public String toString() {
+		return "["+this.getTilex()+","+this.getTiley()+"]";
+	}
 	
 	/**
 	 * Loads a tile from a configuration file

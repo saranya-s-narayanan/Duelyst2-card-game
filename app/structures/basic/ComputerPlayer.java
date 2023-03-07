@@ -1,9 +1,11 @@
 package structures.basic;
 
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import actions.PerformAction;
 import akka.actor.ActorRef;
 import commands.BasicCommands;
 import events.CardClicked;
@@ -19,7 +21,11 @@ import utils.AppConstants;
 public class ComputerPlayer extends Player{
 
 	Tile currentTile; // To keep track of avatar's tile
-	
+	List <Card> cardInHand;//to keep track of card in the hand
+	List <Tile> tileWithMyUnit;//to keep track of tiles occupied by AI units
+	List <Tile> tileWithPlayerUnits;//to keep track of human player units
+	List <Tile> possibleSummonList;
+	Tile avatarTile;
     /** constructor to create a player with set health and mana which calls 
      * setPlayer to place the data on the front end.
      * 
@@ -50,7 +56,12 @@ public class ComputerPlayer extends Player{
 //		checkAttack(out,gameState); // To check attack possibilities
 		checkHand();//checking the cards in the hand
 		checkUnitTiles(out,gameState);
-		drawCard(out,gameState); // To check drawcard possibilities
+		Boolean movesLeft=true;
+		if(movesLeft){
+			movesLeft=listPossibleMove(out,gameState);
+		}
+		
+		// drawCard(out,gameState); // To check drawcard possibilities
 		
 		
 	}
@@ -103,7 +114,7 @@ public class ComputerPlayer extends Player{
 	//method the check the cards in the hand
 	//use map or dict to store these in order to utilize later when deciding which card to summon
 	public void checkHand(){
-		List <Card> cardInHand=super.hand;
+		cardInHand=super.hand;
 		for (Card card : cardInHand) {
 			System.out.println("card in AI's hand: "+ card.getCardname()+ " with Mana cost: "+ card.getManacost());
 		}
@@ -112,13 +123,13 @@ public class ComputerPlayer extends Player{
 	// method to get the tiles with the units on the board
 	public void checkUnitTiles(ActorRef out,GameState gameState) {
 		//AI unit's tile
-		List <Tile> tileWithMyUnit=gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), gameState.player2);
+		tileWithMyUnit=gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), gameState.player2);
 		for (Tile tile : tileWithMyUnit) {
 			if(tile.getUnitFromTile().getId()==41) System.out.println("Tiles with AI units: "+tile.getTilex()+" "+ tile.getTiley()+ " with unit AI_Aviatar and id: " + tile.getUnitFromTile().getId());
 			else System.out.println("Tiles with AI units: "+tile.getTilex()+" "+ tile.getTiley()+ " with unit: "+ tile.getUnitFromTile().getName()+ " and id: " + tile.getUnitFromTile().getId());
 		}
 		//player unit's tile
-		List<Tile> tileWithPlayerUnits = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), gameState.player1);
+		tileWithPlayerUnits = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), gameState.player1);
 		for (Tile tile : tileWithPlayerUnits) {
 			if(tile.getUnitFromTile().getId()==40) System.out.println("Tiles with Player units: "+tile.getTilex()+" "+ tile.getTiley()+ " with unit Human_Avatar and id: " + tile.getUnitFromTile().getId());
 			else System.out.println("Tiles with Player units: "+tile.getTilex()+" "+ tile.getTiley()+ " with unit: "+ tile.getUnitFromTile().getName()+ " and id: " + tile.getUnitFromTile().getId());
@@ -229,6 +240,74 @@ public class ComputerPlayer extends Player{
 	}
 	
 
+	/**
+	 * This method will give a list of possible moves like summon or move/attack
+	 * @param out
+	 * @param gameState
+	 */
+	public Boolean listPossibleMove(ActorRef out, GameState gameState) {
+		//need to list all possible moves for the AI player
+		Boolean done =false;//boolean to send back
+		possibleSummon(out,gameState);
+		possibleMoveAttack(out,gameState);
+		return done;
+	}
+
+	/**
+	 * This method will give possible summon cards and a list of tiles on which it can be summoned
+	 * @param out
+	 * @param gameState
+	 */
+	public void possibleSummon(ActorRef out, GameState gameState){
+		int handindex=-1;
+		//first check which cards can be played
+		for (Card card : cardInHand) {
+			handindex =cardInHand.indexOf(card)+1;
+			//check if mana cost of card is more than the mana of the AI
+			if(super.getMana()>=card.getManacost()){
+				System.out.println("card with hand position: "+ handindex+" name: "+ card.getCardname()+" can be played");
+				//get summonable tiles
+				possibleSummonList= PerformAction.getSummonableTiles(out, gameState, gameState.player2);
+				Tile mostForwardTile= new Tile();
+				for (Tile tile : possibleSummonList) {
+					// System.out.println("Possible summon tiles: ["+ tile.getTilex()+","+tile.getTiley()+"]");
+					int maxTileX=9;
+					int maxTileY=9;
+					if(tile.getTilex()<=maxTileX){
+						if(tile.getTiley()<=maxTileY) mostForwardTile=tile;
+					}
+				}
+				System.out.println("Most forward Tile: ["+ mostForwardTile.getTilex()+","+mostForwardTile.getTiley()+"]");
+			}
+		}
+	}
+
+
+	/**
+	 * This method will give a list of possible moves/attack for all the AI units
+	 * @param out
+	 * @param gameState
+	 */
+	public void possibleMoveAttack(ActorRef out, GameState gameState) {
+		//possible moves if the unit has not moved or attacked
+		for (Tile tile : tileWithMyUnit) {
+			System.out.println("Tile with my unit: "+ tile.toString());
+			if(tile.getUnitFromTile().getId()==41){//for AI avatar
+				System.out.println("Unit: "+tile.getUnitFromTile().getName()+" with id: "+tile.getUnitFromTile().getId()+" has not attacked or moved");
+				System.out.println("need to defend Avatar");
+				//add method to move the avatar around to defend to be done
+			}
+			else{//for other units of AI
+				List <Tile> possibleTilesForMove = gameState.board.highlightTilesMoveAndAttack(0, gameState.player2, out, tile, gameState);
+				for (Tile tileToMove : possibleTilesForMove) {
+					if(tileToMove.getUnitFromTile()!= null && (tileToMove.getUnitFromTile().getId()<20 || tileToMove.getUnitFromTile().getId()==40)){
+						System.out.println("Possible moves: Attack for unit: "+tile.getUnitFromTile().getName() + " to tile: "+tileToMove.toString());		
+					}
+					System.out.println("Possible moves: Move for unit: "+tile.getUnitFromTile().getName() + " to tile: "+tileToMove.toString());	
+				}
+			}
+		}
+	}
 	
 	
 }
