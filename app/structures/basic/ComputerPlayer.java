@@ -41,13 +41,29 @@ public class ComputerPlayer extends Player{
     
   
 	public void startAILogic(ActorRef out, GameState gameState) {
+		AppConstants.printLog("<-------------------------------------------------------------------------------->");
 
 		// Logic to decide what action to perform can be written here
 		
 		checkHand();//checking the cards in the hand
 		checkUnitTiles(out,gameState);
 		
-		AppConstants.printLog("<-------- AI :: startAILogic():: Check AVATAR danger status...!");
+		Tile tileTomove=new Tile();
+		tileTomove.setTilex(4);
+		tileTomove.setTiley(2);
+		
+//		//--------------- test------------
+//		AppConstants.printLog("<-------- AI :: startAILogic():: Moving player avatar to test !");
+//
+//		moveAIUnit(out, gameState, gameState.player1.currentTile, tileTomove);
+//		
+//		AppConstants.printLog("<-------- AI :: startAILogic():: Setting player avatar to health to 2 !");
+//
+//		gameState.player1.getAvatar().setHealth(2);  // update enemy's health
+//		gameState.player1.setHealth(2); 
+//		
+//		AppConstants.callSleep(1000);
+//		AppConstants.printLog("<-------- AI :: startAILogic():: Check AVATAR danger status...!");
 
 		// Check if avatar is in range of any enemy unit - SS
 		ArrayList<Tile> dangerTiles=checkIfUnitInDanger(currentTile,out,gameState);
@@ -59,30 +75,43 @@ public class ComputerPlayer extends Player{
 			// Avatar is in danger, need to move away or attack the enemy
 			
 			// If the player avatar is nearby and it's health <= AI attack value, attack
-			
-			
-			// Otherwise,try defensive way, move backward
-			
-			// Get list of possible backward moves respect to current avatar tile position
-			possibleMoves("backward",currentTile,out,gameState);
-			
-			
-			
+			if(dangerTiles.contains(gameState.player1.getCurrentTile()))
+			{
+				AppConstants.printLog("<-------- AI :: startAILogic():: gameState.player1.getAvatar().getHealth() :  "+gameState.player1.getAvatar().getHealth());
+				AppConstants.printLog("<-------- AI :: startAILogic():: getAvatar().getAttack() :  "+getAvatar().getAttack());
+
+				// Test
+				gameState.player1.getAvatar().setHealth(2);
+				gameState.player1.setHealth(2);
+				
+				if(gameState.player1.getAvatar().getHealth()<=getAvatar().getAttack())
+				{
+					// Player's health is <= AI attack value, attack
+					// If attack is finalized, and move and atack or direct attacks
+					attackAIUnit(out, gameState, currentTile, gameState.player1.getCurrentTile());
+				}
+			}else {
+				// Otherwise,try defensive way, move backward
+				AppConstants.printLog("<-------- AI :: startAILogic():: Fine possible moves! ");
+
+				// Get list of possible backward moves respect to current avatar tile position
+				possibleMoves("backward",currentTile,out,gameState);
+				
+			}		
 			
 		}else {
+			AppConstants.printLog("<-------- AI :: startAILogic():: Avatar is NOT in danger ! ");
+
 			// Avatar is safe from direct or indirect unit attacks. Can proceed with other units
 		}
 		
 
-		Boolean movesLeft=true;
-		if(movesLeft){
-			movesLeft=listPossibleMove(out,gameState);
-		}
+//		Boolean movesLeft=true;
+//		if(movesLeft){
+//			movesLeft=listPossibleMove(out,gameState);
+//		}
 		
-//		checkMovement(out, gameState);
-		
-		// drawCard(out,gameState); // To check drawcard possibilities
-		
+
 		
 	}
 
