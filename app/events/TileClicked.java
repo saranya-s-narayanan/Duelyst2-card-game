@@ -113,6 +113,10 @@ public class TileClicked implements EventProcessor {
 	            	}else if(message.get("action").asText().equalsIgnoreCase(AppConstants.drawCardSummon)) // Summon unit
 	            	{
 	            		gameState.handPosClicked=message.get("position").asInt();
+	            		
+            			AppConstants.printLog("<-------- AI :: After summoning :: gameState.handPosClicked: "+gameState.handPosClicked);
+
+	            		
 	            		 // Summon the unit
 	                    summonCard(out,gameState,clickedTile,gameState.player2);
 	                    

@@ -163,9 +163,20 @@ public class Board {
         int y = tile.getTiley();
 
 
+        // checking for the left-most tiles
+        if (x > 0) {
+            adjacentTiles.add(returnTile(x - 1, y));
+        }
+        
+        
         // checking for the top-most tiles
         if (y > 0) {
             adjacentTiles.add(returnTile(x, y - 1));
+        }
+        
+        // checking for the bottom-most tiles
+        if (y < AppConstants.boardHeight - 1) {
+            adjacentTiles.add(returnTile(x, y + 1));
         }
 
         // checking for the right-most tiles
@@ -173,25 +184,11 @@ public class Board {
             adjacentTiles.add(returnTile(x + 1, y));
         }
 
-        // checking for the bottom-most tiles
-        if (y < AppConstants.boardHeight - 1) {
-            adjacentTiles.add(returnTile(x, y + 1));
-        }
+       
 
-        // checking for the left-most tiles
-        if (x > 0) {
-            adjacentTiles.add(returnTile(x - 1, y));
-        }
+       
 
-        // top-right
-        if (x < AppConstants.boardWidth - 1 && y > 0) {
-            adjacentTiles.add(returnTile(x + 1, y - 1));
-        }
-
-        // bottom-right
-        if (x < AppConstants.boardWidth - 1 && y < AppConstants.boardHeight - 1) {
-            adjacentTiles.add(returnTile(x + 1, y + 1));
-        }
+      
 
         // bottom-left
         if (x > 0 && y < AppConstants.boardHeight - 1) {
@@ -201,6 +198,16 @@ public class Board {
         // top-left
         if (x > 0 && y > 0) {
             adjacentTiles.add(returnTile(x - 1, y - 1));
+        }
+        
+        // top-right
+        if (x < AppConstants.boardWidth - 1 && y > 0) {
+            adjacentTiles.add(returnTile(x + 1, y - 1));
+        }
+
+        // bottom-right
+        if (x < AppConstants.boardWidth - 1 && y < AppConstants.boardHeight - 1) {
+            adjacentTiles.add(returnTile(x + 1, y + 1));
         }
 
         return adjacentTiles;

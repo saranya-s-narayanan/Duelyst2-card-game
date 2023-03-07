@@ -27,7 +27,8 @@ public class EndTurnClicked implements EventProcessor{
 		if(gameState.isGameActive){ // if the frontend connection is active
 			cardClick=message.get("messagetype");//message to keep track of previous click on front-end
 			AppConstants.printLog("------> previous message type:---->"+gameState.clickMessage);
-			
+			AppConstants.printLog("------> End turn:---->"+message.toPrettyString());
+
 			if(gameState.clickMessage.asText().equals("cardclicked")){
 				if(gameState.SummonTileList != null){//to check if cardClick happened
 					if(gameState.player1Turn) OtherClicked.clearCardClicked(out, gameState, gameState.player1);//clear for player1
