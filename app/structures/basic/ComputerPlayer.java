@@ -21,7 +21,7 @@ import utils.AppConstants;
 public class ComputerPlayer extends Player{
 
 	Tile currentTile; // To keep track of avatar's tile
-	List <Card> cardInHand;//to keep track of card in the hand
+//	List <Card> cardInHand;//to keep track of card in the hand --> seems similar as 'hand'?
 	List <Tile> tileWithMyUnit;//to keep track of tiles occupied by AI units
 	List <Tile> tileWithPlayerUnits;//to keep track of human player units
 	List <Tile> possibleSummonList;
@@ -51,9 +51,6 @@ public class ComputerPlayer extends Player{
 
 		// Logic to decide what action to perform can be written here
 		
-//		checkMovement(out,gameState); //to check movement possibilities
-		
-//		checkAttack(out,gameState); // To check attack possibilities
 		checkHand();//checking the cards in the hand
 		checkUnitTiles(out,gameState);
 		Boolean movesLeft=true;
@@ -114,8 +111,8 @@ public class ComputerPlayer extends Player{
 	//method the check the cards in the hand
 	//use map or dict to store these in order to utilize later when deciding which card to summon
 	public void checkHand(){
-		cardInHand=super.hand;
-		for (Card card : cardInHand) {
+//		cardInHand=hand; --> similar as hand
+		for (Card card : hand) {
 			System.out.println("card in AI's hand: "+ card.getCardname()+ " with Mana cost: "+ card.getManacost());
 		}
 	}
@@ -261,10 +258,10 @@ public class ComputerPlayer extends Player{
 	public void possibleSummon(ActorRef out, GameState gameState){
 		int handindex=-1;
 		//first check which cards can be played
-		for (Card card : cardInHand) {
-			handindex =cardInHand.indexOf(card)+1;
+		for (Card card : hand) {
+			handindex =hand.indexOf(card)+1;
 			//check if mana cost of card is more than the mana of the AI
-			if(super.getMana()>=card.getManacost()){
+			if(getMana()>=card.getManacost()){
 				System.out.println("card with hand position: "+ handindex+" name: "+ card.getCardname()+" can be played");
 				//get summonable tiles
 				possibleSummonList= PerformAction.getSummonableTiles(out, gameState, gameState.player2);
