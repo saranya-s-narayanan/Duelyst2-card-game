@@ -92,8 +92,7 @@ public class ComputerPlayer extends Player{
 
 		cardsDrawEnd=false;
 		movesEnd=false;
-		// Logic to decide what action to perform can be written here
-		
+	
 		
 		boolean isContinue=true; //boolean to keep track of how long loop should continue
 		
@@ -118,7 +117,6 @@ public class ComputerPlayer extends Player{
 					if(gameState.player1.getAvatar().getHealth()<=getAvatar().getAttack())
 					{
 						// Player's health is <= AI attack value, attack
-						// If attack is finalized, and move and atack or direct attacks
 						attackAIUnit(out, gameState, currentTile, gameState.player1.getCurrentTile());
 					}
 				}else {
@@ -148,7 +146,7 @@ public class ComputerPlayer extends Player{
 					// If number of player units is more than 5, cast spell or summon unit 
 					if(playerUnits.size()>5)
 						drawCardAndProcessAction(0,out,gameState);
-					else
+					else  // Otherwise, summon units only
 						drawCardAndProcessAction(1,out,gameState);
 
 					
@@ -282,7 +280,7 @@ public class ComputerPlayer extends Player{
 			
 			if(mode==1) // can be only unit
 			{
-				if(c.getManacost()<=getMana()) //  check mana
+				if(c.getManacost()<=getMana() && c.getId()!=4 || c.getId()!=8 || c.getId()!=14 || c.getId()!=18 || c.getId()!=22 || c.getId()!=27 || c.getId()!=32 || c.getId()!=37) //  check mana
 				{
 					return i; // return index
 				}
