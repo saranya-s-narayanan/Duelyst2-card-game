@@ -324,7 +324,7 @@ public class PerformAction {
 		unitToMove.setPositionByTile(endTile); 
 		
 		// If the computer player is moved, update 'currentTile' object in the ComputerPlayer class
-		if(unitToMove.getId()==42)
+		if(unitToMove.getId()==41)
 		{
 			if(gameState.player1Turn==false)
 				gameState.player2.setCurrentTile(endTile);
