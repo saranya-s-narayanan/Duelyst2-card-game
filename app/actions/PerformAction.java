@@ -323,11 +323,13 @@ public class PerformAction {
 		BasicCommands.moveUnitToTile(out, unitToMove, endTile);
 		unitToMove.setPositionByTile(endTile); 
 		
-		// If the computer player is moved, update 'currentTile' object in the ComputerPlayer class
-		if(unitToMove.getId()==41)
+		// If the avatar is moved, update 'currentTile' object in the 
+		if(unitToMove.getId()==40 || unitToMove.getId()==41)
 		{
-			if(gameState.player1Turn==false)
+			if(unitToMove.getId()==40)
 				gameState.player2.setCurrentTile(endTile);
+			else
+				gameState.player1.setCurrentTile(endTile);
 		}
 		AppConstants.callSleep(50);
 	}

@@ -1,5 +1,6 @@
 package structures.basic;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,6 @@ import utils.AppConstants;
  */
 public class ComputerPlayer extends Player{
 
-	Tile currentTile; // To keep track of avatar's tile
 //	List <Card> cardInHand;//to keep track of card in the hand --> seems similar as 'hand'?
 	List <Tile> tileWithMyUnit;//to keep track of tiles occupied by AI units
 	List <Tile> tileWithPlayerUnits;//to keep track of human player units
@@ -39,24 +39,47 @@ public class ComputerPlayer extends Player{
        
     }
     
-    public void setCurrentTile(Tile currentTile) {
-    	this.currentTile=currentTile;
-    }
-    
-    public Tile getCurrentTile() {
-    	return currentTile;
-    }
-
+  
 	public void startAILogic(ActorRef out, GameState gameState) {
 
 		// Logic to decide what action to perform can be written here
 		
 		checkHand();//checking the cards in the hand
 		checkUnitTiles(out,gameState);
+		
+		AppConstants.printLog("<-------- AI :: startAILogic():: Check AVATAR danger status...!");
+
+		// Check if avatar is in range of any enemy unit - SS
+		ArrayList<Tile> dangerTiles=checkIfUnitInDanger(currentTile,out,gameState);
+		
+		if(dangerTiles.size()>0)
+		{
+			AppConstants.printLog("<-------- AI :: startAILogic():: Avatar is in danger ! ");
+			
+			// Avatar is in danger, need to move away or attack the enemy
+			
+			// If the player avatar is nearby and it's health <= AI attack value, attack
+			
+			
+			// Otherwise,try defensive way, move backward
+			
+			// Get list of possible backward moves respect to current avatar tile position
+			possibleMoves("backward",currentTile,out,gameState);
+			
+			
+			
+			
+		}else {
+			// Avatar is safe from direct or indirect unit attacks. Can proceed with other units
+		}
+		
+
 		Boolean movesLeft=true;
 		if(movesLeft){
 			movesLeft=listPossibleMove(out,gameState);
 		}
+		
+//		checkMovement(out, gameState);
 		
 		// drawCard(out,gameState); // To check drawcard possibilities
 		
@@ -172,7 +195,6 @@ public class ComputerPlayer extends Player{
 		//-------------- Logic to identify a tile to move---------
 		
 		
-		
 		// To test
 		tileToMove.tilex=5;
 		tileToMove.tiley=2;
@@ -180,6 +202,35 @@ public class ComputerPlayer extends Player{
 		// If movement is finalized, and move 
 		moveAIUnit(out, gameState, currentTile, tileToMove);
 	
+	}
+	
+	/** Methods checks is a unit is surrounded by enemy units or not
+	 * If enemy units are in range, it will return the list of adjacent enemy unit tile
+	 * otherwise, the list will be empty
+	 * @param tile
+	 * @param out
+	 * @param gameState
+	 * @return
+	 */
+
+	private ArrayList<Tile> checkIfUnitInDanger(Tile tile, ActorRef out, GameState gameState) {
+		// TODO Auto-generated method stub
+		
+		ArrayList<Tile> enemyDangerTiles=new ArrayList<>();
+		
+		// Get adjacent tile of tile to move and attack
+		ArrayList<Tile> adjacentTilesMoveAttack=gameState.board.highlightTilesMoveAndAttack(0,gameState.player2,out,tile,gameState);
+		
+		// Check for enemy units in the adjacentTilesMoveAttack
+		for(Tile enemyTile:tileWithPlayerUnits)
+		{
+			// If enemy units are present, return true
+			if(adjacentTilesMoveAttack.contains(enemyTile))
+				enemyDangerTiles.add(enemyTile);
+		}
+		
+		
+		return enemyDangerTiles;
 	}
 
 	/**
@@ -245,7 +296,7 @@ public class ComputerPlayer extends Player{
 	public Boolean listPossibleMove(ActorRef out, GameState gameState) {
 		//need to list all possible moves for the AI player
 		Boolean done =false;//boolean to send back
-		possibleSummon(out,gameState);
+//		possibleSummon(out,gameState);
 		possibleMoveAttack(out,gameState);
 		return done;
 	}
@@ -281,6 +332,57 @@ public class ComputerPlayer extends Player{
 
 
 	/**
+	 * This method will give a list of possible moves for all the AI units
+	 * @param verticalDirection --> 0- no change, 1 - forward, -1 -  backward
+	 * @param horizontalDirection --> 0- no change, 1-  upward, -1 - downward
+	 * @param out
+	 * @param gameState
+	 */
+	public ArrayList<Tile> possibleMoves(String code, Tile tile, ActorRef out, GameState gameState) {
+		//possible moves if the unit has not moved or attacked
+		
+		ArrayList <Tile> possibleTilesForMove = gameState.board.highlightTilesMoveAndAttack(0, gameState.player2, out, tile, gameState);
+		
+		// Get possible moves w.r.t horizontal direction
+		if(code.equals("backward") || code.equals("forward"))
+		{
+		for (Tile tileToMove : possibleTilesForMove) {
+				if(tileToMove.getUnitFromTile()== null ){
+					if(code.equals("backward")) { // get backward tiles to move
+						if(tileToMove.getTilex()>tile.getTilex())
+							possibleTilesForMove.add(tileToMove);
+					}else if(code.equals("forward")) { // get forward tiles to move
+						if(tileToMove.getTilex()<tile.getTilex())
+							possibleTilesForMove.add(tileToMove);
+					}else {
+						possibleTilesForMove.add(tileToMove);
+
+					}
+					}
+			}
+		}else // Get possible moves w.r.t vertical direction
+			if(code.equals("upward") || code.equals("downward"))
+			{
+			for (Tile tileToMove : possibleTilesForMove) {
+					if(tileToMove.getUnitFromTile()== null ){
+						if(code.equals("downward")) { // get downward tiles to move
+							if(tileToMove.getTiley()>tile.getTiley())
+								possibleTilesForMove.add(tileToMove);
+						}else if(code.equals("upward")) { // get forward tiles to move
+							if(tileToMove.getTiley()<tile.getTiley())
+								possibleTilesForMove.add(tileToMove);
+						}else {
+							possibleTilesForMove.add(tileToMove);
+
+						}
+						}
+				}
+			}
+		return possibleTilesForMove;	
+		}
+	
+	
+	/**
 	 * This method will give a list of possible moves/attack for all the AI units
 	 * @param out
 	 * @param gameState
@@ -293,6 +395,10 @@ public class ComputerPlayer extends Player{
 				System.out.println("Unit: "+tile.getUnitFromTile().getName()+" with id: "+tile.getUnitFromTile().getId()+" has not attacked or moved");
 				System.out.println("need to defend Avatar");
 				//add method to move the avatar around to defend to be done
+				
+
+				
+				
 			}
 			else{//for other units of AI
 				List <Tile> possibleTilesForMove = gameState.board.highlightTilesMoveAndAttack(0, gameState.player2, out, tile, gameState);
