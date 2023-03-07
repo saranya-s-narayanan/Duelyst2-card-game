@@ -256,7 +256,7 @@ public class Board {
      * attackable unit (if present) to those adjacent tiles and highlight those tiles.
      * 
      * Note: if mode==0, this function only returns the tiles list 
-     * 		 if mode==1, this function returns the tiles list and updated front end from here itself.
+     * 		 if mode==1, this function returns the tiles list and updates front end from here itself.
      * 
      * @param mode --> if mode==1, highlighitng | if mode==0, clearhighlighting
      * 

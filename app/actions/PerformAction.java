@@ -179,6 +179,7 @@ public class PerformAction {
 	    
 	    if(attackVal<=0) // enemy unit dead, clear tile and update front end
 	    {
+	    	if(enemyUnit.getSummonedID()>1) // Don't remove if avatars
             gameState.summonedUnits.remove(enemyUnit);
 
 			BasicCommands.playUnitAnimation(out, enemyUnit, UnitAnimationType.death);
@@ -254,6 +255,7 @@ public class PerformAction {
 		    
 		    if(attackVal<=0) //unit dead 
 		    {
+		    	if(enemyUnit.getSummonedID()>1) // Dn't remove if it's avatar
 	            gameState.summonedUnits.remove(unit);
 
 		    	BasicCommands.playUnitAnimation(out, unit, UnitAnimationType.death);

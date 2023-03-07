@@ -104,9 +104,11 @@ public class TileClicked implements EventProcessor {
 	            		 boolean attackStatus=false;
 
 	                     attackStatus=PerformAction.attackUnit(0,gameState.player2,out,gameState.summonedUnits.get(unitIdx),startTile,clickedTile, gameState);
-
-	                     if(gameState.summonedUnits.get(unitIdx)!=null && unitIdx<gameState.summonedUnits.size())
-	                     	gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
+	                     if(gameState.summonedUnits.size()>0 && unitIdx>-1)
+	                     {
+	                    	 if(gameState.summonedUnits.get(unitIdx)!=null && unitIdx<gameState.summonedUnits.size())
+	                    		 gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
+	                     }
 	                     
 	            	}else if(message.get("action").asText().equalsIgnoreCase(AppConstants.drawCardSummon)) // Summon unit
 	            	{
