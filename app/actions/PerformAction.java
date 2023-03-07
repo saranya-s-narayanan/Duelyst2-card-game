@@ -322,6 +322,13 @@ public class PerformAction {
 		AppConstants.callSleep(50);
 		BasicCommands.moveUnitToTile(out, unitToMove, endTile);
 		unitToMove.setPositionByTile(endTile); 
+		
+		// If the computer player is moved, update 'currentTile' object in the ComputerPlayer class
+		if(unitToMove.getId()==42)
+		{
+			if(gameState.player1Turn==false)
+				gameState.player2.setCurrentTile(endTile);
+		}
 		AppConstants.callSleep(50);
 	}
 
