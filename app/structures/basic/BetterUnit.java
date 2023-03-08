@@ -64,6 +64,7 @@ public class BetterUnit extends Unit {
 
         unit.setHealth(getHealth()); // oops forgot to set health and attack for avatars !
         unit.setAttack(getAttack());
+        unit.setMaxHealth(20); // added to check max health
     }
 
 

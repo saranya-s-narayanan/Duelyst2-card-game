@@ -46,7 +46,15 @@ public class Spell {
             Unit unitToAttack = tile.getUnitFromTile();
 
             if (unitToAttack.getIsPlayer()==2 ) {
+
+                gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
+                gameState.player1.setMana(gameState.player1.getMana()-card.getManacost());//decrease the mana
+                gameState.player1.setPlayer(out);//reflecting the mana on board
+                gameState.player1.deleteCardInHand(out, gameState.player1.getID(), gameState);//delete the card in hand
+                AppConstants.callSleep(500);
                 BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_inmolation), tile);
+                AppConstants.callSleep(100);
+
                 if (unitToAttack.getSummonedID()==2) {
 
                     hp = gameState.player2.getAvatar().getHealth()-2;
@@ -61,11 +69,16 @@ public class Spell {
                 }
                 else  {
                     hp = unitToAttack.getHealth()-2;
-                    unitToAttack.setHealth(hp);
-                    BasicCommands.setUnitHealth(out, unitToAttack, hp);
-
-                    if(unitToAttack.getHealth()<0)
+                    if(hp<0) {
                         unitToAttack.setHealth(0);
+                        BasicCommands.setUnitHealth(out, unitToAttack, 0);
+                    }
+
+                    else {unitToAttack.setHealth(hp);
+                        BasicCommands.setUnitHealth(out, unitToAttack, hp);
+                    }
+
+
                 }
                 if(hp<=0) // enemy unit dead, clear tile and update front end
                 {
@@ -78,16 +91,10 @@ public class Spell {
                     AppConstants.callSleep(AppConstants.effectSleepTime);
                     tile.setUnitToTile(null);
                     BasicCommands.deleteUnit(out, unitToAttack);
-                    AppConstants.callSleep(3000);
+                    AppConstants.callSleep(1000);
 
                 }
             }
-            gameState.player1.setMana(gameState.player1.getMana()-card.getManacost());//decrease the mana
-            gameState.player1.setPlayer(out);//reflecting the mana on board
-
-            gameState.player1.deleteCardInHand(out, gameState.player1.getID(), gameState);//delete the card in hand
-            AppConstants.callSleep(200);
-            gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
 
         }
     }
@@ -101,6 +108,13 @@ public class Spell {
             Unit unitToHeal = tile.getUnitFromTile();
 
             if (unitToHeal != null && unitToHeal.getIsPlayer()==1) {
+
+                gameState.player1.setMana(gameState.player1.getMana()-card.getManacost());//decrease the mana
+                gameState.player1.setPlayer(out);//reflecting the mana on board
+
+                gameState.player1.deleteCardInHand(out, gameState.player1.getID(), gameState);//delete the card in hand
+                AppConstants.callSleep(200);
+                gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
 
                 if (unitToHeal.getHealth() + 5 > unitToHeal.getMaxHealth()){
 
@@ -117,12 +131,6 @@ public class Spell {
                     BasicCommands.setUnitHealth(out, unitToHeal, unitToHeal.getHealth());
                 }
 
-                gameState.player1.setMana(gameState.player1.getMana()-card.getManacost());//decrease the mana
-                gameState.player1.setPlayer(out);//reflecting the mana on board
-
-                gameState.player1.deleteCardInHand(out, gameState.player1.getID(), gameState);//delete the card in hand
-                AppConstants.callSleep(200);
-                gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
             }
         }
     }

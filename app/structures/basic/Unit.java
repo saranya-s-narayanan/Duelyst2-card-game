@@ -4,6 +4,7 @@ import akka.actor.ActorRef;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import commands.BasicCommands;
+import structures.GameState;
 
 /**
  * This is a representation of a Unit on the game board.
@@ -253,6 +254,18 @@ public class Unit {
 	public void setPositionByTile(Tile tile) {
 		position = new Position(tile.getXpos(),tile.getYpos(),tile.getTilex(),tile.getTiley());
 	}
-	
+
+	// method to retrieve the tile that a particular unit is on (player 1 only)
+	public Tile getTileFromUnit(int unitID, GameState gameState, ActorRef out) {
+		Tile unitTile = null;
+		for (Tile tile : gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), gameState.player1)) {
+			if (tile.getUnitFromTile().getId() == unitID){
+				unitTile = tile;
+				return unitTile;
+			}
+		}
+		return null;
+
+	}
 	
 }

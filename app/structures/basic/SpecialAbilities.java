@@ -202,13 +202,17 @@ public class SpecialAbilities {
         for (Unit unit: gameState.summonedUnits) {
 
             if (unit.getId()==3){
+                Tile unitTile = unit.getTileFromUnit(unit.getId(), gameState, out);
                 BasicCommands.addPlayer1Notification(out, "Silverguard Knight's attack +2", 2);
+                BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff), unitTile);
                 unit.setAttack(unit.getAttack() + 2);
                 AppConstants.callSleep(50);
                 BasicCommands.setUnitAttack(out, unit, unit.getAttack());
             }
             if (unit.getId()==10){
+                Tile unitTile = unit.getTileFromUnit(unit.getId(), gameState, out);
                 BasicCommands.addPlayer1Notification(out, "Silverguard Knight's attack +2", 2);
+                BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff), unitTile);
                 unit.setAttack(unit.getAttack() + 2);
                 AppConstants.callSleep(50);
                 BasicCommands.setUnitAttack(out, unit, unit.getAttack());

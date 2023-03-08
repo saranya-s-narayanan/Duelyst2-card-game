@@ -367,6 +367,7 @@ public class TileClicked implements EventProcessor {
         // System.out.println("player mana: "+ player.getMana());
         // System.out.println("mana cost: "+ handCard.getManacost());
 
+        // checking for spell cards
         if(player.getMana()>=handCard.getManacost() && clicked.getUnitFromTile() != null) {
             // implementing the spells
             Spell.truestike(out, handCard, clicked, gameState);
