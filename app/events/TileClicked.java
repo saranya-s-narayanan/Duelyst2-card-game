@@ -410,6 +410,12 @@ public class TileClicked implements EventProcessor {
             	unitSummon.setAttackedOnce(true);
             	unitSummon.setAttackedTwice(true);
             }
+            
+            // If the summoned unit is Blaze Hound, both players draw a card (testing on comodo charger)
+            if(unitSummon.getId() == 0 || unitSummon.getId() == 12 || unitSummon.getId() == 23 || unitSummon.getId() == 33) {
+            	gameState.player1.drawAnotherCard(out,1);
+            	gameState.player2.drawAnotherCard(out,2);
+            }
             // gameState.SummonTileList=null;
             
             if(player.getID()==1)//Notifications active for only player1
