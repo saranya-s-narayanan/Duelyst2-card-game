@@ -1,5 +1,6 @@
 package structures.basic;
 
+import akka.actor.Actor;
 import akka.actor.ActorRef;
 import commands.BasicCommands;
 import events.TileClicked;
@@ -221,6 +222,19 @@ public class SpecialAbilities {
         }
     }
 
+    public static void purebladeEnforcerAbility(ActorRef out, GameState gameState){
+
+        for (Unit unit: gameState.summonedUnits) {
+
+            if (unit.getName().equals("Pureblade Enforcer")){
+                unit.setAttack(unit.getAttack()+1);
+                unit.setHealth(unit.getHealth()+1);
+                AppConstants.callSleep(50);
+                BasicCommands.setUnitHealth(out,unit,unit.getHealth());
+                BasicCommands.setUnitAttack(out, unit,unit.getAttack());
+            }
+        }
+    }
 
 }
 

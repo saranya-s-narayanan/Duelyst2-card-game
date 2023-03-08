@@ -118,7 +118,7 @@ public class Spell {
                 gameState.player1.deleteCardInHand(out, gameState.player1.getID(), gameState);//delete the card in hand
                 AppConstants.callSleep(200);
                 gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
-                
+
                 if (unitToHeal.getHealth() + 5 > unitToHeal.getMaxHealth()){
 
                     BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff), tile);
@@ -151,12 +151,15 @@ public class Spell {
             gameState.player2.setPlayer(out);//reflecting the mana on board
             gameState.player2.deleteCardInHand(out, gameState.player2.getID(), gameState);//delete the card in hand
             AppConstants.callSleep(500);
-                BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff), tile);
-                int newAttack = gameState.player2.getAvatar().getAttack() + 2;
-                gameState.player2.getAvatar().setAttack(newAttack);
-                unitFromTile.setAttack(newAttack);
-                AppConstants.callSleep(100);
-                BasicCommands.setUnitAttack(out, unitFromTile, newAttack);
+            BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff), tile);
+            int newAttack = gameState.player2.getAvatar().getAttack() + 2;
+            gameState.player2.getAvatar().setAttack(newAttack);
+            unitFromTile.setAttack(newAttack);
+            AppConstants.callSleep(100);
+            BasicCommands.setUnitAttack(out, unitFromTile, newAttack);
+
+            SpecialAbilities.purebladeEnforcerAbility(out,gameState);//spell card played increase stats
+
             }
     }
 
@@ -188,6 +191,8 @@ public class Spell {
                 tile.setUnitToTile(null);
                 BasicCommands.deleteUnit(out, unitToKill);
                 AppConstants.callSleep(1000);
+
+                SpecialAbilities.purebladeEnforcerAbility(out,gameState);//spell card played increase stats
 
             }
     }
