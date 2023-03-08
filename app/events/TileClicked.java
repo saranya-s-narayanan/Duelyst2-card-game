@@ -242,6 +242,7 @@ public class TileClicked implements EventProcessor {
             int unitIdx=PerformAction.getUnitIndexFromSummonedUnitlist(startTile.getUnitFromTile(),gameState.summonedUnits);
    		
             // clear the highlighting once move is clicked
+
             gameState.board.clearTileHighlighting(out, gameState.board.highlightTilesMoveAndAttack(0,player,out, startTile,gameState));
             gameState.board.clearTileHighlighting(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));
             AppConstants.callSleep(200);
