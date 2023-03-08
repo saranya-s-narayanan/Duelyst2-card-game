@@ -122,8 +122,11 @@ public class CardClicked implements EventProcessor {
 
     //method to clear all highlights
     public static void clearHighlightMiniCard(ActorRef out, GameState gameState) {
-        Card card1 = gameState.player1.getCardByHandPos(gameState.handPosClicked-1);//get the card at earlier position
-        BasicCommands.drawCard(out, card1, gameState.handPosClicked, 0);//dehighlight the previous position
-        gameState.handPosClicked=-1;//set the gameState hand position to -1
+    	if(gameState.handPosClicked>-1 && gameState.handPosClicked<=gameState.player1.hand.size()) // To tackle IndexOutOfBoundException
+    	{
+	        Card card1 = gameState.player1.getCardByHandPos(gameState.handPosClicked-1);//get the card at earlier position
+	        BasicCommands.drawCard(out, card1, gameState.handPosClicked, 0);//dehighlight the previous position
+	        gameState.handPosClicked=-1;//set the gameState hand position to -1
+    	}
     }
 }
