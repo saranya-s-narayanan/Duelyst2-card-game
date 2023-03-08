@@ -27,13 +27,10 @@ public class PlayerInitialPositionTest {
 
 		ObjectNode eventmessage = Json.newObject();
 		initializeProcessor.processEvent(null, gameState, eventmessage);
-
-		// This test is to confirm that the Player's initial x and y positions are 1 and 2 once the game is initialized
-		// assertEquals(1, gameState.player1.getCurrentXpos());
-		// assertEquals(2, gameState.player1.getCurrentYpos());
 		
-				
-		// As of 2/23, the previous test was no longer running because the position is determined in the BetterUnit constructor
+		//Confirms that player1's initial tile position is (1,2)
+        assertEquals(gameState.player1.getCurrentTile(),gameState.board.returnTile(1,2)); // Set player current tile
+
 		
 	}
 
