@@ -368,12 +368,41 @@ public class TileClicked implements EventProcessor {
         // System.out.println("mana cost: "+ handCard.getManacost());
 
         // checking for spell cards
-        if(player.getMana()>=handCard.getManacost() && clicked.getUnitFromTile() != null) {
-            // implementing the spells
-            Spell.truestike(out, handCard, clicked, gameState);
-            Spell.entropicDecay(out, handCard, clicked, gameState.avatar);
-            Spell.sundropElixir(out, handCard, clicked, gameState);
-            Spell.staffOfYKir(out, handCard, clicked, gameState.aiAvatar);
+//        if(player.getMana()>=handCard.getManacost() && clicked.getUnitFromTile() != null) {
+//            // implementing the spells
+//            Spell.truestike(out, handCard, clicked, gameState);
+//            Spell.entropicDecay(out, handCard, clicked, gameState.avatar);
+//            Spell.sundropElixir(out, handCard, clicked, gameState);
+//            Spell.staffOfYKir(out, handCard, clicked, gameState.aiAvatar);
+//            return;
+//        }
+
+        if (player.getMana() >= handCard.getManacost() && handCard.getCardname().equals("Truestrike")) {
+            if (clicked.getUnitFromTile() == null){
+                OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
+                BasicCommands.addPlayer1Notification(out, "Please select an enemy unit", 2);
+                return;
+            }
+            else Spell.truestike(out, handCard, clicked, gameState);
+            return;
+
+        }
+
+        if (player.getMana() >= handCard.getManacost() && handCard.getCardname().equals("Sundrop Elixir")) {
+            if (clicked.getUnitFromTile() == null){
+                OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
+                BasicCommands.addPlayer1Notification(out, "Please select a friendly unit", 2);
+                return;
+            }
+            else Spell.sundropElixir(out, handCard, clicked, gameState);
+            return;
+        }
+        if (player.getMana() >= handCard.getManacost() && handCard.getCardname().equals("Entropic Decay")) {
+            Spell.entropicDecay(out, handCard, clicked, gameState);
+            return;
+        }
+        if (player.getMana() >= handCard.getManacost() && handCard.getCardname().equals("Staff of Y'Kir'")) {
+            Spell.staffOfYKir(out, handCard, clicked, gameState);
             return;
         }
 
