@@ -146,6 +146,7 @@ public class Spell {
 
         Spell staffOfYKir = new Spell(out, 2, 22);
         Unit unitFromTile = tile.getUnitFromTile();
+		AppConstants.printLog("<-------- AI :: staffOfYKir():: unitFromTile: "+unitFromTile);
 
             if (unitFromTile.getSummonedID() == 2) {
             gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
