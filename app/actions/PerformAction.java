@@ -328,10 +328,12 @@ public class PerformAction {
 		// If the avatar is moved, update 'currentTile' object in the 
 		if(unitToMove.getId()==40 || unitToMove.getId()==41)
 		{
+	    	 AppConstants.printLog("------> AVATAR moved! ID: "+unitToMove.getId());
+
 			if(unitToMove.getId()==40)
-				gameState.player2.setCurrentTile(endTile);
-			else
 				gameState.player1.setCurrentTile(endTile);
+			else
+				gameState.player2.setCurrentTile(endTile);
 		}
 		AppConstants.callSleep(50);
 	}
