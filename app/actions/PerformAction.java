@@ -403,6 +403,24 @@ public class PerformAction {
         return gameState.SummonTileList;
 
     }
+	
+	public static ArrayList<Tile> getSummonableTilesAroundAvatar(ActorRef out, GameState gameState, Tile tile) {  // method used to retreives a list of the summonable tiles
+
+        if(gameState.SummonTileList==null){
+            gameState.SummonTileList= new ArrayList<Tile>();
+            // list of the tiles with units
+            	
+	                ArrayList<Tile> listItem=gameState.board.summonableTiles(out, tile);
+	                for (Tile tilee : listItem) {
+	                    gameState.SummonTileList.add(tilee);
+	                }
+            	
+
+            
+        }
+        return gameState.SummonTileList;
+
+    }
 
 
 }

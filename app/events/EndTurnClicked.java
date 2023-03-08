@@ -117,7 +117,7 @@ public class EndTurnClicked implements EventProcessor{
 		
 		//<------------ DO AI LOGIC --------------->
 		
-		gameState.player2.startAILogic(out,gameState); // comment this for testing below code
+		gameState.player2.startAIThread(out,gameState); // comment this for testing below code
 		
 //		gameState.player2.testMovement(out, gameState);
 //		gameState.player2.testAttack(out, gameState);

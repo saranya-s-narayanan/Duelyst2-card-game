@@ -186,10 +186,6 @@ public class Board {
 
        
 
-       
-
-      
-
         // bottom-left
         if (x > 0 && y < AppConstants.boardHeight - 1) {
             adjacentTiles.add(returnTile(x - 1, y + 1));
