@@ -30,6 +30,9 @@ public class ComputerPlayer extends Player{
 	Tile avatarTile;
 	
 	boolean movesEnd=false,cardsDrawEnd=false;
+	
+	Thread aiThread;
+	
     /** constructor to create a player with set health and mana which calls 
      * setPlayer to place the data on the front end.
      * 
@@ -86,12 +89,44 @@ public class ComputerPlayer extends Player{
 		moveAIUnit(out, gameState, currentTile, tileToMove);
 	
 	}
-  
-	public void startAILogic(ActorRef out, GameState gameState) {
-		AppConstants.printLog("<-------------------------------------------------------------------------------->");
+	
+	public void startAIThread(ActorRef out,GameState gameState) {
+		aiThread = new Thread(new Runnable() {
+		    @Override
+		    public void run() {
 
-		cardsDrawEnd=false;
-		movesEnd=false;
+		    	
+		    	try {
+
+		    		cardsDrawEnd=false;
+		    		movesEnd=false;
+		    		
+		    	startAILogic(out, gameState);
+		    	}catch (Exception e) {
+					e.printStackTrace();
+					cardsDrawEnd=true;
+					movesEnd=true;
+					aiThread.interrupt();
+					
+					// End turn
+					ObjectNode eventMessage = Json.newObject();
+					eventMessage.put("messagetype", "endturnclicked");
+					
+
+					EndTurnClicked ec=new EndTurnClicked();
+					ec.processEvent(out, gameState, eventMessage); 
+					
+				}
+		    }
+		});  
+		aiThread.start();	
+	}
+  
+	private void startAILogic(ActorRef out, GameState gameState) {
+		AppConstants.printLog("<-------------------------------------------------------------------------------->");
+		
+		
+
 	
 		
 		boolean isContinue=true; //boolean to keep track of how long loop should continue
@@ -227,15 +262,16 @@ public class ComputerPlayer extends Player{
 		
 		Tile tileToSummon = null;
 		
-		possibleSummonList= PerformAction.getSummonableTiles(out, gameState, gameState.player2);
-		//gameState.board.highlightTilesRed(out, (ArrayList<Tile>) possibleSummonList);
+		possibleSummonList= PerformAction.getSummonableTilesAroundAvatar(out, gameState,currentTile);
+		gameState.board.highlightTilesRed(out, (ArrayList<Tile>) possibleSummonList);
 
 		for(Tile tile:possibleSummonList)
 		{
-			AppConstants.printLog("<-------- AI :: startAILogic():: findAtileToSummon : tile: ["+tile.getTilex()+","+tile.getTiley()+"]");
 			
 			if(tile.getUnitFromTile()==null)
 			{
+				AppConstants.printLog("<-------- AI :: startAILogic():: findAtileToSummon : tile: ["+tile.getTilex()+","+tile.getTiley()+"]");
+
 				tileToSummon=tile;
 				break;
 			}
@@ -249,7 +285,7 @@ public class ComputerPlayer extends Player{
 			  for (int i = 4; i < gameState.board.tiles.length; i++) {
 		            for (int j = 0; j < gameState.board.tiles[i].length; j++) {
 		            	
-//		               gameState.board.drawTileWithSleep(out, gameState.board.returnTile(i, j), 2, AppConstants.drawTileSleepTime);
+		               gameState.board.drawTileWithSleep(out, gameState.board.returnTile(i, j), 2, AppConstants.drawTileSleepTime);
 		            	if(gameState.board.returnTile(i, j).getUnitFromTile()==null)
 		    			{
 		            		gameState.board.returnTile(i, j);
@@ -466,57 +502,7 @@ public class ComputerPlayer extends Player{
 	}
 
 
-	/**
-	 * This method will give a list of possible moves for all the AI units
-	 * @param verticalDirection --> "downward" or "upward"
-	 * @param horizontalDirection --> "backward" or "forward"
-	 * @param out
-	 * @param gameState
-	 */
-//	public ArrayList<Tile> possibleMoves(String code, Tile tile, ActorRef out, GameState gameState) {
-//		//possible moves if the unit has not moved or attacked
-//		
-//		ArrayList <Tile> possibleTilesForMove = gameState.board.highlightTilesMoveAndAttack(0, gameState.player2, out, tile, gameState);
-//		AppConstants.printLog("<-------- AI :: drawCard():: possibleTilesForMove size : "+possibleTilesForMove.size());
-//
-//		// Get possible moves w.r.t horizontal direction
-//		if(code.equals("backward") || code.equals("forward"))
-//		{
-//		for (Tile tileToMove : possibleTilesForMove) {
-//				if(tileToMove.getUnitFromTile()== null ){
-//					if(code.equals("backward")) { // get backward tiles to move
-//						if(tileToMove.getTilex()>tile.getTilex())
-//							possibleTilesForMove.add(tileToMove);
-//					}else if(code.equals("forward")) { // get forward tiles to move
-//						if(tileToMove.getTilex()<tile.getTilex())
-//							possibleTilesForMove.add(tileToMove);
-//					}else {
-//						possibleTilesForMove.add(tileToMove);
-//
-//					}
-//					}
-//			}
-//		}else // Get possible moves w.r.t vertical direction
-//			if(code.equals("upward") || code.equals("downward"))
-//			{
-//			for (Tile tileToMove : possibleTilesForMove) {
-//					if(tileToMove.getUnitFromTile()== null ){
-//						if(code.equals("downward")) { // get downward tiles to move
-//							if(tileToMove.getTiley()>tile.getTiley())
-//								possibleTilesForMove.add(tileToMove);
-//						}else if(code.equals("upward")) { // get forward tiles to move
-//							if(tileToMove.getTiley()<tile.getTiley())
-//								possibleTilesForMove.add(tileToMove);
-//						}else {
-//							possibleTilesForMove.add(tileToMove);
-//
-//						}
-//						}
-//				}
-//			}
-//		return possibleTilesForMove;	
-//		}
-	
+
 	
 	/**
 	 * This method will give a list of possible moves/attack for all the AI units
@@ -532,8 +518,7 @@ public class ComputerPlayer extends Player{
 				System.out.println("need to defend Avatar");
 				//add method to move the avatar around to defend to be done
 				
-
-				
+			
 				
 			}
 			else{//for other units of AI
@@ -559,5 +544,7 @@ public class ComputerPlayer extends Player{
 	     return (int) (Math.random()*(Max-Min))+Min;
 	}
 	
-	
+	public double calculateDistanceBetweenPoints( double x1,  double y1,  double x2,  double y2) {       
+			    return Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
+			}
 }
