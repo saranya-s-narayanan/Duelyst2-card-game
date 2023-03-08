@@ -2,6 +2,7 @@ package structures.basic;
 
 import akka.actor.ActorRef;
 import commands.BasicCommands;
+import events.OtherClicked;
 import structures.GameState;
 import utils.AppConstants;
 import utils.BasicObjectBuilders;
@@ -38,14 +39,11 @@ public class Spell {
     // methods forming a basic representation of the spells and unfinished logic as to how they will effect the game
     public static void truestike(ActorRef out, Card card, Tile tile, GameState gameState) { // if truestrike is played, deal 2 damage to the unit
 
-        Spell truestrike = new Spell(out, 1, 4);
         int hp;
-
-        if (card.getCardname().equals("Truestrike")) {
 
             Unit unitToAttack = tile.getUnitFromTile();
 
-            if (unitToAttack.getIsPlayer()==2 ) {
+           if (unitToAttack.getIsPlayer()==2) {
 
                 gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
                 gameState.player1.setMana(gameState.player1.getMana()-card.getManacost());//decrease the mana
@@ -95,19 +93,20 @@ public class Spell {
 
                 }
             }
+        else if (unitToAttack.getIsPlayer() == 1){
+            OtherClicked.clearCardClicked(out, gameState, gameState.player1);//clear highlighting
+            BasicCommands.addPlayer1Notification(out, "Please select an enemy unit", 2);}
 
-        }
     }
 
     public static void sundropElixir(ActorRef out, Card card, Tile tile, GameState gameState) {  // if sundropElixir is played, heal 5 to a unit (this must not take the unit over its starting health value)
 
         Spell sundropElixir = new Spell(out, 1, 8);
 
-        if (card.getCardname().equals("Sundrop Elixir")) {
 
             Unit unitToHeal = tile.getUnitFromTile();
 
-            if (unitToHeal != null && unitToHeal.getIsPlayer()==1) {
+            if (unitToHeal.getIsPlayer()==1) {
 
                 gameState.player1.setMana(gameState.player1.getMana()-card.getManacost());//decrease the mana
                 gameState.player1.setPlayer(out);//reflecting the mana on board
@@ -115,6 +114,12 @@ public class Spell {
                 gameState.player1.deleteCardInHand(out, gameState.player1.getID(), gameState);//delete the card in hand
                 AppConstants.callSleep(200);
                 gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
+
+                if (unitToHeal.getHealth() == unitToHeal.getMaxHealth()){
+                    OtherClicked.clearCardClicked(out, gameState, gameState.player1);//clear highlighting
+                    BasicCommands.addPlayer1Notification(out, "Health already full!", 2);
+                    return;
+                }
 
                 if (unitToHeal.getHealth() + 5 > unitToHeal.getMaxHealth()){
 
@@ -131,40 +136,62 @@ public class Spell {
                     BasicCommands.setUnitHealth(out, unitToHeal, unitToHeal.getHealth());
                 }
 
+            } else if (unitToHeal.getIsPlayer() == 2){
+                OtherClicked.clearCardClicked(out, gameState, gameState.player1);//clear highlighting
+                BasicCommands.addPlayer1Notification(out, "Please select a friendly unit", 2);
             }
-        }
     }
 
-    public static void staffOfYKir(ActorRef out, Card card, Tile tile, BetterUnit avatar) { // if staffOfYKir is played, add 2 attack to your avatar
+    public static void staffOfYKir(ActorRef out, Card card, Tile tile, GameState gameState) { // if staffOfYKir is played, add 2 attack to your avatar
 
         Spell staffOfYKir = new Spell(out, 2, 22);
+        Unit unitFromTile = tile.getUnitFromTile();
 
-        if (card.getCardname().equals("Staff of Y'Kir'")) {
-
-            BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff), tile);
-            avatar.setAttack(avatar.getAttack() + 2);
-            AppConstants.callSleep(100);
-            BasicCommands.setUnitAttack(out, avatar, avatar.getAttack());
-        }
+            if (unitFromTile.getSummonedID() == 2) {
+            gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
+            gameState.player2.setMana(gameState.player2.getMana()-card.getManacost());//decrease the mana
+            gameState.player2.setPlayer(out);//reflecting the mana on board
+            gameState.player2.deleteCardInHand(out, gameState.player2.getID(), gameState);//delete the card in hand
+            AppConstants.callSleep(500);
+                BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff), tile);
+                int newAttack = gameState.player2.getAvatar().getAttack() + 2;
+                gameState.player2.getAvatar().setAttack(newAttack);
+                unitFromTile.setAttack(newAttack);
+                AppConstants.callSleep(100);
+                BasicCommands.setUnitAttack(out, unitFromTile, newAttack);
+            }
     }
 
-    public static void entropicDecay(ActorRef out, Card card, Tile tile, BetterUnit avatar) { // if entropicDecay is played, reduce a non-avatar unit to 0 health (KILL THEM)
+    public static void entropicDecay(ActorRef out, Card card, Tile tile, GameState gameState) { // if entropicDecay is played, reduce a non-avatar unit to 0 health (KILL THEM)
 
         Spell entropicDecay = new Spell(out, 5, 27);
 
-        if (card.getCardname().equals("Entropic Decay")) {
 
-            Unit unitToHeal = tile.getUnitFromTile();
+            Unit unitToKill = tile.getUnitFromTile();
 
-            if (unitToHeal != null || !unitToHeal.equals(avatar)) {
+            if (unitToKill != null && unitToKill.getSummonedID() != 1 && unitToKill.getIsPlayer() == 1) {
 
-                BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_martyrdom), tile);
-                unitToHeal.setHealth(0);
+                gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
+                gameState.player2.setMana(gameState.player2.getMana()-card.getManacost());//decrease the mana
+                gameState.player2.setPlayer(out);//reflecting the mana on board
+                gameState.player2.deleteCardInHand(out, gameState.player2.getID(), gameState);//delete the card in hand
+                AppConstants.callSleep(500);
+
+                unitToKill.setHealth(0);
                 AppConstants.callSleep(100);
-                BasicCommands.setUnitHealth(out, unitToHeal, unitToHeal.getHealth());
+                BasicCommands.setUnitHealth(out, unitToKill, 0);
+                gameState.summonedUnits.remove(unitToKill);
+                BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_martyrdom), tile);
+                BasicCommands.playUnitAnimation(out, unitToKill, UnitAnimationType.death);
+                AppConstants.callSleep(AppConstants.deathSleepTime);
+                EffectAnimation ef = BasicObjectBuilders.loadEffect(AppConstants.effects[2]);
+//                BasicCommands.playEffectAnimation(out, ef, tile);
+                AppConstants.callSleep(AppConstants.effectSleepTime);
+                tile.setUnitToTile(null);
+                BasicCommands.deleteUnit(out, unitToKill);
+                AppConstants.callSleep(1000);
 
             }
-        }
     }
 
     // this method will highlight the enemy units on the board. the player parameter must take in the enemy player (the player whose turn it is NOT)
