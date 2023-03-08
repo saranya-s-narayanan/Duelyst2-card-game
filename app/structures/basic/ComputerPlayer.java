@@ -283,6 +283,8 @@ public class ComputerPlayer extends Player{
 
 
 	/** Method finds a tile to summon a unit on board
+	 * The method looks for the eney unit closest to the AI avatar
+	 * Find a tile from the summonableTileAroundAvatar with minimum distance to the enemy unit and returns that tile
 	 * 
 	 * @param currentTile
 	 * @param gameState 
@@ -307,6 +309,12 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 		return tileToSummon;
 	}
 
+/** Method find the tile with minimum distance to the closest enemy unit 
+ * 
+ * @param EnemyUnitIdx
+ * @param summonList
+ * @return
+ */
 	private Tile findClosestTileToEnemy(int EnemyUnitIdx, List<Tile> summonList) {
 		
 		Tile tile=null;
@@ -324,6 +332,12 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 		
 		return tile;
 	}
+	
+	/** Method finds an enemy unit close to the AI avatar
+	 * 
+	 * @param ourTile
+	 * @return
+	 */
 
 	private int findClosestEnemyUnit(Tile ourTile) {
 		
@@ -400,16 +414,15 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 	 * @param mode -> 0 - unit/spell, 1- only unit, 2- only spell
 	 */
 	public int checkHand(int mode){
-//		cardInHand=hand; --> similar as hand
 		for (int i=0;i<hand.size();i++) {
 
 			Card c=hand.get(i);
 			
 			if(mode==1) // can be only unit
 			{
-//				if(c.getManacost()<=getMana() && c.getId()!=22 || c.getId()!=27 || c.getId()!=32 || c.getId()!=37) //  check mana
-				if(c.getManacost()<=getMana() && getCardByHandPos(i)!=null) //  check mana
+				AppConstants.printLog("Mode 1: card name: "+c.getCardname()+",id: "+c.getId()+", getCardByHandPos(i): "+getCardByHandPos(i) );
 
+				if(c.getManacost()<=getMana() && (c.getId()!=22 && c.getId()!=27 && c.getId()!=32 && c.getId()!=37)) //  check mana
 				{
 					AppConstants.printLog("return hand position "+i+" with unit card: "+ c.getCardname());
 					return i; // return index
