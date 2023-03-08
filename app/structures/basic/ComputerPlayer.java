@@ -149,12 +149,16 @@ public class ComputerPlayer extends Player{
 			if(cardsDrawEnd==true) // to test
 				isContinue=false;
 			
-//			if(tileWithMyUnit.size()<2 ) // No units are summoned yet 
-//			{
-				AppConstants.printLog("<-------- AI :: startAILogic():: Summon a unit !");
-				drawCardAndProcessAction(1,out,gameState);
-					
-//			}
+			//If the number of enemy units is less than 5, save spells for later and do summoning a unit alone
+			if(tileWithPlayerUnits.size()<5)
+			{
+				// Summon a unit
+//				AppConstants.printLog("<-------- AI :: startAILogic():: Summon a unit !");
+				drawCardAndProcessAction(0,out,gameState); // mode 1- units only
+			}else {
+				
+				
+			}
 			
 			i++;
 			if(i>5) isContinue=false;
@@ -348,7 +352,7 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 		for(int i=0;i<tileWithPlayerUnits.size();i++)
 		{
 			double distance=calculateDistanceBetweenPoints(ourTile.getTilex(), ourTile.getTiley(), tileWithPlayerUnits.get(i).getTilex(), tileWithPlayerUnits.get(i).getTiley());
-			AppConstants.printLog("AI:: findClosestEnemyUnit:: DISTANCE: "+distance);
+//			AppConstants.printLog("AI:: findClosestEnemyUnit:: DISTANCE: "+distance);
 			if(distance<minDistance)
 			{
 				minDistance=distance;
@@ -420,19 +424,19 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 			
 			if(mode==1) // can be only unit
 			{
-				AppConstants.printLog("Mode 1: card name: "+c.getCardname()+",id: "+c.getId()+", getCardByHandPos(i): "+getCardByHandPos(i) );
+//				AppConstants.printLog("Mode 1: card name: "+c.getCardname()+",id: "+c.getId()+", getCardByHandPos(i): "+getCardByHandPos(i) );
 
 				if(c.getManacost()<=getMana() && (c.getId()!=22 && c.getId()!=27 && c.getId()!=32 && c.getId()!=37)) //  check mana
 				{
-					AppConstants.printLog("return hand position "+i+" with unit card: "+ c.getCardname());
+//					AppConstants.printLog("return hand position "+i+" with unit card: "+ c.getCardname());
 					return i; // return index
 				}
 			}else if(mode==2) { // can be only spell
-				if(c.getId()==22 || c.getId()==27 || c.getId()==32 || c.getId()==37)
+				if(c.getManacost()<=getMana() && (c.getId()==22 || c.getId()==27 || c.getId()==32 || c.getId()==37))
 				{
 					if(c.getManacost()<=getMana())
 					{
-						AppConstants.printLog("return hand position "+i+" with spell card: "+ c.getCardname());
+//						AppConstants.printLog("return hand position "+i+" with spell card: "+ c.getCardname());
 						return i;
 					}
 				}
@@ -440,12 +444,12 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 			else { // can be either unit or spell
 				if(c.getManacost()<=getMana()) //  check mana
 				{
-					if(c.getId()==22 || c.getId()==27 || c.getId()==32 || c.getId()==37){//encountered spell
-						AppConstants.printLog("Encontered Spell card at hand position: "+i);
-						// i++;//adding to skip spell card
-						continue;
-					}
-					AppConstants.printLog("return hand position "+i+" with card: "+ c.getCardname());
+//					if(c.getId()==22 || c.getId()==27 || c.getId()==32 || c.getId()==37){//encountered spell
+//						AppConstants.printLog("Encontered Spell card at hand position: "+i);
+//						// i++;//adding to skip spell card
+//						continue;
+//					}
+//					AppConstants.printLog("return hand position "+i+" with card: "+ c.getCardname());
 					return i; // return index
 				}
 			}

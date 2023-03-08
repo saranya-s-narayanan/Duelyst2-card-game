@@ -114,14 +114,21 @@ public class TileClicked implements EventProcessor {
 	            	{
 	            		gameState.handPosClicked=message.get("position").asInt();
 	            		
-            			AppConstants.printLog("<-------- AI :: After summoning :: gameState.handPosClicked: "+gameState.handPosClicked);
+            			AppConstants.printLog("<-------- AI :: summoning :: gameState.handPosClicked: "+gameState.handPosClicked);
 
-	            		
-	            		 // Summon the unit
-	                    summonCard(out,gameState,clickedTile,gameState.player2);
-	                    
-//	                    for(Card card:gameState.player2.hand)
-//	            			AppConstants.printLog("<-------- AI :: After summoning :: hand card: "+card.getCardname());
+            	        Card handCard = gameState.player2.getCardByHandPos(gameState.handPosClicked-1);//getting the card by hand position
+            			AppConstants.printLog("<-------- AI :: summoning :: handCard: "+handCard.getCardname());
+
+            		
+            			 if (handCard.getCardname().equals("Staff of Y'Kir'")) {
+            		            Spell.staffOfYKir(out, handCard, startTile, gameState);
+//            		        }else if (handCard.getCardname().equals("Entropic Decay")) {
+//            		            Spell.entropicDecay(out, handCard, clickedTile, gameState);
+            		        }else {
+            		
+            		        	// Summon the unit
+            		        	summonCard(out,gameState,clickedTile,gameState.player2);
+            		        }
 
 
 	            		
@@ -397,14 +404,14 @@ public class TileClicked implements EventProcessor {
             else Spell.sundropElixir(out, handCard, clicked, gameState);
             return;
         }
-        if (player.getMana() >= handCard.getManacost() && handCard.getCardname().equals("Entropic Decay")) {
-            Spell.entropicDecay(out, handCard, clicked, gameState);
-            return;
-        }
-        if (player.getMana() >= handCard.getManacost() && handCard.getCardname().equals("Staff of Y'Kir'")) {
-            Spell.staffOfYKir(out, handCard, clicked, gameState);
-            return;
-        }
+//        if (player.getMana() >= handCard.getManacost() && handCard.getCardname().equals("Entropic Decay")) {
+//            Spell.entropicDecay(out, handCard, clicked, gameState);
+//            return;
+//        }
+//        if (player.getMana() >= handCard.getManacost() && handCard.getCardname().equals("Staff of Y'Kir'")) {
+//            Spell.staffOfYKir(out, handCard, clicked, gameState);
+//            return;
+//        }
 
         // added the conditions of checking if the tile has a unit on it already and that the summonable tile list contains the clicked tile ontop of checking mana cost
 
