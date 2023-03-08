@@ -242,7 +242,11 @@ public class TileClicked implements EventProcessor {
             int unitIdx=PerformAction.getUnitIndexFromSummonedUnitlist(startTile.getUnitFromTile(),gameState.summonedUnits);
    		
             // clear the highlighting once move is clicked
+<<<<<<< app/events/TileClicked.java
             gameState.board.clearTileHighlighting(out, gameState.board.highlightTilesMoveAndAttack(0,player,out, startTile,gameState));
+=======
+            gameState.board.clearTileHighlighting(out, gameState.board.highlightTilesMoveAndAttack(0,player,out, startTile,gameState)); 
+>>>>>>> app/events/TileClicked.java
             gameState.board.clearTileHighlighting(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));
             AppConstants.callSleep(200);
             
@@ -251,7 +255,6 @@ public class TileClicked implements EventProcessor {
                 (gameState.summonedUnits.get(unitIdx).getName().equals("Fire Spitter"))||gameState.summonedUnits.get(unitIdx).getName().equals("Pyromancer")){
             // Clicked an occupied tile --> attack
         	boolean attackStatus=false;
-        	gameState.board.clearTileHighlighting(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));
             attackStatus = SpecialAbilities.attackUnitRanged(1, player,out, gameState.summonedUnits.get(unitIdx),startTile,clickedTile,gameState);
             if(gameState.summonedUnits.get(unitIdx)!=null && unitIdx<gameState.summonedUnits.size())
                 gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
