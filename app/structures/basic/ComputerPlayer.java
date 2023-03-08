@@ -139,6 +139,11 @@ public class ComputerPlayer extends Player{
 		int i=0;//running the loop only ten times per turn for now to handle infinite loop
 		while(isContinue)
 		{
+			//Test
+			for(Card card:hand)
+				AppConstants.printLog("Card Id: "+card.getId()+", name: "+card.getCardname());
+			
+			
 			checkUnitTiles(out,gameState);
 			
 			if(cardsDrawEnd==true) // to test
@@ -311,7 +316,7 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 		{
 			double distance=calculateDistanceBetweenPoints(tileWithPlayerUnits.get(EnemyUnitIdx).getTilex(), tileWithPlayerUnits.get(EnemyUnitIdx).getTiley(), summonTile.getTilex(), summonTile.getTiley());
 
-			if(distance<minDistance) {
+			if(distance<minDistance && summonTile.getUnitFromTile()==null) {
 				tile=summonTile;
 				minDistance=distance;
 			}
@@ -402,9 +407,11 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 			
 			if(mode==1) // can be only unit
 			{
-				if(c.getManacost()<=getMana() && c.getId()!=22 || c.getId()!=27 || c.getId()!=32 || c.getId()!=37) //  check mana
+//				if(c.getManacost()<=getMana() && c.getId()!=22 || c.getId()!=27 || c.getId()!=32 || c.getId()!=37) //  check mana
+				if(c.getManacost()<=getMana() && getCardByHandPos(i)!=null) //  check mana
+
 				{
-					System.out.println("return hand position "+i+" with unit card: "+ c.getCardname());
+					AppConstants.printLog("return hand position "+i+" with unit card: "+ c.getCardname());
 					return i; // return index
 				}
 			}else if(mode==2) { // can be only spell
@@ -412,7 +419,7 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 				{
 					if(c.getManacost()<=getMana())
 					{
-						System.out.println("return hand position "+i+" with spell card: "+ c.getCardname());
+						AppConstants.printLog("return hand position "+i+" with spell card: "+ c.getCardname());
 						return i;
 					}
 				}
@@ -421,11 +428,11 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 				if(c.getManacost()<=getMana()) //  check mana
 				{
 					if(c.getId()==22 || c.getId()==27 || c.getId()==32 || c.getId()==37){//encountered spell
-						System.out.println("Encontered Spell card at hand position: "+i);
+						AppConstants.printLog("Encontered Spell card at hand position: "+i);
 						// i++;//adding to skip spell card
 						continue;
 					}
-					System.out.println("return hand position "+i+" with card: "+ c.getCardname());
+					AppConstants.printLog("return hand position "+i+" with card: "+ c.getCardname());
 					return i; // return index
 				}
 			}
@@ -628,6 +635,14 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 	     return (int) (Math.random()*(Max-Min))+Min;
 	}
 	
+	/** Method returns the distance between two tile positions
+	 * 
+	 * @param x1 -> X position of tile A	
+	 * @param y1 -> Y position of tile A
+	 * @param x2 -> X position of tile B
+	 * @param y2 -> Y position of tile B
+	 * @return
+	 */
 	public double calculateDistanceBetweenPoints( double x1,  double y1,  double x2,  double y2) {       
 			    return Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
 			}
