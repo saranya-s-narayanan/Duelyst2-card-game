@@ -367,6 +367,15 @@ public class TileClicked implements EventProcessor {
         // System.out.println("player mana: "+ player.getMana());
         // System.out.println("mana cost: "+ handCard.getManacost());
 
+        if(player.getMana()>=handCard.getManacost() && clicked.getUnitFromTile() != null) {
+            // implementing the spells
+            Spell.truestike(out, handCard, clicked, gameState);
+            Spell.entropicDecay(out, handCard, clicked, gameState.avatar);
+            Spell.sundropElixir(out, handCard, clicked, gameState);
+            Spell.staffOfYKir(out, handCard, clicked, gameState.aiAvatar);
+            return;
+        }
+
         // added the conditions of checking if the tile has a unit on it already and that the summonable tile list contains the clicked tile ontop of checking mana cost
 
         if(player.getMana()>=handCard.getManacost() && clicked.getUnitFromTile() == null &&  PerformAction.getSummonableTiles(out, gameState, player).contains(clicked)){

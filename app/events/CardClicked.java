@@ -72,6 +72,21 @@ public class CardClicked implements EventProcessor {
             	gameState.SummonTileList = gameState.board.getTilesWithoutUnits(out, gameState.board.getTiles(), player);
             	gameState.board.highlightTilesWhite(out, gameState.SummonTileList);
             }
+
+            // highlighting for the two human player spells
+            else if(clickedCard.getCardname().equals("Truestrike")){
+                gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
+                AppConstants.callSleep(50);
+                gameState.board.highlightTilesRed(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), gameState.player2));
+
+            }
+            else if (clickedCard.getCardname().equals("Sundrop Elixir")) {
+                gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
+                AppConstants.callSleep(50);
+                gameState.board.highlightTilesWhiteSpell(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), gameState.player1));
+
+            }
+
             else {
                 gameState.SummonTileList= new ArrayList<Tile>();
             	// list of the tiles with units

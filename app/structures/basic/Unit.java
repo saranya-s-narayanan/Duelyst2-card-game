@@ -38,7 +38,8 @@ public class Unit {
 	
 	boolean moved=false; // variable to check whether the unit has already moved or not
 	boolean attacked=false; // variable to check whether the unit has already attacked other units or not
-	
+
+	int maxHealth;
 	int summonedID;
 //	int ownerPlayer;
 	
@@ -184,7 +185,15 @@ public class Unit {
 	public void setAttacked(boolean attacked) {
 		this.attacked = attacked;
 	}
-	
+
+	public int getMaxHealth() {
+		return maxHealth;
+	}
+
+	public void setMaxHealth(int getUnitHealth) {
+		this.maxHealth = getUnitHealth;
+	}
+
 	/** Method to get the summoned id of a particular unit on the board
 	 * 
 	 * @return

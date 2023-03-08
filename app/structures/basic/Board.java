@@ -561,6 +561,14 @@ public class Board {
         }
     }
 
+    public void highlightTilesWhiteSpell(ActorRef out, ArrayList<Tile> tiles){
+        for (Tile tile : tiles){
+            if (tile.getUnitFromTile() != null){
+                drawTileWithSleep(out, tile, 1, AppConstants.drawTileSleepTime);
+            }
+        }
+    }
+
     // public void clearTileHighlighting(ActorRef out, Board board) {  // method to clear the highlighted tiles
     //     for (int i = 0; i < AppConstants.boardWidth; i++) {
     //         for (int j = 0; j < AppConstants.boardHeight; j++) {
