@@ -26,6 +26,9 @@ public class ComputerPlayer extends Player{
 	List <Tile> tileWithMyUnit;//to keep track of tiles occupied by AI units
 	List <Tile> tileWithPlayerUnits;//to keep track of human player units
 	List <Tile> possibleSummonList;
+	
+	ArrayList<ObjectNode> possibilities=new ArrayList<>(); // Finalized object nodes with correct parameters
+		
 
 	Tile avatarTile;
 	
@@ -91,21 +94,28 @@ public class ComputerPlayer extends Player{
 	}
 	
 	public void startAIThread(ActorRef out,GameState gameState) {
+		AppConstants.printLog("<------------------------------Starting AI Thread-------------------------------------------------->");
+
 		aiThread = new Thread(new Runnable() {
 		    @Override
 		    public void run() {
-
-		    	
+   	
 		    	try {
 
 		    		cardsDrawEnd=false;
 		    		movesEnd=false;
 		    		
-		    	startAILogic(out, gameState);
+		    		startAILogic(out, gameState);
+		    	
 		    	}catch (Exception e) {
+		    		
 					e.printStackTrace();
+					
+					//Exit loop
 					cardsDrawEnd=true;
 					movesEnd=true;
+					
+					//Stop thread
 					aiThread.interrupt();
 					
 					// End turn
@@ -123,82 +133,31 @@ public class ComputerPlayer extends Player{
 	}
   
 	private void startAILogic(ActorRef out, GameState gameState) {
-		AppConstants.printLog("<-------------------------------------------------------------------------------->");
-		
-		
-
-	
-		
+		AppConstants.printLog("<------------------------------startAILogic-------------------------------------------------->");
+			
 		boolean isContinue=true; //boolean to keep track of how long loop should continue
 		int i=0;//running the loop only ten times per turn for now to handle infinite loop
 		while(isContinue)
 		{
 			checkUnitTiles(out,gameState);
-
 			
-			// Check if avatar is in range of any enemy unit - SS
-			ArrayList<Tile> dangerTiles=checkIfUnitInDanger(currentTile,out,gameState);
+			if(cardsDrawEnd==true) // to test
+				isContinue=false;
 			
-			if(dangerTiles.size()>0)
-			{
-				AppConstants.printLog("<-------- AI :: startAILogic():: Avatar is in danger ! ");
-				
-				// Avatar is in danger, need to move away or attack the enemy
-				
-				// If the player avatar is nearby and it's health <= AI attack value, attack and thus game over
-				if(dangerTiles.contains(gameState.player1.getCurrentTile()))
-				{
+//			if(tileWithMyUnit.size()<2 ) // No units are summoned yet 
+//			{
+				AppConstants.printLog("<-------- AI :: startAILogic():: Summon a unit !");
+				drawCardAndProcessAction(1,out,gameState);
 					
-					if(gameState.player1.getAvatar().getHealth()<=getAvatar().getAttack())
-					{
-						// Player's health is <= AI attack value, attack
-						attackAIUnit(out, gameState, currentTile, gameState.player1.getCurrentTile());
-					}
-				}else {
-					// Otherwise,try defensive way, move backward
-					AppConstants.printLog("<-------- AI :: startAILogic():: Find possible moves! ");
-
-					// Get list of possible backward moves respect to current avatar tile position
-					// ArrayList<Tile> possibleTilesToMove=possibleMoves("backward",currentTile,out,gameState);
-					
-
-				}
-				i++;
-				if(i>10) isContinue=false;		
-				
-			}else {
-				AppConstants.printLog("<-------- AI :: startAILogic():: Avatar is NOT in danger ! ");
-
-				// Avatar is safe from direct or indirect unit attacks. Can proceed with other units or cards
-				
-				if(tileWithMyUnit.size()<2 ) // No units are summoned yet 
-				{
-					AppConstants.printLog("<-------- AI :: startAILogic():: Summon a unit !");
-					drawCardAndProcessAction(1,out,gameState);
-					
-				}else if(cardsDrawEnd==false) // Can draw card again 
-				{
-					AppConstants.printLog("<-------- AI :: startAILogic():: Summon a unit !");
-					
-					// If number of player units is more than 5, cast spell or summon unit 
-					if(playerUnits.size()>5)
-						drawCardAndProcessAction(0,out,gameState);
-					else  // Otherwise, summon units only
-						drawCardAndProcessAction(1,out,gameState);
-
-					
-				}
-				
-			}
+//			}
 			
-			// No moves left and can't draw cards further, exit loop and end turn
-//			if(cardsDrawEnd==true && movesEnd==true) --> moves are not implememted yet
-			
-				if(cardsDrawEnd==true) // to test
-					isContinue=false;
+			i++;
+			if(i>5) isContinue=false;
 
 		}
 		
+		
+	// Exited loop
 		
 		// End turn
 		ObjectNode eventMessage = Json.newObject();
@@ -207,6 +166,74 @@ public class ComputerPlayer extends Player{
 
 		EndTurnClicked ec=new EndTurnClicked();
 		ec.processEvent(out, gameState, eventMessage); 
+		
+			
+			// -------------------------- COMMENTING FOR NOW----------------------------------------------
+//			// Check if avatar is in range of any enemy unit - SS
+//			ArrayList<Tile> dangerTiles=checkIfUnitInDanger(currentTile,out,gameState);
+//			
+//			if(dangerTiles.size()>0)
+//			{
+//				AppConstants.printLog("<-------- AI :: startAILogic():: Avatar is in danger ! ");
+//				
+//				// Avatar is in danger, need to move away or attack the enemy
+//				
+//				// If the player avatar is nearby and it's health <= AI attack value, attack and thus game over
+//				if(dangerTiles.contains(gameState.player1.getCurrentTile()))
+//				{
+//					
+//					if(gameState.player1.getAvatar().getHealth()<=getAvatar().getAttack())
+//					{
+//						// Player's health is <= AI attack value, attack
+//						attackAIUnit(out, gameState, currentTile, gameState.player1.getCurrentTile());
+//					}
+//				}else {
+//					// Otherwise,try defensive way, move backward
+//					AppConstants.printLog("<-------- AI :: startAILogic():: Find possible moves! ");
+//
+//					// Get list of possible backward moves respect to current avatar tile position
+//					// ArrayList<Tile> possibleTilesToMove=possibleMoves("backward",currentTile,out,gameState);
+//					
+//
+//				}
+//				i++;
+//				if(i>10) isContinue=false;		
+//								
+//			}else {
+//				AppConstants.printLog("<-------- AI :: startAILogic():: Avatar is NOT in danger ! ");
+//
+//				// Avatar is safe from direct or indirect unit attacks. Can proceed with other units or cards
+//				
+//				if(tileWithMyUnit.size()<2 ) // No units are summoned yet 
+//				{
+//					AppConstants.printLog("<-------- AI :: startAILogic():: Summon a unit !");
+//					drawCardAndProcessAction(1,out,gameState);
+//					
+//				}else if(cardsDrawEnd==false) // Can draw card again 
+//				{
+//					AppConstants.printLog("<-------- AI :: startAILogic():: Summon a unit !");
+//					
+//					// If number of player units is more than 5, cast spell or summon unit 
+//					if(playerUnits.size()>5)
+//						drawCardAndProcessAction(0,out,gameState);
+//					else  // Otherwise, summon units only
+//						drawCardAndProcessAction(1,out,gameState);
+//
+//					
+//				}
+//		}
+
+		//------------------------------------------------------------------------------------------------
+
+				
+			
+			// No moves left and can't draw cards further, exit loop and end turn
+//			if(cardsDrawEnd==true && movesEnd==true) --> moves are not implememted yet
+			
+				
+
+		
+	
 
 		
 //		Boolean movesLeft=true;
@@ -257,48 +284,105 @@ public class ComputerPlayer extends Player{
 	 * @param out 
 	 * @return
 	 */
-
-	private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameState) {
+	
+	
+private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameState) {
 		
 		Tile tileToSummon = null;
 		
 		possibleSummonList= PerformAction.getSummonableTilesAroundAvatar(out, gameState,currentTile);
 		gameState.board.highlightTilesRed(out, (ArrayList<Tile>) possibleSummonList);
 
-		for(Tile tile:possibleSummonList)
-		{
-			
-			if(tile.getUnitFromTile()==null)
-			{
-				AppConstants.printLog("<-------- AI :: startAILogic():: findAtileToSummon : tile: ["+tile.getTilex()+","+tile.getTiley()+"]");
-
-				tileToSummon=tile;
-				break;
-			}
-
-		}
+		// Find the closest enemy unit on board
+		int closestEnemyUnitIdx=findClosestEnemyUnit(currentTile);
 		
-		// All summonable tiles are already occupied
-		if(tileToSummon==null)
-		{
-			// Summon unit in any vacant forward tile
-			  for (int i = 4; i < gameState.board.tiles.length; i++) {
-		            for (int j = 0; j < gameState.board.tiles[i].length; j++) {
-		            	
-		               gameState.board.drawTileWithSleep(out, gameState.board.returnTile(i, j), 2, AppConstants.drawTileSleepTime);
-		            	if(gameState.board.returnTile(i, j).getUnitFromTile()==null)
-		    			{
-		            		gameState.board.returnTile(i, j);
-		            		break;
-		            	}		            	
-		            }
-		     }
-			
-		}
+		tileToSummon=findClosestTileToEnemy(closestEnemyUnitIdx,possibleSummonList);
 
 		
 		return tileToSummon;
 	}
+
+	private Tile findClosestTileToEnemy(int EnemyUnitIdx, List<Tile> summonList) {
+		
+		Tile tile=null;
+		
+		double minDistance=999;
+		for(Tile summonTile:possibleSummonList)
+		{
+			double distance=calculateDistanceBetweenPoints(tileWithPlayerUnits.get(EnemyUnitIdx).getTilex(), tileWithPlayerUnits.get(EnemyUnitIdx).getTiley(), summonTile.getTilex(), summonTile.getTiley());
+
+			if(distance<minDistance) {
+				tile=summonTile;
+				minDistance=distance;
+			}
+		}
+		
+		return tile;
+	}
+
+	private int findClosestEnemyUnit(Tile ourTile) {
+		
+		int idx=-1;
+		
+		double minDistance=999;
+		
+		for(int i=0;i<tileWithPlayerUnits.size();i++)
+		{
+			double distance=calculateDistanceBetweenPoints(ourTile.getTilex(), ourTile.getTiley(), tileWithPlayerUnits.get(i).getTilex(), tileWithPlayerUnits.get(i).getTiley());
+			AppConstants.printLog("AI:: findClosestEnemyUnit:: DISTANCE: "+distance);
+			if(distance<minDistance)
+			{
+				minDistance=distance;
+				idx=i;
+			}
+		}
+		
+		
+		return idx;
+		
+	}
+
+//	private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameState) {
+//		
+//		Tile tileToSummon = null;
+//		
+//		possibleSummonList= PerformAction.getSummonableTilesAroundAvatar(out, gameState,currentTile);
+//		gameState.board.highlightTilesRed(out, (ArrayList<Tile>) possibleSummonList);
+//
+//		for(Tile tile:possibleSummonList)
+//		{
+//			
+//			if(tile.getUnitFromTile()==null)
+//			{
+//				AppConstants.printLog("<-------- AI :: startAILogic():: findAtileToSummon : tile: ["+tile.getTilex()+","+tile.getTiley()+"]");
+//
+//				tileToSummon=tile;
+//				break;
+//			}
+//
+//		}
+//		
+//		// All summonable tiles are already occupied
+//		if(tileToSummon==null)
+//		{
+//			// Summon unit in any vacant forward tile
+//			  for (int i = 4; i < gameState.board.tiles.length; i++) {
+//		            for (int j = 0; j < gameState.board.tiles[i].length; j++) {
+//		            	
+//		               gameState.board.drawTileWithSleep(out, gameState.board.returnTile(i, j), 2, AppConstants.drawTileSleepTime);
+//		            	if(gameState.board.returnTile(i, j).getUnitFromTile()==null)
+//		    			{
+//		            		gameState.board.returnTile(i, j);
+//		            		break;
+//		            	}		            	
+//		            }
+//		     }
+//			
+//		}
+//
+//		
+//		return tileToSummon;
+//	}
 
 
 

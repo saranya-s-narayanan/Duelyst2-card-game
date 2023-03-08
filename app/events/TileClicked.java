@@ -172,14 +172,7 @@ public class TileClicked implements EventProcessor {
                 
                 // checks for ranged units and highlights all enemy units
                 if (gameState.summonedUnits.get(unitIdx).getName().equals("Fire Spitter") || gameState.summonedUnits.get(unitIdx).getName().equals("Pyromancer")){
-                	if(gameState.summonedUnits.get(unitIdx).getMoved() == false && gameState.summonedUnits.get(unitIdx).getAttacked() == false) {
-                    	gameState.board.highlightTilesMoveAndAttack(1,player,out, startTile,gameState);
-                    	gameState.board.highlightTilesRed(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));
-                	}else if(gameState.summonedUnits.get(unitIdx).getMoved() == true && gameState.summonedUnits.get(unitIdx).getAttacked() == false) {
-                		gameState.board.highlightTilesRed(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));
-                	}else if(gameState.summonedUnits.get(unitIdx).getAttacked() == true) {
-                		BasicCommands.addPlayer1Notification(out, "No moves left!", 2);
-                	}
+                    gameState.board.highlightTilesRed(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));
                 }
 
                 // If the unit is Azurite Lion or Serpenti, implement Attack Twice logic
@@ -242,9 +235,7 @@ public class TileClicked implements EventProcessor {
             int unitIdx=PerformAction.getUnitIndexFromSummonedUnitlist(startTile.getUnitFromTile(),gameState.summonedUnits);
    		
             // clear the highlighting once move is clicked
-
-            gameState.board.clearTileHighlighting(out, gameState.board.highlightTilesMoveAndAttack(0,player,out, startTile,gameState));
-            gameState.board.clearTileHighlighting(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));
+            gameState.board.clearTileHighlighting(out, gameState.board.highlightTilesMoveAndAttack(0,player,out, startTile,gameState)); 
             AppConstants.callSleep(200);
             
             // checks if the unit is fire Spitter , if so trigger ranged attack
@@ -252,6 +243,7 @@ public class TileClicked implements EventProcessor {
                 (gameState.summonedUnits.get(unitIdx).getName().equals("Fire Spitter"))||gameState.summonedUnits.get(unitIdx).getName().equals("Pyromancer")){
             // Clicked an occupied tile --> attack
         	boolean attackStatus=false;
+        	gameState.board.clearTileHighlighting(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));
             attackStatus = SpecialAbilities.attackUnitRanged(1, player,out, gameState.summonedUnits.get(unitIdx),startTile,clickedTile,gameState);
             if(gameState.summonedUnits.get(unitIdx)!=null && unitIdx<gameState.summonedUnits.size())
                 gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
@@ -409,12 +401,6 @@ public class TileClicked implements EventProcessor {
             if(unitSummon.getId() == 7 || unitSummon.getId() == 17 || unitSummon.getId() == 26 || unitSummon.getId() == 36) {
             	unitSummon.setAttackedOnce(true);
             	unitSummon.setAttackedTwice(true);
-            }
-            
-            // If the summoned unit is Blaze Hound, both players draw a card 
-            if(unitSummon.getId() == 23 || unitSummon.getId() == 33) {
-            	gameState.player1.drawAnotherCard(out,1);
-            	gameState.player2.drawAnotherCard(out,2);
             }
             // gameState.SummonTileList=null;
             
