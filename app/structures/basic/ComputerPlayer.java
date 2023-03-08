@@ -302,7 +302,7 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 		Tile tileToSummon = null;
 		
 		possibleSummonList= PerformAction.getSummonableTilesAroundAvatar(out, gameState,currentTile);
-//		gameState.board.highlightTilesRed(out, (ArrayList<Tile>) possibleSummonList);
+		// gameState.board.highlightTilesRed(out, (ArrayList<Tile>) possibleSummonList);
 
 		// Find the closest enemy unit on board
 		int closestEnemyUnitIdx=findClosestEnemyUnit(currentTile);
