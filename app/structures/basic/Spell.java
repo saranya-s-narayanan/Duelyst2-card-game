@@ -107,20 +107,18 @@ public class Spell {
             Unit unitToHeal = tile.getUnitFromTile();
 
             if (unitToHeal.getIsPlayer()==1) {
-
+                if (unitToHeal.getHealth() == unitToHeal.getMaxHealth()){
+                    OtherClicked.clearCardClicked(out, gameState, gameState.player1);//clear highlighting
+                    BasicCommands.addPlayer1Notification(out, "Health already full!", 2);
+                    return;
+                }
                 gameState.player1.setMana(gameState.player1.getMana()-card.getManacost());//decrease the mana
                 gameState.player1.setPlayer(out);//reflecting the mana on board
 
                 gameState.player1.deleteCardInHand(out, gameState.player1.getID(), gameState);//delete the card in hand
                 AppConstants.callSleep(200);
                 gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
-
-                if (unitToHeal.getHealth() == unitToHeal.getMaxHealth()){
-                    OtherClicked.clearCardClicked(out, gameState, gameState.player1);//clear highlighting
-                    BasicCommands.addPlayer1Notification(out, "Health already full!", 2);
-                    return;
-                }
-
+                
                 if (unitToHeal.getHealth() + 5 > unitToHeal.getMaxHealth()){
 
                     BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff), tile);
