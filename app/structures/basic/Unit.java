@@ -4,6 +4,7 @@ import akka.actor.ActorRef;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import commands.BasicCommands;
+import structures.GameState;
 
 /**
  * This is a representation of a Unit on the game board.
@@ -38,7 +39,8 @@ public class Unit {
 	
 	boolean moved=false; // variable to check whether the unit has already moved or not
 	boolean attacked=false; // variable to check whether the unit has already attacked other units or not
-	
+
+	int maxHealth;
 	int summonedID;
 //	int ownerPlayer;
 	
@@ -184,7 +186,15 @@ public class Unit {
 	public void setAttacked(boolean attacked) {
 		this.attacked = attacked;
 	}
-	
+
+	public int getMaxHealth() {
+		return maxHealth;
+	}
+
+	public void setMaxHealth(int getUnitHealth) {
+		this.maxHealth = getUnitHealth;
+	}
+
 	/** Method to get the summoned id of a particular unit on the board
 	 * 
 	 * @return
@@ -244,6 +254,18 @@ public class Unit {
 	public void setPositionByTile(Tile tile) {
 		position = new Position(tile.getXpos(),tile.getYpos(),tile.getTilex(),tile.getTiley());
 	}
-	
+
+	// method to retrieve the tile that a particular unit is on (player 1 only)
+	public Tile getTileFromUnit(int unitID, GameState gameState, ActorRef out) {
+		Tile unitTile = null;
+		for (Tile tile : gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), gameState.player1)) {
+			if (tile.getUnitFromTile().getId() == unitID){
+				unitTile = tile;
+				return unitTile;
+			}
+		}
+		return null;
+
+	}
 	
 }

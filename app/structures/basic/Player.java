@@ -373,6 +373,7 @@ public class Player {
 					u.setHealth(c.getBigCard().getHealth());
 					u.setAttack(c.getBigCard().getAttack());
 					u.setName(c.getCardname());
+					u.setMaxHealth(c.getBigCard().getHealth());
 					// System.out.println("Unit created with id: "+ u.getId()+ " and name: "+u.getName());
 					playerUnits.add(u);//changes here for conflict resolution
 					j++;

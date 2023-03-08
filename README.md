@@ -137,3 +137,11 @@ The method `SilverguardKnightAbility(ActorRef out, GameState gameState)` has bee
 increased the attck of the unit by 2. this is called inside the attack method which checks if the avatar has been damaged. this will also need to be 
 called inside any spell logic which checks for the avatar being damaged.
 
+# Truestrike
+
+The method` truestrike() ` is called in the tile clicked, the correct highlighting is implemented in the card clicked class
+
+# Sundrop Elixr
+
+the method `SundropElixir()` is called in the tile clicked and the correct highlighting is implemented in the card clicked class
+
