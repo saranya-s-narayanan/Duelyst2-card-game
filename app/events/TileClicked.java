@@ -371,41 +371,46 @@ public class TileClicked implements EventProcessor {
 
         if(player.getMana()>=handCard.getManacost() && clicked.getUnitFromTile() == null &&  PerformAction.getSummonableTiles(out, gameState, player).contains(clicked)){
             
-        	// Azure Herald special ability (When this unit is summoned give your avatar +3 health (maximum 20)
-        	if(unitSummon.getId() == 5 || unitSummon.getId() == 15) {
-        		// If +3 increase would make avatar health greater than max health, set avatar health to max health
-        		if(gameState.summonedUnits.get(0).getHealth() + 3 > AppConstants.playerMaxHealth) {
-        			gameState.summonedUnits.get(0).setHealth(AppConstants.playerMaxHealth);
-        			BasicCommands.setUnitHealth(out, gameState.summonedUnits.get(0), gameState.summonedUnits.get(0).getHealth());
-        		}
-        		else {
-        			// Increase avatar health by 3
-        			gameState.summonedUnits.get(0).setHealth(gameState.summonedUnits.get(0).getHealth() + 3);
-            		// Update on front end
-        			BasicCommands.setUnitHealth(out, gameState.summonedUnits.get(0), gameState.summonedUnits.get(0).getHealth());
-        		}
-        	}
+        	if(unitSummon!=null) { // It's a unit
+        		// Azure Herald special ability (When this unit is summoned give your avatar +3 health (maximum 20)
+            	if(unitSummon.getId() == 5 || unitSummon.getId() == 15) {
+            		// If +3 increase would make avatar health greater than max health, set avatar health to max health
+            		if(gameState.summonedUnits.get(0).getHealth() + 3 > AppConstants.playerMaxHealth) {
+            			gameState.summonedUnits.get(0).setHealth(AppConstants.playerMaxHealth);
+            			BasicCommands.setUnitHealth(out, gameState.summonedUnits.get(0), gameState.summonedUnits.get(0).getHealth());
+            		}
+            		else {
+            			// Increase avatar health by 3
+            			gameState.summonedUnits.get(0).setHealth(gameState.summonedUnits.get(0).getHealth() + 3);
+                		// Update on front end
+            			BasicCommands.setUnitHealth(out, gameState.summonedUnits.get(0), gameState.summonedUnits.get(0).getHealth());
+            		}
+            	}
 
-            player.setMana(player.getMana()-handCard.getManacost());//decrease the mana
-            player.setPlayer(out);//reflecting the mana on board
-            player.deleteCardInHand(out, player.getID(), gameState);//delete the card in hand
-            AppConstants.callSleep(200);
-            gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
-            gameState.SummonTileList=null;
-            // clearTileHighSummon(out, gameState, player);//clear the tile summoning
-            player.drawUnitToBoard(out, unitSummon, clicked, handCard, player, gameState);//draw unit on board
-            AppConstants.callSleep(200);
-            unitSummon.setMoved(true);//restricting move
-            unitSummon.setAttacked(true);//restricting attack
-            // Restricting units with the attack twice special ability
-            if(unitSummon.getId() == 7 || unitSummon.getId() == 17 || unitSummon.getId() == 26 || unitSummon.getId() == 36) {
-            	unitSummon.setAttackedOnce(true);
-            	unitSummon.setAttackedTwice(true);
-            }
-            // gameState.SummonTileList=null;
-            
-            if(player.getID()==1)//Notifications active for only player1
-            BasicCommands.addPlayer1Notification(out, "Summoning Complete", 2);
+                player.setMana(player.getMana()-handCard.getManacost());//decrease the mana
+                player.setPlayer(out);//reflecting the mana on board
+                player.deleteCardInHand(out, player.getID(), gameState);//delete the card in hand
+                AppConstants.callSleep(200);
+                gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
+                gameState.SummonTileList=null;
+                // clearTileHighSummon(out, gameState, player);//clear the tile summoning
+                player.drawUnitToBoard(out, unitSummon, clicked, handCard, player, gameState);//draw unit on board
+                AppConstants.callSleep(200);
+                unitSummon.setMoved(true);//restricting move
+                unitSummon.setAttacked(true);//restricting attack
+                // Restricting units with the attack twice special ability
+                if(unitSummon.getId() == 7 || unitSummon.getId() == 17 || unitSummon.getId() == 26 || unitSummon.getId() == 36) {
+                	unitSummon.setAttackedOnce(true);
+                	unitSummon.setAttackedTwice(true);
+                }
+                // gameState.SummonTileList=null;
+                
+                if(player.getID()==1)//Notifications active for only player1
+                BasicCommands.addPlayer1Notification(out, "Summoning Complete", 2);
+        	}else { // It's a spell
+        		AppConstants.printLog("<------------- HANDLE SPELL !!!!!!!!!!!!!!!!!!!!!!! --------------");
+        	}
+        	
         }
         else {//if conditions are not met
             if(player.getMana()<handCard.getManacost()){//if not enough mana
