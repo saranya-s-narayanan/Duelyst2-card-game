@@ -272,7 +272,8 @@ public class Player {
 					AppConstants.callSleep(500);
 					//increment the position
 					position++;
-				}
+				}else
+					position++;
 			}
 			else{
 				hand.add(1, deck.get(0));
@@ -283,7 +284,8 @@ public class Player {
 					AppConstants.callSleep(500);
 					//increment the position
 					position++;
-				}
+				}else
+					position++;
 			}
 			
 		}
