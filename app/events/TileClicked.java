@@ -172,7 +172,14 @@ public class TileClicked implements EventProcessor {
                 
                 // checks for ranged units and highlights all enemy units
                 if (gameState.summonedUnits.get(unitIdx).getName().equals("Fire Spitter") || gameState.summonedUnits.get(unitIdx).getName().equals("Pyromancer")){
-                    gameState.board.highlightTilesRed(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));
+                	if(gameState.summonedUnits.get(unitIdx).getMoved() == false && gameState.summonedUnits.get(unitIdx).getAttacked() == false) {
+                    	gameState.board.highlightTilesMoveAndAttack(1,player,out, startTile,gameState);
+                    	gameState.board.highlightTilesRed(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));
+                	}else if(gameState.summonedUnits.get(unitIdx).getMoved() == true && gameState.summonedUnits.get(unitIdx).getAttacked() == false) {
+                		gameState.board.highlightTilesRed(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));
+                	}else if(gameState.summonedUnits.get(unitIdx).getAttacked() == true) {
+                		BasicCommands.addPlayer1Notification(out, "No moves left!", 2);
+                	}
                 }
 
                 // If the unit is Azurite Lion or Serpenti, implement Attack Twice logic
@@ -235,7 +242,8 @@ public class TileClicked implements EventProcessor {
             int unitIdx=PerformAction.getUnitIndexFromSummonedUnitlist(startTile.getUnitFromTile(),gameState.summonedUnits);
    		
             // clear the highlighting once move is clicked
-            gameState.board.clearTileHighlighting(out, gameState.board.highlightTilesMoveAndAttack(0,player,out, startTile,gameState)); 
+            gameState.board.clearTileHighlighting(out, gameState.board.highlightTilesMoveAndAttack(0,player,out, startTile,gameState));
+            gameState.board.clearTileHighlighting(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));
             AppConstants.callSleep(200);
             
             // checks if the unit is fire Spitter , if so trigger ranged attack
