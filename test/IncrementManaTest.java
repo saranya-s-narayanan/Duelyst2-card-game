@@ -51,6 +51,8 @@ public class IncrementManaTest {
 
 		// Checks that AI player's getMana equals the turn number + 1 as the turn changes
 		assertTrue(gameState.player2.getMana() == gameState.compTurnNumber + 1);
+		
+		//Not working as of 3/8 because the team changed the initial mana to 5 to test new functionality
 	}
 
 }
