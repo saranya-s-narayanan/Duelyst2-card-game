@@ -43,6 +43,8 @@ public class GameState {
     public ArrayList<Unit> summonedUnits=new ArrayList<Unit>(); //ArrayList for summoned units on board (constains all units of both player1 and 2)
     public ArrayList<Tile> SummonTileList = null;//variable to hold summonable tile list
     public JsonNode clickMessage;//variable to hold the message type
+
+    public boolean provoked = false;
     
     
   
@@ -74,6 +76,7 @@ public class GameState {
         summonedUnits=new ArrayList<Unit>(); 
         SummonTileList = null;
         clickMessage=null;
+        provoked = false;
 
     }
 

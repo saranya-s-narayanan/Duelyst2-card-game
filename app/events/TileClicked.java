@@ -228,6 +228,7 @@ public class TileClicked implements EventProcessor {
                                 tiles.add(tile);
                             }
                         }
+                        BasicCommands.addPlayer1Notification(out, "Unit provoked!", 2);
                         gameState.board.highlightTilesRed(out, tiles);
                     }
                     else {
@@ -344,9 +345,7 @@ public class TileClicked implements EventProcessor {
             // If a tile with an enemy unit is clicked and it is adjacent, and the player has not attacked yet
             // It is a direct attack, only attack should be set to true
             else if(clickedTile.getUnitFromTile()!=null && clickedTile.getUnitFromTile().getIsPlayer() != player.getID() && gameState.summonedUnits.get(unitIdx).getAttacked()==false && gameState.board.getAdjacentTilesToAttack(player,out, startTile).contains(clickedTile)){ // Clicked an occupied tile --> attack
-            	if (gameState.summonedUnits.get(unitIdx).isProvoked()==true){
 
-                }
                 AppConstants.printLog("------> TileClicked :: Attacking unit at tile " + clickedTile.getTilex() + " " + clickedTile.getTiley());
                 boolean attackStatus=false;
                 
@@ -358,6 +357,8 @@ public class TileClicked implements EventProcessor {
             }
             
             startTile = null; // Reset the start tile to no unit
+            gameState.summonedUnits.get(unitIdx).setProvoked(false);
+            gameState.summonedUnits.get(unitIdx).setMoved(false);
         }
         else {
 

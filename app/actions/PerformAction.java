@@ -67,7 +67,6 @@ public class PerformAction {
 
 					if (unit.isProvoked() == true){
 						if (tilesProvoke.contains(enemyTile)){
-						System.out.println("OIOIOI");
 						attackDirectly(player,out,unit,startTile,enemyTile,gameState,enemyTile.getUnitFromTile());
 						return true;}
 						else return false;
