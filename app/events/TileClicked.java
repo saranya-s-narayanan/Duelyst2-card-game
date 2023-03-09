@@ -181,8 +181,14 @@ public class TileClicked implements EventProcessor {
 
                 // checks for ranged units and highlights all enemy units
                 if (gameState.summonedUnits.get(unitIdx).getName().equals("Fire Spitter") || gameState.summonedUnits.get(unitIdx).getName().equals("Pyromancer")){
+                    if (gameState.summonedUnits.get(unitIdx).isProvoked()==true){
+                        ArrayList<Tile> tiles = getProvokerTiles(out, gameState, player);
+                        gameState.board.highlightTilesRed(out, tiles);
+                    }
+                    else{
+                        gameState.board.highlightTilesWhite(out, gameState.board.getAdjacentTiles(out, startTile));
                     gameState.board.highlightTilesRed(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));
-                }
+                }}
 
                 // If the unit is Azurite Lion or Serpenti, implement Attack Twice logic
                 else if(gameState.summonedUnits.get(unitIdx).getId() == 7 || gameState.summonedUnits.get(unitIdx).getId() == 17 || gameState.summonedUnits.get(unitIdx).getId() == 26 || gameState.summonedUnits.get(unitIdx).getId() == 36) {
@@ -224,12 +230,7 @@ public class TileClicked implements EventProcessor {
 
                     // checking if unit is provoked and highlighting only the provoking enemy
                     if(gameState.summonedUnits.get(unitIdx).isProvoked()){
-                        ArrayList<Tile> tiles = new ArrayList<>();
-                        for (Tile tile: gameState.board.summonableTiles(out, startTile)){
-                            if (SpecialAbilities.getProvokingUnits(out, gameState, TileClicked.opposingPlayer(gameState, player)).contains(tile.getUnitFromTile())){
-                                tiles.add(tile);
-                            }
-                        }
+                        ArrayList<Tile> tiles = getProvokerTiles(out, gameState, player);
                         BasicCommands.addPlayer1Notification(out, "Unit provoked!", 2);
                         gameState.board.highlightTilesRed(out, tiles);
                     }
@@ -368,6 +369,16 @@ public class TileClicked implements EventProcessor {
             AppConstants.callSleep(200);
             startTile = null; // Reset the start tile to no unit
         }
+    }
+
+    private static ArrayList<Tile> getProvokerTiles(ActorRef out, GameState gameState, Player player) {
+        ArrayList<Tile> tiles = new ArrayList<>();
+        for (Tile tile: gameState.board.summonableTiles(out, startTile)){
+            if (SpecialAbilities.getProvokingUnits(out, gameState, TileClicked.opposingPlayer(gameState, player)).contains(tile.getUnitFromTile())){
+                tiles.add(tile);
+            }
+        }
+        return tiles;
     }
 
     public static void setStartTile(boolean bool){
