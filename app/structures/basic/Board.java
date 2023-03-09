@@ -303,11 +303,17 @@ public class Board {
         			{
         				if(j==(-1*idx) || j==idx) // Check for attackable units
         				{
-        					ArrayList<Tile> attackableTiles=getAdjacentTilesToAttack(player, out, tile,newTile);
-        					adjacentTiles.addAll(attackableTiles);
         					
-        					if(mode==1) //highlight , else clear
-        						gameState.board.highlightTilesRed(out,attackableTiles); // update front end
+        					if(newTile.getUnitFromTile()==null)
+        					{
+        						ArrayList<Tile> attackableTiles=getAdjacentTilesToAttack(player, out, tile,newTile);
+        						adjacentTiles.addAll(attackableTiles);
+
+            					if(mode==1) //highlight , else clear
+            						gameState.board.highlightTilesRed(out,attackableTiles); // update front end
+        					}
+        					
+
         				}
 
         				
@@ -592,7 +598,7 @@ public class Board {
 
 
         // Place a unit with attack:3 and health:2 at [2,2]
-        int x = 2, y = 2;
+        int x = 3, y = 2;
         Unit unit1 = gameState.player1.getPlayerUnits().get(0);
         unit1.setSummonedID(gameState.summonedUnits.size()+1); 
         unit1.setIsPlayer(1); // set to player 1
@@ -633,8 +639,8 @@ public class Board {
         
         
         // Place enemy unit with attack:21 and health:2 at [2,4]
-        x = 2;
-        y = 4;
+        x = 4;
+        y = 2;
         unit1 = gameState.player2.getPlayerUnits().get(1);
         unit1.setSummonedID(gameState.summonedUnits.size()+1);
         unit1.setIsPlayer(2); // set to player 2
