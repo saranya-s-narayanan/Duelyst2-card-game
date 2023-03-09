@@ -365,7 +365,7 @@ public class PerformAction {
      */
     public static void gameEnd(ActorRef out, GameState gameState) {
         
-    	 AppConstants.printLog("------> gameEnd:: Before- gameState.isGameActive: "+gameState.isGameActive);
+//    	 AppConstants.printLog("------> gameEnd:: Before- gameState.isGameActive: "+gameState.isGameActive);
         if(gameState.isGameActive==true){
 			//check if player 1 health is 0 or not
 			if(gameState.player1.getAvatar().getHealth()<=0 || (gameState.player1.getCardInDeck()==0 && gameState.player1.getCardInHand()==0)){

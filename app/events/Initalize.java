@@ -37,29 +37,10 @@ public class Initalize implements EventProcessor {
         gameState.clickMessage=message.get("messagetype");//initializing the clickMessage here
 		AppConstants.printLog("------> message type:---->"+gameState.clickMessage);
 
-        AppConstants.printLog("------> Initialize :: creating board..");
 
 		// Create a board object and assign it to the gameState board object
         gameState.board = new Board(out);
 
-        AppConstants.printLog("------> Initialize :: Board created !");
-
-                
-               
-        
-        // ******************************* TESTS ******************************************
-        // testing if the correct tiles are highlighted
-       
-        // AppConstants.printLog("------> Initialize :: Test:: Red Higlight..");
-        // gameState.board.highlightTilesRed(out, gameState.board.getAdjacentTiles(out,gameState.board.returnTile(8 ,4)));
-        
-        // AppConstants.printLog("------> Initialize :: Test:: Adding dummy units on  board..");
-		// gameState.board.addDummyUnitsonBoard(out);
-
-		//************************************// HUMAN PLAYER //******************************************
-		
-        
-        AppConstants.printLog("------> Initialize :: initializing player 1 !");
 
         // creating the avatar object
         Unit avatar = BasicObjectBuilders.loadUnit(StaticConfFiles.humanAvatar, 40, Unit.class);
@@ -83,7 +64,6 @@ public class Initalize implements EventProcessor {
         
         // loading the units for player 1
         // gameState.player1.createPlayer1Units(out);
-        AppConstants.printLog("------> Initialize :: creating Player 1 units !");
         gameState.player1.createUnits(gameState.player1);
 
         //Setting the hand as an ArrayList
@@ -95,11 +75,9 @@ public class Initalize implements EventProcessor {
         // loading the units for player 1
         // gameState.player1.createPlayerUnits(out);//changes here for conflict resolution
 
-
         
 
         //************************************// COMPUTER PLAYER //******************************************
-		AppConstants.printLog("------> Initialize :: Initializing player 2 !");
 		// creating ai avatar object
         Unit aiAvatar = BasicObjectBuilders.loadUnit(StaticConfFiles.aiAvatar, 41, Unit.class);
 
@@ -124,7 +102,6 @@ public class Initalize implements EventProcessor {
 
         // loading the units for player 2
         // gameState.player2.createPlayer2Units(out);
-        AppConstants.printLog("------> Initialize :: creating Player 2 units !");
         gameState.player2.createUnits(gameState.player2);
         // AppConstants.printLog("------> Initialize :: deck created");
         
@@ -148,7 +125,8 @@ public class Initalize implements EventProcessor {
         
 //        gameState.board.addDummyUnitsonBoard(out,gameState);
        
-        
+        AppConstants.printLog("------> Game Board and player initialized!");
+
         //give notification to player that initialization is done
         BasicCommands.addPlayer1Notification(out, "Game Started, Your Turn", 2);
         // User 1 makes a change

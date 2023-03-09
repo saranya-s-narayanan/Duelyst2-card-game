@@ -65,13 +65,13 @@ public class Heartbeat implements EventProcessor{
 		        		gameState.player1.setPlayerHealth(out);
 		        		gameState.player2.syncAIHealth(gameState); 
 		        		gameState.player2.setPlayerHealth(out); 
-		        		AppConstants.printLog("------> Heartbeat:: Syncing player and avatar health ! Updating front end !!");
+//		        		AppConstants.printLog("------> Heartbeat:: Syncing player and avatar health ! Updating front end !!");
 		        		
 		        		//to check if the game ended or not
 						PerformAction.gameEnd(out, gameState);
 		            
 	            	}
-        			AppConstants.printLog("------> Heartbeat:: gameState.isGameOver: "+gameState.isGameOver);
+//        			AppConstants.printLog("------> Heartbeat:: gameState.isGameOver: "+gameState.isGameOver);
 
         			
 	            	// Calculate the time gap between the latest heartbeat receival time and current time
@@ -80,7 +80,7 @@ public class Heartbeat implements EventProcessor{
 	            	if(timeDifference>AppConstants.allowedHeartbeatTimeGap || gameState.isGameOver==true)
 	            	{
 
-	        			AppConstants.printLog("------> Heartbeat:: Game is NOT active ! Resetting Backend !!");
+//	        			AppConstants.printLog("------> Heartbeat:: Game is NOT active ! Resetting Backend !!");
 	        			gameState.isGameActive=false;
 	        			gameState.clearStateVariables();
 	            		stopGameTaskTimer();
