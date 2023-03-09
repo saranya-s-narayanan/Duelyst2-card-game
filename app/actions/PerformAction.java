@@ -92,22 +92,32 @@ public class PerformAction {
 							
 							for(int i=0;i<tilesList.size();i++)
 							{
-								tileToMove=tilesList.get(i);
 								
 								// If any vacant tile is in the list of tilesTomove list of startTile, return that tile
-								if(enemyAdjacentTiles.contains(tileToMove) && tileToMove.getUnitFromTile()==null )
+								if(enemyAdjacentTiles.contains(tilesList.get(i)) && tilesList.get(i).getUnitFromTile()==null )
+								{
+									tileToMove=tilesList.get(i);
 									break;
+								}
 							}
-	
-							// Move to the adjacent tile
-							if(player.getID()==1)
-								moveUnit(1,out, startTile, tileToMove, gameState); // show player notifications (mode 1)
-							else
-								moveUnit(0,out, startTile, tileToMove, gameState);
+			                AppConstants.printLog("------> TileClicked :: PerFormAction :: Move and attack :: tileToMove : " +tileToMove );
 
+	
+			                if(tileToMove!=null)
+			                {
+			                	// Move to the adjacent tile
+								if(player.getID()==1)
+									moveUnit(1,out, startTile, tileToMove, gameState); // show player notifications (mode 1)
+								else
+									moveUnit(0,out, startTile, tileToMove, gameState);
+
+								
+								AppConstants.callSleep(2000); // To allow movement to finish before attacking
+								return attackDirectly(player,out,unit,tileToMove,enemyTile,gameState,enemyUnit);
+			                }else {
+			                	return false; // can't attack or move
+			                }
 							
-							AppConstants.callSleep(2000); // To allow movement to finish before attacking
-							return attackDirectly(player,out,unit,tileToMove,enemyTile,gameState,enemyUnit);
 							
 						}else {
 							if(mode==1) 
@@ -355,21 +365,21 @@ public class PerformAction {
      */
     public static void gameEnd(ActorRef out, GameState gameState) {
         
-//    	 AppConstants.printLog("------> gameEnd:: Before- gameState.isGameOver: "+gameState.isGameOver);
+//    	 AppConstants.printLog("------> gameEnd:: Before- gameState.isGameActive: "+gameState.isGameActive);
         if(gameState.isGameActive==true){
 			//check if player 1 health is 0 or not
-			if(gameState.player1.getHealth()<=0 || (gameState.player1.getCardInDeck()==0 && gameState.player1.getCardInHand()==0)){
+			if(gameState.player1.getAvatar().getHealth()<=0 || (gameState.player1.getCardInDeck()==0 && gameState.player1.getCardInHand()==0)){
 				gameState.isGameOver=true;//whichever of these are used to represent game end
 				// gameState.isGameActive=false;//whichever of these are used to represent game end
 				BasicCommands.addPlayer1Notification(out, "Game Over! You Lost", 5);
 	    		
 
 			}
-			else if (gameState.player2.getHealth()<=0 || (gameState.player2.getCardInDeck()==0 &&
+			else if (gameState.player2.getAvatar().getHealth()<=0 || (gameState.player2.getCardInDeck()==0 &&
 				gameState.player2.getCardInHand()==0)){//if AI reaches 0
 				gameState.isGameOver=true;//whichever of these are used to represent game end
 				// gameState.isGameActive=false;//whichever of these are used to represent game end
-				BasicCommands.addPlayer1Notification(out, "Game Over! Won", 5);
+				BasicCommands.addPlayer1Notification(out, "Game Over! You Won", 5);
 	    		
 
 			}

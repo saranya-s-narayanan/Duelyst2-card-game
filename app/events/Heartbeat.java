@@ -80,7 +80,7 @@ public class Heartbeat implements EventProcessor{
 	            	if(timeDifference>AppConstants.allowedHeartbeatTimeGap || gameState.isGameOver==true)
 	            	{
 
-	        			AppConstants.printLog("------> Heartbeat:: Game is NOT active ! Resetting Backend !!");
+//	        			AppConstants.printLog("------> Heartbeat:: Game is NOT active ! Resetting Backend !!");
 	        			gameState.isGameActive=false;
 	        			gameState.clearStateVariables();
 	            		stopGameTaskTimer();
