@@ -83,18 +83,19 @@ public class PerformAction {
 							
 							// Get the attackable tiles of the enemy tile and check whether any of those tiles comes inside the adjacenttiles of the start tile
 							ArrayList<Tile> enemyAdjacentTiles=gameState.board.retrieveAdjacentTilesToAttackPosition(out, enemyTile);
-	
+
 			                AppConstants.printLog("------> TileClicked :: PerFormAction :: Move and attack :: enemyAdjacentTiles : " +enemyAdjacentTiles.size() );
 	
 	
 							Tile tileToMove = null;
+							
 							
 							for(int i=0;i<tilesList.size();i++)
 							{
 								tileToMove=tilesList.get(i);
 								
 								// If any vacant tile is in the list of tilesTomove list of startTile, return that tile
-								if(enemyAdjacentTiles.contains(tileToMove) && tileToMove.getUnitFromTile()==null)
+								if(enemyAdjacentTiles.contains(tileToMove) && tileToMove.getUnitFromTile()==null )
 									break;
 							}
 	
@@ -105,7 +106,7 @@ public class PerformAction {
 								moveUnit(0,out, startTile, tileToMove, gameState);
 
 							
-							AppConstants.callSleep(1000); // To allow movement to finish before attacking
+							AppConstants.callSleep(2000); // To allow movement to finish before attacking
 							return attackDirectly(player,out,unit,tileToMove,enemyTile,gameState,enemyUnit);
 							
 						}else {
@@ -343,6 +344,8 @@ public class PerformAction {
 			else
 				gameState.player2.setCurrentTile(endTile);
 		}
+		
+       
 		AppConstants.callSleep(50);
 	}
 
@@ -432,6 +435,17 @@ public class PerformAction {
 
     }
 
+	/** Method returns the distance between two tile positions
+	 * 
+	 * @param x1 -> X position of tile A	
+	 * @param y1 -> Y position of tile A
+	 * @param x2 -> X position of tile B
+	 * @param y2 -> Y position of tile B
+	 * @return
+	 */
+	public double calculateDistanceBetweenPoints( double x1,  double y1,  double x2,  double y2) {       
+			    return Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
+			}
 
 }
 
