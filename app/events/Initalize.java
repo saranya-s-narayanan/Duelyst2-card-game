@@ -147,8 +147,7 @@ public class Initalize implements EventProcessor {
         
         
 //        gameState.board.addDummyUnitsonBoard(out,gameState);
-        
-        
+       
         
         //give notification to player that initialization is done
         BasicCommands.addPlayer1Notification(out, "Game Started, Your Turn", 2);

@@ -308,6 +308,7 @@ public class Board {
         					{
         						ArrayList<Tile> attackableTiles=getAdjacentTilesToAttack(player, out, tile,newTile);
         						adjacentTiles.addAll(attackableTiles);
+//    							gameState.board.highlightTilesRed(out, attackableTiles);
 
             					if(mode==1) //highlight , else clear
             						gameState.board.highlightTilesRed(out,attackableTiles); // update front end
