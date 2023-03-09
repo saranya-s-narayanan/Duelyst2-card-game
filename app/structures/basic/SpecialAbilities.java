@@ -1,5 +1,6 @@
 package structures.basic;
 
+import actions.PerformAction;
 import akka.actor.Actor;
 import akka.actor.ActorRef;
 import commands.BasicCommands;
@@ -173,6 +174,14 @@ public class SpecialAbilities {
             {
 
                 ArrayList<Tile> tilesList=gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), TileClicked.opposingPlayer(gameState,player));
+                ArrayList<Tile> tilesProvoke = TileClicked.getProvokerTiles(out, gameState, player);
+
+                if (unit.isProvoked() == true){
+                    if (tilesProvoke.contains(enemyTile)){
+                        rangedAttack(out, gameState,unit,enemyUnit,enemyTile,startTile);
+                        return true;}
+                    else return false;
+                }
 
                 // If the enemyTile is in range of the startTile, attack
                 if(tilesList.contains(enemyTile))
@@ -234,6 +243,56 @@ public class SpecialAbilities {
                 BasicCommands.setUnitAttack(out, unit,unit.getAttack());
             }
         }
+    }
+
+    public static ArrayList<Unit> provoke(ActorRef out, GameState gameState, Player player,Unit unit){
+        if (player.getID() == 1) {
+            ArrayList<Tile> provokedTiles = gameState.board.summonableTiles(out, unit.getTileFromUnitP2(unit.getId(), gameState, out));
+            ArrayList<Unit> provokedUnits = new ArrayList<Unit>();
+
+            for (Tile tile : provokedTiles){
+                if (tile.getUnitFromTile()!=null && tile.getUnitFromTile().getIsPlayer() == 1){
+                    Unit unitP = tile.getUnitFromTile();
+                    unitP.setMoved(true);
+                    unitP.setProvoked(true);
+                    provokedUnits.add(unitP);
+//                    System.out.println(unitP.getName());
+                }
+            }return provokedUnits;
+        }
+        else {
+            ArrayList<Tile> provokedTiles = gameState.board.summonableTiles(out, unit.getTileFromUnit(unit.getId(), gameState, out));
+            ArrayList<Unit> provokedUnits = new ArrayList<Unit>();
+
+            for (Tile tile : provokedTiles){
+                if (tile.getUnitFromTile()!=null && tile.getUnitFromTile().getIsPlayer() ==2){
+                    Unit unitP = tile.getUnitFromTile();
+                    unitP.setMoved(true);
+                    unitP.setProvoked(true);
+                    provokedUnits.add(unitP);
+//                    System.out.println(unitP.getName());
+
+                }
+            }return provokedUnits;
+
+        }
+        }
+
+
+
+    public static ArrayList<Unit> getProvokingUnits(ActorRef out, GameState gameState, Player player){
+        ArrayList<Unit> units = new ArrayList<>();
+        ArrayList<Tile> tiles = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);
+
+        for (Tile tile: tiles) {
+            if (tile.getUnitFromTile().getName().equals("Rock Pulveriser") || tile.getUnitFromTile().getName().equals("Ironcliff Guardian")
+                    || tile.getUnitFromTile().getName().equals("Silverguard Knight")){
+                Unit unit = tile.getUnitFromTile();
+                units.add(unit);
+//                System.out.println(unit.getName());
+            }
+        }
+        return units;
     }
 
 }

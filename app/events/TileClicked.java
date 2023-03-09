@@ -13,6 +13,8 @@ import commands.BasicCommands;
 import structures.GameState;
 import structures.basic.*;
 import utils.AppConstants;
+import utils.BasicObjectBuilders;
+import utils.StaticConfFiles;
 
 import static actions.PerformAction.moveUnit;
 
@@ -176,11 +178,25 @@ public class TileClicked implements EventProcessor {
                 
                 // Get the unit index from the summoned arraylist position
                 int unitIdx=PerformAction.getUnitIndexFromSummonedUnitlist(startTile.getUnitFromTile(),gameState.summonedUnits);
-                
+
+                // first check for provoke to stop movement
+                if (SpecialAbilities.getProvokingUnits(out, gameState, TileClicked.opposingPlayer(gameState, player)) != null){
+                    for (Unit unit: SpecialAbilities.getProvokingUnits(out, gameState, TileClicked.opposingPlayer(gameState, player))) {
+                        SpecialAbilities.provoke(out,gameState, player, unit);
+                    }
+                }
+
                 // checks for ranged units and highlights all enemy units
                 if (gameState.summonedUnits.get(unitIdx).getName().equals("Fire Spitter") || gameState.summonedUnits.get(unitIdx).getName().equals("Pyromancer")){
+                    if (gameState.summonedUnits.get(unitIdx).isProvoked()==true){
+                        ArrayList<Tile> tiles = getProvokerTiles(out, gameState, player);
+                        BasicCommands.addPlayer1Notification(out, "Unit provoked!", 2);
+                        gameState.board.highlightTilesRed(out, tiles);
+                    }
+                    else{
+                        gameState.board.highlightTilesWhite(out, gameState.board.getAdjacentTiles(out, startTile));
                     gameState.board.highlightTilesRed(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));
-                }
+                }}
 
                 // If the unit is Azurite Lion or Serpenti, implement Attack Twice logic
                 else if(gameState.summonedUnits.get(unitIdx).getId() == 7 || gameState.summonedUnits.get(unitIdx).getId() == 17 || gameState.summonedUnits.get(unitIdx).getId() == 26 || gameState.summonedUnits.get(unitIdx).getId() == 36) {
@@ -217,10 +233,19 @@ public class TileClicked implements EventProcessor {
                     AppConstants.printLog("------> UnitClicked :: Unit has NOT moved yet!");
                 	gameState.board.highlightTilesMoveAndAttack(1,player,out, startTile,gameState); // highlight tiles to move and attack
 
-                }else if(gameState.summonedUnits.get(unitIdx).getAttacked()==false && gameState.summonedUnits.get(unitIdx).getMoved()==false){
+                }else if(gameState.summonedUnits.get(unitIdx).getAttacked()==false && gameState.summonedUnits.get(unitIdx).getMoved()==true){
                 	// Unit has moved,but not attacked yet
-                    AppConstants.printLog("------> UnitClicked :: Unit has moved, but NOT attacked yet!");
-                	gameState.board.highlightTilesRed(out, gameState.board.getAdjacentTilesToAttack(player,out, startTile)); // highlight tiles to attack only
+
+                    // checking if unit is provoked and highlighting only the provoking enemy
+                    if(gameState.summonedUnits.get(unitIdx).isProvoked()){
+                        ArrayList<Tile> tiles = getProvokerTiles(out, gameState, player);
+                        BasicCommands.addPlayer1Notification(out, "Unit provoked!", 2);
+                        gameState.board.highlightTilesRed(out, tiles);
+                    }
+                    else {
+                        AppConstants.printLog("------> UnitClicked :: Unit has moved, but NOT attacked yet!");
+                        gameState.board.highlightTilesRed(out, gameState.board.getAdjacentTilesToAttack(player, out, startTile)); // highlight tiles to attack only
+                    }
                 	
                 }else {
                 	//Unit has already moved or attacked
@@ -331,7 +356,7 @@ public class TileClicked implements EventProcessor {
             // If a tile with an enemy unit is clicked and it is adjacent, and the player has not attacked yet
             // It is a direct attack, only attack should be set to true
             else if(clickedTile.getUnitFromTile()!=null && clickedTile.getUnitFromTile().getIsPlayer() != player.getID() && gameState.summonedUnits.get(unitIdx).getAttacked()==false && gameState.board.getAdjacentTilesToAttack(player,out, startTile).contains(clickedTile)){ // Clicked an occupied tile --> attack
-            	
+
                 AppConstants.printLog("------> TileClicked :: Attacking unit at tile " + clickedTile.getTilex() + " " + clickedTile.getTiley());
                 boolean attackStatus=false;
                 
@@ -343,6 +368,8 @@ public class TileClicked implements EventProcessor {
             }
             
             startTile = null; // Reset the start tile to no unit
+            gameState.summonedUnits.get(unitIdx).setProvoked(false);
+            gameState.summonedUnits.get(unitIdx).setMoved(false);
         }
         else {
 
@@ -350,6 +377,17 @@ public class TileClicked implements EventProcessor {
             AppConstants.callSleep(200);
             startTile = null; // Reset the start tile to no unit
         }
+    }
+
+    // returns tiles of adjacent units with provoke
+    public static ArrayList<Tile> getProvokerTiles(ActorRef out, GameState gameState, Player player) {
+        ArrayList<Tile> tiles = new ArrayList<>();
+        for (Tile tile: gameState.board.summonableTiles(out, startTile)){
+            if (SpecialAbilities.getProvokingUnits(out, gameState, TileClicked.opposingPlayer(gameState, player)).contains(tile.getUnitFromTile())){
+                tiles.add(tile);
+            }
+        }
+        return tiles;
     }
 
     public static void setStartTile(boolean bool){
@@ -422,14 +460,21 @@ public class TileClicked implements EventProcessor {
             	if(unitSummon.getId() == 5 || unitSummon.getId() == 15) {
             		// If +3 increase would make avatar health greater than max health, set avatar health to max health
             		if(gameState.summonedUnits.get(0).getHealth() + 3 > AppConstants.playerMaxHealth) {
-            			gameState.summonedUnits.get(0).setHealth(AppConstants.playerMaxHealth);
+                        // variable to track how much healing the avatar recieves
+                        int healing =  AppConstants.playerMaxHealth-gameState.summonedUnits.get(0).getHealth();
+                        gameState.summonedUnits.get(0).setHealth(AppConstants.playerMaxHealth);
             			BasicCommands.setUnitHealth(out, gameState.summonedUnits.get(0), gameState.summonedUnits.get(0).getHealth());
+                        // buff effect and notification of healing effect
+                        BasicCommands.addPlayer1Notification(out, "Healing avatar +" + healing, 2);
+                        BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff), gameState.summonedUnits.get(0).getTileFromUnit(40, gameState,out));
             		}
             		else {
             			// Increase avatar health by 3
             			gameState.summonedUnits.get(0).setHealth(gameState.summonedUnits.get(0).getHealth() + 3);
                 		// Update on front end
             			BasicCommands.setUnitHealth(out, gameState.summonedUnits.get(0), gameState.summonedUnits.get(0).getHealth());
+                        BasicCommands.addPlayer1Notification(out, "Healing avatar +3", 2);
+                        BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff), gameState.summonedUnits.get(0).getTileFromUnit(40, gameState,out));
             		}
             	}
 

@@ -43,6 +43,8 @@ public class Unit {
 	int maxHealth;
 	int summonedID;
 //	int ownerPlayer;
+
+	boolean provoked;
 	
 	public Unit() {}
 	
@@ -195,6 +197,14 @@ public class Unit {
 		this.maxHealth = getUnitHealth;
 	}
 
+	public boolean isProvoked() {
+		return provoked;
+	}
+
+	public void setProvoked(boolean provoked) {
+		this.provoked = provoked;
+	}
+
 	/** Method to get the summoned id of a particular unit on the board
 	 * 
 	 * @return
@@ -259,6 +269,18 @@ public class Unit {
 	public Tile getTileFromUnit(int unitID, GameState gameState, ActorRef out) {
 		Tile unitTile = null;
 		for (Tile tile : gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), gameState.player1)) {
+			if (tile.getUnitFromTile().getId() == unitID){
+				unitTile = tile;
+				return unitTile;
+			}
+		}
+		return null;
+
+	}
+
+	public Tile getTileFromUnitP2(int unitID, GameState gameState, ActorRef out) {
+		Tile unitTile = null;
+		for (Tile tile : gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), gameState.player2)) {
 			if (tile.getUnitFromTile().getId() == unitID){
 				unitTile = tile;
 				return unitTile;
