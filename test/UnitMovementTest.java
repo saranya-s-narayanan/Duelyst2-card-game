@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import actions.PerformAction;
 import commands.BasicCommands;
 import commands.CheckMessageIsNotNullOnTell;
+import events.EndTurnClicked;
 import events.Initalize;
 import events.TileClicked;
 import play.libs.Json;
@@ -37,6 +38,19 @@ public class UnitMovementTest {
 
 		ObjectNode eventmessage = Json.newObject();
 		initializeProcessor.processEvent(null, gameState, eventmessage);
+		
+		//THis code is from TileClicked. Import might be wrong, maybe need to make a new TileClicked instead of EndTurnClicked 
+		
+		EndTurnClicked e = new EndTurnClicked();
+		e.processEvent(null, gameState, eventmessage);
+		
+	    Tile startTile; // start tile
+//	    int tilex = eventmessage.get("tilex").asInt();
+//        int tiley = eventmessage.get("tiley").asInt();
+//        startTile = gameState.board.returnTile(tilex, tiley); // clicked tile object
+//		int unitIdx=PerformAction.getUnitIndexFromSummonedUnitlist(startTile.getUnitFromTile(),gameState.summonedUnits);
+		
+		
 		
 //		Unit enemyUnit = null;
 //		
