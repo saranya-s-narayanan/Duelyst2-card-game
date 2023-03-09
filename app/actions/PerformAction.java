@@ -56,14 +56,7 @@ public class PerformAction {
 				if(enemyUnit.getIsPlayer()!=player.getID())
 				{
 					ArrayList<Tile> tilesList=gameState.board.getAdjacentTilesToAttack(player,out, startTile);
-
-					// checking for provoke
-					ArrayList<Tile> tilesProvoke = new ArrayList<>();
-					for (Tile tiles: gameState.board.summonableTiles(out, startTile)){
-						if (SpecialAbilities.getProvokingUnits(out, gameState, TileClicked.opposingPlayer(gameState, player)).contains(tiles.getUnitFromTile())){
-							tilesProvoke.add(tiles);
-						}
-					}
+					ArrayList<Tile> tilesProvoke = TileClicked.getProvokerTiles(out, gameState, player);
 
 					if (unit.isProvoked() == true){
 						if (tilesProvoke.contains(enemyTile)){

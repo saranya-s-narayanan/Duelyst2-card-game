@@ -174,6 +174,14 @@ public class SpecialAbilities {
             {
 
                 ArrayList<Tile> tilesList=gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), TileClicked.opposingPlayer(gameState,player));
+                ArrayList<Tile> tilesProvoke = TileClicked.getProvokerTiles(out, gameState, player);
+
+                if (unit.isProvoked() == true){
+                    if (tilesProvoke.contains(enemyTile)){
+                        rangedAttack(out, gameState,unit,enemyUnit,enemyTile,startTile);
+                        return true;}
+                    else return false;
+                }
 
                 // If the enemyTile is in range of the startTile, attack
                 if(tilesList.contains(enemyTile))

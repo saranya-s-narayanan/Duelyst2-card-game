@@ -183,6 +183,7 @@ public class TileClicked implements EventProcessor {
                 if (gameState.summonedUnits.get(unitIdx).getName().equals("Fire Spitter") || gameState.summonedUnits.get(unitIdx).getName().equals("Pyromancer")){
                     if (gameState.summonedUnits.get(unitIdx).isProvoked()==true){
                         ArrayList<Tile> tiles = getProvokerTiles(out, gameState, player);
+                        BasicCommands.addPlayer1Notification(out, "Unit provoked!", 2);
                         gameState.board.highlightTilesRed(out, tiles);
                     }
                     else{
@@ -371,7 +372,8 @@ public class TileClicked implements EventProcessor {
         }
     }
 
-    private static ArrayList<Tile> getProvokerTiles(ActorRef out, GameState gameState, Player player) {
+    // returns tiles of adjacent units with provoke
+    public static ArrayList<Tile> getProvokerTiles(ActorRef out, GameState gameState, Player player) {
         ArrayList<Tile> tiles = new ArrayList<>();
         for (Tile tile: gameState.board.summonableTiles(out, startTile)){
             if (SpecialAbilities.getProvokingUnits(out, gameState, TileClicked.opposingPlayer(gameState, player)).contains(tile.getUnitFromTile())){
