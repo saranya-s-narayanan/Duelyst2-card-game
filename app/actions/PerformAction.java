@@ -56,6 +56,22 @@ public class PerformAction {
 				if(enemyUnit.getIsPlayer()!=player.getID())
 				{
 					ArrayList<Tile> tilesList=gameState.board.getAdjacentTilesToAttack(player,out, startTile);
+
+					// checking for provoke
+					ArrayList<Tile> tilesProvoke = new ArrayList<>();
+					for (Tile tiles: gameState.board.summonableTiles(out, startTile)){
+						if (SpecialAbilities.getProvokingUnits(out, gameState, TileClicked.opposingPlayer(gameState, player)).contains(tiles.getUnitFromTile())){
+							tilesProvoke.add(tiles);
+						}
+					}
+
+					if (unit.isProvoked() == true){
+						if (tilesProvoke.contains(enemyTile)){
+						System.out.println("OIOIOI");
+						attackDirectly(player,out,unit,startTile,enemyTile,gameState,enemyTile.getUnitFromTile());
+						return true;}
+						else return false;
+					}
 					
 					// If the enemyTile is in range of the startTile, attack directly
 					if(tilesList.contains(enemyTile)) 

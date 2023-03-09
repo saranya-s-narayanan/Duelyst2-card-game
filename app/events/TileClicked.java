@@ -169,7 +169,14 @@ public class TileClicked implements EventProcessor {
                 
                 // Get the unit index from the summoned arraylist position
                 int unitIdx=PerformAction.getUnitIndexFromSummonedUnitlist(startTile.getUnitFromTile(),gameState.summonedUnits);
-                
+
+                // first check for provoke to stop movement
+                if (SpecialAbilities.getProvokingUnits(out, gameState, TileClicked.opposingPlayer(gameState, player)) != null){
+                    for (Unit unit: SpecialAbilities.getProvokingUnits(out, gameState, TileClicked.opposingPlayer(gameState, player))) {
+                        SpecialAbilities.provoke(out,gameState, player, unit);
+                    }
+                }
+
                 // checks for ranged units and highlights all enemy units
                 if (gameState.summonedUnits.get(unitIdx).getName().equals("Fire Spitter") || gameState.summonedUnits.get(unitIdx).getName().equals("Pyromancer")){
                     gameState.board.highlightTilesRed(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));
@@ -210,10 +217,23 @@ public class TileClicked implements EventProcessor {
                     AppConstants.printLog("------> UnitClicked :: Unit has NOT moved yet!");
                 	gameState.board.highlightTilesMoveAndAttack(1,player,out, startTile,gameState); // highlight tiles to move and attack
 
-                }else if(gameState.summonedUnits.get(unitIdx).getAttacked()==false && gameState.summonedUnits.get(unitIdx).getMoved()==false){
+                }else if(gameState.summonedUnits.get(unitIdx).getAttacked()==false && gameState.summonedUnits.get(unitIdx).getMoved()==true){
                 	// Unit has moved,but not attacked yet
-                    AppConstants.printLog("------> UnitClicked :: Unit has moved, but NOT attacked yet!");
-                	gameState.board.highlightTilesRed(out, gameState.board.getAdjacentTilesToAttack(player,out, startTile)); // highlight tiles to attack only
+
+                    // checking if unit is provoked and highlighting only the provoking enemy
+                    if(gameState.summonedUnits.get(unitIdx).isProvoked()){
+                        ArrayList<Tile> tiles = new ArrayList<>();
+                        for (Tile tile: gameState.board.summonableTiles(out, startTile)){
+                            if (SpecialAbilities.getProvokingUnits(out, gameState, TileClicked.opposingPlayer(gameState, player)).contains(tile.getUnitFromTile())){
+                                tiles.add(tile);
+                            }
+                        }
+                        gameState.board.highlightTilesRed(out, tiles);
+                    }
+                    else {
+                        AppConstants.printLog("------> UnitClicked :: Unit has moved, but NOT attacked yet!");
+                        gameState.board.highlightTilesRed(out, gameState.board.getAdjacentTilesToAttack(player, out, startTile)); // highlight tiles to attack only
+                    }
                 	
                 }else {
                 	//Unit has already moved or attacked
@@ -324,7 +344,9 @@ public class TileClicked implements EventProcessor {
             // If a tile with an enemy unit is clicked and it is adjacent, and the player has not attacked yet
             // It is a direct attack, only attack should be set to true
             else if(clickedTile.getUnitFromTile()!=null && clickedTile.getUnitFromTile().getIsPlayer() != player.getID() && gameState.summonedUnits.get(unitIdx).getAttacked()==false && gameState.board.getAdjacentTilesToAttack(player,out, startTile).contains(clickedTile)){ // Clicked an occupied tile --> attack
-            	
+            	if (gameState.summonedUnits.get(unitIdx).isProvoked()==true){
+
+                }
                 AppConstants.printLog("------> TileClicked :: Attacking unit at tile " + clickedTile.getTilex() + " " + clickedTile.getTiley());
                 boolean attackStatus=false;
                 
