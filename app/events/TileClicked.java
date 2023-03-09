@@ -13,6 +13,8 @@ import commands.BasicCommands;
 import structures.GameState;
 import structures.basic.*;
 import utils.AppConstants;
+import utils.BasicObjectBuilders;
+import utils.StaticConfFiles;
 
 import static actions.PerformAction.moveUnit;
 
@@ -438,14 +440,21 @@ public class TileClicked implements EventProcessor {
             	if(unitSummon.getId() == 5 || unitSummon.getId() == 15) {
             		// If +3 increase would make avatar health greater than max health, set avatar health to max health
             		if(gameState.summonedUnits.get(0).getHealth() + 3 > AppConstants.playerMaxHealth) {
-            			gameState.summonedUnits.get(0).setHealth(AppConstants.playerMaxHealth);
+                        // variable to track how much healing the avatar recieves
+                        int healing =  AppConstants.playerMaxHealth-gameState.summonedUnits.get(0).getHealth();
+                        gameState.summonedUnits.get(0).setHealth(AppConstants.playerMaxHealth);
             			BasicCommands.setUnitHealth(out, gameState.summonedUnits.get(0), gameState.summonedUnits.get(0).getHealth());
+                        // buff effect and notification of healing effect
+                        BasicCommands.addPlayer1Notification(out, "Healing avatar +" + healing, 2);
+                        BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff), gameState.summonedUnits.get(0).getTileFromUnit(40, gameState,out));
             		}
             		else {
             			// Increase avatar health by 3
             			gameState.summonedUnits.get(0).setHealth(gameState.summonedUnits.get(0).getHealth() + 3);
                 		// Update on front end
             			BasicCommands.setUnitHealth(out, gameState.summonedUnits.get(0), gameState.summonedUnits.get(0).getHealth());
+                        BasicCommands.addPlayer1Notification(out, "Healing avatar +3", 2);
+                        BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff), gameState.summonedUnits.get(0).getTileFromUnit(40, gameState,out));
             		}
             	}
 
