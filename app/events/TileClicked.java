@@ -256,7 +256,7 @@ public class TileClicked implements EventProcessor {
                 }else {
                 	//Unit has already moved or attacked
                     AppConstants.printLog("------> UnitClicked :: Unit has already attacked!");
-                    BasicCommands.addPlayer1Notification(out, "No moves left!", 2);
+                    BasicCommands.addPlayer1Notification(out, "Exhausted!", 2);
                 }
             
             } else {
@@ -271,7 +271,7 @@ public class TileClicked implements EventProcessor {
 
         	// Get the unit index from the summoned arraylist position
             int unitIdx=PerformAction.getUnitIndexFromSummonedUnitlist(startTile.getUnitFromTile(),gameState.summonedUnits);
-            AppConstants.printLog("------> TileClicked ::gameState.summonedUnits.get(unitIdx).getId(): " + gameState.summonedUnits.get(unitIdx).getId());
+//            AppConstants.printLog("------> TileClicked ::gameState.summonedUnits.get(unitIdx).getId(): " + gameState.summonedUnits.get(unitIdx).getId());
 
             // clear the highlighting once move is clicked
             gameState.board.clearTileHighlighting(out, gameState.board.highlightTilesMoveAndAttack(0,player,out, startTile,gameState)); 
@@ -354,12 +354,16 @@ public class TileClicked implements EventProcessor {
                
             	AppConstants.printLog("------> TileClicked :: Attacking unit at tile " + clickedTile.getTilex() + " " + clickedTile.getTiley());
                 boolean attackStatus=false;
-                gameState.summonedUnits.get(unitIdx).setMoved(true);
                 
                 attackStatus=PerformAction.attackUnit(1,player,out,gameState.summonedUnits.get(unitIdx),startTile,clickedTile, gameState);
         
-                if(gameState.summonedUnits.get(unitIdx)!=null && unitIdx<gameState.summonedUnits.size())
+                if(unitIdx>-1 && unitIdx<gameState.summonedUnits.size())
+                {
+                	if(gameState.summonedUnits.get(unitIdx)!=null) {
+                    gameState.summonedUnits.get(unitIdx).setMoved(attackStatus);
                 	gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
+                	}
+                }
             }
             // If a tile with an enemy unit is clicked and it is adjacent, and the player has not attacked yet
             // It is a direct attack, only attack should be set to true
