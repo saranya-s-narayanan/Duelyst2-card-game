@@ -44,7 +44,7 @@ public class UnitMovementTest {
 		EndTurnClicked e = new EndTurnClicked();
 		e.processEvent(null, gameState, eventmessage);
 		
-	    Tile startTile; // start tile
+//	    Tile startTile; // start tile
 //	    int tilex = eventmessage.get("tilex").asInt();
 //        int tiley = eventmessage.get("tiley").asInt();
 //        startTile = gameState.board.returnTile(tilex, tiley); // clicked tile object

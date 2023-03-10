@@ -14,13 +14,9 @@ Tests that `avatar` is not null when the game is initialized
 
 Tests that the AI's (`player2`) initial x position (`gameState.player2.getCurrentXpos()`) is 7 and its y position (`gameState.player2.getCurrentXpos()`) is 2 once the game is initialized
 
-**Test no longer works as of 2/23 since tile position is now passed into constructor - need to come up with another solution**
-
 # PlayerInitialPositionTest
 
 Tests that the human player's (`player1`) initial x position (`gameState.player1.getCurrentXpos()`) is 1 and its y position (`gameState.player1.getCurrentXpos()`) is 2 once the game is initialized
-
-**Test no longer works as of 2/23 since tile position is now passed into constructor - need to come up with another solution**
 
 # InitializedAIHealthTest
 
@@ -53,3 +49,11 @@ This test confirms that the game ends when the human or computer player's health
 # IncrementManaTest
 
 This test confirms that the mana for both players is equal to turn + 1 with each new turn.  
+
+# PlayerInitialIAttackValue
+
+This test confirms that the initial attack for the human avatar is set to 2
+
+# AIInitialIAttackValue
+
+This test confirms that the initial attack for the computer avatar is set to 2

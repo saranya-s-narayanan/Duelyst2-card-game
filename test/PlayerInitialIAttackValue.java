@@ -1,28 +1,28 @@
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import akka.actor.ActorRef;
 import commands.BasicCommands;
 import commands.CheckMessageIsNotNullOnTell;
-import events.EndTurnClicked;
-import events.EventProcessor;
 import events.Initalize;
 import play.libs.Json;
 import structures.GameState;
+import structures.basic.BetterUnit;
 import structures.basic.Board;
 import structures.basic.Player;
+import structures.basic.Tile;
 import utils.AppConstants;
+import utils.BasicObjectBuilders;
 
-public class Player1TurnTest {
+public class PlayerInitialIAttackValue {
 
 	@Test
-	public void Player1TurnTest() {
+	public void PlayerInitialIAttackValue() {
 
 		CheckMessageIsNotNullOnTell altTell = new CheckMessageIsNotNullOnTell(); // create an alternative tell
 		BasicCommands.altTell = altTell; // specify that the alternative tell should be used
@@ -30,18 +30,13 @@ public class Player1TurnTest {
 		GameState gameState = new GameState();
 		Initalize initializeProcessor = new Initalize();
 
-		// This sets up the GameState and initializes the players. See Initialize.java
-		// to confirm what is instantiated
 		ObjectNode eventmessage = Json.newObject();
 		initializeProcessor.processEvent(null, gameState, eventmessage);
+		
+		//Confirms that the Player's initial attack is equal to 2
 
-		//Confirms that when player1Turn is set to true, it is player1's turn
-		//Else if it is false, it is player2's turn
-		if (gameState.player1Turn == true) {
-			assertTrue(gameState.player1Turn);
-		} else {
-			assertFalse(gameState.player1Turn);
-		}
+        assertEquals(gameState.avatar.getAttack(),2); // Set player current tile
+
 	}
 
 }
