@@ -800,12 +800,15 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 				// System.out.println("unit can move: "+unit.getName());
 				if(optimalMoveTile.get(unit)!=null){
 					if(unit.getId()!= 41){//don't move Avatar for now
-						AppConstants.printLog("<--------------------Unit Moving---------------------->");
-						System.out.println("unit: "+ unit.getName()+" moving from tile: "+unit.getTileFromUnitP2(unit.getId(), gameState, out).toString() +" to tile: "+optimalMoveTile.get(unit).toString());
-						moveAIUnit(out, gameState, unit.getTileFromUnitP2(unit.getId(), gameState, out), optimalMoveTile.get(unit));
-						callSleepAI(2000);
-						unit.setMoved(true);
-						// possibleMoveAttack(out, gameState);
+						if(unit.getTileFromUnitP2(unit.getId(), gameState, out)!=null){//handling exception
+							AppConstants.printLog("<--------------------Unit Moving---------------------->");
+							System.out.println("unit: "+ unit.getName()+" moving from tile: "+unit.getTileFromUnitP2(unit.getId(), gameState, out).toString() +" to tile: "+optimalMoveTile.get(unit).toString());
+							moveAIUnit(out, gameState, unit.getTileFromUnitP2(unit.getId(), gameState, out), optimalMoveTile.get(unit));
+							callSleepAI(2000);
+							unit.setMoved(true);
+							// possibleMoveAttack(out, gameState);
+						}
+						
 					}
 					else{
 						//move for avatar to be done
