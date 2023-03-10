@@ -77,11 +77,11 @@ public class EndTurnClicked implements EventProcessor{
 		gameState.player2.drawAnotherCard(out,2);//draw a card from the deck
 
 		gameState.player2.setMana(0);//flushing the mana
-		if (gameState.player1.getMana() == 9){
+
+		gameState.player1.setMana(gameState.playerTurnNumber+1);//setting the mana to turn+1
+		if (gameState.player1.getMana() > 9){
 			gameState.player1.setMana(9);
 		}
-		else{gameState.player1.setMana(gameState.playerTurnNumber+1);}//setting the mana to turn+1
-
 		
 		gameState.player1Turn=true;//passing the turn to the player
 		
@@ -94,11 +94,11 @@ public class EndTurnClicked implements EventProcessor{
 		// TODO Auto-generated method stub
 		AppConstants.printLog("------> End turn Clicked by the player !");
 
-		if (gameState.player2.getMana() == 9){
+
+		gameState.player2.setMana(gameState.compTurnNumber+1);//setting the mana to turn+1
+		if (gameState.player2.getMana() > 9){
 			gameState.player2.setMana(9);
 		}
-		else{gameState.player2.setMana(gameState.compTurnNumber+1);}//setting the mana to turn+1
-
 		
 		gameState.compTurnNumber++;//incrementing the turn number the AI opponent will have
 		
