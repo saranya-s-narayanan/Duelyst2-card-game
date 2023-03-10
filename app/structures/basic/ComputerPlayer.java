@@ -33,6 +33,7 @@ public class ComputerPlayer extends Player{
 	Map<Unit,List<Tile>> bestAttackTile = new HashMap<Unit,List<Tile>>();//to decide which unit has the best attack avaible
 	Map<Card,List<Tile>> bestSummonTile = new HashMap<Card,List<Tile>>();//to decide where to summon which card
 	Map<Unit,Tile> optimalMoveTile = new HashMap<Unit, Tile>();
+	Map<Unit,Tile> optimalAttackTile = new HashMap<Unit, Tile>();
 	ArrayList<ObjectNode> possibilities=new ArrayList<>(); // Finalized object nodes with correct parameters
 		
 
@@ -182,6 +183,9 @@ public class ComputerPlayer extends Player{
 					//move a unit
 					AppConstants.printLog("<--------------------Move unit initiated---------------------->");
 					moveAIProcessAction(out,gameState);
+					if(optimalAttackTile.values()!=null){
+						attackAIProcessAction(out, gameState);
+					}
 				}
 				
 			}else {
@@ -291,7 +295,7 @@ public class ComputerPlayer extends Player{
 		AppConstants.printLog("<-------- AI :: drawCardAndProcessAction():: Mana : "+getMana());
 
 		// check cards and summon unit
-		int handIdxToUse=checkHand(mode);//checking the cards in the hand (mode==1 --> retrieve index of card with only units)
+		int handIdxToUse=checkHand(mode, gameState);//checking the cards in the hand (mode==1 --> retrieve index of card with only units)
 		AppConstants.printLog("<-------- AI :: startAILogic():: handIdxToUse : "+handIdxToUse);
 
 		if(handIdxToUse>-1)
@@ -301,7 +305,7 @@ public class ComputerPlayer extends Player{
 			
 			if(tileToSummon!=null)
 			{
-				bestSummonTile.remove(getCardByHandPos(handIdxToUse));//remove the unit which is being summoned
+				bestSummonTile.remove(getCardByHandPos(handIdxToUse));//remove the card which is being summoned
 				// We have got a tile to summon and a hand index to draw
 				drawCardAI(handIdxToUse+1,out,gameState,currentTile,tileToSummon);
 
@@ -448,18 +452,15 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 	 * 
 	 * @param mode -> 0 - unit/spell, 1- only unit, 2- only spell
 	 */
-	public int checkHand(int mode){
+	public int checkHand(int mode, GameState gameState){
 		for (int i=0;i<hand.size();i++) {
 
 			Card c=hand.get(i);
 			
 			if(mode==1) // can be only unit
 			{
-//				AppConstants.printLog("Mode 1: card name: "+c.getCardname()+",id: "+c.getId()+", getCardByHandPos(i): "+getCardByHandPos(i) );
-
 				if(c.getManacost()<=getMana() && (c.getId()!=22 && c.getId()!=27 && c.getId()!=32 && c.getId()!=37)) //  check mana
 				{
-//					AppConstants.printLog("return hand position "+i+" with unit card: "+ c.getCardname());
 					return i; // return index
 				}
 			}else if(mode==2) { // can be only spell
@@ -467,7 +468,6 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 				{
 					if(c.getManacost()<=getMana())
 					{
-//						AppConstants.printLog("return hand position "+i+" with spell card: "+ c.getCardname());
 						return i;
 					}
 				}
@@ -475,13 +475,16 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 			else { // can be either unit or spell
 				if(c.getManacost()<=getMana()) //  check mana
 				{
-//					if(c.getId()==22 || c.getId()==27 || c.getId()==32 || c.getId()==37){//encountered spell
-//						AppConstants.printLog("Encontered Spell card at hand position: "+i);
-//						// i++;//adding to skip spell card
-//						continue;
-//					}
-//					AppConstants.printLog("return hand position "+i+" with card: "+ c.getCardname());
-					return i; // return index
+					if(c.getId()==22 || c.getId()==27){//check if card in hand is staffofykir
+						if(tileWithPlayerUnits.size()>5 || gameState.summonedUnits.get(1).getHealth()<18){//check if number of player units is more than 5 or AI avatar health is less than 18
+							return i;
+						}
+						else continue;
+					}
+					else if(c.getId()==32 || c.getId()==37){
+						//find unit with max health and max attack and play this card
+					}
+					else return i; // return index
 				}
 			}
 			
@@ -630,9 +633,9 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 			if(getMana()>=card.getManacost()){
 				// System.out.println("card with hand position: "+ handindex+" name: "+ card.getCardname()+" can be played");
 				//get summonable tiles
-				if(card.getId()==22 || card.getId()==32){//for staffofykir
+				if(card.getId()==22 || card.getId()==32){//for staffofykir can only be played on the avatar
 					possibleSummonList = new ArrayList<Tile>();
-					possibleSummonList.add(currentTile);
+					possibleSummonList.add(gameState.summonedUnits.get(1).getTileFromUnitP2(41, gameState, out));
 					bestSummonTile.put(card, possibleSummonList);
 				}
 				else if(card.getId()== 27 || card.getId()==37){//for entropic decay
@@ -740,16 +743,22 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 
 	
 
+	/** Method to handle Move logic 
+	 * 
+	 * @param out 	
+	 * @param gameState
+	 * 
+	 */
 	public void moveAIProcessAction(ActorRef out,GameState gameState) {
 		//selecting best tile to move for the unit
 		//currently we have the map which has unit and all the tiles they can move to
 		
-		AppConstants.printLog("<--------------------Best Move---------------------->");
+		
 		double minDistance =999;
 		double distance;
 		Tile bestTile=null;
 		for (Unit unit : bestMoveTile.keySet()) {
-			for (List<Tile> tiles : bestMoveTile.values()) {
+			List<Tile> tiles = bestMoveTile.get(unit);
 				for (Tile tile : tiles) {
 					// Find the closest enemy unit on board
 					int closestEnemyUnitIdx=findClosestEnemyUnit(tile);
@@ -762,17 +771,23 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 						}
 					}
 				}
-			}
+			
+			minDistance =999;
 			optimalMoveTile.put(unit, bestTile);
 		}
 		for (Unit unit : optimalMoveTile.keySet()) {
 			System.out.println("Best move positon for unit: "+unit.getName()+ " is tile:"+optimalMoveTile.get(unit));
 			if(unit.getMoved()==false){
-				System.out.println("unit can move: "+unit.getName());
+				// System.out.println("unit can move: "+unit.getName());
 				if(optimalMoveTile.get(unit)!=null){
 					if(unit.getId()!= 41){//don't move Avatar for now
+						AppConstants.printLog("<--------------------Unit Moving---------------------->");
+						System.out.println("unit: "+ unit.getName()+" moving from tile: "+unit.getTileFromUnitP2(unit.getId(), gameState, out).toString() +" to tile: "+optimalMoveTile.get(unit).toString());
 						moveAIUnit(out, gameState, unit.getTileFromUnitP2(unit.getId(), gameState, out), optimalMoveTile.get(unit));
 						callSleepAI(2000);
+					}
+					else{
+						//move for avatar to be done
 					}
 					
 				}
@@ -783,6 +798,48 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 		
 	}
 
+
+	/** Method to handle attack logic 
+	 * 
+	 * @param out 	
+	 * @param gameState
+	 * 
+	 */
+	public void attackAIProcessAction(ActorRef out,GameState gameState){
+		//select the best attack tile for every unit
+		Tile bestTile=null;
+		for (Unit unit : bestAttackTile.keySet()) {
+			List<Tile> tiles = bestAttackTile.get(unit);
+			int lowHealth=99;
+			for (Tile tile : tiles) {
+				if(tile.getUnitFromTile().getHealth()<lowHealth){
+					lowHealth=tile.getUnitFromTile().getHealth();
+					bestTile=tile;
+				}
+			}
+			optimalAttackTile.put(unit, bestTile);
+		}
+		for (Unit unit : optimalAttackTile.keySet()) {
+			System.out.println("Best Attack positon for unit: "+unit.getName()+ " is tile:"+optimalAttackTile.get(unit));
+			
+				if(unit.getAttacked()==false){
+					if(optimalAttackTile.get(unit)!=null){
+						if(unit.getId()!=41){
+							AppConstants.printLog("<--------------------Unit Attacking---------------------->");
+							System.out.println("unit: "+ unit.getName()+" attacking tile: "+optimalAttackTile.get(unit).toString());
+							attackAIUnit(out, gameState, unit.getTileFromUnitP2(unit.getId(), gameState, out), optimalAttackTile.get(unit));
+						}
+					}
+				}
+			
+		}
+	}
+
+	/** Method to put AI to sleep 
+	 * 
+	 * @param millis 	
+	 * 
+	 */
 	private void callSleepAI(long millis){
 		try{
 			Thread.sleep(millis);
