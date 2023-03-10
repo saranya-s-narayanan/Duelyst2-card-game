@@ -337,7 +337,7 @@ public class PerformAction {
 		}
 
 		startTile.setUnitToTile(null); //Update starttile unit to null
-		
+		unitToMove.setMoved(true);
 		// Move the unit to the end tile
 		gameState.board.addUnitToBoard(endTile.getTilex(), endTile.getTiley(), unitToMove);
 		AppConstants.callSleep(50);
