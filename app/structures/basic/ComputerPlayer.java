@@ -143,7 +143,7 @@ public class ComputerPlayer extends Player{
 		AppConstants.printLog("<------------------------------startAILogic-------------------------------------------------->");
 			
 		boolean isContinue=true; //boolean to keep track of how long loop should continue
-		int i=0;//running the loop only ten times per turn for now to handle infinite loop
+		// int i=0;//running the loop only ten times per turn for now to handle infinite loop
 		while(isContinue)
 		{
 			AppConstants.printLog("<--------------------Game State at the moment---------------------->");
@@ -174,27 +174,38 @@ public class ComputerPlayer extends Player{
 				isContinue=false;
 			
 			//If the number of enemy units is less than 5, save spells for later and do summoning a unit alone
-			if(tileWithPlayerUnits.size()<5)
-			{
-				// Summon a unit
-//				AppConstants.printLog("<-------- AI :: startAILogic():: Summon a unit !");
-				drawCardAndProcessAction(0,out,gameState); // mode 1- units only
-				if(tileWithMyUnit.size()>1){
-					//move a unit
-					AppConstants.printLog("<--------------------Move unit initiated---------------------->");
-					moveAIProcessAction(out,gameState);
-					if(optimalAttackTile.values()!=null){
-						attackAIProcessAction(out, gameState);
-					}
+// 			if(tileWithPlayerUnits.size()<5)
+// 			{
+// 				// Summon a unit
+// //				AppConstants.printLog("<-------- AI :: startAILogic():: Summon a unit !");
+// 				drawCardAndProcessAction(0,out,gameState); // mode 1- units only
+// 				if(tileWithMyUnit.size()>1){
+// 					//move a unit
+// 					AppConstants.printLog("<--------------------Move unit initiated---------------------->");
+// 					moveAIProcessAction(out,gameState);
+// 					if(optimalAttackTile.values()!=null){
+// 						attackAIProcessAction(out, gameState);
+// 					}
+// 				}
+				
+// 			}else {
+				
+				
+// 			}
+			// Summon a unit
+			//				AppConstants.printLog("<-------- AI :: startAILogic():: Summon a unit !");
+			drawCardAndProcessAction(0,out,gameState); // mode 1- units only
+			if(tileWithMyUnit.size()>1){
+				//move a unit
+				AppConstants.printLog("<--------------------Move unit initiated---------------------->");
+				moveAIProcessAction(out,gameState);
+				if(optimalAttackTile.values()!=null){
+					attackAIProcessAction(out, gameState);
 				}
-				
-			}else {
-				
-				
 			}
 			
-			i++;
-			if(i>5) isContinue=false;
+			// i++;
+			// if(i>5) isContinue=false;
 
 		}
 		
@@ -204,6 +215,11 @@ public class ComputerPlayer extends Player{
 		// End turn
 		ObjectNode eventMessage = Json.newObject();
 		eventMessage.put("messagetype", "endturnclicked");
+		optimalAttackTile.clear();
+		optimalMoveTile.clear();
+		bestAttackTile.clear();
+		bestSummonTile.clear();
+		bestMoveTile.clear();
 		
 
 		EndTurnClicked ec=new EndTurnClicked();
@@ -292,11 +308,15 @@ public class ComputerPlayer extends Player{
 	
 	
 	private void drawCardAndProcessAction(int mode, ActorRef out, GameState gameState) {
-		AppConstants.printLog("<-------- AI :: drawCardAndProcessAction():: Mana : "+getMana());
-
+		AppConstants.printLog("<-------- AI :: drawCardAndProcessAction():: Mana of AI: "+getMana());
+		int handIdxToUse=-1;
 		// check cards and summon unit
-		int handIdxToUse=checkHand(mode, gameState);//checking the cards in the hand (mode==1 --> retrieve index of card with only units)
-		AppConstants.printLog("<-------- AI :: startAILogic():: handIdxToUse : "+handIdxToUse);
+		if(cardsDrawEnd==false){
+			handIdxToUse=checkHand(mode, gameState);//checking the cards in the hand (mode==1 --> retrieve index of card with only units)
+			AppConstants.printLog("<-------- AI :: startAILogic():: handIdxToUse : "+handIdxToUse);
+		}
+		
+		
 
 		if(handIdxToUse>-1)
 		{
@@ -757,21 +777,20 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 		double minDistance =999;
 		double distance;
 		Tile bestTile=null;
-		for (Unit unit : bestMoveTile.keySet()) {
-			List<Tile> tiles = bestMoveTile.get(unit);
-				for (Tile tile : tiles) {
-					// Find the closest enemy unit on board
-					int closestEnemyUnitIdx=findClosestEnemyUnit(tile);
-					distance = calculateDistanceBetweenPoints(tile.getTilex(), tile.getTiley(), tileWithPlayerUnits.get(closestEnemyUnitIdx).getTilex(), tileWithPlayerUnits.get(closestEnemyUnitIdx).getTiley());
-					// System.out.println("closest enemy unit id: "+closestEnemyUnitIdx+ " from tile: "+tile.toString()+" with distance: "+distance);
-					if(unit.getMoved()==false){
-						if(distance<minDistance) {
-							minDistance=distance;
-							bestTile=tile;
-						}
+		for (Unit unit : bestMoveTile.keySet()) {//for all units in the map
+			List<Tile> tiles = bestMoveTile.get(unit);//getting the list of all the tiles
+			for (Tile tile : tiles) {
+				// Find the closest enemy unit on board
+				int closestEnemyUnitIdx=findClosestEnemyUnit(tile);
+				distance = calculateDistanceBetweenPoints(tile.getTilex(), tile.getTiley(), tileWithPlayerUnits.get(closestEnemyUnitIdx).getTilex(), tileWithPlayerUnits.get(closestEnemyUnitIdx).getTiley());
+				// System.out.println("closest enemy unit id: "+closestEnemyUnitIdx+ " from tile: "+tile.toString()+" with distance: "+distance);
+				if(unit.getMoved()==false){
+					if(distance<minDistance) {
+						minDistance=distance;
+						bestTile=tile;
 					}
 				}
-			
+			}
 			minDistance =999;
 			optimalMoveTile.put(unit, bestTile);
 		}
@@ -785,6 +804,8 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 						System.out.println("unit: "+ unit.getName()+" moving from tile: "+unit.getTileFromUnitP2(unit.getId(), gameState, out).toString() +" to tile: "+optimalMoveTile.get(unit).toString());
 						moveAIUnit(out, gameState, unit.getTileFromUnitP2(unit.getId(), gameState, out), optimalMoveTile.get(unit));
 						callSleepAI(2000);
+						unit.setMoved(true);
+						// possibleMoveAttack(out, gameState);
 					}
 					else{
 						//move for avatar to be done
@@ -828,6 +849,10 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 							AppConstants.printLog("<--------------------Unit Attacking---------------------->");
 							System.out.println("unit: "+ unit.getName()+" attacking tile: "+optimalAttackTile.get(unit).toString());
 							attackAIUnit(out, gameState, unit.getTileFromUnitP2(unit.getId(), gameState, out), optimalAttackTile.get(unit));
+							unit.setAttacked(true);
+							// if(optimalAttackTile.get(unit).getUnitFromTile()==null){
+							// 	optimalAttackTile.remove(unit);
+							// }
 						}
 					}
 				}
@@ -847,5 +872,8 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 		catch(InterruptedException e){
 			e.printStackTrace();
 		}
+	}
+	public static void unitDied(){
+		//remove unit from the different DS when they die
 	}
 }
