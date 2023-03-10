@@ -32,7 +32,7 @@ public class ComputerPlayer extends Player{
 	Map<Unit,List<Tile>> bestMoveTile = new HashMap<Unit,List<Tile>>();//to decide which unit has the best move avaible
 	Map<Unit,List<Tile>> bestAttackTile = new HashMap<Unit,List<Tile>>();//to decide which unit has the best attack avaible
 	Map<Card,List<Tile>> bestSummonTile = new HashMap<Card,List<Tile>>();//to decide where to summon which card
-	
+	Map<Unit,Tile> optimalMoveTile = new HashMap<Unit, Tile>();
 	ArrayList<ObjectNode> possibilities=new ArrayList<>(); // Finalized object nodes with correct parameters
 		
 
@@ -178,6 +178,12 @@ public class ComputerPlayer extends Player{
 				// Summon a unit
 //				AppConstants.printLog("<-------- AI :: startAILogic():: Summon a unit !");
 				drawCardAndProcessAction(0,out,gameState); // mode 1- units only
+				if(tileWithMyUnit.size()>1){
+					//move a unit
+					AppConstants.printLog("<--------------------Move unit initiated---------------------->");
+					moveAIProcessAction(out,gameState);
+				}
+				
 			}else {
 				
 				
@@ -298,7 +304,7 @@ public class ComputerPlayer extends Player{
 				bestSummonTile.remove(getCardByHandPos(handIdxToUse));//remove the unit which is being summoned
 				// We have got a tile to summon and a hand index to draw
 				drawCardAI(handIdxToUse+1,out,gameState,currentTile,tileToSummon);
-				
+
 
 			}else {
 				cardsDrawEnd=true;
@@ -380,7 +386,8 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 			if(distance<minDistance)
 			{
 				minDistance=distance;
-				idx=i;
+				// idx=tileWithPlayerUnits.get(i).getUnitFromTile().getId();//getting the actual id for that unit
+				idx =i;
 			}
 		}
 		
@@ -554,7 +561,7 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 
 		TileClicked tc=new TileClicked();
 		tc.processEvent(out, gameState, eventMessage); // send it to the Tileclicked event processor
-
+		callSleepAI(200);
 	}
 
 	/**
@@ -573,7 +580,7 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 
 		TileClicked tc=new TileClicked();
 		tc.processEvent(out, gameState, eventMessage); // send it to the Tileclicked event processor
-
+		callSleepAI(200);
 	}
 
 	
@@ -590,6 +597,7 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 
 		TileClicked tc=new TileClicked();
 		tc.processEvent(out, gameState, eventMessage); // send it to the Tileclicked event processor
+		callSleepAI(200);
 	}
 	
 
@@ -716,4 +724,58 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 	public double calculateDistanceBetweenPoints( double x1,  double y1,  double x2,  double y2) {       
 			    return Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
 			}
+
+	
+
+	public void moveAIProcessAction(ActorRef out,GameState gameState) {
+		//selecting best tile to move for the unit
+		//currently we have the map which has unit and all the tiles they can move to
+		
+		AppConstants.printLog("<--------------------Best Move---------------------->");
+		double minDistance =999;
+		double distance;
+		Tile bestTile=null;
+		for (Unit unit : bestMoveTile.keySet()) {
+			for (List<Tile> tiles : bestMoveTile.values()) {
+				for (Tile tile : tiles) {
+					// Find the closest enemy unit on board
+					int closestEnemyUnitIdx=findClosestEnemyUnit(tile);
+					distance = calculateDistanceBetweenPoints(tile.getTilex(), tile.getTiley(), tileWithPlayerUnits.get(closestEnemyUnitIdx).getTilex(), tileWithPlayerUnits.get(closestEnemyUnitIdx).getTiley());
+					// System.out.println("closest enemy unit id: "+closestEnemyUnitIdx+ " from tile: "+tile.toString()+" with distance: "+distance);
+					if(unit.getMoved()==false){
+						if(distance<minDistance) {
+							minDistance=distance;
+							bestTile=tile;
+						}
+					}
+				}
+			}
+			optimalMoveTile.put(unit, bestTile);
+		}
+		for (Unit unit : optimalMoveTile.keySet()) {
+			System.out.println("Best move positon for unit: "+unit.getName()+ " is tile:"+optimalMoveTile.get(unit));
+			if(unit.getMoved()==false){
+				System.out.println("unit can move: "+unit.getName());
+				if(optimalMoveTile.get(unit)!=null){
+					if(unit.getId()!= 41){
+						moveAIUnit(out, gameState, unit.getTileFromUnitP2(unit.getId(), gameState, out), optimalMoveTile.get(unit));
+						callSleepAI(2000);
+					}
+					
+				}
+			}
+			
+			
+		}
+		
+	}
+
+	private void callSleepAI(long millis){
+		try{
+			Thread.sleep(millis);
+		}
+		catch(InterruptedException e){
+			e.printStackTrace();
+		}
+	}
 }
