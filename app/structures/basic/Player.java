@@ -140,6 +140,10 @@ public class Player {
 	}
 	
 
+	// This method syncs up the Player health with the health of their Avatar
+	public void syncHealth() {
+		this.health = this.getAvatar().getHealth();
+	}
 
 	// This method syncs up the Player health with the health of their Avatar
 	public void syncPlayerHealth(GameState gameState) {

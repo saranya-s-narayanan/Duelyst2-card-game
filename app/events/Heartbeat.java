@@ -61,9 +61,11 @@ public class Heartbeat implements EventProcessor{
 	            	if(gameState.player1!=null && gameState.player2!=null) // To avoid NULLpointerexception
 	            	{
 	            		// Syncing player health with the health of their avatar in real time and updating on the front end
-		        		gameState.player1.syncPlayerHealth(gameState);
+		        		// gameState.player1.syncPlayerHealth(gameState);
+		        		gameState.player1.syncHealth();
 		        		gameState.player1.setPlayerHealth(out);
-		        		gameState.player2.syncAIHealth(gameState); 
+		        		gameState.player2.syncHealth();
+//		        		gameState.player2.syncAIHealth(gameState); 
 		        		gameState.player2.setPlayerHealth(out); 
 //		        		AppConstants.printLog("------> Heartbeat:: Syncing player and avatar health ! Updating front end !!");
 		        		
