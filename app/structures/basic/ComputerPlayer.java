@@ -630,9 +630,9 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 			if(getMana()>=card.getManacost()){
 				// System.out.println("card with hand position: "+ handindex+" name: "+ card.getCardname()+" can be played");
 				//get summonable tiles
-				if(card.getId()==22 || card.getId()==32){//for staffofykir
+				if(card.getId()==22 || card.getId()==32){//for staffofykir can only be played on the avatar
 					possibleSummonList = new ArrayList<Tile>();
-					possibleSummonList.add(currentTile);
+					possibleSummonList.add(gameState.summonedUnits.get(1).getTileFromUnitP2(41, gameState, out));
 					bestSummonTile.put(card, possibleSummonList);
 				}
 				else if(card.getId()== 27 || card.getId()==37){//for entropic decay
@@ -744,7 +744,7 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 		//selecting best tile to move for the unit
 		//currently we have the map which has unit and all the tiles they can move to
 		
-		AppConstants.printLog("<--------------------Best Move---------------------->");
+		
 		double minDistance =999;
 		double distance;
 		Tile bestTile=null;
@@ -763,16 +763,22 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 					}
 				}
 			}
+			minDistance =999;
 			optimalMoveTile.put(unit, bestTile);
 		}
 		for (Unit unit : optimalMoveTile.keySet()) {
 			System.out.println("Best move positon for unit: "+unit.getName()+ " is tile:"+optimalMoveTile.get(unit));
 			if(unit.getMoved()==false){
-				System.out.println("unit can move: "+unit.getName());
+				// System.out.println("unit can move: "+unit.getName());
 				if(optimalMoveTile.get(unit)!=null){
 					if(unit.getId()!= 41){//don't move Avatar for now
+						AppConstants.printLog("<--------------------Unit Moving---------------------->");
+						System.out.println("unit: "+ unit.getName()+" moving from tile: "+unit.getTileFromUnitP2(unit.getId(), gameState, out).toString() +" to tile: "+optimalMoveTile.get(unit).toString());
 						moveAIUnit(out, gameState, unit.getTileFromUnitP2(unit.getId(), gameState, out), optimalMoveTile.get(unit));
 						callSleepAI(2000);
+					}
+					else{
+						//move for avatar to be done
 					}
 					
 				}
