@@ -529,20 +529,24 @@ public class TileClicked implements EventProcessor {
         		// Azure Herald special ability (When this unit is summoned give your avatar +3 health (maximum 20)
             	if(unitSummon.getId() == 5 || unitSummon.getId() == 15) {
             		// If +3 increase would make avatar health greater than max health, set avatar health to max health
-            		if(gameState.summonedUnits.get(0).getHealth() + 3 > AppConstants.playerMaxHealth) {
+            		if(gameState.player1.getAvatar().getHealth() + 3 > AppConstants.playerMaxHealth) {
                         // variable to track how much healing the avatar recieves
                         int healing =  AppConstants.playerMaxHealth-gameState.summonedUnits.get(0).getHealth();
-                        gameState.summonedUnits.get(0).setHealth(AppConstants.playerMaxHealth);
-            			BasicCommands.setUnitHealth(out, gameState.summonedUnits.get(0), gameState.summonedUnits.get(0).getHealth());
+                        gameState.player1.getAvatar().setHealth(AppConstants.playerMaxHealth);
+                        // gameState.summonedUnits.get(0).setHealth(AppConstants.playerMaxHealth);
+            			// BasicCommands.setUnitHealth(out, gameState.summonedUnits.get(0), gameState.summonedUnits.get(0).getHealth());
+            			BasicCommands.setUnitHealth(out, gameState.summonedUnits.get(0), gameState.player1.getAvatar().getHealth());
                         // buff effect and notification of healing effect
-                        BasicCommands.addPlayer1Notification(out, "Healing avatar", 2);
+                        BasicCommands.addPlayer1Notification(out, "Healing avatar +" + healing, 2);
                         BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff), gameState.summonedUnits.get(0).getTileFromUnit(40, gameState,out));
             		}
             		else {
             			// Increase avatar health by 3
-            			gameState.summonedUnits.get(0).setHealth(gameState.summonedUnits.get(0).getHealth() + 3);
+            			gameState.player1.getAvatar().setHealth(gameState.player1.getAvatar().getHealth() + 3);
+            			//gameState.summonedUnits.get(0).setHealth(gameState.summonedUnits.get(0).getHealth() + 3);
                 		// Update on front end
-            			BasicCommands.setUnitHealth(out, gameState.summonedUnits.get(0), gameState.summonedUnits.get(0).getHealth());
+            			// BasicCommands.setUnitHealth(out, gameState.summonedUnits.get(0), gameState.summonedUnits.get(0).getHealth());
+            			BasicCommands.setUnitHealth(out, gameState.summonedUnits.get(0), gameState.player1.getAvatar().getHealth());
                         BasicCommands.addPlayer1Notification(out, "Healing avatar +3", 2);
                         BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff), gameState.summonedUnits.get(0).getTileFromUnit(40, gameState,out));
             		}
@@ -596,8 +600,31 @@ public class TileClicked implements EventProcessor {
             else if(!PerformAction.getSummonableTiles(out, gameState, player).contains(clicked)){//if outside the summon tile list
             	if(player.getID()==1)//Notifications active for only player1
                 {
-            		BasicCommands.addPlayer1Notification(out, "Outside Summonable area", 2);
-            		OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
+            		// If the unit being summoned is Ironcliff Guardian or Planar Scout, implement airdrop special ability
+            		if(unitSummon.getId() == 6 || unitSummon.getId() == 16 || unitSummon.getId() == 28 || unitSummon.getId() == 38) {
+            			gameState.SummonTileList = gameState.board.getTilesWithoutUnits(out, gameState.board.getTiles(), player);
+            			 player.setMana(player.getMana()-handCard.getManacost());//decrease the mana
+                         player.setPlayer(out);//reflecting the mana on board
+                         player.deleteCardInHand(out, player.getID(), gameState);//delete the card in hand
+                         AppConstants.callSleep(200);
+                         gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
+                         gameState.SummonTileList=null;
+                         // clearTileHighSummon(out, gameState, player);//clear the tile summoning
+                         player.drawUnitToBoard(out, unitSummon, clicked, handCard, player, gameState);//draw unit on board
+                         AppConstants.callSleep(200);
+                         unitSummon.setMoved(true);//restricting move
+                         unitSummon.setAttacked(true);//restricting attack
+                         if(player.getID()==1) { //Notifications active for only player1 
+                             BasicCommands.addPlayer1Notification(out, "Summoning Complete", 2);
+                     	}else { // It's a spell
+                     		AppConstants.printLog("<------------- HANDLE SPELL !!!!!!!!!!!!!!!!!!!!!!! --------------");
+                     	}
+            		}else {
+            			BasicCommands.addPlayer1Notification(out, "Outside Summonable area", 2);
+                		OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
+            		}
+//            		BasicCommands.addPlayer1Notification(out, "Outside Summonable area", 2);
+//            		OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
                 }
             }
         }}
