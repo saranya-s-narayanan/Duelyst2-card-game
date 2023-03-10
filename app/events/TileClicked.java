@@ -423,7 +423,7 @@ public class TileClicked implements EventProcessor {
         }
         else {
 
-            gameState.board.clearTileHighlighting(out, gameState.board.getAdjacentTiles(out, startTile));
+            gameState.board.clearTileHighlighting(out, gameState.board.highlightTilesMoveAndAttack(1,player,out, startTile,gameState));
             AppConstants.callSleep(200);
             startTile = null; // Reset the start tile to no unit
         }

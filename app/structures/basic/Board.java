@@ -320,7 +320,8 @@ public class Board {
         				
         				if(newTile.getUnitFromTile()!=null)
         				{
-	        				if(newTile.getUnitFromTile().getIsPlayer()!=player.getID())
+//	        				if(newTile.getUnitFromTile().getIsPlayer()!=player.getID())
+	        				if(newTile.getUnitFromTile().getIsPlayer()!=tile.getUnitFromTile().getIsPlayer())
 	        				{
       					
 	            				adjacentTiles.add(newTile);
@@ -456,8 +457,9 @@ public class Board {
         			{
 //                		AppConstants.printLog("newUnit: "+newTile.getUnitFromTile().getIsPlayer()+", player id: "+player.getID());
 
-        				if(newTile.getUnitFromTile().getIsPlayer()!=player.getID())
-            			adjacentTiles.add(newTile);
+//        				if(newTile.getUnitFromTile().getIsPlayer()!=player.getID())
+        				if(newTile.getUnitFromTile().getIsPlayer()!=startTile.getUnitFromTile().getIsPlayer())
+        					adjacentTiles.add(newTile);
 
         			}
 
