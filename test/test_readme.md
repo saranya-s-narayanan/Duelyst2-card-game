@@ -53,3 +53,7 @@ This test confirms that the game ends when the human or computer player's health
 # IncrementManaTest
 
 This test confirms that the mana for both players is equal to turn + 1 with each new turn.  
+
+# IncrementManaTest
+
+This test confirms that the mana for both players is equal to turn + 1 with each new turn.  

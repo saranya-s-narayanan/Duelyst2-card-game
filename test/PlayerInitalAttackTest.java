@@ -22,7 +22,7 @@ import utils.BasicObjectBuilders;
  * @author Richard
  *
  */
-public class InitalizationTest {
+public class PlayerInitalAttackTest {
 
 	/**
 	 * This test simply checks that a boolean variable is set in GameState when we call the
