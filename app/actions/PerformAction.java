@@ -404,6 +404,7 @@ public class PerformAction {
 		// TODO Auto-generated method stub
 //    	AppConstants.printLog("------> getUnitIndexFromSummonedUnitlist:: BB selectedUnit id : "+selectedUnit.getId()+", summonid: "+selectedUnit.getSummonedID());
 
+		if(selectedUnit!=null){
 		for(int i=0;i<summonedUnits.size();i++)
 		{
 //	    	AppConstants.printLog("------> getUnitIndexFromSummonedUnitlist:: selectedUnit id : "+summonedUnits.get(i).getId()+", summonid: "+summonedUnits.get(i).getSummonedID());
@@ -412,7 +413,7 @@ public class PerformAction {
 			{
 				return i;
 			}
-		}
+		}}
 		return -1;
 	}
 
