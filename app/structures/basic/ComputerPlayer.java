@@ -33,6 +33,7 @@ public class ComputerPlayer extends Player{
 	Map<Unit,List<Tile>> bestAttackTile = new HashMap<Unit,List<Tile>>();//to decide which unit has the best attack avaible
 	Map<Card,List<Tile>> bestSummonTile = new HashMap<Card,List<Tile>>();//to decide where to summon which card
 	Map<Unit,Tile> optimalMoveTile = new HashMap<Unit, Tile>();
+	Map<Unit,Tile> optimalAttackTile = new HashMap<Unit, Tile>();
 	ArrayList<ObjectNode> possibilities=new ArrayList<>(); // Finalized object nodes with correct parameters
 		
 
@@ -182,6 +183,9 @@ public class ComputerPlayer extends Player{
 					//move a unit
 					AppConstants.printLog("<--------------------Move unit initiated---------------------->");
 					moveAIProcessAction(out,gameState);
+					if(optimalAttackTile.values()!=null){
+						attackAIProcessAction(out, gameState);
+					}
 				}
 				
 			}else {
@@ -739,6 +743,12 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 
 	
 
+	/** Method to handle Move logic 
+	 * 
+	 * @param out 	
+	 * @param gameState
+	 * 
+	 */
 	public void moveAIProcessAction(ActorRef out,GameState gameState) {
 		//selecting best tile to move for the unit
 		//currently we have the map which has unit and all the tiles they can move to
@@ -748,7 +758,7 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 		double distance;
 		Tile bestTile=null;
 		for (Unit unit : bestMoveTile.keySet()) {
-			for (List<Tile> tiles : bestMoveTile.values()) {
+			List<Tile> tiles = bestMoveTile.get(unit);
 				for (Tile tile : tiles) {
 					// Find the closest enemy unit on board
 					int closestEnemyUnitIdx=findClosestEnemyUnit(tile);
@@ -761,7 +771,7 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 						}
 					}
 				}
-			}
+			
 			minDistance =999;
 			optimalMoveTile.put(unit, bestTile);
 		}
@@ -788,6 +798,48 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 		
 	}
 
+
+	/** Method to handle attack logic 
+	 * 
+	 * @param out 	
+	 * @param gameState
+	 * 
+	 */
+	public void attackAIProcessAction(ActorRef out,GameState gameState){
+		//select the best attack tile for every unit
+		Tile bestTile=null;
+		for (Unit unit : bestAttackTile.keySet()) {
+			List<Tile> tiles = bestAttackTile.get(unit);
+			int lowHealth=99;
+			for (Tile tile : tiles) {
+				if(tile.getUnitFromTile().getHealth()<lowHealth){
+					lowHealth=tile.getUnitFromTile().getHealth();
+					bestTile=tile;
+				}
+			}
+			optimalAttackTile.put(unit, bestTile);
+		}
+		for (Unit unit : optimalAttackTile.keySet()) {
+			System.out.println("Best Attack positon for unit: "+unit.getName()+ " is tile:"+optimalAttackTile.get(unit));
+			
+				if(unit.getAttacked()==false){
+					if(optimalAttackTile.get(unit)!=null){
+						if(unit.getId()!=41){
+							AppConstants.printLog("<--------------------Unit Attacking---------------------->");
+							System.out.println("unit: "+ unit.getName()+" attacking tile: "+optimalAttackTile.get(unit).toString());
+							attackAIUnit(out, gameState, unit.getTileFromUnitP2(unit.getId(), gameState, out), optimalAttackTile.get(unit));
+						}
+					}
+				}
+			
+		}
+	}
+
+	/** Method to put AI to sleep 
+	 * 
+	 * @param millis 	
+	 * 
+	 */
 	private void callSleepAI(long millis){
 		try{
 			Thread.sleep(millis);
