@@ -270,7 +270,7 @@ public class TileClicked implements EventProcessor {
             
             AppConstants.callSleep(100);
 
-        } else if (startTile.getUnitFromTile().getIsPlayer() == player.getID()){ // Second click moves the unit to the clicked tile or attack
+        } else if (startTile.getUnitFromTile()!=null && startTile.getUnitFromTile().getIsPlayer() == player.getID()){ // Second click moves the unit to the clicked tile or attack
             AppConstants.printLog("------> UnitClicked ::startTile: " + startTile.getTilex() + " " + startTile.getTiley() + " by player 1");
 
         	// Get the unit index from the summoned arraylist position
