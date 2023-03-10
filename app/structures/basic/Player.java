@@ -103,10 +103,12 @@ public class Player {
 	}
 
 	public Card getCardByHandPos(int i) {
-		return hand.get(i);
+		if (i>=0 && i < hand.size()){
+		return hand.get(i);}
+		else return null;
 	}
 
-	public Unit getUnitbyCard(int i, Player p){
+	public Unit getUnitbyCard(Card card){
 		Unit unit=null;
 		// if(p.getID()==1){//changes here for conflict resolution
 		// 	Card c=hand.get(i);
@@ -117,12 +119,15 @@ public class Player {
 		// 	return unit;
 		// }
 		// else return player2Units.get(i);
-		Card c=hand.get(i);//changes here for conflict resolution
-		for (Unit u : playerUnits) {
-			if(u.getId()==c.getId())  unit=u;
-			//trying to return the unit for that particular card
+		Card c=card;//changes here for conflict resolution
+		if (c != null) {
+			for (Unit u : playerUnits) {
+				if (u.getId() == c.getId()) unit = u;
+				//trying to return the unit for that particular card
+			}
+			return unit;
 		}
-		return unit;
+		else return null;
 	}
 
 	//method to get total cards in the deck

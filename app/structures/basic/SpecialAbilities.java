@@ -241,6 +241,8 @@ public class SpecialAbilities {
                 AppConstants.callSleep(50);
                 BasicCommands.setUnitHealth(out,unit,unit.getHealth());
                 BasicCommands.setUnitAttack(out, unit,unit.getAttack());
+                BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff), unit.getTileFromUnit(unit.getId(), gameState,out));
+                BasicCommands.addPlayer1Notification(out, "Pureblade Enforcer attack and health +1", 2);
             }
         }
     }
@@ -294,6 +296,45 @@ public class SpecialAbilities {
         }
         return units;
     }
+
+    public static void blazeHound(ActorRef out, GameState gameState){
+        gameState.player1.drawAnotherCard(out,1);
+        gameState.player2.drawAnotherCard(out,2);
+        BasicCommands.addPlayer1Notification(out, "Drawing another card",2);
+    }
+
+    public static void windshrikeMove(int mode, ActorRef out, Tile startTile, Tile endTile,GameState gameState) {
+
+        Unit unitToMove = startTile.getUnitFromTile();
+
+        // Check if there is a unit on the start tile
+        if(unitToMove == null) {
+            if(mode==1)
+            {
+                BasicCommands.addPlayer1Notification(out, "No unit on the starting tile", 2);
+                AppConstants.callSleep(200);
+            }
+            return;
+        }
+        // Check if the end tile is empty
+        if(endTile.getUnitFromTile() != null) {
+            if(mode==1)
+            {
+                BasicCommands.addPlayer1Notification(out, "The end tile is already occupied", 2);
+                AppConstants.callSleep(200);
+            }
+            return;
+        }
+        startTile.setUnitToTile(null); //Update starttile unit to null
+        unitToMove.setMoved(true);
+        // Move the unit to the end tile
+        gameState.board.addUnitToBoard(endTile.getTilex(), endTile.getTiley(), unitToMove);
+        AppConstants.callSleep(50);
+        BasicCommands.moveUnitToTile(out, unitToMove, endTile);
+        unitToMove.setPositionByTile(endTile);
+        AppConstants.callSleep(50);
+    }
+
 
 }
 

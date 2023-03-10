@@ -71,15 +71,22 @@ public class PerformAction {
 						return attackDirectly(player,out,unit,startTile,enemyTile,gameState,enemyUnit);
 
 						
-					}else {
+					} else {
 						// Enemytile is not in range for direct attack, have to move and then attack
-						
-						tilesList=gameState.board.highlightTilesMoveAndAttack(0,player,out, startTile,gameState);
+
+						if (unit.getName().equals("WindShrike")){
+							tilesList= gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), TileClicked.opposingPlayer(gameState,player));
+						}
+						else {tilesList=gameState.board.highlightTilesMoveAndAttack(0,player,out, startTile,gameState);}
 						
 						if(tilesList.contains(enemyTile)) // have to move,then attack
 						{
 							tilesList= new ArrayList<>();
-							tilesList=gameState.board.getAdjacentTiles(out, startTile); // Get the adjacent tiles to just move
+							if (unit.getName().equals("WindShrike")){
+								tilesList=gameState.board.getTilesWithoutUnits(out, gameState.board.getTiles(),player);
+							}
+
+							else {tilesList=gameState.board.getAdjacentTiles(out, startTile);} // Get the adjacent tiles to just move
 							
 							// Get the attackable tiles of the enemy tile and check whether any of those tiles comes inside the adjacenttiles of the start tile
 							ArrayList<Tile> enemyAdjacentTiles=gameState.board.retrieveAdjacentTilesToAttackPosition(out, enemyTile);
@@ -107,9 +114,13 @@ public class PerformAction {
 			                {
 			                	// Move to the adjacent tile
 								if(player.getID()==1)
+
 									moveUnit(1,out, startTile, tileToMove, gameState); // show player notifications (mode 1)
 								else
-									moveUnit(0,out, startTile, tileToMove, gameState);
+								if (unit.getName().equals("WindShrike")){
+									SpecialAbilities.windshrikeMove(0,out,startTile, tileToMove, gameState);
+								}
+									else {moveUnit(0,out, startTile, tileToMove, gameState);}
 
 								
 								AppConstants.callSleep(2000); // To allow movement to finish before attacking
@@ -337,7 +348,7 @@ public class PerformAction {
 		}
 
 		startTile.setUnitToTile(null); //Update starttile unit to null
-		
+		unitToMove.setMoved(true);
 		// Move the unit to the end tile
 		gameState.board.addUnitToBoard(endTile.getTilex(), endTile.getTiley(), unitToMove);
 		AppConstants.callSleep(50);
