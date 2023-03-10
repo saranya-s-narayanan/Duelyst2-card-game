@@ -330,7 +330,7 @@ public class ComputerPlayer extends Player{
 private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameState) {
 		
 		Tile tileToSummon = null;
-		
+		//should be changing this to accomodate for different cards
 		possibleSummonList= PerformAction.getSummonableTilesAroundAvatar(out, gameState,currentTile);
 		// gameState.board.highlightTilesRed(out, (ArrayList<Tile>) possibleSummonList);
 
@@ -630,9 +630,22 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 			if(getMana()>=card.getManacost()){
 				// System.out.println("card with hand position: "+ handindex+" name: "+ card.getCardname()+" can be played");
 				//get summonable tiles
-				possibleSummonList= PerformAction.getSummonableTiles(out, gameState, gameState.player2);
+				if(card.getId()==22 || card.getId()==32){//for staffofykir
+					possibleSummonList = new ArrayList<Tile>();
+					possibleSummonList.add(currentTile);
+					bestSummonTile.put(card, possibleSummonList);
+				}
+				else if(card.getId()== 27 || card.getId()==37){//for entropic decay
+					possibleSummonList = tileWithPlayerUnits;
+					possibleSummonList.remove(0);
+					bestSummonTile.put(card, possibleSummonList);
+				}
+				else{//for all the other units with no special abilities
+					possibleSummonList= PerformAction.getSummonableTiles(out, gameState, gameState.player2);
 				
-				bestSummonTile.put(card, possibleSummonList);//adding the list into the map with the card
+					bestSummonTile.put(card, possibleSummonList);//adding the list into the map with the card
+				
+				}
 				
 				//for debug
 				// for (Tile tile : possibleSummonList) {
@@ -757,7 +770,7 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 			if(unit.getMoved()==false){
 				System.out.println("unit can move: "+unit.getName());
 				if(optimalMoveTile.get(unit)!=null){
-					if(unit.getId()!= 41){
+					if(unit.getId()!= 41){//don't move Avatar for now
 						moveAIUnit(out, gameState, unit.getTileFromUnitP2(unit.getId(), gameState, out), optimalMoveTile.get(unit));
 						callSleepAI(2000);
 					}
