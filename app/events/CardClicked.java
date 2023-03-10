@@ -46,10 +46,12 @@ public class CardClicked implements EventProcessor {
             if (gameState.player1Turn) { // for the first player
 
                 AppConstants.printLog("------> CardClicked:: Game is active !");
+                gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
                 //method call to highlight card
                 highlightMiniCard(out, handPosition, gameState);
                 //method to highlight tiles on which card can be summoned
                 highlightSummonableTiles(out, gameState, gameState.player1);
+
 
             }
             else {
@@ -63,44 +65,41 @@ public class CardClicked implements EventProcessor {
 
     public void highlightSummonableTiles(ActorRef out, GameState gameState, Player player) {
     	
-        if(gameState.SummonTileList==null){ 
-
+//        if(gameState.SummonTileList==null){
         	// Get the card that has just been clicked
         	Card clickedCard = gameState.player1.getCardByHandPos(gameState.handPosClicked-1);
             // If the card ID is 6, 16, 28 or 38 (IronCliff Guardian or Planar Scout)
-            if(clickedCard.getId() == 6 || clickedCard.getId() == 16 || clickedCard.getId() == 28 || clickedCard.getId() == 38) {
-            	gameState.SummonTileList = gameState.board.getTilesWithoutUnits(out, gameState.board.getTiles(), player);
-            	gameState.board.highlightTilesWhite(out, gameState.SummonTileList);
+        if (clickedCard != null) {
+            if (clickedCard.getId() == 6 || clickedCard.getId() == 16 || clickedCard.getId() == 28 || clickedCard.getId() == 38) {
+                gameState.SummonTileList = gameState.board.getTilesWithoutUnits(out, gameState.board.getTiles(), player);
+                gameState.board.highlightTilesWhite(out, gameState.SummonTileList);
             }
 
             // highlighting for the two human player spells
-            else if(clickedCard.getCardname().equals("Truestrike")){
-                gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
-                AppConstants.callSleep(50);
-                gameState.board.highlightTilesRed(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), gameState.player2));
+            if (clickedCard.getCardname().equals("Truestrike")) {
+                gameState.SummonTileList = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), gameState.player2);
+                gameState.board.highlightTilesRed(out, gameState.SummonTileList);
 
-            }
-            else if (clickedCard.getCardname().equals("Sundrop Elixir")) {
-                gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
-                AppConstants.callSleep(50);
-                gameState.board.highlightTilesWhiteSpell(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), gameState.player1));
+            } else if (clickedCard.getCardname().equals("Sundrop Elixir")) {
+                gameState.SummonTileList = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), gameState.player1);
+                gameState.board.highlightTilesWhiteSpell(out, gameState.SummonTileList);
 
-            }
-
-            else {
-                gameState.SummonTileList= new ArrayList<Tile>();
-            	// list of the tiles with units
+            } else {
+                gameState.SummonTileList = new ArrayList<Tile>();
+                // list of the tiles with units
                 ArrayList<Tile> list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);
 
                 // iteration through the list and highlight adjacent tiles
-                for (Tile items: list) {
-                    ArrayList<Tile> listItem=gameState.board.summonableTiles(out, items);
+                for (Tile items : list) {
+                    ArrayList<Tile> listItem = gameState.board.summonableTiles(out, items);
                     for (Tile tile : listItem) {
                         gameState.SummonTileList.add(tile);
                     }
                 }
                 gameState.board.highlightTilesWhite(out, gameState.SummonTileList);
             }
+
+//        }
         }
     }
 
@@ -132,6 +131,7 @@ public class CardClicked implements EventProcessor {
         else{//this is not done yet
             clearHighlightMiniCard(out, gameState);
             gameState.board.clearTileHighlighting(out, gameState.SummonTileList);
+//            gameState.SummonTileList=null;
         }
 	}
 
@@ -141,7 +141,8 @@ public class CardClicked implements EventProcessor {
     	{
 	        Card card1 = gameState.player1.getCardByHandPos(gameState.handPosClicked-1);//get the card at earlier position
 	        BasicCommands.drawCard(out, card1, gameState.handPosClicked, 0);//dehighlight the previous position
-	        gameState.handPosClicked=-1;//set the gameState hand position to -1
+	        gameState.handPosClicked=-1;
+            //set the gameState hand position to -1
     	}
     }
 }

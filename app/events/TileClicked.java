@@ -419,7 +419,7 @@ public class TileClicked implements EventProcessor {
         // System.out.println("inside summon function");
         Card handCard = player.getCardByHandPos(gameState.handPosClicked-1);//getting the card by hand position
         // System.out.println("Card name: "+handCard.getCardname());
-        Unit unitSummon = player.getUnitbyCard(gameState.handPosClicked-1, player);//getting the unit by hand position
+        Unit unitSummon = player.getUnitbyCard(handCard);//getting the unit by hand position
         // System.out.println("Id of the unit to summoned: "+unitSummon.getId());
         // System.out.println("player mana: "+ player.getMana());
         // System.out.println("mana cost: "+ handCard.getManacost());
@@ -433,6 +433,7 @@ public class TileClicked implements EventProcessor {
 //            Spell.staffOfYKir(out, handCard, clicked, gameState.aiAvatar);
 //            return;
 //        }
+        if (handCard!=null){
 
         if (player.getMana() >= handCard.getManacost() && handCard.getCardname().equals("Truestrike")) {
             if (clicked.getUnitFromTile() == null){
@@ -537,7 +538,7 @@ public class TileClicked implements EventProcessor {
             		OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
                 }
             }
-        }
+        }}
     }
 
     // Method to return the opposing player (useful for highlighting opposing players units etc) (can be moved)
