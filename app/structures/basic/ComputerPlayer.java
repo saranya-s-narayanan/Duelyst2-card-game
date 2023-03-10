@@ -291,7 +291,7 @@ public class ComputerPlayer extends Player{
 		AppConstants.printLog("<-------- AI :: drawCardAndProcessAction():: Mana : "+getMana());
 
 		// check cards and summon unit
-		int handIdxToUse=checkHand(mode);//checking the cards in the hand (mode==1 --> retrieve index of card with only units)
+		int handIdxToUse=checkHand(mode, gameState);//checking the cards in the hand (mode==1 --> retrieve index of card with only units)
 		AppConstants.printLog("<-------- AI :: startAILogic():: handIdxToUse : "+handIdxToUse);
 
 		if(handIdxToUse>-1)
@@ -301,7 +301,7 @@ public class ComputerPlayer extends Player{
 			
 			if(tileToSummon!=null)
 			{
-				bestSummonTile.remove(getCardByHandPos(handIdxToUse));//remove the unit which is being summoned
+				bestSummonTile.remove(getCardByHandPos(handIdxToUse));//remove the card which is being summoned
 				// We have got a tile to summon and a hand index to draw
 				drawCardAI(handIdxToUse+1,out,gameState,currentTile,tileToSummon);
 
@@ -448,18 +448,15 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 	 * 
 	 * @param mode -> 0 - unit/spell, 1- only unit, 2- only spell
 	 */
-	public int checkHand(int mode){
+	public int checkHand(int mode, GameState gameState){
 		for (int i=0;i<hand.size();i++) {
 
 			Card c=hand.get(i);
 			
 			if(mode==1) // can be only unit
 			{
-//				AppConstants.printLog("Mode 1: card name: "+c.getCardname()+",id: "+c.getId()+", getCardByHandPos(i): "+getCardByHandPos(i) );
-
 				if(c.getManacost()<=getMana() && (c.getId()!=22 && c.getId()!=27 && c.getId()!=32 && c.getId()!=37)) //  check mana
 				{
-//					AppConstants.printLog("return hand position "+i+" with unit card: "+ c.getCardname());
 					return i; // return index
 				}
 			}else if(mode==2) { // can be only spell
@@ -467,7 +464,6 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 				{
 					if(c.getManacost()<=getMana())
 					{
-//						AppConstants.printLog("return hand position "+i+" with spell card: "+ c.getCardname());
 						return i;
 					}
 				}
@@ -475,13 +471,16 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 			else { // can be either unit or spell
 				if(c.getManacost()<=getMana()) //  check mana
 				{
-//					if(c.getId()==22 || c.getId()==27 || c.getId()==32 || c.getId()==37){//encountered spell
-//						AppConstants.printLog("Encontered Spell card at hand position: "+i);
-//						// i++;//adding to skip spell card
-//						continue;
-//					}
-//					AppConstants.printLog("return hand position "+i+" with card: "+ c.getCardname());
-					return i; // return index
+					if(c.getId()==22 || c.getId()==27){//check if card in hand is staffofykir
+						if(tileWithPlayerUnits.size()>5 || gameState.summonedUnits.get(1).getHealth()<18){//check if number of player units is more than 5 or AI avatar health is less than 18
+							return i;
+						}
+						else continue;
+					}
+					else if(c.getId()==32 || c.getId()==37){
+						//find unit with max health and max attack and play this card
+					}
+					else return i; // return index
 				}
 			}
 			
