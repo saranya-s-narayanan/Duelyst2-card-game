@@ -288,8 +288,15 @@ public class TileClicked implements EventProcessor {
         	boolean attackStatus=false;
         	gameState.board.clearTileHighlighting(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));
             attackStatus = SpecialAbilities.attackUnitRanged(1, player,out, gameState.summonedUnits.get(unitIdx),startTile,clickedTile,gameState);
-            if(gameState.summonedUnits.get(unitIdx)!=null && unitIdx<gameState.summonedUnits.size())
-                gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
+            
+            if(unitIdx>-1 && unitIdx<gameState.summonedUnits.size())
+            {
+                if(gameState.summonedUnits.get(unitIdx)!=null) {
+                	gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
+                }
+            }
+            
+            
             }
 
             if(gameState.summonedUnits.get(unitIdx).getName().equals("WindShrike")){
@@ -319,8 +326,12 @@ public class TileClicked implements EventProcessor {
 
                     attackStatus=PerformAction.attackUnit(1,player,out,gameState.summonedUnits.get(unitIdx),startTile,clickedTile, gameState);
 
-                    if(gameState.summonedUnits.get(unitIdx)!=null && unitIdx<gameState.summonedUnits.size())
-                        gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
+                    if(unitIdx>-1 && unitIdx<gameState.summonedUnits.size())
+                    {
+                        if(gameState.summonedUnits.get(unitIdx)!=null) {
+                        	gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
+                        	}
+                    }
 
                 }
 
@@ -346,15 +357,18 @@ public class TileClicked implements EventProcessor {
                      
                      attackStatus=PerformAction.attackUnit(1,player,out,gameState.summonedUnits.get(unitIdx),startTile,clickedTile, gameState);
                      
-                     if(gameState.summonedUnits.get(unitIdx)!=null && unitIdx<gameState.summonedUnits.size())
-                    	// If the unit has not already attacked once, set attacked once to true
+                     if(unitIdx>-1 && unitIdx<gameState.summonedUnits.size())
+                     {
+                         if(gameState.summonedUnits.get(unitIdx)!=null) {
+                        	 // If the unit has not already attacked once, set attacked once to true
                     	 if(gameState.summonedUnits.get(unitIdx).getAttackedOnce() == false) {
                     		gameState.summonedUnits.get(unitIdx).setAttackedOnce(attackStatus);
                     	// If the unit has already attacked once, set attacked twice to true
                     	}else if(gameState.summonedUnits.get(unitIdx).getAttackedOnce() == true) {
                     		gameState.summonedUnits.get(unitIdx).setAttackedTwice(attackStatus);
                     	}
-                 	
+                         }
+                     }
                  // If a tile with an enemy unit is clicked and it is adjacent, and the player has not attacked twice yet
                  // It is a direct attack, only attack should be set to true
                  }  else if(clickedTile.getUnitFromTile()!=null && clickedTile.getUnitFromTile().getIsPlayer() != player.getID() && gameState.summonedUnits.get(unitIdx).getAttackedTwice()==false && gameState.board.getAdjacentTilesToAttack(player,out, startTile).contains(clickedTile)) {
@@ -363,14 +377,18 @@ public class TileClicked implements EventProcessor {
                      
                      attackStatus=PerformAction.attackUnit(1,player,out,gameState.summonedUnits.get(unitIdx),startTile,clickedTile, gameState);
                      
-                     if(gameState.summonedUnits.get(unitIdx)!=null && unitIdx<gameState.summonedUnits.size())
-                    	// If the unit has not already attacked once, set attacked once to true
+                     if(unitIdx>-1 && unitIdx<gameState.summonedUnits.size())
+                     {
+                         if(gameState.summonedUnits.get(unitIdx)!=null) {
+                        	 // If the unit has not already attacked once, set attacked once to true
                     	 if(gameState.summonedUnits.get(unitIdx).getAttackedOnce() == false) {
                     		gameState.summonedUnits.get(unitIdx).setAttackedOnce(attackStatus);
                     	// If the unit has already attacked once, set attacked twice to true
                     	}else if(gameState.summonedUnits.get(unitIdx).getAttackedOnce() == true) {
                     		gameState.summonedUnits.get(unitIdx).setAttackedTwice(attackStatus);
                     	}
+                         }
+                     }
                  	
                  }else if(clickedTile.getUnitFromTile()!=null && gameState.summonedUnits.get(unitIdx).getAttackedTwice() == true) {
                 	 BasicCommands.addPlayer1Notification(out, "Already attacked twice", 2);
@@ -412,14 +430,24 @@ public class TileClicked implements EventProcessor {
                 
                 attackStatus=PerformAction.attackUnit(1,player,out,gameState.summonedUnits.get(unitIdx),startTile,clickedTile, gameState);
                 
-                if(gameState.summonedUnits.get(unitIdx)!=null && unitIdx<gameState.summonedUnits.size())
-                	gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
+                if(unitIdx>-1 && unitIdx<gameState.summonedUnits.size())
+                {
+                    if(gameState.summonedUnits.get(unitIdx)!=null) {
+                    	gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
+                    }
+                }
             	
             }
             
             startTile = null; // Reset the start tile to no unit
-            gameState.summonedUnits.get(unitIdx).setProvoked(false);
-//            gameState.summonedUnits.get(unitIdx).setMoved(false);
+            if(unitIdx>-1 && unitIdx<gameState.summonedUnits.size())
+            {
+                if(gameState.summonedUnits.get(unitIdx)!=null) {
+                	gameState.summonedUnits.get(unitIdx).setProvoked(false);
+//         	 gameState.summonedUnits.get(unitIdx).setMoved(false);
+
+                }
+            }
         }
         else {
 
