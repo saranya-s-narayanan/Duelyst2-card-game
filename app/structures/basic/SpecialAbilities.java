@@ -241,6 +241,8 @@ public class SpecialAbilities {
                 AppConstants.callSleep(50);
                 BasicCommands.setUnitHealth(out,unit,unit.getHealth());
                 BasicCommands.setUnitAttack(out, unit,unit.getAttack());
+                BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff), unit.getTileFromUnit(unit.getId(), gameState,out));
+                BasicCommands.addPlayer1Notification(out, "Pureblade Enforcer attack and health +1", 2);
             }
         }
     }
@@ -293,6 +295,12 @@ public class SpecialAbilities {
             }
         }
         return units;
+    }
+
+    public static void blazeHound(ActorRef out, GameState gameState){
+        gameState.player1.drawAnotherCard(out,1);
+        gameState.player2.drawAnotherCard(out,2);
+        BasicCommands.addPlayer1Notification(out, "Drawing another card",2);
     }
 
 }

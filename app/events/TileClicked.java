@@ -505,6 +505,11 @@ public class TileClicked implements EventProcessor {
                 }
                 // gameState.SummonTileList=null;
 
+                // If the summoned unit is Blaze Hound, both players draw a card
+                if(unitSummon.getName().equals("Blaze Hound")) {
+                    SpecialAbilities.blazeHound(out, gameState);
+                }
+
                 if(player.getID()==1)//Notifications active for only player1
                 BasicCommands.addPlayer1Notification(out, "Summoning Complete", 2);
         	}else { // It's a spell

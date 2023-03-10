@@ -68,8 +68,10 @@ public class CardClicked implements EventProcessor {
 //        if(gameState.SummonTileList==null){
         	// Get the card that has just been clicked
         	Card clickedCard = gameState.player1.getCardByHandPos(gameState.handPosClicked-1);
-            // If the card ID is 6, 16, 28 or 38 (IronCliff Guardian or Planar Scout)
+
         if (clickedCard != null) {
+
+            // If the card ID is 6, 16, 28 or 38 (IronCliff Guardian or Planar Scout)
             if (clickedCard.getId() == 6 || clickedCard.getId() == 16 || clickedCard.getId() == 28 || clickedCard.getId() == 38) {
                 gameState.SummonTileList = gameState.board.getTilesWithoutUnits(out, gameState.board.getTiles(), player);
                 gameState.board.highlightTilesWhite(out, gameState.SummonTileList);
