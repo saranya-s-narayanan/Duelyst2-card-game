@@ -54,6 +54,10 @@ This test confirms that the game ends when the human or computer player's health
 
 This test confirms that the mana for both players is equal to turn + 1 with each new turn.  
 
-# IncrementManaTest
+# PlayerInitialIAttackValue
 
-This test confirms that the mana for both players is equal to turn + 1 with each new turn.  
+This test confirms that the initial attack for the human avatar is set to 2
+
+# AIInitialIAttackValue
+
+This test confirms that the initial attack for the computer avatar is set to 2
