@@ -36,7 +36,7 @@ public class Player1TurnTest {
 		initializeProcessor.processEvent(null, gameState, eventmessage);
 
 		//Confirms that when player1Turn is set to true, it is player1's turn
-		///Else if it is false, it is player2's turn
+		//Else if it is false, it is player2's turn
 		if (gameState.player1Turn == true) {
 			assertTrue(gameState.player1Turn);
 		} else {
