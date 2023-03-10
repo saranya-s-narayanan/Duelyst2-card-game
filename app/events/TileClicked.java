@@ -172,8 +172,6 @@ public class TileClicked implements EventProcessor {
             Unit selectedUnit = clickedTile.getUnitFromTile(); // get the unit from the clicked tile
             AppConstants.printLog("------> UnitClicked :: On tile " + clickedTile.getTilex() + " " + clickedTile.getTiley() + " by player 1");
             
-            
-            
             AppConstants.callSleep(100);
             
             if (selectedUnit != null) { // if the unit is not null
@@ -208,6 +206,7 @@ public class TileClicked implements EventProcessor {
                         AppConstants.printLog("------> UnitClicked :: Unit has already attacked!");
                     BasicCommands.addPlayer1Notification(out, "Exhausted!", 2);}
                 }
+
                 // If the unit is Azurite Lion or Serpenti, implement Attack Twice logic
                 else if(gameState.summonedUnits.get(unitIdx).getId() == 7 || gameState.summonedUnits.get(unitIdx).getId() == 17 || gameState.summonedUnits.get(unitIdx).getId() == 26 || gameState.summonedUnits.get(unitIdx).getId() == 36) 
                 {
@@ -291,6 +290,40 @@ public class TileClicked implements EventProcessor {
             attackStatus = SpecialAbilities.attackUnitRanged(1, player,out, gameState.summonedUnits.get(unitIdx),startTile,clickedTile,gameState);
             if(gameState.summonedUnits.get(unitIdx)!=null && unitIdx<gameState.summonedUnits.size())
                 gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
+            }
+
+            if(gameState.summonedUnits.get(unitIdx).getName().equals("WindShrike")){
+                if (clickedTile.getUnitFromTile()== null && gameState.summonedUnits.get(unitIdx).getMoved() == false && gameState.summonedUnits.get(unitIdx).getAttackedOnce() == false){
+
+                    AppConstants.printLog("------> TileClicked :: Normal Moving unit to tile " + clickedTile.getTilex() + " " + clickedTile.getTiley());
+                    SpecialAbilities.windshrikeMove(1,out, startTile, clickedTile, gameState);
+                }
+                else if(clickedTile.getUnitFromTile()!=null && clickedTile.getUnitFromTile().getIsPlayer() != player.getID() && gameState.summonedUnits.get(unitIdx).getAttacked()==false && gameState.summonedUnits.get(unitIdx).getMoved()==false && !gameState.board.getAdjacentTilesToAttack(player,out, startTile).contains(clickedTile)) {
+
+                    AppConstants.printLog("------> TileClicked :: Attacking unit at tile " + clickedTile.getTilex() + " " + clickedTile.getTiley());
+                    boolean attackStatus=false;
+
+                    attackStatus=PerformAction.attackUnit(1,player,out,gameState.summonedUnits.get(unitIdx),startTile,clickedTile, gameState);
+
+                    if(unitIdx>-1 && unitIdx<gameState.summonedUnits.size())
+                    {
+                        if(gameState.summonedUnits.get(unitIdx)!=null) {
+                            gameState.summonedUnits.get(unitIdx).setMoved(attackStatus);
+                            gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
+                        }
+                    }
+                }else if(clickedTile.getUnitFromTile()!=null && clickedTile.getUnitFromTile().getIsPlayer() != player.getID() && gameState.summonedUnits.get(unitIdx).getAttacked()==false && gameState.board.getAdjacentTilesToAttack(player,out, startTile).contains(clickedTile)){ // Clicked an occupied tile --> attack
+
+                    AppConstants.printLog("------> TileClicked :: Attacking unit at tile " + clickedTile.getTilex() + " " + clickedTile.getTiley());
+                    boolean attackStatus=false;
+
+                    attackStatus=PerformAction.attackUnit(1,player,out,gameState.summonedUnits.get(unitIdx),startTile,clickedTile, gameState);
+
+                    if(gameState.summonedUnits.get(unitIdx)!=null && unitIdx<gameState.summonedUnits.size())
+                        gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
+
+                }
+
             }
             
             // If the unit is Azurite Lion or Serpenti, implement Attack Twice logic
