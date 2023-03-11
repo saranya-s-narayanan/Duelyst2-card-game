@@ -143,7 +143,7 @@ public class ComputerPlayer extends Player{
 		AppConstants.printLog("<------------------------------startAILogic-------------------------------------------------->");
 			
 		boolean isContinue=true; //boolean to keep track of how long loop should continue
-		int i=0;//running the loop only ten times per turn for now to handle infinite loop
+		// int i=0;//running the loop only ten times per turn for now to handle infinite loop
 		while(isContinue)
 		{
 			AppConstants.printLog("<--------------------Game State at the moment---------------------->");
@@ -174,27 +174,38 @@ public class ComputerPlayer extends Player{
 				isContinue=false;
 			
 			//If the number of enemy units is less than 5, save spells for later and do summoning a unit alone
-			if(tileWithPlayerUnits.size()<5)
-			{
-				// Summon a unit
-//				AppConstants.printLog("<-------- AI :: startAILogic():: Summon a unit !");
-				drawCardAndProcessAction(0,out,gameState); // mode 1- units only
-				if(tileWithMyUnit.size()>1){
-					//move a unit
-					AppConstants.printLog("<--------------------Move unit initiated---------------------->");
-					moveAIProcessAction(out,gameState);
-					if(optimalAttackTile.values()!=null){
-						attackAIProcessAction(out, gameState);
-					}
+// 			if(tileWithPlayerUnits.size()<5)
+// 			{
+// 				// Summon a unit
+// //				AppConstants.printLog("<-------- AI :: startAILogic():: Summon a unit !");
+// 				drawCardAndProcessAction(0,out,gameState); // mode 1- units only
+// 				if(tileWithMyUnit.size()>1){
+// 					//move a unit
+// 					AppConstants.printLog("<--------------------Move unit initiated---------------------->");
+// 					moveAIProcessAction(out,gameState);
+// 					if(optimalAttackTile.values()!=null){
+// 						attackAIProcessAction(out, gameState);
+// 					}
+// 				}
+				
+// 			}else {
+				
+				
+// 			}
+			// Summon a unit
+			//				AppConstants.printLog("<-------- AI :: startAILogic():: Summon a unit !");
+			drawCardAndProcessAction(0,out,gameState); // mode 1- units only
+			if(tileWithMyUnit.size()>1){
+				//move a unit
+				AppConstants.printLog("<--------------------Move unit initiated---------------------->");
+				moveAIProcessAction(out,gameState);
+				if(optimalAttackTile.values()!=null){
+					attackAIProcessAction(out, gameState);
 				}
-				
-			}else {
-				
-				
 			}
 			
-			i++;
-			if(i>5) isContinue=false;
+			// i++;
+			// if(i>5) isContinue=false;
 
 		}
 		
@@ -204,6 +215,11 @@ public class ComputerPlayer extends Player{
 		// End turn
 		ObjectNode eventMessage = Json.newObject();
 		eventMessage.put("messagetype", "endturnclicked");
+		optimalAttackTile.clear();
+		optimalMoveTile.clear();
+		bestAttackTile.clear();
+		bestSummonTile.clear();
+		bestMoveTile.clear();
 		
 
 		EndTurnClicked ec=new EndTurnClicked();
@@ -292,16 +308,21 @@ public class ComputerPlayer extends Player{
 	
 	
 	private void drawCardAndProcessAction(int mode, ActorRef out, GameState gameState) {
-		AppConstants.printLog("<-------- AI :: drawCardAndProcessAction():: Mana : "+getMana());
-
+		AppConstants.printLog("<-------- AI :: drawCardAndProcessAction():: Mana of AI: "+getMana());
+		int handIdxToUse=-1;
 		// check cards and summon unit
-		int handIdxToUse=checkHand(mode, gameState);//checking the cards in the hand (mode==1 --> retrieve index of card with only units)
-		AppConstants.printLog("<-------- AI :: startAILogic():: handIdxToUse : "+handIdxToUse);
+		if(cardsDrawEnd==false){
+			handIdxToUse=checkHand(mode, gameState);//checking the cards in the hand (mode==1 --> retrieve index of card with only units)
+			AppConstants.printLog("<-------- AI :: startAILogic():: handIdxToUse : "+handIdxToUse);
+		}
+		
+		
 
 		if(handIdxToUse>-1)
 		{
+			Card card = getCardByHandPos(handIdxToUse);
 			// We have a unit to summon, now find for a possible tile to summon
-			Tile tileToSummon=findAtileToSummon(currentTile,out,gameState);
+			Tile tileToSummon=findAtileToSummon(currentTile,out,gameState,card);
 			
 			if(tileToSummon!=null)
 			{
@@ -331,7 +352,7 @@ public class ComputerPlayer extends Player{
 	 */
 	
 	
-private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameState) {
+private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameState, Card card) {
 		
 		Tile tileToSummon = null;
 		//should be changing this to accomodate for different cards
@@ -342,6 +363,24 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 		int closestEnemyUnitIdx=findClosestEnemyUnit(currentTile);
 		
 		tileToSummon=findClosestTileToEnemy(closestEnemyUnitIdx,possibleSummonList);
+
+		if(card.getId()==22|| card.getId()==32){//staff of ykir
+			tileToSummon=gameState.summonedUnits.get(1).getTileFromUnitP2(41, gameState, out);
+			return tileToSummon;
+		}
+		else if(card.getId()==27|| card.getId()==37){//entropic decay
+			int maxHealth=0;
+			for (Tile tile : bestSummonTile.get(card)) {
+				if(tile.getUnitFromTile().getHealth()>maxHealth){
+					tileToSummon=tile;
+				}
+			}
+			return tileToSummon;
+		}
+		else if(card.getId()== 25 || card.getId()==35){//summon pyromancer to the farthest tile as it has ranged attack
+			tileToSummon=findFarthestTiletoEnemy(closestEnemyUnitIdx, possibleSummonList);
+			return tileToSummon;
+		}
 
 		
 		return tileToSummon;
@@ -358,7 +397,7 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 		Tile tile=null;
 		
 		double minDistance=999;
-		for(Tile summonTile:possibleSummonList)
+		for(Tile summonTile:summonList)
 		{
 			double distance=calculateDistanceBetweenPoints(tileWithPlayerUnits.get(EnemyUnitIdx).getTilex(), tileWithPlayerUnits.get(EnemyUnitIdx).getTiley(), summonTile.getTilex(), summonTile.getTiley());
 
@@ -368,6 +407,26 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 			}
 		}
 		
+		return tile;
+	}
+
+
+	/** Method find the tile with maximum distance to the closest enemy unit 
+	 * 
+	 * @param EnemyUnitIdx
+	 * @param summonList
+	 * @return
+	 */
+	private Tile findFarthestTiletoEnemy(int EnemyUnitIdx, List<Tile> summonList){
+		Tile tile = null;
+		double maxDistance = -1.0;
+		for (Tile tile2 : summonList) {
+			double distance=calculateDistanceBetweenPoints(tileWithPlayerUnits.get(EnemyUnitIdx).getTilex(), tileWithPlayerUnits.get(EnemyUnitIdx).getTiley(), tile2.getTilex(), tile2.getTiley());
+			if(distance>maxDistance && tile2.getUnitFromTile()==null){
+				tile=tile2;
+				maxDistance=distance;
+			}
+		}
 		return tile;
 	}
 	
@@ -475,14 +534,21 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 			else { // can be either unit or spell
 				if(c.getManacost()<=getMana()) //  check mana
 				{
-					if(c.getId()==22 || c.getId()==27){//check if card in hand is staffofykir
-						if(tileWithPlayerUnits.size()>5 || gameState.summonedUnits.get(1).getHealth()<18){//check if number of player units is more than 5 or AI avatar health is less than 18
+					if(c.getId()==22 || c.getId()==32){//check if card in hand is staffofykir
+						//play staff of Ykir when the avatar has more than 1 enemy units in range
+						if(bestAttackTile.get(gameState.summonedUnits.get(1)).size()>2){
 							return i;
 						}
 						else continue;
 					}
-					else if(c.getId()==32 || c.getId()==37){
+					else if(c.getId()==27 || c.getId()==37){//check if the card in hand is entropic decay
 						//find unit with max health and max attack and play this card
+						for (Unit unit : gameState.summonedUnits) {
+							if((unit.getId()==6 || unit.getId()==16) && unit.getHealth()>5){//play on ironcliff guardian
+								return i;
+							}
+							else continue;
+						}
 					}
 					else return i; // return index
 				}
@@ -641,6 +707,11 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 				else if(card.getId()== 27 || card.getId()==37){//for entropic decay
 					possibleSummonList = tileWithPlayerUnits;
 					possibleSummonList.remove(0);
+					for(int i=0;i<possibleSummonList.size();i++){
+						if(possibleSummonList.get(i).getUnitFromTile().getId()!=6 || possibleSummonList.get(i).getUnitFromTile().getId()!=16){//only play entropic decay on IronCliff guardian
+									possibleSummonList.remove(i);
+								}
+					}
 					bestSummonTile.put(card, possibleSummonList);
 				}
 				else{//for all the other units with no special abilities
@@ -757,21 +828,20 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 		double minDistance =999;
 		double distance;
 		Tile bestTile=null;
-		for (Unit unit : bestMoveTile.keySet()) {
-			List<Tile> tiles = bestMoveTile.get(unit);
-				for (Tile tile : tiles) {
-					// Find the closest enemy unit on board
-					int closestEnemyUnitIdx=findClosestEnemyUnit(tile);
-					distance = calculateDistanceBetweenPoints(tile.getTilex(), tile.getTiley(), tileWithPlayerUnits.get(closestEnemyUnitIdx).getTilex(), tileWithPlayerUnits.get(closestEnemyUnitIdx).getTiley());
-					// System.out.println("closest enemy unit id: "+closestEnemyUnitIdx+ " from tile: "+tile.toString()+" with distance: "+distance);
-					if(unit.getMoved()==false){
-						if(distance<minDistance) {
-							minDistance=distance;
-							bestTile=tile;
-						}
+		for (Unit unit : bestMoveTile.keySet()) {//for all units in the map
+			List<Tile> tiles = bestMoveTile.get(unit);//getting the list of all the tiles
+			for (Tile tile : tiles) {
+				// Find the closest enemy unit on board
+				int closestEnemyUnitIdx=findClosestEnemyUnit(tile);
+				distance = calculateDistanceBetweenPoints(tile.getTilex(), tile.getTiley(), tileWithPlayerUnits.get(closestEnemyUnitIdx).getTilex(), tileWithPlayerUnits.get(closestEnemyUnitIdx).getTiley());
+				// System.out.println("closest enemy unit id: "+closestEnemyUnitIdx+ " from tile: "+tile.toString()+" with distance: "+distance);
+				if(unit.getMoved()==false){
+					if(distance<minDistance) {
+						minDistance=distance;
+						bestTile=tile;
 					}
 				}
-			
+			}
 			minDistance =999;
 			optimalMoveTile.put(unit, bestTile);
 		}
@@ -781,10 +851,15 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 				// System.out.println("unit can move: "+unit.getName());
 				if(optimalMoveTile.get(unit)!=null){
 					if(unit.getId()!= 41){//don't move Avatar for now
-						AppConstants.printLog("<--------------------Unit Moving---------------------->");
-						System.out.println("unit: "+ unit.getName()+" moving from tile: "+unit.getTileFromUnitP2(unit.getId(), gameState, out).toString() +" to tile: "+optimalMoveTile.get(unit).toString());
-						moveAIUnit(out, gameState, unit.getTileFromUnitP2(unit.getId(), gameState, out), optimalMoveTile.get(unit));
-						callSleepAI(2000);
+						if(unit.getTileFromUnitP2(unit.getId(), gameState, out)!=null){//handling exception
+							AppConstants.printLog("<--------------------Unit Moving---------------------->");
+							System.out.println("unit: "+ unit.getName()+" moving from tile: "+unit.getTileFromUnitP2(unit.getId(), gameState, out).toString() +" to tile: "+optimalMoveTile.get(unit).toString());
+							moveAIUnit(out, gameState, unit.getTileFromUnitP2(unit.getId(), gameState, out), optimalMoveTile.get(unit));
+							callSleepAI(2000);
+							unit.setMoved(true);
+							// possibleMoveAttack(out, gameState);
+						}
+						
 					}
 					else{
 						//move for avatar to be done
@@ -828,6 +903,10 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 							AppConstants.printLog("<--------------------Unit Attacking---------------------->");
 							System.out.println("unit: "+ unit.getName()+" attacking tile: "+optimalAttackTile.get(unit).toString());
 							attackAIUnit(out, gameState, unit.getTileFromUnitP2(unit.getId(), gameState, out), optimalAttackTile.get(unit));
+							unit.setAttacked(true);
+							// if(optimalAttackTile.get(unit).getUnitFromTile()==null){
+							// 	optimalAttackTile.remove(unit);
+							// }
 						}
 					}
 				}
@@ -847,5 +926,8 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 		catch(InterruptedException e){
 			e.printStackTrace();
 		}
+	}
+	public static void unitDied(){
+		//remove unit from the different DS when they die
 	}
 }

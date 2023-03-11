@@ -122,15 +122,14 @@ public class TileClicked implements EventProcessor {
             			AppConstants.printLog("<-------- AI :: summoning :: handCard: "+handCard.getCardname());
 
             		
-            			 if (handCard.getCardname().equals("Staff of Y'Kir'")) {
+            			if (handCard.getCardname().equals("Staff of Y'Kir'")) {
             		            Spell.staffOfYKir(out, handCard, startTile, gameState);
-//            		        }else if (handCard.getCardname().equals("Entropic Decay")) {
-//            		            Spell.entropicDecay(out, handCard, clickedTile, gameState);
-            		        }else {
-            		
-            		        	// Summon the unit
-            		        	summonCard(out,gameState,clickedTile,gameState.player2);
-            		        }
+           		        }else if (handCard.getCardname().equals("Entropic Decay")) {
+           		            Spell.entropicDecay(out, handCard, clickedTile, gameState);
+            		    }else {
+                            // Summon the unit
+                            summonCard(out,gameState,clickedTile,gameState.player2);
+            		    }
 
 
 	            		
