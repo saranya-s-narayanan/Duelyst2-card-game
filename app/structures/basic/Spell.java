@@ -119,19 +119,35 @@ public class Spell {
                 AppConstants.callSleep(200);
                 gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
 
-                if (unitToHeal.getHealth() + 5 > unitToHeal.getMaxHealth()){
+                if ((unitToHeal.getHealth() + 5) > unitToHeal.getMaxHealth()){
 
+                    if(unitToHeal.getId()==40){
+                        BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff), tile);
+                        gameState.player1.getAvatar().setHealth(AppConstants.playerMaxHealth);
+                        unitToHeal.setHealth(gameState.player1.getAvatar().getHealth());
+                        AppConstants.callSleep(100);
+                        BasicCommands.setUnitHealth(out, gameState.summonedUnits.get(0), gameState.player1.getAvatar().getHealth());
+                    }
+                    else{
                     BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff), tile);
                     unitToHeal.setHealth(unitToHeal.getMaxHealth());
                     AppConstants.callSleep(100);
-                    BasicCommands.setUnitHealth(out, unitToHeal, unitToHeal.getMaxHealth());
+                    BasicCommands.setUnitHealth(out, unitToHeal, unitToHeal.getMaxHealth());}
                 }
 
                 else {
+                    if(unitToHeal.getId()==40){
+                        BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff), tile);
+                        gameState.player1.getAvatar().setHealth(gameState.player1.getAvatar().getHealth() + 5);
+                        unitToHeal.setHealth(gameState.player1.getAvatar().getHealth());
+                        AppConstants.callSleep(100);
+                        BasicCommands.setUnitHealth(out, gameState.summonedUnits.get(0), gameState.player1.getAvatar().getHealth());
+                    }
+                    else{
                     BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff), tile);
                     unitToHeal.setHealth(unitToHeal.getHealth() + 5);
                     AppConstants.callSleep(100);
-                    BasicCommands.setUnitHealth(out, unitToHeal, unitToHeal.getHealth());
+                    BasicCommands.setUnitHealth(out, unitToHeal, unitToHeal.getHealth());}
                 }
 
             } else if (unitToHeal.getIsPlayer() == 2){

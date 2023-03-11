@@ -34,7 +34,7 @@ public class AppConstants {
 	public static long attackSleepTime=1500;
 	public static long deathSleepTime=2000;
 	public static long effectSleepTime=500;
-	public static long drawTileSleepTime=10;
+	public static long drawTileSleepTime=1;
 	
 	// AI action codes
 	public static String move="move";
