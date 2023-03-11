@@ -383,7 +383,8 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 		tileToSummon=findClosestTileToEnemy(closestEnemyUnitIdx,possibleSummonList);
 
 		if(card.getId()==22|| card.getId()==32){//staff of ykir
-			tileToSummon=gameState.summonedUnits.get(1).getTileFromUnitP2(41, gameState, out);
+//			tileToSummon=gameState.summonedUnits.get(1).getTileFromUnitP2(41, gameState, out);
+			tileToSummon=currentTile;
 			return tileToSummon;
 		}
 		else if(card.getId()==27|| card.getId()==37){//entropic decay
@@ -558,10 +559,10 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 				{
 					if(c.getId()==22 || c.getId()==32){//check if card in hand is staffofykir
 						//play staff of Ykir when the avatar has more than 1 enemy units in range
-						if(bestAttackTile.get(gameState.summonedUnits.get(1)).size()>2){
+//						if(bestAttackTile.get(gameState.summonedUnits.get(1)).size()>2){
 							return i;
-						}
-						else continue;
+//						}
+//						else continue;
 					}
 					else if(c.getId()==27 || c.getId()==37){//check if the card in hand is entropic decay
 						//find unit with max health and max attack and play this card
@@ -723,7 +724,8 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 				//get summonable tiles
 				if(card.getId()==22 || card.getId()==32){//for staffofykir can only be played on the avatar
 					possibleSummonList = new ArrayList<Tile>();
-					possibleSummonList.add(gameState.summonedUnits.get(1).getTileFromUnitP2(41, gameState, out));
+//					possibleSummonList.add(gameState.summonedUnits.get(1).getTileFromUnitP2(41, gameState, out));
+					possibleSummonList.add(currentTile);
 					bestSummonTile.put(card, possibleSummonList);
 				}
 				else if(card.getId()== 27 || card.getId()==37){//for entropic decay

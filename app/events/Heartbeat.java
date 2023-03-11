@@ -49,19 +49,19 @@ public class Heartbeat implements EventProcessor{
         
     	}
 		
-		gameState.isGameActive=true; // Comment this line if you want to reset backend after 60 minutes of inactivity of the frontend communication
+//		gameState.isGameActive=true; // Comment this line if you want to reset backend after 60 minutes of inactivity of the frontend communication
 		
 		
 //<----------- Below code can be uncommented when we have to keep track of user inactivity based on a time interval------------>
 		
 		// When the first Heartbeat message is received, update the received time and start the timer
-//		if(gameState.lastHeartbeatTime==0 && gameState.isGameOver==false) {
-//			gameState.lastHeartbeatTime=System.currentTimeMillis();
-//			gameState.isGameActive=true;
-//			startHeartbeatTaskTimer(out,gameState);
-//		}
-//
-//		gameState.lastHeartbeatTime=System.currentTimeMillis();
+		if(gameState.lastHeartbeatTime==0 && gameState.isGameOver==false) {
+			gameState.lastHeartbeatTime=System.currentTimeMillis();
+			gameState.isGameActive=true;
+			startHeartbeatTaskTimer(out,gameState);
+		}
+
+		gameState.lastHeartbeatTime=System.currentTimeMillis();
 		
 //<----------- Below code can be uncommented when we have to keep track of user inactivity based on a time interval------------>
 

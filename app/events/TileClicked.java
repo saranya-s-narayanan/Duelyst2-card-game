@@ -94,7 +94,7 @@ public class TileClicked implements EventProcessor {
 	                    // Move unit
 	                    PerformAction.moveUnit(0,out, startTile, clickedTile, gameState);
 
-	                    gameState.player2.setCurrentTile(clickedTile); // Update location of avatar
+//	                    gameState.player2.setCurrentTile(clickedTile); // Update location of avatar
 	                    // Update unit movement status
 	                    gameState.summonedUnits.get(unitIdx).setMoved(true);
 
