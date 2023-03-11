@@ -94,7 +94,7 @@ public class TileClicked implements EventProcessor {
 	                    // Move unit
 	                    PerformAction.moveUnit(0,out, startTile, clickedTile, gameState);
 
-	                    gameState.player2.setCurrentTile(clickedTile); // Update location of avatar
+//	                    gameState.player2.setCurrentTile(clickedTile); // Update location of avatar
 	                    // Update unit movement status
 	                    gameState.summonedUnits.get(unitIdx).setMoved(true);
 
@@ -123,12 +123,12 @@ public class TileClicked implements EventProcessor {
 
             		
             			if (handCard.getCardname().equals("Staff of Y'Kir'")) {
+                            BasicCommands.addPlayer1Notification(out, "Playing spell: Staff of Y'Kir", 2);
             		            Spell.staffOfYKir(out, handCard, startTile, gameState);
-                                BasicCommands.addPlayer1Notification(out, "Playing spell: Staff of Y'Kir", 2);
 
            		        }else if (handCard.getCardname().equals("Entropic Decay")) {
-           		            Spell.entropicDecay(out, handCard, clickedTile, gameState);
                             BasicCommands.addPlayer1Notification(out, "Playing spell: Entropic Decay", 2);
+           		            Spell.entropicDecay(out, handCard, clickedTile, gameState);
 
             		    }else {
                             // Summon the unit
