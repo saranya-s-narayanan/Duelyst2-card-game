@@ -162,7 +162,8 @@ public class Spell {
         Unit unitFromTile = tile.getUnitFromTile();
 		AppConstants.printLog("<-------- AI :: staffOfYKir():: unitFromTile: "+unitFromTile);
 
-            if (unitFromTile.getSummonedID() == 2) {
+//            if (unitFromTile.getSummonedID() == 2) {
+            if (gameState.summonedUnits.get(1).getId()==41) {
             gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
             gameState.player2.setMana(gameState.player2.getMana()-card.getManacost());//decrease the mana
             gameState.player2.setPlayer(out);//reflecting the mana on board

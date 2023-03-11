@@ -48,7 +48,7 @@ public class TileClicked implements EventProcessor {
 
     	// For testing summonedUnits arraylist
     	for(Unit unit: gameState.summonedUnits)
-			AppConstants.printLog("------> Summoned ID :---->"+unit.getSummonedID()+", unitid: "+unit.getId()+", moved: "+unit.getMoved()+", attacked: "+unit.getAttacked());
+			AppConstants.printLog("------> Summoned ID :---->"+unit.getSummonedID()+", unitid: "+unit.getId()+", moved: "+unit.getMoved()+", attacked: "+unit.getAttacked()+", name: "+unit.getName());
 
 
         if (gameState.isGameActive) // if the frontend connection is active
@@ -106,7 +106,7 @@ public class TileClicked implements EventProcessor {
 	            		 boolean attackStatus=false;
 
 	                     attackStatus=PerformAction.attackUnit(0,gameState.player2,out,gameState.summonedUnits.get(unitIdx),startTile,clickedTile, gameState);
-	                     if(gameState.summonedUnits.size()>0 && unitIdx>-1)
+	                     if(unitIdx<gameState.summonedUnits.size() && unitIdx>-1)
 	                     {
 	                    	 if(gameState.summonedUnits.get(unitIdx)!=null && unitIdx<gameState.summonedUnits.size())
 	                    		 gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
@@ -124,8 +124,12 @@ public class TileClicked implements EventProcessor {
             		
             			if (handCard.getCardname().equals("Staff of Y'Kir'")) {
             		            Spell.staffOfYKir(out, handCard, startTile, gameState);
+                                BasicCommands.addPlayer1Notification(out, "Playing spell: Staff of Y'Kir", 2);
+
            		        }else if (handCard.getCardname().equals("Entropic Decay")) {
            		            Spell.entropicDecay(out, handCard, clickedTile, gameState);
+                            BasicCommands.addPlayer1Notification(out, "Playing spell: Entropic Decay", 2);
+
             		    }else {
                             // Summon the unit
                             summonCard(out,gameState,clickedTile,gameState.player2);

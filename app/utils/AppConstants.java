@@ -14,8 +14,8 @@ public class AppConstants {
 	public static boolean isDebugMode=true; // variable to view system logs, set this to false to hide logs from the terminal
 	
 	public static  long gameTaskInterval= 5000; // 5 seconds
-	public static long allowedHeartbeatTimeGap = 30000; //30 seconds
-	
+	public static long allowedHeartbeatTimeGap = 3600000; //30 minutes
+
 	// Board constants
 	public static int boardWidth=9;
 	public static int boardHeight=5;
