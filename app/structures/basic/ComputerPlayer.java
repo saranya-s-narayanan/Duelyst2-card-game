@@ -440,10 +440,10 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 	 * @param summonList
 	 * @return
 	 */
-	private Tile findFarthestTiletoEnemy(int EnemyUnitIdx, List<Tile> summonList){
+	private Tile findFarthestTiletoEnemy(int EnemyUnitIdx, List<Tile> listToGive){
 		Tile tile = null;
 		double maxDistance = -1.0;
-		for (Tile tile2 : summonList) {
+		for (Tile tile2 : listToGive) {
 			double distance=calculateDistanceBetweenPoints(tileWithPlayerUnits.get(EnemyUnitIdx).getTilex(), tileWithPlayerUnits.get(EnemyUnitIdx).getTiley(), tile2.getTilex(), tile2.getTiley());
 			if(distance>maxDistance && tile2.getUnitFromTile()==null){
 				tile=tile2;
@@ -787,6 +787,14 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 				// 	System.out.println("Tiles for Attack: "+ tile2.toString());
 				// }
 			}
+			else if(tile.getUnitFromTile().getId()==25 || tile.getUnitFromTile().getId()==35){
+				//possible tiles to move and attack
+				possibleMovableList = gameState.board.highlightTilesMoveAndAttack(0, gameState.player2, out, tile, gameState);//this will also contain attack tiles
+				possibleAttackableList = ComputerTiles.pyromancerAttackTiles(gameState, out);
+				//best tile
+				bestMoveTile.put(tile.getUnitFromTile(), possibleMovableList);
+				bestAttackTile.put(tile.getUnitFromTile(), possibleAttackableList);
+			}
 			else{//for other units of AI
 				possibleAttackableList=new ArrayList<Tile>();
 				possibleMovableList = new ArrayList<Tile>();
@@ -856,17 +864,23 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 		Tile bestTile=null;
 		for (Unit unit : bestMoveTile.keySet()) {//for all units in the map
 			List<Tile> tiles = bestMoveTile.get(unit);//getting the list of all the tiles
-			for (Tile tile : tiles) {
-				// Find the closest enemy unit on board
-				int closestEnemyUnitIdx=findClosestEnemyUnit(tile);
-				if(closestEnemyUnitIdx<tileWithPlayerUnits.size() && closestEnemyUnitIdx>-1)
-				{
-					distance = calculateDistanceBetweenPoints(tile.getTilex(), tile.getTiley(), tileWithPlayerUnits.get(closestEnemyUnitIdx).getTilex(), tileWithPlayerUnits.get(closestEnemyUnitIdx).getTiley());
-					// System.out.println("closest enemy unit id: "+closestEnemyUnitIdx+ " from tile: "+tile.toString()+" with distance: "+distance);
-					if(unit.getMoved()==false){
-						if(distance<minDistance) {
-							minDistance=distance;
-							bestTile=tile;
+			if(unit.getId()==25 || unit.getId()==35){//for pyromancer the best tile to move to is away from an enemy unit
+				int closestEnemyUnitIdx=findClosestEnemyUnit(unit.getTileFromUnitP2(unit.getId(), gameState, out));
+				bestTile=findFarthestTiletoEnemy(closestEnemyUnitIdx, tiles);
+			}
+			else{
+				for (Tile tile : tiles) {
+					// Find the closest enemy unit on board
+					int closestEnemyUnitIdx=findClosestEnemyUnit(tile);
+					if(closestEnemyUnitIdx<tileWithPlayerUnits.size() && closestEnemyUnitIdx>-1)
+					{
+						distance = calculateDistanceBetweenPoints(tile.getTilex(), tile.getTiley(), tileWithPlayerUnits.get(closestEnemyUnitIdx).getTilex(), tileWithPlayerUnits.get(closestEnemyUnitIdx).getTiley());
+						// System.out.println("closest enemy unit id: "+closestEnemyUnitIdx+ " from tile: "+tile.toString()+" with distance: "+distance);
+						if(unit.getMoved()==false){
+							if(distance<minDistance) {
+								minDistance=distance;
+								bestTile=tile;
+							}
 						}
 					}
 				}

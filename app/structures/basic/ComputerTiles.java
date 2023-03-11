@@ -21,12 +21,9 @@ public class ComputerTiles {
     }
 
     // only attack tile list needed that is different
-    public static ArrayList<Tile> pyromancerAttackTiles(int cardId, GameState gameState, ActorRef out) {
+    public static ArrayList<Tile> pyromancerAttackTiles(GameState gameState, ActorRef out) {
         ArrayList<Tile> pyromancerTiles = new ArrayList<Tile>();
-        if (cardId == 25 || cardId == 35) {
-            pyromancerTiles = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), TileClicked.opposingPlayer(gameState, gameState.player2));
-            return pyromancerTiles;
-        }
+        pyromancerTiles = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), TileClicked.opposingPlayer(gameState, gameState.player2));
         return pyromancerTiles;
     }
 
