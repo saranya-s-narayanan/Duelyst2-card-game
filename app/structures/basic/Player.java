@@ -371,7 +371,7 @@ public class Player {
 	public void createUnits(Player player){
 		// System.out.println("Inside create units");
 		int j=0;
-		for(int x=0;x<2;x++){
+//		for(int x=0;x<2;x++){
 			for(int i=0;i<unitFiles.length;i++){
 				// System.out.println("i= "+i);
 				Card c = deck.get(j);
@@ -388,7 +388,7 @@ public class Player {
 					playerUnits.add(u);//changes here for conflict resolution
 					j++;
 			}
-		}
+//		}
 		// System.out.println("Exiting create units");
 	}
 	

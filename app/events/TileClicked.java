@@ -195,16 +195,22 @@ public class TileClicked implements EventProcessor {
                         BasicCommands.addPlayer1Notification(out, "Unit provoked!", 2);
                         gameState.board.highlightTilesRed(out, tiles);
                     }
-                    else if (gameState.summonedUnits.get(unitIdx).getMoved() == false && gameState.summonedUnits.get(unitIdx).getAttackedOnce() == false){
+                    else if (gameState.summonedUnits.get(unitIdx).getMoved() == false && gameState.summonedUnits.get(unitIdx).getAttacked() == false){
                         gameState.board.highlightTilesWhite(out, gameState.board.getAdjacentTiles(out, startTile));
                         gameState.board.highlightTilesRed(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));}
                     else if (gameState.summonedUnits.get(unitIdx).getAttacked()==false && gameState.summonedUnits.get(unitIdx).getMoved()==true){
                         gameState.board.highlightTilesRed(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));
                     }
-                    else{ //Unit has already moved or attacked
+                    else if (gameState.summonedUnits.get(unitIdx).getAttacked()==true && gameState.summonedUnits.get(unitIdx).getMoved()==false){ //Unit has already moved or attacked
                         AppConstants.printLog("------> UnitClicked :: Unit has already attacked!");
                     BasicCommands.addPlayer1Notification(out, "Exhausted!", 2);}
+
+
+                    else { AppConstants.printLog("------> UnitClicked :: Unit has already attacked!");
+                        BasicCommands.addPlayer1Notification(out, "Exhausted!", 2);}
                 }
+
+
 
                 // If the unit is Azurite Lion or Serpenti, implement Attack Twice logic
                 else if(gameState.summonedUnits.get(unitIdx).getId() == 7 || gameState.summonedUnits.get(unitIdx).getId() == 17 || gameState.summonedUnits.get(unitIdx).getId() == 26 || gameState.summonedUnits.get(unitIdx).getId() == 36) 
@@ -287,11 +293,12 @@ public class TileClicked implements EventProcessor {
         	boolean attackStatus=false;
         	gameState.board.clearTileHighlighting(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));
             attackStatus = SpecialAbilities.attackUnitRanged(1, player,out, gameState.summonedUnits.get(unitIdx),startTile,clickedTile,gameState);
-            
+//                System.out.println(attackStatus);
             if(unitIdx>-1 && unitIdx<gameState.summonedUnits.size())
             {
                 if(gameState.summonedUnits.get(unitIdx)!=null) {
                 	gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
+//                    System.out.println(attackStatus);
                 }
             }
             
@@ -335,7 +342,9 @@ public class TileClicked implements EventProcessor {
                 }
 
             }
-            
+
+
+
             // If the unit is Azurite Lion or Serpenti, implement Attack Twice logic
             else if(gameState.summonedUnits.get(unitIdx).getId() == 7 || gameState.summonedUnits.get(unitIdx).getId() == 17 || gameState.summonedUnits.get(unitIdx).getId() == 26 || gameState.summonedUnits.get(unitIdx).getId() == 36) {
             	
@@ -393,6 +402,8 @@ public class TileClicked implements EventProcessor {
                 	 BasicCommands.addPlayer1Notification(out, "Already attacked twice", 2);
                  }
             }
+
+
             
             // Else, proceed normally
             // If an empty tile is clicked, and the player unit has not moved or attacked yet, move to the tile, set moved to true

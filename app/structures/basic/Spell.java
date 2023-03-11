@@ -80,6 +80,7 @@ public class Spell {
                 }
                 if(hp<=0) // enemy unit dead, clear tile and update front end
                 {
+                    SpecialAbilities.windshrikeDeathCheck(out, gameState, unitToAttack);
                     gameState.summonedUnits.remove(unitToAttack);
 
                     BasicCommands.playUnitAnimation(out, unitToAttack, UnitAnimationType.death);
