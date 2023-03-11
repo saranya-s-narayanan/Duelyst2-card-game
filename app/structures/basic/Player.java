@@ -284,7 +284,7 @@ public class Player {
 					position++;
 			}
 			else{
-				hand.add(1, deck.get(0));
+				hand.add(0, deck.get(0));
 				deck.remove(0);
 				if(playerID==1){
 					//draw the card
