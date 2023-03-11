@@ -335,6 +335,15 @@ public class SpecialAbilities {
         AppConstants.callSleep(50);
     }
 
+    public static void windshrikeDeathCheck(ActorRef out, GameState gameState, Unit unit){
+
+        if (unit.getName().equals("WindShrike")){
+            gameState.player2.drawAnotherCard(out, gameState.player2.getID());
+            BasicCommands.addPlayer1Notification(out, "WindShrike dead, computer draws a card!", 2);
+
+        }
+    }
+
 
 }
 

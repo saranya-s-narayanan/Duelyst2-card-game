@@ -72,7 +72,7 @@ public class AppConstants {
 		StaticConfFiles.u_pyromancer,
 		StaticConfFiles.u_serpenti,
 		StaticConfFiles.u_planar_scout,
-		StaticConfFiles.u_hailstone_golem,
+		StaticConfFiles.u_hailstone_golemR,
 			StaticConfFiles.u_rock_pulveriser,
 			StaticConfFiles.u_bloodshard_golem,
 			StaticConfFiles.u_blaze_hound,
@@ -80,7 +80,7 @@ public class AppConstants {
 			StaticConfFiles.u_pyromancer,
 			StaticConfFiles.u_serpenti,
 			StaticConfFiles.u_planar_scout,
-			StaticConfFiles.u_hailstone_golem
+			StaticConfFiles.u_hailstone_golemR
 	};
 	
 	
