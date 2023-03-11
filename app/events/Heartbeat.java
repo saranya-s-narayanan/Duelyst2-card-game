@@ -33,15 +33,38 @@ public class Heartbeat implements EventProcessor{
 	@Override
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
 		
+		if(gameState.player1!=null && gameState.player2!=null) // To avoid NULLpointerexception
+    	{
+    		// Syncing player health with the health of their avatar in real time and updating on the front end
+    		// gameState.player1.syncPlayerHealth(gameState);
+    		gameState.player1.syncHealth();
+    		gameState.player1.setPlayerHealth(out);
+    		gameState.player2.syncHealth();
+//    		gameState.player2.syncAIHealth(gameState); 
+    		gameState.player2.setPlayerHealth(out); 
+//    		AppConstants.printLog("------> Heartbeat:: Syncing player and avatar health ! Updating front end !!");
+    		
+    		//to check if the game ended or not
+			PerformAction.gameEnd(out, gameState);
+        
+    	}
+		
+		gameState.isGameActive=true; // Comment this line if you want to reset backend after 60 minutes of inactivity of the frontend communication
+		
+		
+//<----------- Below code can be uncommented when we have to keep track of user inactivity based on a time interval------------>
 		
 		// When the first Heartbeat message is received, update the received time and start the timer
-		if(gameState.lastHeartbeatTime==0 && gameState.isGameOver==false) {
-			gameState.lastHeartbeatTime=System.currentTimeMillis();
-			gameState.isGameActive=true;
-			startHeartbeatTaskTimer(out,gameState);
-		}
+//		if(gameState.lastHeartbeatTime==0 && gameState.isGameOver==false) {
+//			gameState.lastHeartbeatTime=System.currentTimeMillis();
+//			gameState.isGameActive=true;
+//			startHeartbeatTaskTimer(out,gameState);
+//		}
+//
+//		gameState.lastHeartbeatTime=System.currentTimeMillis();
+		
+//<----------- Below code can be uncommented when we have to keep track of user inactivity based on a time interval------------>
 
-		gameState.lastHeartbeatTime=System.currentTimeMillis();
 
 	}
 	
@@ -51,6 +74,9 @@ public class Heartbeat implements EventProcessor{
  * 
  * Longer timegap between latest time of heartbeat reception and current time indicates inactive
  * connection between the front end and the back end. So stop the back end execution.
+ * 
+ * If the timegap is more than 60minutes, it will display a message about the inactivity of the user and asks user to 
+ * reload the game for effective working
  * @param gameState
  */
 	
@@ -58,23 +84,7 @@ public class Heartbeat implements EventProcessor{
 		 heartbeatTimer = new Timer();
 		 heartbeatTimerTask = new TimerTask() {
 	            public void run() {
-	            	if(gameState.player1!=null && gameState.player2!=null) // To avoid NULLpointerexception
-	            	{
-	            		// Syncing player health with the health of their avatar in real time and updating on the front end
-		        		// gameState.player1.syncPlayerHealth(gameState);
-		        		gameState.player1.syncHealth();
-		        		gameState.player1.setPlayerHealth(out);
-		        		gameState.player2.syncHealth();
-//		        		gameState.player2.syncAIHealth(gameState); 
-		        		gameState.player2.setPlayerHealth(out); 
-//		        		AppConstants.printLog("------> Heartbeat:: Syncing player and avatar health ! Updating front end !!");
-		        		
-		        		//to check if the game ended or not
-						PerformAction.gameEnd(out, gameState);
-		            
-	            	}
-//        			AppConstants.printLog("------> Heartbeat:: gameState.isGameOver: "+gameState.isGameOver);
-
+	            	
         			
 	            	// Calculate the time gap between the latest heartbeat receival time and current time
 	            	long timeDifference = System.currentTimeMillis()-gameState.lastHeartbeatTime;
@@ -82,7 +92,7 @@ public class Heartbeat implements EventProcessor{
 	            	if(timeDifference>AppConstants.allowedHeartbeatTimeGap || gameState.isGameOver==true)
 	            	{
 
-//	        			AppConstants.printLog("------> Heartbeat:: Game is NOT active ! Resetting Backend !!");
+	        			AppConstants.printLog("------> The game was not active for more than 15 minutes. Please reload the browser! ");
 	        			gameState.isGameActive=false;
 	        			gameState.clearStateVariables();
 	            		stopGameTaskTimer();

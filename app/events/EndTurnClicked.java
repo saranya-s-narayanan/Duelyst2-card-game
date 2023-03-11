@@ -30,18 +30,20 @@ public class EndTurnClicked implements EventProcessor{
 			AppConstants.printLog("------> previous message type:---->"+gameState.clickMessage);
 			AppConstants.printLog("------> End turn:---->"+message.toPrettyString());
 
-			if(gameState.clickMessage.asText().equals("cardclicked")){
-				if(gameState.SummonTileList != null){//to check if cardClick happened
-					if(gameState.player1Turn) OtherClicked.clearCardClicked(out, gameState, gameState.player1);//clear for player1
+			if(gameState.clickMessage!=null) // To handle NullPointerException
+			{
+				if(gameState.clickMessage.asText().equals("cardclicked")){
+					if(gameState.SummonTileList != null){//to check if cardClick happened
+						if(gameState.player1Turn) OtherClicked.clearCardClicked(out, gameState, gameState.player1);//clear for player1
+					}
+				}
+				else if(gameState.clickMessage.asText().equals("tileclicked")){//check if tile click happened
+					gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
+				}
+				else if(gameState.clickMessage.asText().equals("initalize")){//check if initialise state but still clear highlight
+					gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
 				}
 			}
-			else if(gameState.clickMessage.asText().equals("tileclicked")){//check if tile click happened
-				gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
-			}
-			else if(gameState.clickMessage.asText().equals("initalize")){//check if initialise state but still clear highlight
-				gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
-			}
-			
 			if(gameState.player1Turn==true){//if it was player's turn then only they can use end turn
 				
 				endPlayer1Turn(out,gameState);
