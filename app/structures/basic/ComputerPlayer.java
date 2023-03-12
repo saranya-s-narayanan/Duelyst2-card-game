@@ -180,49 +180,45 @@ public class ComputerPlayer extends Player{
 				System.out.println("Unit: "+unit.getName() + " to tiles"+bestAttackTile.get(unit));
 			}
 			
-			if(cardsDrawEnd==true) 
-				isContinue=false;
+			if(cardsDrawEnd==true) isContinue=false;
 			
 			//If the number of enemy units is less than 5, save spells for later and do summoning a unit alone
-// 			if(tileWithPlayerUnits.size()<5)
-// 			{
-// 				// Summon a unit
-// //				AppConstants.printLog("<-------- AI :: startAILogic():: Summon a unit !");
-// 				drawCardAndProcessAction(0,out,gameState); // mode 1- units only
-// 				if(tileWithMyUnit.size()>1){
-// 					//move a unit
-// 					AppConstants.printLog("<--------------------Move unit initiated---------------------->");
-// 					moveAIProcessAction(out,gameState);
-// 					if(optimalAttackTile.values()!=null){
-// 						attackAIProcessAction(out, gameState);
-// 					}
-// 				}
-				
-// 			}else {
-				
-				
-// 			}
+			// 			if(tileWithPlayerUnits.size()<5)
+			// 			{
+			// 				// Summon a unit
+			// //				AppConstants.printLog("<-------- AI :: startAILogic():: Summon a unit !");
+			// 				drawCardAndProcessAction(0,out,gameState); // mode 1- units only
+			// 				if(tileWithMyUnit.size()>1){
+			// 					//move a unit
+			// 					AppConstants.printLog("<--------------------Move unit initiated---------------------->");
+			// 					moveAIProcessAction(out,gameState);
+			// 					if(optimalAttackTile.values()!=null){
+			// 						attackAIProcessAction(out, gameState);
+			// 					}
+			// 				}
+							
+			// 			}else {
+							
+							
+			// 			}
 			// Summon a unit
 			//				AppConstants.printLog("<-------- AI :: startAILogic():: Summon a unit !");
 			drawCardAndProcessAction(0,out,gameState); // mode 1- units only
 			callSleepAI(200);
 
-			if(tileWithMyUnit.size()>1){
+			if(tileWithMyUnit.size()>1 && gameState.isGameOver==false){
 				//move a unit
 				AppConstants.printLog("<--------------------Move unit initiated---------------------->");
-				moveAIProcessAction(out,gameState);
-				callSleepAI(200);
-
+				if(optimalMoveTile.values()!=null){
+					moveAIProcessAction(out,gameState);
+					callSleepAI(200);
+				}
 				if(optimalAttackTile.values()!=null){
 					attackAIProcessAction(out, gameState);
 					callSleepAI(200);
-
 				}
 			}
-			
-			// i++;
-			// if(i>5) isContinue=false;
-
+			if(movesEnd==true) isContinue=false;
 		}
 		
 		
@@ -891,7 +887,16 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 			System.out.println("Best move positon for unit: "+unit.getName()+ " is tile:"+optimalMoveTile.get(unit));
 			if(unit.getMoved()==false){
 				// System.out.println("unit can move: "+unit.getName());
-				if(optimalMoveTile.get(unit)!=null){
+				if(optimalMoveTile.get(unit)!=null && bestAttackTile.get(unit)==null){
+					if(unit.getTileFromUnitP2(unit.getId(), gameState, out)!=null){//handling exception
+						AppConstants.printLog("<--------------------Unit Moving---------------------->");
+						System.out.println("unit: "+ unit.getName()+" moving from tile: "+unit.getTileFromUnitP2(unit.getId(), gameState, out).toString() +" to tile: "+optimalMoveTile.get(unit).toString());
+						moveAIUnit(out, gameState, unit.getTileFromUnitP2(unit.getId(), gameState, out), optimalMoveTile.get(unit));
+						callSleepAI(2000);
+						unit.setMoved(true);
+					}
+				}
+				else if(optimalMoveTile.get(unit)!=null && unit.getId()==41){
 					if(unit.getTileFromUnitP2(unit.getId(), gameState, out)!=null){//handling exception
 						AppConstants.printLog("<--------------------Unit Moving---------------------->");
 						System.out.println("unit: "+ unit.getName()+" moving from tile: "+unit.getTileFromUnitP2(unit.getId(), gameState, out).toString() +" to tile: "+optimalMoveTile.get(unit).toString());
@@ -920,7 +925,11 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 			for (Tile tile : tiles) {
 				if(tile.getUnitFromTile()!=null) // To tackle NullPointerException
 				{
-					if(tile.getUnitFromTile().getHealth()<lowHealth){
+					if(tile.getUnitFromTile().getId()==40){//attack player avatar if that is on the attack tile
+						bestTile=tile;
+						break;
+					}
+					else if(tile.getUnitFromTile().getHealth()<lowHealth){
 						lowHealth=tile.getUnitFromTile().getHealth();
 						bestTile=tile;
 					}
@@ -941,6 +950,7 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 					}
 				}
 		}
+		movesEnd=true;//setting movesEnd to true when all of the units have attacked
 	}
 
 	/** Method to put AI to sleep 
