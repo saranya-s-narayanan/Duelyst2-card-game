@@ -717,7 +717,7 @@ public class Board {
                 if (tile.getUnitFromTile() != null ) {
                     if(tile.getUnitFromTile().getIsPlayer() == player.getID()) {
                         tilesWithUnits.add(tile);
-                        AppConstants.callSleep(1);
+                        AppConstants.callSleep(2);
                     }
                 }
             }

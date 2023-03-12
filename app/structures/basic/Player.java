@@ -271,7 +271,7 @@ public class Player {
 	public void drawAnotherCard(ActorRef out, int playerID) {
 		if(position<=AppConstants.maxCardsInHand && deck.size()>0){
 			//move the top card from deck to hand
-			if((position-1)>1){//added to manage index out of bound exception
+			if((position-1)>0){//added to manage index out of bound exception
 				hand.add(position-1, deck.get(0));
 				deck.remove(0);
 				if(playerID==1){

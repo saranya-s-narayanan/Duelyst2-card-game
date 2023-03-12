@@ -671,11 +671,11 @@ public class TileClicked implements EventProcessor {
 
     // Method to return the opposing player (useful for highlighting opposing players units etc) (can be moved)
     public static Player opposingPlayer(GameState gameState, Player player){
-        Player playerOp;
+        Player playerOp = player;
         if (player.getID() == 1){
             playerOp = gameState.player2;
         }
-        else{
+        else if (player.getID() == 2){
             playerOp = gameState.player1;
         }
         return playerOp;
