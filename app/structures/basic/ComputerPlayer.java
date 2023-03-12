@@ -106,7 +106,7 @@ public class ComputerPlayer extends Player{
 		AppConstants.printLog("<------------------------------startAILogic-------------------------------------------------->");
 			
 		boolean isContinue=true; //boolean to keep track of how long loop should continue
-		while(isContinue)
+		while(isContinue && gameState.isGameActive==true)
 		{
 			AppConstants.printLog("<--------------------Game State at the moment---------------------->");
 			//Test
@@ -305,11 +305,16 @@ public class ComputerPlayer extends Player{
 		Tile tile = null;
 		double maxDistance = -1.0;
 		for (Tile tile2 : listToGive) {
-			double distance=calculateDistanceBetweenPoints(tileWithPlayerUnits.get(EnemyUnitIdx).getTilex(), tileWithPlayerUnits.get(EnemyUnitIdx).getTiley(), tile2.getTilex(), tile2.getTiley());
-			if(distance>maxDistance && tile2.getUnitFromTile()==null){
-				tile=tile2;
-				maxDistance=distance;
+			
+			if(EnemyUnitIdx>-1 && EnemyUnitIdx<tileWithPlayerUnits.size()) // To tackle IndexOutOfBoundException
+			{
+				double distance=calculateDistanceBetweenPoints(tileWithPlayerUnits.get(EnemyUnitIdx).getTilex(), tileWithPlayerUnits.get(EnemyUnitIdx).getTiley(), tile2.getTilex(), tile2.getTiley());
+				if(distance>maxDistance && tile2.getUnitFromTile()==null){
+					tile=tile2;
+					maxDistance=distance;
+				}
 			}
+			
 		}
 		return tile;
 	}

@@ -95,7 +95,6 @@ public class Initalize implements EventProcessor {
         gameState.player2.setCurrentTile(gameState.board.returnTile(7,2)); // Set player current tile
 
         //print message to the terminal notifying the start of the draw card method
-        // AppConstants.printLog("------> Initialize :: creating deck for AI");
         //setting the deck as an ArrayList
         gameState.player2.createDeck(gameState.player2.getID());
         AppConstants.callSleep(200);
@@ -129,6 +128,7 @@ public class Initalize implements EventProcessor {
 
         //give notification to player that initialization is done
         BasicCommands.addPlayer1Notification(out, "Game Started, Your Turn", 2);
+       
         // User 1 makes a change
         //CommandDemo.executeDemo(out); // this executes the command demo, comment out this when implementing your solution
         //CheckMoveLogic.executeDemo(out);
