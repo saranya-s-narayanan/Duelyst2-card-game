@@ -11,12 +11,9 @@ public class ComputerTiles {
 
 
     // as only one ai unit has a different summoning type, this is just for that card. (Planar scout)
-    public static ArrayList<Tile> planarScoutSummonableTiles(int cardId, GameState gameState, ActorRef out) {
+    public static ArrayList<Tile> planarScoutSummonableTiles(GameState gameState, ActorRef out) {
         ArrayList<Tile> planarScoutTiles = new ArrayList<Tile>();
-        if (cardId == 28 || cardId == 38) {
-            planarScoutTiles = gameState.board.getTilesWithoutUnits(out, gameState.board.getTiles(), gameState.player2);
-            return planarScoutTiles;
-        }
+        planarScoutTiles = gameState.board.getTilesWithoutUnits(out, gameState.board.getTiles(), gameState.player2);
         return planarScoutTiles;
     }
 
