@@ -733,7 +733,7 @@ public class Board {
        
         for (int i = 0; i < AppConstants.boardWidth; i++) {
             for (int j = 0; j < AppConstants.boardHeight; j++) {
-            	AppConstants.callSleep(50);
+//            	AppConstants.callSleep(50);
                 Tile tile = tiles[i][j];
                 if (tile.getUnitFromTile() == null) {
                     tilesWithoutUnits.add(tile);

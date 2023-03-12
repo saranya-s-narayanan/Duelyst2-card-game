@@ -302,7 +302,7 @@ public class Player {
 			if(deck.size()>0)
 			{
 				if(playerID==1){
-					BasicCommands.addPlayer1Notification(out, "Hand positions are full", 2);
+					BasicCommands.addPlayer1Notification(out, "Hand is full! ", 2);
 					// AppConstants.printLog("------> drawAnotherCard P1:: card to be burned at position: "+ position);
 					//deck.remove(position); //--> was creating outOfbound exception
 					deck.remove(0);
@@ -319,12 +319,10 @@ public class Player {
 			}else {
 				// deck empty scenario
 				if(playerID==1){
-					BasicCommands.addPlayer1Notification(out, "No more cards in deck", 2);
+					BasicCommands.addPlayer1Notification(out, "Deck is empty! ", 2);
 					AppConstants.callSleep(200);
 				}
-				else{
-					AppConstants.printLog("<-------- AI :: drawCardAndProcessAction():: Deck Empty");
-				}
+				
 			}
 				
 		}

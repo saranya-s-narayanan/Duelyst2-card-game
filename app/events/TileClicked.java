@@ -54,7 +54,6 @@ public class TileClicked implements EventProcessor {
         if (gameState.isGameActive) // if the frontend connection is active
         {
             cardClick=message.get("messagetype");//message to keep track of previous click on front-end
-			AppConstants.printLog("------> message type:---->"+cardClick.asText());
             int tilex = message.get("tilex").asInt();
             int tiley = message.get("tiley").asInt();
             Tile clickedTile = gameState.board.returnTile(tilex, tiley); // clicked tile object
@@ -94,7 +93,6 @@ public class TileClicked implements EventProcessor {
 	                    // Move unit
 	                    PerformAction.moveUnit(0,out, startTile, clickedTile, gameState);
 
-//	                    gameState.player2.setCurrentTile(clickedTile); // Update location of avatar
 	                    // Update unit movement status
 	                    gameState.summonedUnits.get(unitIdx).setMoved(true);
 
@@ -137,12 +135,13 @@ public class TileClicked implements EventProcessor {
 
 
 	            		
-	            	}else if(message.get("action").asText().equalsIgnoreCase(AppConstants.drawCardSpell)) // Cast spell
-	            	{
-	            		 // Do logic / call method
-	            		
-	            		
 	            	}
+//	            	else if(message.get("action").asText().equalsIgnoreCase(AppConstants.drawCardSpell)) // Cast spell
+//	            	{
+//	            		 // Do logic / call method
+//	            		
+//	            		
+//	            	}
             	}
             	 startTile=null;
 
@@ -194,20 +193,28 @@ public class TileClicked implements EventProcessor {
                 // checks for ranged units and highlights all enemy units
                 if (gameState.summonedUnits.get(unitIdx).getName().equals("Fire Spitter") || gameState.summonedUnits.get(unitIdx).getName().equals("Pyromancer"))
                 {
+                    AppConstants.printLog("------> UnitClicked :: FIRE SPLITTER ------------------------>!");
+
                     if (gameState.summonedUnits.get(unitIdx).isProvoked()==true){
+                        AppConstants.printLog("------> UnitClicked :: FIRE SPLITTER is PROVOKED------------------------>!");
+
                         ArrayList<Tile> tiles = getProvokerTiles(out, gameState, player);
                         BasicCommands.addPlayer1Notification(out, "Unit provoked!", 2);
                         gameState.board.highlightTilesRed(out, tiles);
                     }
                     else if (gameState.summonedUnits.get(unitIdx).getMoved() == false && gameState.summonedUnits.get(unitIdx).getAttacked() == false){
+                        AppConstants.printLog("------> UnitClicked :: FIRE SPLITTER 1111111  ------------------------>!");
+
                         gameState.board.highlightTilesWhite(out, gameState.board.getAdjacentTiles(out, startTile));
                         gameState.board.highlightTilesRed(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));}
                     else if (gameState.summonedUnits.get(unitIdx).getAttacked()==false && gameState.summonedUnits.get(unitIdx).getMoved()==true){
+                        AppConstants.printLog("------> UnitClicked :: FIRE SPLITTER 222222  ------------------------>!");
+
                         gameState.board.highlightTilesRed(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));
                     }
                     else if (gameState.summonedUnits.get(unitIdx).getAttacked()==true && gameState.summonedUnits.get(unitIdx).getMoved()==false){ //Unit has already moved or attacked
                         AppConstants.printLog("------> UnitClicked :: Unit has already attacked!");
-                    BasicCommands.addPlayer1Notification(out, "Exhausted!", 2);}
+                        BasicCommands.addPlayer1Notification(out, "Exhausted!", 2);}
 
 
                     else { AppConstants.printLog("------> UnitClicked :: Unit has already attacked!");
@@ -223,6 +230,8 @@ public class TileClicked implements EventProcessor {
                 	// If the unit has attacked twice already
             		if(gameState.summonedUnits.get(unitIdx).getAttackedTwice() == true) {
             			AppConstants.printLog("------> UnitClicked :: Unit has already attacked twice!");
+                        BasicCommands.addPlayer1Notification(out, "Exhausted!", 2);
+
             		}
                 	// If the unit has not moved or attacked once yet
             		else if(gameState.summonedUnits.get(unitIdx).getMoved() == false && gameState.summonedUnits.get(unitIdx).getAttackedOnce() == false) {
@@ -308,6 +317,9 @@ public class TileClicked implements EventProcessor {
             
             
             }
+            
+            if(unitIdx>-1 && unitIdx<gameState.summonedUnits.size())
+            {
 
             if(gameState.summonedUnits.get(unitIdx).getName().equals("WindShrike")){
                 if (clickedTile.getUnitFromTile()== null && gameState.summonedUnits.get(unitIdx).getMoved() == false && gameState.summonedUnits.get(unitIdx).getAttackedOnce() == false){
@@ -340,7 +352,7 @@ public class TileClicked implements EventProcessor {
                     {
                         if(gameState.summonedUnits.get(unitIdx)!=null) {
                         	gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
-                        	}
+                        }
                     }
 
                 }
@@ -350,7 +362,8 @@ public class TileClicked implements EventProcessor {
 
 
             // If the unit is Azurite Lion or Serpenti, implement Attack Twice logic
-            else if(gameState.summonedUnits.get(unitIdx).getId() == 7 || gameState.summonedUnits.get(unitIdx).getId() == 17 || gameState.summonedUnits.get(unitIdx).getId() == 26 || gameState.summonedUnits.get(unitIdx).getId() == 36) {
+            else if(gameState.summonedUnits.get(unitIdx).getId() == 7 || gameState.summonedUnits.get(unitIdx).getId() == 17 || gameState.summonedUnits.get(unitIdx).getId() == 26 || gameState.summonedUnits.get(unitIdx).getId() == 36) 
+            {
             	
             	 // If it is not the unit with attack twice ability, proceed normally
                  // If an empty tile is clicked, and the player unit has not moved or attacked twice yet, move to the tile, set moved to true
@@ -403,7 +416,9 @@ public class TileClicked implements EventProcessor {
                      }
                  	
                  }else if(clickedTile.getUnitFromTile()!=null && gameState.summonedUnits.get(unitIdx).getAttackedTwice() == true) {
-                	 BasicCommands.addPlayer1Notification(out, "Already attacked twice", 2);
+//                	 BasicCommands.addPlayer1Notification(out, "Already attacked twice", 2);
+                     BasicCommands.addPlayer1Notification(out, "Exhausted!", 2);
+
                  }
             }
 
@@ -420,7 +435,8 @@ public class TileClicked implements EventProcessor {
             
             // If a tile with an enemy unit is clicked, the player has not attacked or moved yet, and the enemy unit is not adjacent.
             // It is not a direct attack, it is an attack-and-move, thus moved and attacked should be set to true. This should only be possible if moved is still false.
-            }else if(clickedTile.getUnitFromTile()!=null && clickedTile.getUnitFromTile().getIsPlayer() != player.getID() && gameState.summonedUnits.get(unitIdx).getAttacked()==false && gameState.summonedUnits.get(unitIdx).getMoved()==false && !gameState.board.getAdjacentTilesToAttack(player,out, startTile).contains(clickedTile)) {
+            }else if(clickedTile.getUnitFromTile()!=null && clickedTile.getUnitFromTile().getIsPlayer() != player.getID() && gameState.summonedUnits.get(unitIdx).getAttacked()==false && gameState.summonedUnits.get(unitIdx).getMoved()==false && !gameState.board.getAdjacentTilesToAttack(player,out, startTile).contains(clickedTile)) 
+            {
                
             	AppConstants.printLog("------> TileClicked :: Attacking unit at tile " + clickedTile.getTilex() + " " + clickedTile.getTiley());
                 boolean attackStatus=false;
@@ -437,7 +453,8 @@ public class TileClicked implements EventProcessor {
             }
             // If a tile with an enemy unit is clicked and it is adjacent, and the player has not attacked yet
             // It is a direct attack, only attack should be set to true
-            else if(clickedTile.getUnitFromTile()!=null && clickedTile.getUnitFromTile().getIsPlayer() != player.getID() && gameState.summonedUnits.get(unitIdx).getAttacked()==false && gameState.board.getAdjacentTilesToAttack(player,out, startTile).contains(clickedTile)){ // Clicked an occupied tile --> attack
+            else if(clickedTile.getUnitFromTile()!=null && clickedTile.getUnitFromTile().getIsPlayer() != player.getID() && gameState.summonedUnits.get(unitIdx).getAttacked()==false && gameState.board.getAdjacentTilesToAttack(player,out, startTile).contains(clickedTile))
+            { // Clicked an occupied tile --> attack
 
                 AppConstants.printLog("------> TileClicked :: Attacking unit at tile " + clickedTile.getTilex() + " " + clickedTile.getTiley());
                 boolean attackStatus=false;
@@ -452,6 +469,7 @@ public class TileClicked implements EventProcessor {
                 }
             	
             }
+        }
             
             startTile = null; // Reset the start tile to no unit
             if(unitIdx>-1 && unitIdx<gameState.summonedUnits.size())
@@ -552,6 +570,7 @@ public class TileClicked implements EventProcessor {
             			BasicCommands.setUnitHealth(out, gameState.summonedUnits.get(0), gameState.player1.getAvatar().getHealth());
                         // buff effect and notification of healing effect
                         BasicCommands.addPlayer1Notification(out, "Healing avatar +" + healing, 2);
+                        AppConstants.callSleep(200);
                         BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff), gameState.summonedUnits.get(0).getTileFromUnit(40, gameState,out));
             		}
             		else {
@@ -562,6 +581,7 @@ public class TileClicked implements EventProcessor {
             			// BasicCommands.setUnitHealth(out, gameState.summonedUnits.get(0), gameState.summonedUnits.get(0).getHealth());
             			BasicCommands.setUnitHealth(out, gameState.summonedUnits.get(0), gameState.player1.getAvatar().getHealth());
                         BasicCommands.addPlayer1Notification(out, "Healing avatar +3", 2);
+                        AppConstants.callSleep(200);
                         BasicCommands.playEffectAnimation(out, BasicObjectBuilders.loadEffect(StaticConfFiles.f1_buff), gameState.summonedUnits.get(0).getTileFromUnit(40, gameState,out));
             		}
             	}
@@ -591,9 +611,10 @@ public class TileClicked implements EventProcessor {
 
                 if(player.getID()==1)//Notifications active for only player1
                 BasicCommands.addPlayer1Notification(out, "Summoning Complete", 2);
-        	}else { // It's a spell
-        		AppConstants.printLog("<------------- HANDLE SPELL !!!!!!!!!!!!!!!!!!!!!!! --------------");
         	}
+//        	else { // It's a spell
+//        		AppConstants.printLog("<------------- HANDLE SPELL !!!!!!!!!!!!!!!!!!!!!!! --------------");
+//        	}
 
         }
         else {//if conditions are not met

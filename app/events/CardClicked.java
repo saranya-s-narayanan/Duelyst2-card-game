@@ -54,11 +54,7 @@ public class CardClicked implements EventProcessor {
 
 
             }
-            else {
-
-            	
             
-            }
         }
 
     }
