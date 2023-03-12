@@ -80,6 +80,7 @@ public class SpecialAbilities {
             enemyTile.setUnitToTile(null);
             BasicCommands.deleteUnit(out, enemyUnit);
             AppConstants.callSleep(3000);
+            return true;
 
         } else if (gameState.board.summonableTiles(out,startTile).contains(enemyTile)){ //enemy survived and is in range, counter attack
 
@@ -151,6 +152,7 @@ public class SpecialAbilities {
                 startTile.setUnitToTile(null);
                 BasicCommands.deleteUnit(out, unit);
                 AppConstants.callSleep(100);
+                return true;
 
             }
 
@@ -180,7 +182,7 @@ public class SpecialAbilities {
                     if (tilesProvoke.contains(enemyTile)){
                         rangedAttack(out, gameState,unit,enemyUnit,enemyTile,startTile);
                         return true;}
-                    else return false;
+//                    else return false;
                 }
 
                 // If the enemyTile is in range of the startTile, attack
