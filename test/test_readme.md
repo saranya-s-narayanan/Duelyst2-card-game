@@ -2,13 +2,17 @@
 
 This file is to store data about the unit tests.
 
+# AvatarNotNullTest:
+
+Contains 2 Tests -> AIAvatarNotNullTest, PlayerAvatarNotNullTest
+
 # AIAvatarNotNullTest
 
-Tests that `aiAvatar` is not null when the game is initialized 
+Tests that `gameState.aiAvatar` is not null before initialization and is not null when the game is initialized 
 
 # PlayerAvatarNotNullTest
 
-Tests that `avatar` is not null when the game is initialized 
+Tests that `gameState.avatar` is not null before initialization and is not null when the game is initialized 
 
 # AIInitialPositionTest
 
