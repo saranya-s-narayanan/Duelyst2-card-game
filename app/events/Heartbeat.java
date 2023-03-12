@@ -49,8 +49,11 @@ public class Heartbeat implements EventProcessor{
         
     	}
 		
-		gameState.isGameActive=true; // Comment this line if you want to reset backend after 60 minutes of inactivity of the frontend communication
-		
+		 // Comment below lines if you want to reset backend after 60 minutes of inactivity of the frontend communication
+		if(gameState.isGameOver==false)
+			gameState.isGameActive=true;
+		else
+			gameState.isGameActive=false;
 		
 //<----------- Below code can be uncommented when we have to keep track of user inactivity based on a time interval------------>
 		

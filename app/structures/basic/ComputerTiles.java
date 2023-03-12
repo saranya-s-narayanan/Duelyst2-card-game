@@ -11,32 +11,23 @@ public class ComputerTiles {
 
 
     // as only one ai unit has a different summoning type, this is just for that card. (Planar scout)
-    public static ArrayList<Tile> planarScoutSummonableTiles(int cardId, GameState gameState, ActorRef out) {
+    public static ArrayList<Tile> planarScoutSummonableTiles(GameState gameState, ActorRef out) {
         ArrayList<Tile> planarScoutTiles = new ArrayList<Tile>();
-        if (cardId == 28 || cardId == 38) {
-            planarScoutTiles = gameState.board.getTilesWithoutUnits(out, gameState.board.getTiles(), gameState.player2);
-            return planarScoutTiles;
-        }
+        planarScoutTiles = gameState.board.getTilesWithoutUnits(out, gameState.board.getTiles(), gameState.player2);
         return planarScoutTiles;
     }
 
     // only attack tile list needed that is different
-    public static ArrayList<Tile> pyromancerAttackTiles(int cardId, GameState gameState, ActorRef out) {
+    public static ArrayList<Tile> pyromancerAttackTiles(GameState gameState, ActorRef out) {
         ArrayList<Tile> pyromancerTiles = new ArrayList<Tile>();
-        if (cardId == 25 || cardId == 35) {
-            pyromancerTiles = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), TileClicked.opposingPlayer(gameState, gameState.player2));
-            return pyromancerTiles;
-        }
+        pyromancerTiles = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), TileClicked.opposingPlayer(gameState, gameState.player2));
         return pyromancerTiles;
     }
 
     // only movement difference
-    public static ArrayList<Tile> windshrikeMovementTiles(int cardId, ActorRef out, GameState gameSate) {
+    public static ArrayList<Tile> windshrikeMovementTiles(GameState gameSate, ActorRef out) {
         ArrayList<Tile> windshrikeTiles = new ArrayList<Tile>();
-        if (cardId == 24 || cardId == 34) {
-            windshrikeTiles = gameSate.board.getTilesWithoutUnits(out, gameSate.board.getTiles(), gameSate.player2);
-            return windshrikeTiles;
-        }
+        windshrikeTiles = gameSate.board.getTilesWithoutUnits(out, gameSate.board.getTiles(), gameSate.player2);
         return windshrikeTiles;
     }
 }

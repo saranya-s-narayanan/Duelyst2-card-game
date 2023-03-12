@@ -383,7 +383,7 @@ public class PerformAction {
         if(gameState.isGameActive==true){
 			//check if player 1 health is 0 or not
 			if(gameState.player1.getAvatar().getHealth()<=0 || (gameState.player1.getCardInDeck()==0 && gameState.player1.getCardInHand()==0)){
-				gameState.isGameOver=true;//whichever of these are used to represent game end
+				gameState.isGameOver=true;
 				// gameState.isGameActive=false;//whichever of these are used to represent game end
 				BasicCommands.addPlayer1Notification(out, "Game Over! You Lost", 5);
 	    		
@@ -391,14 +391,14 @@ public class PerformAction {
 			}
 			else if (gameState.player2.getAvatar().getHealth()<=0 || (gameState.player2.getCardInDeck()==0 &&
 				gameState.player2.getCardInHand()==0)){//if AI reaches 0
-				gameState.isGameOver=true;//whichever of these are used to represent game end
+				gameState.isGameOver=true;
 				// gameState.isGameActive=false;//whichever of these are used to represent game end
 				BasicCommands.addPlayer1Notification(out, "Game Over! You Won", 5);
 	    		
 
 			}
 			AppConstants.callSleep(100);
-	
+			gameState.isGameActive=false;
 			
         }
 

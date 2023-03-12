@@ -46,7 +46,7 @@ public class EndTurnClicked implements EventProcessor{
 			}
 			if(gameState.player1Turn==true){//if it was player's turn then only they can use end turn
 				
-				endPlayer1Turn(out,gameState);
+					endPlayer1Turn(out,gameState);
 				//startPlayer2Turn(); // To do
 			}
 			else{//for when AI ends its turn
