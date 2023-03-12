@@ -16,7 +16,7 @@ import structures.basic.Board;
 import structures.basic.Player;
 import utils.AppConstants;
 
-public class AvatarNotNullTest {
+public class AvatarsNotNullTest {
 
 	@Test
 	public void AIAvatarNotNullTest() {

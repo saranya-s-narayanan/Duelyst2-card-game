@@ -2,7 +2,7 @@
 
 This file is to store data about the unit tests.
 
-# AvatarNotNullTest:
+# AvatarsNotNullTest:
 
 Contains 2 Tests -> AIAvatarNotNullTest, PlayerAvatarNotNullTest
 
@@ -14,13 +14,21 @@ Tests that `gameState.aiAvatar` is not null before initialization and is not nul
 
 Tests that `gameState.avatar` is not null before initialization and is not null when the game is initialized 
 
+# InitialPositionsTest:
+
+Contains 2 Tests -> AIInitialPositionTest, PlayerInitialPositionTest
+
 # AIInitialPositionTest
 
-Tests that the AI's (`player2`) initial x position (`gameState.player2.getCurrentXpos()`) is 7 and its y position (`gameState.player2.getCurrentXpos()`) is 2 once the game is initialized
+Tests that the AI's starting position on the board (`gameState.player2.getCurrentTile()`) is set at (7,2) (`gameState.board.returnTile(7, 2))`).
 
 # PlayerInitialPositionTest
 
-Tests that the human player's (`player1`) initial x position (`gameState.player1.getCurrentXpos()`) is 1 and its y position (`gameState.player1.getCurrentXpos()`) is 2 once the game is initialized
+Tests that the human player's starting position on the board (`gameState.player1.getCurrentTile()`) is set at (1,2) (`gameState.board.returnTile(1, 2)`).
+
+# InitialHealthValuesTest:
+
+Contains 2 Tests -> InitializedAIHealthTest, InitializedPlayerHealthTest
 
 # InitializedAIHealthTest
 
@@ -78,6 +86,6 @@ Contains 2 Tests -> AIInitialIAttackValue and PlayerInitialIAttackValue
 
 This test confirms that the initial attack for the computer Avatar (`gameState.aiAvatar.getAttack()`)is set to 2
 
-# PlayerInitialIAttackValue
+# PlayerInitialAttackValue
 
 This test confirms that the initial attack for the human Avatar (`gameState.avatar.getAttack()`)is set to 2

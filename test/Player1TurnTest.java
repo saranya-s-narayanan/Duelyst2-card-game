@@ -39,6 +39,7 @@ public class Player1TurnTest {
 		//Else if it is false, it is player2's turn
 		if (gameState.player1Turn == true) {
 			assertTrue(gameState.player1Turn);
+			
 		} else {
 			assertFalse(gameState.player1Turn);
 		}

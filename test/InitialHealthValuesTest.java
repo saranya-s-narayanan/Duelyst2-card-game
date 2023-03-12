@@ -11,7 +11,7 @@ import play.libs.Json;
 import structures.GameState;
 import utils.AppConstants;
 
-public class InitializedAIHealthTest {
+public class InitialHealthValuesTest {
 
 	@Test
 	public void InitializedAIHealthTest() {
@@ -24,8 +24,25 @@ public class InitializedAIHealthTest {
 		ObjectNode eventmessage = Json.newObject();
 		initializeProcessor.processEvent(null, gameState, eventmessage);
 
-		// This test is to confirm that the AI's initial health == AppConstants.playerMaxHealth (20)
+		// This test is to confirm that the AI's initial health ==
+		// AppConstants.playerMaxHealth (20)
 		assertEquals(AppConstants.playerMaxHealth, gameState.player2.getHealth());
+	}
+
+	@Test
+	public void InitializedPlayerHealthTest() {
+
+		GameState gameState = new GameState();
+		Initalize initializeProcessor = new Initalize();
+
+		assertFalse(gameState.gameInitalised);
+
+		ObjectNode eventmessage = Json.newObject();
+		initializeProcessor.processEvent(null, gameState, eventmessage);
+
+		// This test is to confirm that Player1 initial health ==
+		// AppConstants.playerMaxHealth (20)
+		assertEquals(AppConstants.playerMaxHealth, gameState.player1.getHealth());
 	}
 
 }
