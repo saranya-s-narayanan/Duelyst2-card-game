@@ -54,6 +54,10 @@ This test confirms that the max hand size for both players (`AppConstants.maxCar
 
 This test confirms that the max hand size for both players (`AppConstants.maxCardsInDeck`) is 20.
 
+# Player1CardIDs: 
+
+This test confirms that the Card ID numbers in OrderedCardLoader (`OrderedCardLoader.getPlayer1Cards().get(0).getId()`) is equal to its position in the cardsInDeck ArrayList.
+
 # InitialHandSizes:
 
 Contains 2 Tests -> PlayerInitialHandSize and AIInitialHandSize 
