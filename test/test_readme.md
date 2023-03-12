@@ -68,12 +68,16 @@ This test confirms that the game ends when the human or computer player's health
 
 # IncrementManaTest
 
-This test confirms that the mana for both players is equal to turn + 1 with each new turn.  
+This test confirms that the mana for both players is equal to turn + 1 with each new turn.
 
-# PlayerInitialIAttackValue
+# InitialAttackValues:
 
-This test confirms that the initial attack for the human avatar is set to 2
+Contains 2 Tests -> AIInitialIAttackValue and PlayerInitialIAttackValue
 
 # AIInitialIAttackValue
 
-This test confirms that the initial attack for the computer avatar is set to 2
+This test confirms that the initial attack for the computer Avatar (`gameState.aiAvatar.getAttack()`)is set to 2
+
+# PlayerInitialIAttackValue
+
+This test confirms that the initial attack for the human Avatar (`gameState.avatar.getAttack()`)is set to 2
