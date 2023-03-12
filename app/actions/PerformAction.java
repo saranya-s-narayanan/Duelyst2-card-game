@@ -192,10 +192,12 @@ public class PerformAction {
 	    	attackVal=enemyUnit.getHealth()-unit.getAttack();
 	    	enemyUnit.setHealth(attackVal);  // update enemy's health
 		
-		    // To avoid negative values as health
-		    if(enemyUnit.getHealth()<0)
-		    	enemyUnit.setHealth(0);
+		   
 	    }
+	    
+	    // To avoid negative values as health
+	    if(enemyUnit.getHealth()<0)
+	    	enemyUnit.setHealth(0);
 	    
 		// update front end
 		BasicCommands.setUnitHealth(out, enemyUnit, enemyUnit.getHealth());
@@ -270,10 +272,11 @@ public class PerformAction {
 		    	attackVal=unit.getHealth()-enemyUnit.getAttack();
 			    unit.setHealth(attackVal); // update unit health
 					
-			    // To avoid negative values as health
-			    if(unit.getHealth()<0)
-			    	unit.setHealth(0);
+			   
 		    }
+		    // To avoid negative values as health
+		    if(unit.getHealth()<0)
+		    	unit.setHealth(0);
 		    
 	    	// update front end
 			BasicCommands.setUnitHealth(out, unit, unit.getHealth());
