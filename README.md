@@ -118,12 +118,20 @@ A unit would be summoned if a card is clicked in hand and a subsequent tile is c
  
 # Computer Player
 
-'checkMovement' method is added to find an optimal movement option for the player 2 avatar units. 'moveAIUnit' method will simulate TileClicked
-event with customized ObjectNode parameters for performing movement.
-
-'directAttackAIUnit' method simulate TileClicked event with customized ObjectNode parameters for performing direct attack
-
-'moveAndAttackAIUnit' method simulate TileClicked event with customized Objectnode parameters for performing move and attack
+The computer player and all the logic regarding the computer player runs on a seperate thread `startAIThread`.
+this thread runs the logic in form of the method `startAILogic` and any exception that occurs was handled by 
+interrupting the thread and passing on the turn back to player so that the game does not crash and keep 
+continuing.
+`startAILogic` has a flag `isContinue` which sets how many times the logic should be run. the method starts 
+with getting the game state at that moment like, cards in the hand, `checkUnitTiles` gives which tiles belong 
+to which player,`listPossibleMove` gives the possible moves that can be made on the board, i.e. possible 
+summons, possible movement and possible attack. After this the actions are performed based on the game state, 
+these are done using the methods `drawCardAndProcessAction`, `moveAIProcessAction`, `attackAIProcessAction`.
+These method have additional logic and decide the optimal move to be made based on the data available to them 
+form the `listPossibleMove` and `checkUnitTiles` methods. Once an optinal move is finalised the 
+`drawCardAndProcessAction` will use `drawCardAI` to simulate the tileClicked event to summon a unit, 
+similarly `moveAIProcessAction`, `attackAIProcessAction` will use `moveAIUnit` to move and `attackAIUnit` to
+attack, respectively.
 
 # Ranged attack
 
