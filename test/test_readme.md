@@ -30,13 +30,29 @@ This test is to confirm that the human player's initial health (`gameState.playe
 
 This test was written by the Professor and was included in our source code. It creates a new `GameState` and a new `Initialize` event processor. Then it verifies that `gameState.gameInitalised` returns true (the game state is updated) once an initialize message is received. 
 
-# AIInitialHandSize
+#HandAndDeckConstantsTests:
 
-This test confirms that the initial number of cards in the AI player's hand (`gameState.player2.hand.size()`) is 3 (`AppConstants.minCardsInHand`). 
+Contains 2 Tests -> maxHandSize, maxDeckSize
+
+# maxHandSize:
+
+This test confirms that the max hand size for both players (`AppConstants.maxCardsInHand`) is 6.
+
+# maxDeckSize: 
+
+This test confirms that the max hand size for both players (`AppConstants.maxCardsInDeck`) is 20.
+
+# InitialHandSizes:
+
+Contains 2 Tests -> PlayerInitialHandSize and AIInitialHandSize 
 
 # PlayerInitialHandSize
 
 This test confirms that the initial number of cards in the human player's hand (`gameState.player1.hand.size()`) is 3 (`AppConstants.minCardsInHand`). 
+
+# AIInitialHandSize
+
+This test confirms that the initial number of cards in the AI player's hand (`gameState.player2.hand.size()`) is 3 (`AppConstants.minCardsInHand`).
 
 # Player1TurnTest
 

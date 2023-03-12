@@ -11,8 +11,24 @@ import play.libs.Json;
 import structures.GameState;
 import utils.AppConstants;
 
-public class AIInitialHandSize {
+public class InitialHandSizes {
 
+	@Test
+	public void PlayerInitialHandSize() {
+
+		GameState gameState = new GameState();
+		Initalize initializeProcessor = new Initalize();
+
+		assertFalse(gameState.gameInitalised);
+
+		ObjectNode eventmessage = Json.newObject();
+		initializeProcessor.processEvent(null, gameState, eventmessage);
+
+		// Tests that the initial number of cards in the human player's hand is 3
+		assertEquals(AppConstants.minCardsInHand, gameState.player1.hand.size());
+
+	}
+	
 	@Test
 	public void AIInitialHandSize() {
 
@@ -26,7 +42,6 @@ public class AIInitialHandSize {
 
 		// Tests that the initial number of cards in the AI player's hand is 3
 		assertEquals(AppConstants.minCardsInHand, gameState.player2.hand.size());
-
 	}
 
 }
