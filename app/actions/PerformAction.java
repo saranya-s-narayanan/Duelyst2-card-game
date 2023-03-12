@@ -62,7 +62,7 @@ public class PerformAction {
 						if (tilesProvoke.contains(enemyTile)){
 						attackDirectly(player,out,unit,startTile,enemyTile,gameState,enemyTile.getUnitFromTile());
 						return true;}
-						else return false;
+//						else return false;
 					}
 					
 					// If the enemyTile is in range of the startTile, attack directly
@@ -116,8 +116,7 @@ public class PerformAction {
 								if(player.getID()==1)
 
 									moveUnit(1,out, startTile, tileToMove, gameState); // show player notifications (mode 1)
-								else
-								if (unit.getName().equals("WindShrike")){
+								else if (unit.getName().equals("WindShrike")){
 									SpecialAbilities.windshrikeMove(0,out,startTile, tileToMove, gameState);
 								}
 									else {moveUnit(0,out, startTile, tileToMove, gameState);}

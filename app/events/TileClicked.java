@@ -191,28 +191,28 @@ public class TileClicked implements EventProcessor {
                 }
 
                 // checks for ranged units and highlights all enemy units
-                if (gameState.summonedUnits.get(unitIdx).getName().equals("Fire Spitter") || gameState.summonedUnits.get(unitIdx).getName().equals("Pyromancer"))
+                if (startTile.getUnitFromTile().getName().equals("Fire Spitter") || startTile.getUnitFromTile().getName().equals("Pyromancer"))
                 {
                     AppConstants.printLog("------> UnitClicked :: FIRE SPLITTER ------------------------>!");
 
-                    if (gameState.summonedUnits.get(unitIdx).isProvoked()==true){
+                    if (startTile.getUnitFromTile().isProvoked()==true){
                         AppConstants.printLog("------> UnitClicked :: FIRE SPLITTER is PROVOKED------------------------>!");
 
                         ArrayList<Tile> tiles = getProvokerTiles(out, gameState, player);
                         BasicCommands.addPlayer1Notification(out, "Unit provoked!", 2);
                         gameState.board.highlightTilesRed(out, tiles);
                     }
-                    else if (gameState.summonedUnits.get(unitIdx).getMoved() == false && gameState.summonedUnits.get(unitIdx).getAttacked() == false){
+                    else if (startTile.getUnitFromTile().getMoved() == false && startTile.getUnitFromTile().getAttacked() == false){
                         AppConstants.printLog("------> UnitClicked :: FIRE SPLITTER 1111111  ------------------------>!");
 
                         gameState.board.highlightTilesWhite(out, gameState.board.getAdjacentTiles(out, startTile));
                         gameState.board.highlightTilesRed(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));}
-                    else if (gameState.summonedUnits.get(unitIdx).getAttacked()==false && gameState.summonedUnits.get(unitIdx).getMoved()==true){
+                    else if (startTile.getUnitFromTile().getAttacked()==false && startTile.getUnitFromTile().getMoved()==true){
                         AppConstants.printLog("------> UnitClicked :: FIRE SPLITTER 222222  ------------------------>!");
 
                         gameState.board.highlightTilesRed(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));
                     }
-                    else if (gameState.summonedUnits.get(unitIdx).getAttacked()==true && gameState.summonedUnits.get(unitIdx).getMoved()==false){ //Unit has already moved or attacked
+                    else if (startTile.getUnitFromTile().getAttacked()==true && startTile.getUnitFromTile().getMoved()==false){ //Unit has already moved or attacked
                         AppConstants.printLog("------> UnitClicked :: Unit has already attacked!");
                         BasicCommands.addPlayer1Notification(out, "Exhausted!", 2);}
 
@@ -307,11 +307,15 @@ public class TileClicked implements EventProcessor {
         	gameState.board.clearTileHighlighting(out, gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), opposingPlayer(gameState,player)));
             attackStatus = SpecialAbilities.attackUnitRanged(1, player,out, gameState.summonedUnits.get(unitIdx),startTile,clickedTile,gameState);
 //                System.out.println(attackStatus);
+//                gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
+                System.out.println(gameState.summonedUnits.size());
+                System.out.println(unitIdx);
+                startTile.getUnitFromTile().setAttacked(attackStatus);
             if(unitIdx>-1 && unitIdx<gameState.summonedUnits.size())
             {
                 if(gameState.summonedUnits.get(unitIdx)!=null) {
                 	gameState.summonedUnits.get(unitIdx).setAttacked(attackStatus);
-//                    System.out.println(attackStatus);
+                    System.out.println(attackStatus);
                 }
             }
             
@@ -333,7 +337,7 @@ public class TileClicked implements EventProcessor {
                     boolean attackStatus=false;
 
                     attackStatus=PerformAction.attackUnit(1,player,out,gameState.summonedUnits.get(unitIdx),startTile,clickedTile, gameState);
-
+                    startTile.getUnitFromTile().setAttacked(attackStatus);
                     if(unitIdx>-1 && unitIdx<gameState.summonedUnits.size())
                     {
                         if(gameState.summonedUnits.get(unitIdx)!=null) {
@@ -347,7 +351,7 @@ public class TileClicked implements EventProcessor {
                     boolean attackStatus=false;
 
                     attackStatus=PerformAction.attackUnit(1,player,out,gameState.summonedUnits.get(unitIdx),startTile,clickedTile, gameState);
-
+                    startTile.getUnitFromTile().setAttacked(attackStatus);
                     if(unitIdx>-1 && unitIdx<gameState.summonedUnits.size())
                     {
                         if(gameState.summonedUnits.get(unitIdx)!=null) {
@@ -667,11 +671,11 @@ public class TileClicked implements EventProcessor {
 
     // Method to return the opposing player (useful for highlighting opposing players units etc) (can be moved)
     public static Player opposingPlayer(GameState gameState, Player player){
-        Player playerOp;
+        Player playerOp = player;
         if (player.getID() == 1){
             playerOp = gameState.player2;
         }
-        else{
+        else if (player.getID() == 2){
             playerOp = gameState.player1;
         }
         return playerOp;
