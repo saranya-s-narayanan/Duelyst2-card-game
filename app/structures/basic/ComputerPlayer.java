@@ -55,50 +55,6 @@ public class ComputerPlayer extends Player{
         super(playerID, out, avatar, unitFiles);
        
     }
-    
-//	public void testCardSummon(ActorRef out, GameState gameState) {
-//		
-//		int handIdx=0;   //-------> change index to test
-//		
-//		Tile tileToSummon=gameState.board.returnTile(6, 3); // The tile to move 
-//		
-//		//To test summon
-//
-//		drawCardAI(handIdx+1,out,gameState,currentTile,tileToSummon);
-//
-//	}
-//	
-//	public void testAttack(ActorRef out, GameState gameState) {
-//		
-//        BasicCommands.addPlayer1Notification(out, "AI attack", 2);
-//
-//		Tile tileToAttack=new Tile(); // The tile to move 
-//	
-//		//To test move and attack
-//		tileToAttack.tilex=6;  //-------> change tileX to test
-//		tileToAttack.tiley=2;  //-------> change tileY to test
-//				
-//		// If attack is finalized, and move and atack or direct attacks
-//		attackAIUnit(out, gameState, currentTile, tileToAttack);
-//		
-//		
-//	}
-//
-//	
-//	public void testMovement(ActorRef out, GameState gameState) {
-//
-//        BasicCommands.addPlayer1Notification(out, "AI movement", 2);
-//
-//		Tile tileToMove=new Tile(); // The tile to move 
-//		
-//		//To test move and attack
-//		tileToMove.tilex=7;  //-------> change tileX to test
-//		tileToMove.tiley=3;  //-------> change tileY to test
-//		
-//		// If movement is finalized, and move 
-//		moveAIUnit(out, gameState, currentTile, tileToMove);
-//	
-//	}
 	
 	public void startAIThread(ActorRef out,GameState gameState) {
 		AppConstants.printLog("<------------------------------Starting AI Thread-------------------------------------------------->");
@@ -150,7 +106,6 @@ public class ComputerPlayer extends Player{
 		AppConstants.printLog("<------------------------------startAILogic-------------------------------------------------->");
 			
 		boolean isContinue=true; //boolean to keep track of how long loop should continue
-		// int i=0;//running the loop only ten times per turn for now to handle infinite loop
 		while(isContinue)
 		{
 			AppConstants.printLog("<--------------------Game State at the moment---------------------->");
@@ -182,27 +137,6 @@ public class ComputerPlayer extends Player{
 			
 			if(cardsDrawEnd==true) isContinue=false;
 			
-			//If the number of enemy units is less than 5, save spells for later and do summoning a unit alone
-			// 			if(tileWithPlayerUnits.size()<5)
-			// 			{
-			// 				// Summon a unit
-			// //				AppConstants.printLog("<-------- AI :: startAILogic():: Summon a unit !");
-			// 				drawCardAndProcessAction(0,out,gameState); // mode 1- units only
-			// 				if(tileWithMyUnit.size()>1){
-			// 					//move a unit
-			// 					AppConstants.printLog("<--------------------Move unit initiated---------------------->");
-			// 					moveAIProcessAction(out,gameState);
-			// 					if(optimalAttackTile.values()!=null){
-			// 						attackAIProcessAction(out, gameState);
-			// 					}
-			// 				}
-							
-			// 			}else {
-							
-							
-			// 			}
-			// Summon a unit
-			//				AppConstants.printLog("<-------- AI :: startAILogic():: Summon a unit !");
 			drawCardAndProcessAction(0,out,gameState); // mode 1- units only
 			callSleepAI(200);
 
@@ -236,89 +170,16 @@ public class ComputerPlayer extends Player{
 
 		EndTurnClicked ec=new EndTurnClicked();
 		ec.processEvent(out, gameState, eventMessage); 
-		
 			
-			// -------------------------- COMMENTING FOR NOW----------------------------------------------
-//			// Check if avatar is in range of any enemy unit - SS
-//			ArrayList<Tile> dangerTiles=checkIfUnitInDanger(currentTile,out,gameState);
-//			
-//			if(dangerTiles.size()>0)
-//			{
-//				AppConstants.printLog("<-------- AI :: startAILogic():: Avatar is in danger ! ");
-//				
-//				// Avatar is in danger, need to move away or attack the enemy
-//				
-//				// If the player avatar is nearby and it's health <= AI attack value, attack and thus game over
-//				if(dangerTiles.contains(gameState.player1.getCurrentTile()))
-//				{
-//					
-//					if(gameState.player1.getAvatar().getHealth()<=getAvatar().getAttack())
-//					{
-//						// Player's health is <= AI attack value, attack
-//						attackAIUnit(out, gameState, currentTile, gameState.player1.getCurrentTile());
-//					}
-//				}else {
-//					// Otherwise,try defensive way, move backward
-//					AppConstants.printLog("<-------- AI :: startAILogic():: Find possible moves! ");
-//
-//					// Get list of possible backward moves respect to current avatar tile position
-//					// ArrayList<Tile> possibleTilesToMove=possibleMoves("backward",currentTile,out,gameState);
-//					
-//
-//				}
-//				i++;
-//				if(i>10) isContinue=false;		
-//								
-//			}else {
-//				AppConstants.printLog("<-------- AI :: startAILogic():: Avatar is NOT in danger ! ");
-//
-//				// Avatar is safe from direct or indirect unit attacks. Can proceed with other units or cards
-//				
-//				if(tileWithMyUnit.size()<2 ) // No units are summoned yet 
-//				{
-//					AppConstants.printLog("<-------- AI :: startAILogic():: Summon a unit !");
-//					drawCardAndProcessAction(1,out,gameState);
-//					
-//				}else if(cardsDrawEnd==false) // Can draw card again 
-//				{
-//					AppConstants.printLog("<-------- AI :: startAILogic():: Summon a unit !");
-//					
-//					// If number of player units is more than 5, cast spell or summon unit 
-//					if(playerUnits.size()>5)
-//						drawCardAndProcessAction(0,out,gameState);
-//					else  // Otherwise, summon units only
-//						drawCardAndProcessAction(1,out,gameState);
-//
-//					
-//				}
-//		}
-
-		//------------------------------------------------------------------------------------------------
-
-				
-			
-			// No moves left and can't draw cards further, exit loop and end turn
-//			if(cardsDrawEnd==true && movesEnd==true) --> moves are not implememted yet
-			
-				
-
-		
-	
-
-		
-//		Boolean movesLeft=true;
-//		if(movesLeft){
-//			movesLeft=listPossibleMove(out,gameState);
-//		}
-		
-
-		
 	}
 	
 	
-	
-	
-	
+	/** Method to summon a card on the board
+	 * 
+	 * @param mode
+	 * @param gameState 
+	 * @param out 
+	 */
 	private void drawCardAndProcessAction(int mode, ActorRef out, GameState gameState) {
 		AppConstants.printLog("<-------- AI :: drawCardAndProcessAction():: Mana of AI: "+getMana());
 		int handIdxToUse=-1;
@@ -366,7 +227,7 @@ public class ComputerPlayer extends Player{
 	 */
 	
 	
-private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameState, Card card) {
+	private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameState, Card card) {
 		
 		Tile tileToSummon = null;
 		//should be changing this to accomodate for different cards
@@ -379,7 +240,7 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 		tileToSummon=findClosestTileToEnemy(closestEnemyUnitIdx,possibleSummonList);
 
 		if(card.getId()==22|| card.getId()==32){//staff of ykir
-//			tileToSummon=gameState.summonedUnits.get(1).getTileFromUnitP2(41, gameState, out);
+			//tileToSummon=gameState.summonedUnits.get(1).getTileFromUnitP2(41, gameState, out);
 			tileToSummon=currentTile;
 			return tileToSummon;
 		}
@@ -406,12 +267,12 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 		return tileToSummon;
 	}
 
-/** Method find the tile with minimum distance to the closest enemy unit 
- * 
- * @param EnemyUnitIdx
- * @param summonList
- * @return
- */
+	/** Method find the tile with minimum distance to the closest enemy unit 
+	 * 
+	 * @param EnemyUnitIdx
+	 * @param summonList
+	 * @return
+ 	*/
 	private Tile findClosestTileToEnemy(int enemyUnitIdx, List<Tile> summonList) {
 		
 		Tile tile=null;
@@ -508,50 +369,6 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 		
 		return tile;
 	}
-
-//	private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameState) {
-//		
-//		Tile tileToSummon = null;
-//		
-//		possibleSummonList= PerformAction.getSummonableTilesAroundAvatar(out, gameState,currentTile);
-//		gameState.board.highlightTilesRed(out, (ArrayList<Tile>) possibleSummonList);
-//
-//		for(Tile tile:possibleSummonList)
-//		{
-//			
-//			if(tile.getUnitFromTile()==null)
-//			{
-//				AppConstants.printLog("<-------- AI :: startAILogic():: findAtileToSummon : tile: ["+tile.getTilex()+","+tile.getTiley()+"]");
-//
-//				tileToSummon=tile;
-//				break;
-//			}
-//
-//		}
-//		
-//		// All summonable tiles are already occupied
-//		if(tileToSummon==null)
-//		{
-//			// Summon unit in any vacant forward tile
-//			  for (int i = 4; i < gameState.board.tiles.length; i++) {
-//		            for (int j = 0; j < gameState.board.tiles[i].length; j++) {
-//		            	
-//		               gameState.board.drawTileWithSleep(out, gameState.board.returnTile(i, j), 2, AppConstants.drawTileSleepTime);
-//		            	if(gameState.board.returnTile(i, j).getUnitFromTile()==null)
-//		    			{
-//		            		gameState.board.returnTile(i, j);
-//		            		break;
-//		            	}		            	
-//		            }
-//		     }
-//			
-//		}
-//
-//		
-//		return tileToSummon;
-//	}
-
-
 
 
 	//method the check the cards in the hand
@@ -665,74 +482,14 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 	}
 
 	/**
-	 * This method will programmatically perform move for a player 2's unit 
-	 * @param out
-	 * @param gameState
-	 */
-	private void moveAIUnit(ActorRef out, GameState gameState,Tile startTile,Tile tileToMove) {
-		ObjectNode eventMessage = Json.newObject();
-		eventMessage.put("messagetype", "tileclicked");
-		eventMessage.put("start_tilex",""+startTile.getTilex());
-		eventMessage.put("start_tiley", ""+startTile.getTiley());
-		eventMessage.put("tilex",""+tileToMove.getTilex());
-		eventMessage.put("tiley", ""+tileToMove.getTiley());
-		eventMessage.put("action", AppConstants.move);
-
-		TileClicked tc=new TileClicked();
-		tc.processEvent(out, gameState, eventMessage); // send it to the Tileclicked event processor
-		callSleepAI(200);
-	}
-
-	/**
-	 * This method will programmatically perform move for a player 2's unit 
-	 * @param out
-	 * @param gameState
-	 */
-	private void attackAIUnit(ActorRef out, GameState gameState,Tile startTile,Tile tileToAttack) {
-		ObjectNode eventMessage = Json.newObject();
-		eventMessage.put("messagetype", "tileclicked");
-		eventMessage.put("start_tilex",""+startTile.getTilex());
-		eventMessage.put("start_tiley", ""+startTile.getTiley());
-		eventMessage.put("tilex",""+tileToAttack.getTilex());
-		eventMessage.put("tiley", ""+tileToAttack.getTiley());
-		eventMessage.put("action", AppConstants.attack);
-
-		TileClicked tc=new TileClicked();
-		tc.processEvent(out, gameState, eventMessage); // send it to the Tileclicked event processor
-		callSleepAI(200);
-	}
-
-	
-	private void drawCardAI(int handIdx, ActorRef out, GameState gameState,Tile startTile,Tile tileToSummon) {
-		ObjectNode eventMessage = Json.newObject();
-		eventMessage.put("messagetype", "cardclicked");
-		eventMessage.put("position",""+handIdx);
-		eventMessage.put("start_tilex",""+startTile.getTilex());
-		eventMessage.put("start_tiley", ""+startTile.getTiley());
-		eventMessage.put("tilex",""+tileToSummon.getTilex());
-		eventMessage.put("tiley", ""+tileToSummon.getTiley());
-		eventMessage.put("action", AppConstants.drawCardSummon);
-
-
-		TileClicked tc=new TileClicked();
-		tc.processEvent(out, gameState, eventMessage); // send it to the Tileclicked event processor
-		callSleepAI(200);
-	}
-	
-
-	/**
 	 * This method will give a list of possible moves like summon or move/attack
 	 * @param out
 	 * @param gameState
 	 */
-	public Boolean listPossibleMove(ActorRef out, GameState gameState) {
+	public void listPossibleMove(ActorRef out, GameState gameState) {
 		//need to list all possible moves for the AI player
-		Boolean done =false;//boolean to send back
-		// AppConstants.printLog("<--------------------Possible Summon---------------------->");
 		possibleSummon(out,gameState);
-		// AppConstants.printLog("<--------------------Possible Move/Attack---------------------->");
 		possibleMoveAttack(out,gameState);
-		return done;
 	}
 
 	/**
@@ -866,28 +623,6 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 		}
 	}
 	
-	/** Method returns a random number between min and max
-	 * 
-	 * @param Min
-	 * @param Max
-	 * @return
-	 */
-	public static int random_int(int Min, int Max)
-	{
-	     return (int) (Math.random()*(Max-Min))+Min;
-	}
-	
-	/** Method returns the distance between two tile positions
-	 * 
-	 * @param x1 -> X position of tile A	
-	 * @param y1 -> Y position of tile A
-	 * @param x2 -> X position of tile B
-	 * @param y2 -> Y position of tile B
-	 * @return
-	 */
-	public double calculateDistanceBetweenPoints( double x1,  double y1,  double x2,  double y2) {       
-			    return Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
-			}
 
 	
 
@@ -1007,6 +742,84 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 		movesEnd=true;//setting movesEnd to true when all of the units have attacked
 	}
 
+	/**
+	 * This method will programmatically perform move for a player 2's unit 
+	 * @param out
+	 * @param gameState
+	 */
+	private void moveAIUnit(ActorRef out, GameState gameState,Tile startTile,Tile tileToMove) {
+		ObjectNode eventMessage = Json.newObject();
+		eventMessage.put("messagetype", "tileclicked");
+		eventMessage.put("start_tilex",""+startTile.getTilex());
+		eventMessage.put("start_tiley", ""+startTile.getTiley());
+		eventMessage.put("tilex",""+tileToMove.getTilex());
+		eventMessage.put("tiley", ""+tileToMove.getTiley());
+		eventMessage.put("action", AppConstants.move);
+
+		TileClicked tc=new TileClicked();
+		tc.processEvent(out, gameState, eventMessage); // send it to the Tileclicked event processor
+		callSleepAI(200);
+	}
+
+	/**
+	 * This method will programmatically perform move for a player 2's unit 
+	 * @param out
+	 * @param gameState
+	 */
+	private void attackAIUnit(ActorRef out, GameState gameState,Tile startTile,Tile tileToAttack) {
+		ObjectNode eventMessage = Json.newObject();
+		eventMessage.put("messagetype", "tileclicked");
+		eventMessage.put("start_tilex",""+startTile.getTilex());
+		eventMessage.put("start_tiley", ""+startTile.getTiley());
+		eventMessage.put("tilex",""+tileToAttack.getTilex());
+		eventMessage.put("tiley", ""+tileToAttack.getTiley());
+		eventMessage.put("action", AppConstants.attack);
+
+		TileClicked tc=new TileClicked();
+		tc.processEvent(out, gameState, eventMessage); // send it to the Tileclicked event processor
+		callSleepAI(200);
+	}
+
+	
+	private void drawCardAI(int handIdx, ActorRef out, GameState gameState,Tile startTile,Tile tileToSummon) {
+		ObjectNode eventMessage = Json.newObject();
+		eventMessage.put("messagetype", "cardclicked");
+		eventMessage.put("position",""+handIdx);
+		eventMessage.put("start_tilex",""+startTile.getTilex());
+		eventMessage.put("start_tiley", ""+startTile.getTiley());
+		eventMessage.put("tilex",""+tileToSummon.getTilex());
+		eventMessage.put("tiley", ""+tileToSummon.getTiley());
+		eventMessage.put("action", AppConstants.drawCardSummon);
+
+
+		TileClicked tc=new TileClicked();
+		tc.processEvent(out, gameState, eventMessage); // send it to the Tileclicked event processor
+		callSleepAI(200);
+	}
+
+	/** Method returns a random number between min and max
+	 * 
+	 * @param Min
+	 * @param Max
+	 * @return
+	 */
+	public static int random_int(int Min, int Max)
+	{
+	     return (int) (Math.random()*(Max-Min))+Min;
+	}
+	
+	/** Method returns the distance between two tile positions
+	 * 
+	 * @param x1 -> X position of tile A	
+	 * @param y1 -> Y position of tile A
+	 * @param x2 -> X position of tile B
+	 * @param y2 -> Y position of tile B
+	 * @return
+	 */
+	public double calculateDistanceBetweenPoints( double x1,  double y1,  double x2,  double y2) {       
+			    return Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
+			}
+
 	/** Method to put AI to sleep 
 	 * 
 	 * @param millis 	
@@ -1019,8 +832,5 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 		catch(InterruptedException e){
 			e.printStackTrace();
 		}
-	}
-	public static void unitDied(){
-		//remove unit from the different DS when they die
 	}
 }
