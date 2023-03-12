@@ -864,7 +864,7 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 		Tile bestTile=null;
 		for (Unit unit : bestMoveTile.keySet()) {//for all units in the map
 			List<Tile> tiles = bestMoveTile.get(unit);//getting the list of all the tiles
-			if(unit.getId()==25 || unit.getId()==35){//for pyromancer the best tile to move to is away from an enemy unit
+			if(unit.getId()==25 || unit.getId()==35 || unit.getId()==41){//for pyromancer and avatar the best tile to move to is away from an enemy unit
 				int closestEnemyUnitIdx=findClosestEnemyUnit(unit.getTileFromUnitP2(unit.getId(), gameState, out));
 				bestTile=findFarthestTiletoEnemy(closestEnemyUnitIdx, tiles);
 			}
@@ -872,8 +872,7 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 				for (Tile tile : tiles) {
 					// Find the closest enemy unit on board
 					int closestEnemyUnitIdx=findClosestEnemyUnit(tile);
-					if(closestEnemyUnitIdx<tileWithPlayerUnits.size() && closestEnemyUnitIdx>-1)
-					{
+					if(closestEnemyUnitIdx<tileWithPlayerUnits.size() && closestEnemyUnitIdx>-1){
 						distance = calculateDistanceBetweenPoints(tile.getTilex(), tile.getTiley(), tileWithPlayerUnits.get(closestEnemyUnitIdx).getTilex(), tileWithPlayerUnits.get(closestEnemyUnitIdx).getTiley());
 						// System.out.println("closest enemy unit id: "+closestEnemyUnitIdx+ " from tile: "+tile.toString()+" with distance: "+distance);
 						if(unit.getMoved()==false){
@@ -893,27 +892,16 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 			if(unit.getMoved()==false){
 				// System.out.println("unit can move: "+unit.getName());
 				if(optimalMoveTile.get(unit)!=null){
-					if(unit.getId()!= 41){//don't move Avatar for now
-						if(unit.getTileFromUnitP2(unit.getId(), gameState, out)!=null){//handling exception
-							AppConstants.printLog("<--------------------Unit Moving---------------------->");
-							System.out.println("unit: "+ unit.getName()+" moving from tile: "+unit.getTileFromUnitP2(unit.getId(), gameState, out).toString() +" to tile: "+optimalMoveTile.get(unit).toString());
-							moveAIUnit(out, gameState, unit.getTileFromUnitP2(unit.getId(), gameState, out), optimalMoveTile.get(unit));
-							callSleepAI(2000);
-							unit.setMoved(true);
-							// possibleMoveAttack(out, gameState);
-						}
-						
+					if(unit.getTileFromUnitP2(unit.getId(), gameState, out)!=null){//handling exception
+						AppConstants.printLog("<--------------------Unit Moving---------------------->");
+						System.out.println("unit: "+ unit.getName()+" moving from tile: "+unit.getTileFromUnitP2(unit.getId(), gameState, out).toString() +" to tile: "+optimalMoveTile.get(unit).toString());
+						moveAIUnit(out, gameState, unit.getTileFromUnitP2(unit.getId(), gameState, out), optimalMoveTile.get(unit));
+						callSleepAI(2000);
+						unit.setMoved(true);
 					}
-					else{
-						//move for avatar to be done
-					}
-					
 				}
 			}
-			
-			
 		}
-		
 	}
 
 
@@ -942,7 +930,6 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 		}
 		for (Unit unit : optimalAttackTile.keySet()) {
 			System.out.println("Best Attack positon for unit: "+unit.getName()+ " is tile:"+optimalAttackTile.get(unit));
-			
 				if(unit.getAttacked()==false){
 					if(optimalAttackTile.get(unit)!=null){
 						if(unit.getId()!=41){
@@ -950,13 +937,9 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 							System.out.println("unit: "+ unit.getName()+" attacking tile: "+optimalAttackTile.get(unit).toString());
 							attackAIUnit(out, gameState, unit.getTileFromUnitP2(unit.getId(), gameState, out), optimalAttackTile.get(unit));
 							unit.setAttacked(true);
-							// if(optimalAttackTile.get(unit).getUnitFromTile()==null){
-							// 	optimalAttackTile.remove(unit);
-							// }
 						}
 					}
 				}
-			
 		}
 	}
 
