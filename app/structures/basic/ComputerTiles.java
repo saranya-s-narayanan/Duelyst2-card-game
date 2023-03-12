@@ -25,12 +25,9 @@ public class ComputerTiles {
     }
 
     // only movement difference
-    public static ArrayList<Tile> windshrikeMovementTiles(int cardId, ActorRef out, GameState gameSate) {
+    public static ArrayList<Tile> windshrikeMovementTiles(GameState gameSate, ActorRef out) {
         ArrayList<Tile> windshrikeTiles = new ArrayList<Tile>();
-        if (cardId == 24 || cardId == 34) {
-            windshrikeTiles = gameSate.board.getTilesWithoutUnits(out, gameSate.board.getTiles(), gameSate.player2);
-            return windshrikeTiles;
-        }
+        windshrikeTiles = gameSate.board.getTilesWithoutUnits(out, gameSate.board.getTiles(), gameSate.player2);
         return windshrikeTiles;
     }
 }

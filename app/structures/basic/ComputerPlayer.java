@@ -826,6 +826,18 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 				bestMoveTile.put(tile.getUnitFromTile(), possibleMovableList);
 				bestAttackTile.put(tile.getUnitFromTile(), possibleAttackableList);
 			}
+			else if(tile.getUnitFromTile().getId()==24 || tile.getUnitFromTile().getId()==34){//windshrike move list
+				possibleMovableList = ComputerTiles.windshrikeMovementTiles(gameState, out);
+				List<Tile> possibleList=gameState.board.allTiles();
+				for (Tile tile2 : possibleList) {
+					if(tile2.getUnitFromTile()!=null ) {
+						if((tile2.getUnitFromTile().getId()<20 || tile2.getUnitFromTile().getId()==40))//if enemy unit on those tiles
+							possibleAttackableList.add(tile2);
+					}
+				}
+				bestMoveTile.put(tile.getUnitFromTile(), possibleMovableList);
+				bestAttackTile.put(tile.getUnitFromTile(), possibleAttackableList);
+			}
 			else{//for other units of AI
 				possibleAttackableList=new ArrayList<Tile>();
 				possibleMovableList = new ArrayList<Tile>();
@@ -960,7 +972,14 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 			for (Tile tile : tiles) {
 				if(tile.getUnitFromTile()!=null) // To tackle NullPointerException
 				{
-					if(tile.getUnitFromTile().getId()==40){//attack player avatar if that is on the attack tile
+					if(unit.getId()==24 || unit.getId()==34){//windshrike to attack any enemy unit which has health <= 4
+						if(tile.getUnitFromTile().getHealth()<=4){
+							bestTile=tile;
+							break;
+						}
+						else continue;
+					}
+					else if(tile.getUnitFromTile().getId()==40){//attack player avatar if that is on the attack tile
 						bestTile=tile;
 						break;
 					}
