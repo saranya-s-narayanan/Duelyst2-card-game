@@ -397,6 +397,10 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 			tileToSummon=findFarthestTiletoEnemy(closestEnemyUnitIdx, possibleSummonList);
 			return tileToSummon;
 		}
+		else if(card.getId()== 28 || card.getId()==38){//summon planar scout to the nearest tile to human avatar
+			tileToSummon=findClosestTileToEnemyAvatar(gameState, bestSummonTile.get(card));
+			return tileToSummon;
+		}
 
 		
 		return tileToSummon;
@@ -476,6 +480,33 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 		
 		return idx;
 		
+	}
+
+	/** Method find the tile with minimum distance to the player avatar 
+	 * 
+	 * @param EnemyUnitIdx
+	 * @param summonList
+	 * @return
+	 */
+	private Tile findClosestTileToEnemyAvatar(GameState gameState, List<Tile> summonList) {
+			
+		Tile tile=null;
+		int enemyUnitIdx = gameState.summonedUnits.get(0).getId();//id of the player avatar
+		double minDistance=999;
+		for(Tile summonTile:summonList)
+		{
+			if(enemyUnitIdx>-1 && enemyUnitIdx<tileWithPlayerUnits.size()) // To avoid IndexOutOfBoundException
+			{
+			double distance=calculateDistanceBetweenPoints(tileWithPlayerUnits.get(enemyUnitIdx).getTilex(), tileWithPlayerUnits.get(enemyUnitIdx).getTiley(), summonTile.getTilex(), summonTile.getTiley());
+
+				if(distance<minDistance && summonTile.getUnitFromTile()==null) {
+					tile=summonTile;
+					minDistance=distance;
+				}
+			}
+		}
+		
+		return tile;
 	}
 
 //	private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameState) {
@@ -732,6 +763,10 @@ private Tile findAtileToSummon(Tile currentTile, ActorRef out, GameState gameSta
 									possibleSummonList.remove(i);
 								}
 					}
+					bestSummonTile.put(card, possibleSummonList);
+				}
+				else if(card.getId()== 28 || card.getId()==38){//for planar scout
+					possibleSummonList = ComputerTiles.planarScoutSummonableTiles(gameState, out);
 					bestSummonTile.put(card, possibleSummonList);
 				}
 				else{//for all the other units with no special abilities
