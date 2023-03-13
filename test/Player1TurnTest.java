@@ -30,13 +30,11 @@ public class Player1TurnTest {
 		GameState gameState = new GameState();
 		Initalize initializeProcessor = new Initalize();
 
-		// This sets up the GameState and initializes the players. See Initialize.java
-		// to confirm what is instantiated
+		// This sets up the GameState and initializes the players. See Initialize.java to confirm what is instantiated
 		ObjectNode eventmessage = Json.newObject();
 		initializeProcessor.processEvent(null, gameState, eventmessage);
 
-		//Confirms that when player1Turn is set to true, it is player1's turn
-		//Else if it is false, it is player2's turn
+		//Confirms that when player1Turn is set to true, it is player1's turn else if it is false, it is player2's turn
 		if (gameState.player1Turn == true) {
 			assertTrue(gameState.player1Turn);
 			
