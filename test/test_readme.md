@@ -1,10 +1,13 @@
 # MSCTeamProject Test ReadMe
 
-This file is to store data about the unit tests.
+This file is to store data about the unit tests, which are used to test the implemented backend logic.
+
+#BoardCreationTest:
+Contains 2 test -> `checkTileInitialized()` and `checkBoardInitialized()`
 
 # AvatarsNotNullTest:
 
-Contains 2 Tests -> AIAvatarNotNullTest, PlayerAvatarNotNullTest
+Contains 2 Tests -> `AIAvatarNotNullTest`, `PlayerAvatarNotNullTest`
 
 # AIAvatarNotNullTest
 
@@ -16,7 +19,7 @@ Tests that `gameState.avatar` is null before initialization and is not null when
 
 # CardNamesMatchCardIDs
 
-Contains 2 Tests -> Player1CardIDNameMatch and Player2CardIDNameMatch
+Contains 2 Tests -> `Player1CardIDNameMatch` and `Player2CardIDNameMatch   `
 
 # Player1CardIDNameMatch
 
@@ -28,7 +31,7 @@ Tests that the card IDs in `OrderedCardLoader.getPlayer2Cards()` match with the 
 
 #HandAndDeckConstantsTests:
 
-Contains 2 Tests -> maxHandSize, maxDeckSize
+Contains 2 Tests -> `maxHandSize`, `maxDeckSize`
 
 # maxHandSize:
 
@@ -48,7 +51,7 @@ This test was written by the Professor and was included in our source code. It c
 
 # InitialAttackValues:
 
-Contains 2 Tests -> AIInitialIAttackValue and PlayerInitialIAttackValue
+Contains 2 Tests -> `AIInitialIAttackValue` and `PlayerInitialIAttackValue`
 
 # AIInitialIAttackValue
 
@@ -60,7 +63,7 @@ This test confirms that the initial attack for the human Avatar (`gameState.avat
 
 # InitialHandSizes:
 
-Contains 2 Tests -> PlayerInitialHandSize and AIInitialHandSize 
+Contains 2 Tests -> `PlayerInitialHandSize` and `AIInitialHandSize` 
 
 # AIInitialHandSize
 
@@ -72,7 +75,7 @@ This test confirms that the initial number of cards in the human player's hand (
 
 # InitialHealthValuesTest:
 
-Contains 2 Tests -> InitializedAIHealthTest, InitializedPlayerHealthTest
+Contains 2 Tests -> `InitializedAIHealthTest`, `InitializedPlayerHealthTest`
 
 # InitializedAIHealthTest
 
@@ -84,7 +87,7 @@ This test is to confirm that the human player's initial health (`gameState.playe
 
 # InitialPositionsTest:
 
-Contains 2 Tests -> AIInitialPositionTest, PlayerInitialPositionTest
+Contains 2 Tests -> `AIInitialPositionTest`, `PlayerInitialPositionTest`
 
 # AIInitialPositionTest
 
