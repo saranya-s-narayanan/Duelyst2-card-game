@@ -72,7 +72,7 @@ public class ComputerPlayer extends Player{
 		    	
 		    	}catch (Exception e) {
 		    		
-					e.printStackTrace();
+					// e.printStackTrace();
 					
 					//Exit loop
 					cardsDrawEnd=true;
