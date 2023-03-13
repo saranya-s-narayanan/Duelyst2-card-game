@@ -19,7 +19,7 @@ import structures.basic.Board;
 import structures.basic.Player;
 import utils.AppConstants;
 
-public class Player1TurnTest {
+public class PlayerTurnTest {
 
 	@Test
 	public void Player1TurnTest() {
