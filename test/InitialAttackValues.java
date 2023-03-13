@@ -20,7 +20,7 @@ import structures.basic.Tile;
 import utils.AppConstants;
 import utils.BasicObjectBuilders;
 
-public class AIInitialIAttackValue {
+public class InitialAttackValues {
 
 	@Test
 	public void AIInitialIAttackValue() {
@@ -39,5 +39,22 @@ public class AIInitialIAttackValue {
         assertEquals(gameState.aiAvatar.getAttack(),2); // Set player current tile
 
 	}
+	
+	@Test
+	public void PlayerInitialAttackValue() {
 
+		CheckMessageIsNotNullOnTell altTell = new CheckMessageIsNotNullOnTell(); // create an alternative tell
+		BasicCommands.altTell = altTell; // specify that the alternative tell should be used
+
+		GameState gameState = new GameState();
+		Initalize initializeProcessor = new Initalize();
+
+		ObjectNode eventmessage = Json.newObject();
+		initializeProcessor.processEvent(null, gameState, eventmessage);
+		
+		//Confirms that the Player's initial attack is equal to 2
+
+        assertEquals(gameState.avatar.getAttack(),2); // Set player current tile
+
+	}
 }

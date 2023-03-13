@@ -2,33 +2,29 @@
 
 This file is to store data about the unit tests.
 
+# AvatarsNotNullTest:
+
+Contains 2 Tests -> AIAvatarNotNullTest, PlayerAvatarNotNullTest
+
 # AIAvatarNotNullTest
 
-Tests that `aiAvatar` is not null when the game is initialized 
+Tests that `gameState.aiAvatar` is null before initialization and is not null when the game is initialized 
 
 # PlayerAvatarNotNullTest
 
-Tests that `avatar` is not null when the game is initialized 
+Tests that `gameState.avatar` is null before initialization and is not null when the game is initialized 
 
-# AIInitialPositionTest
+# CardNamesMatchCardIDs
 
-Tests that the AI's (`player2`) initial x position (`gameState.player2.getCurrentXpos()`) is 7 and its y position (`gameState.player2.getCurrentXpos()`) is 2 once the game is initialized
+Contains 2 Tests -> Player1CardIDNameMatch and Player2CardIDNameMatch
 
-# PlayerInitialPositionTest
+# Player1CardIDNameMatch
 
-Tests that the human player's (`player1`) initial x position (`gameState.player1.getCurrentXpos()`) is 1 and its y position (`gameState.player1.getCurrentXpos()`) is 2 once the game is initialized
+Tests that the card IDs in `OrderedCardLoader.getPlayer1Cards()` match with the correct unit names
 
-# InitializedAIHealthTest
+# Player2CardIDNameMatch
 
-This test is to confirm that the AI's initial health (`gameState.player2.getHealth()`)equals 20, the maximum health constant defined in AppConstants(`AppConstants.playerMaxHealth`)
-
-# InitializedPlayerHealthTest
-
-This test is to confirm that the human player's initial health (`gameState.player1.getHealth()`)equals 20, the maximum health constant defined in AppConstants(`AppConstants.playerMaxHealth`)
-
-# InitalizationTest
-
-This test was written by the Professor and was included in our source code. It creates a new `GameState` and a new `Initialize` event processor. Then it verifies that `gameState.gameInitalised` returns true (the game state is updated) once an initialize message is received. 
+Tests that the card IDs in `OrderedCardLoader.getPlayer2Cards()` match with the correct unit names
 
 #HandAndDeckConstantsTests:
 
@@ -42,34 +38,80 @@ This test confirms that the max hand size for both players (`AppConstants.maxCar
 
 This test confirms that the max hand size for both players (`AppConstants.maxCardsInDeck`) is 20.
 
+# IncrementManaTest
+
+This test confirms that the mana for both players is equal to turn + 1 with each new turn.
+
+# InitalizationTest
+
+This test was written by the Professor and was included in our source code. It creates a new `GameState` and a new `Initialize` event processor. Then it verifies that `gameState.gameInitalised` returns true (the game state is updated) once an initialize message is received. 
+
+# InitialAttackValues:
+
+Contains 2 Tests -> AIInitialIAttackValue and PlayerInitialIAttackValue
+
+# AIInitialIAttackValue
+
+This test confirms that the initial attack for the computer Avatar (`gameState.aiAvatar.getAttack()`)is set to 2
+
+# PlayerInitialAttackValue
+
+This test confirms that the initial attack for the human Avatar (`gameState.avatar.getAttack()`)is set to 2
+
 # InitialHandSizes:
 
 Contains 2 Tests -> PlayerInitialHandSize and AIInitialHandSize 
-
-# PlayerInitialHandSize
-
-This test confirms that the initial number of cards in the human player's hand (`gameState.player1.hand.size()`) is 3 (`AppConstants.minCardsInHand`). 
 
 # AIInitialHandSize
 
 This test confirms that the initial number of cards in the AI player's hand (`gameState.player2.hand.size()`) is 3 (`AppConstants.minCardsInHand`).
 
-# Player1TurnTest
+# PlayerInitialHandSize
 
-This test confirms that it is player1's turn when (`gameState.player1Turn`) is set to true and that it is the AI's turn when (`gameState.player1Turn`) is set to false.
+This test confirms that the initial number of cards in the human player's hand (`gameState.player1.hand.size()`) is 3 (`AppConstants.minCardsInHand`). 
+
+# InitialHealthValuesTest:
+
+Contains 2 Tests -> InitializedAIHealthTest, InitializedPlayerHealthTest
+
+# InitializedAIHealthTest
+
+This test is to confirm that the AI's initial health (`gameState.player2.getHealth()`)equals 20, the maximum health constant defined in AppConstants(`AppConstants.playerMaxHealth`)
+
+# InitializedPlayerHealthTest
+
+This test is to confirm that the human player's initial health (`gameState.player1.getHealth()`)equals 20, the maximum health constant defined in AppConstants(`AppConstants.playerMaxHealth`)
+
+# InitialPositionsTest:
+
+Contains 2 Tests -> AIInitialPositionTest, PlayerInitialPositionTest
+
+# AIInitialPositionTest
+
+Tests that the AI's starting position on the board (`gameState.player2.getCurrentTile()`) is set at (7,2) (`gameState.board.returnTile(7, 2))`).
+
+# PlayerInitialPositionTest
+
+Tests that the human player's starting position on the board (`gameState.player1.getCurrentTile()`) is set at (1,2) (`gameState.board.returnTile(1, 2)`).
 
 # IsGameOverTest
 
 This test confirms that the game ends when the human or computer player's health reaches 0, or either player runs out of cards. 
 
-# IncrementManaTest
+# Player1CardIDs: 
 
-This test confirms that the mana for both players is equal to turn + 1 with each new turn.  
+This test confirms that the Card ID numbers for Player1's cards in OrderedCardLoader (`OrderedCardLoader.getPlayer1Cards().get(0).getId()`) are equal to their positions in the cardsInDeck ArrayList.
 
-# PlayerInitialIAttackValue
+# Player2CardIDs: 
 
-This test confirms that the initial attack for the human avatar is set to 2
+This test confirms that the Card ID numbers for Player2's cards in OrderedCardLoader (`OrderedCardLoader.getPlayer2Cards().get(0).getId()`) are equal to their positions in the cardsInDeck ArrayList.
 
-# AIInitialIAttackValue
+# PlayerInitialAttackTest
 
-This test confirms that the initial attack for the computer avatar is set to 2
+This test was written by the Professor and was included in our source code. It creates a new `GameState` and a new `Initialize` event processor. Then it verifies that `gameState.gameInitalised` returns true (the game state is updated) once an initialize message is received. 
+
+# PlayerTurnTest
+
+This test confirms that it is player1's turn when (`gameState.player1Turn`) is set to true and that it is the AI's turn when (`gameState.player1Turn`) is set to false.
+
+
