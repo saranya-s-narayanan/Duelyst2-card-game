@@ -276,7 +276,6 @@ public class Board {
         				
         				if(newTile.getUnitFromTile()!=null)
         				{
-//	        				if(newTile.getUnitFromTile().getIsPlayer()!=player.getID())
 	        				if(newTile.getUnitFromTile().getIsPlayer()!=tile.getUnitFromTile().getIsPlayer())
 	        				{
       					
@@ -284,7 +283,6 @@ public class Board {
 
 	        					if(mode==1)
 	        					{
-//	        							BasicCommands.drawTile(out, newTile, 2); // update front end
 	        			                drawTileWithSleep(out, newTile, 2, AppConstants.drawTileSleepTime);
 	        						
 	        					}
@@ -295,7 +293,6 @@ public class Board {
 
         					if(mode==1)
         					{
-//        						BasicCommands.drawTile(out, newTile, 1); // update front end
         						drawTileWithSleep(out, newTile, 1, AppConstants.drawTileSleepTime);
         					}
 
@@ -350,7 +347,6 @@ public class Board {
 
         			if(newTile!=tile && newTile.getUnitFromTile()!=null) // Check if the attackable tile has any unit present
         			{
-                		AppConstants.printLog("newUnit: "+newTile.getUnitFromTile().getIsPlayer()+", player id: "+player.getID());
 
         				if(newTile.getUnitFromTile().getIsPlayer()!=player.getID())
             			adjacentTiles.add(newTile);
@@ -563,7 +559,6 @@ public class Board {
 
         BasicCommands.setUnitAttack(out, unit1, unit1.getAttack());
         AppConstants.callSleep(100);
-        AppConstants.printLog("------> addDummyUnitsonBoard :: Placed unit at [2,2]");
         
      // Place enemy unit with attack:2 and health:1 at [2,1]
         x = 0;
@@ -583,7 +578,6 @@ public class Board {
 
         BasicCommands.setUnitAttack(out, unit1, unit1.getAttack());
         AppConstants.callSleep(100);
-        AppConstants.printLog("------> addDummyUnitsonBoard :: Placed unit at [2,1]");
         
         
         // Place enemy unit with attack:21 and health:2 at [2,4]
@@ -604,7 +598,6 @@ public class Board {
 
         BasicCommands.setUnitAttack(out, unit1, unit1.getAttack());
         AppConstants.callSleep(100);
-        AppConstants.printLog("------> addDummyUnitsonBoard :: Placed unit at [2,4]");
         
        
         
@@ -625,7 +618,6 @@ public class Board {
 
         BasicCommands.setUnitAttack(out, unit1, unit1.getAttack());
         AppConstants.callSleep(100);
-        AppConstants.printLog("------> addDummyUnitsonBoard :: Placed unit at [2,4]");
         
         x = 5;
         y = 4;
@@ -644,7 +636,6 @@ public class Board {
 
         BasicCommands.setUnitAttack(out, unit1, unit1.getAttack());
         AppConstants.callSleep(100);
-        AppConstants.printLog("------> addDummyUnitsonBoard :: Placed unit at [2,4]");
         
 
     }

@@ -226,9 +226,7 @@ public class Player {
         for(int i=0;i<AppConstants.minCardsInHand;i++){
 			//move the top card from deck to hand
 			hand.add(i, deck.get(0));
-			// System.out.println("Card " + deck.get(0).getCardname() + " removing from deck");
 			deck.remove(0);
-			// System.out.println("Card " + hand.get(i).getCardname() + " added to hand for playerID "+playerID);
 			if(playerID==1){
 				// drawCard [i]
 				BasicCommands.drawCard(out, hand.get(i), position, 0);
@@ -278,7 +276,6 @@ public class Player {
 			
 		}
 		else {
-			// AppConstants.printLog("------> drawAnotherCard P1:: but the hand positions are full !, deck size: "+deck.size());
 			if(deck.size()>0)
 			{
 				if(playerID==1){
@@ -287,9 +284,7 @@ public class Player {
 					AppConstants.callSleep(500);
 				}
 				else{
-					// AppConstants.printLog("------> drawAnotherCard AI:: card to be burn at position: "+ position);
 					deck.remove(0);
-					// AppConstants.printLog("------> drawAnotherCard AI:: card burn complted!");
 					AppConstants.callSleep(500);
 				}
 			}else {
@@ -350,18 +345,15 @@ public class Player {
 				Card c = deck.get(j);
 				if(c.getId()==4 || c.getId()==8 || c.getId()==14 || c.getId()==18 || c.getId()==22 || c.getId()==27 || c.getId()==32 || c.getId()==37) j++;
 				c=deck.get(j);
-				// System.out.println("card called: "+c.getCardname()+" with id: "+c.getId());
 					Unit u = BasicObjectBuilders.loadUnit(unitFiles[i], c.getId(),Unit.class);
 					u.setIsPlayer(player.playerID);
 					u.setHealth(c.getBigCard().getHealth());
 					u.setAttack(c.getBigCard().getAttack());
 					u.setName(c.getCardname());
 					u.setMaxHealth(c.getBigCard().getHealth());
-					// System.out.println("Unit created with id: "+ u.getId()+ " and name: "+u.getName());
 					playerUnits.add(u);//changes here for conflict resolution
 					j++;
 			}
-		// System.out.println("Exiting create units");
 	}
 	
 
