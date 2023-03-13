@@ -17,6 +17,18 @@ Tests that `gameState.aiAvatar` is null before initialization and is not null wh
 
 Tests that `gameState.avatar` is null before initialization and is not null when the game is initialized 
 
+# BoardCreationTest:
+
+Contains 2 Tests -> checkTileInitialized and checkBoardInitialized
+
+# checkTileInitialized
+
+Tests if tile object array is created in Board in the constructor call
+
+# checkBoardInitialized
+
+Tests that the board object is created in GameState after receiving the 'Initialize' message
+
 # CardNamesMatchCardIDs
 
 Contains 2 Tests -> `Player1CardIDNameMatch` and `Player2CardIDNameMatch   `
@@ -53,13 +65,13 @@ This test was written by the Professor and was included in our source code. It c
 
 Contains 2 Tests -> `AIInitialIAttackValue` and `PlayerInitialIAttackValue`
 
-# AIInitialIAttackValue
+# AIInitialAttackValue
 
-This test confirms that the initial attack for the computer Avatar (`gameState.aiAvatar.getAttack()`)is set to 2
+This test confirms that the initial attack for the computer Avatar (`gameState.aiAvatar.getAttack()`) is set to 2
 
 # PlayerInitialAttackValue
 
-This test confirms that the initial attack for the human Avatar (`gameState.avatar.getAttack()`)is set to 2
+This test confirms that the initial attack for the human Avatar (`gameState.avatar.getAttack()`) is set to 2
 
 # InitialHandSizes:
 
@@ -79,11 +91,11 @@ Contains 2 Tests -> `InitializedAIHealthTest`, `InitializedPlayerHealthTest`
 
 # InitializedAIHealthTest
 
-This test is to confirm that the AI's initial health (`gameState.player2.getHealth()`)equals 20, the maximum health constant defined in AppConstants(`AppConstants.playerMaxHealth`)
+This test is to confirm that the AI's initial health (`gameState.player2.getHealth()`) equals 20, the maximum health constant defined in AppConstants (`AppConstants.playerMaxHealth`)
 
 # InitializedPlayerHealthTest
 
-This test is to confirm that the human player's initial health (`gameState.player1.getHealth()`)equals 20, the maximum health constant defined in AppConstants(`AppConstants.playerMaxHealth`)
+This test is to confirm that the human player's initial health (`gameState.player1.getHealth()`) equals 20, the maximum health constant defined in AppConstants (`AppConstants.playerMaxHealth`)
 
 # InitialPositionsTest:
 
@@ -107,7 +119,7 @@ This test confirms that the Card ID numbers for Player1's cards in OrderedCardLo
 
 # Player2CardIDs: 
 
-This test confirms that the Card ID numbers for Player2's cards in OrderedCardLoader (`OrderedCardLoader.getPlayer2Cards().get(0).getId()`) are equal to their positions in the cardsInDeck ArrayList.
+This test confirms that the Card ID numbers for Player2's cards in OrderedCardLoader (`OrderedCardLoader.getPlayer2Cards().get(0).getId()`) match correctly with their positions in the cardsInDeck ArrayList.
 
 # PlayerInitialAttackTest
 
