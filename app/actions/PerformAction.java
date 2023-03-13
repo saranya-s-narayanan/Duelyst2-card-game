@@ -425,7 +425,7 @@ public class PerformAction {
 	
 	
 	public static ArrayList<Tile> getSummonableTiles(ActorRef out, GameState gameState, Player player) {  // method used to retreives a list of the summonable tiles
-
+		gameState.SummonTileList=null;
         if(gameState.SummonTileList==null){
             gameState.SummonTileList= new ArrayList<Tile>();
             // list of the tiles with units
