@@ -617,8 +617,8 @@ public class TileClicked implements EventProcessor {
                 }
             }
             else if(!PerformAction.getSummonableTiles(out, gameState, player).contains(clicked)){//if outside the summon tile list
-            	if(player.getID()==1)//Notifications active for only player1
-                {
+//            	if(player.getID()==1)
+//                {
             		// If the unit being summoned is Ironcliff Guardian or Planar Scout, implement airdrop special ability
             		if(unitSummon.getId() == 6 || unitSummon.getId() == 16 || unitSummon.getId() == 28 || unitSummon.getId() == 38) {
             			gameState.SummonTileList = gameState.board.getTilesWithoutUnits(out, gameState.board.getTiles(), player);
@@ -635,14 +635,12 @@ public class TileClicked implements EventProcessor {
                          unitSummon.setAttacked(true);//restricting attack
                          if(player.getID()==1) { //Notifications active for only player1 
                              BasicCommands.addPlayer1Notification(out, "Summoning Complete", 2);
-                     	}else { // It's a spell
-                     		AppConstants.printLog("<------------- HANDLE SPELL !!!!!!!!!!!!!!!!!!!!!!! --------------");
                      	}
             		}else {
             			BasicCommands.addPlayer1Notification(out, "Outside Summonable area", 2);
                 		OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
             		}
-                }
+               // }
             }
         }}
     }
