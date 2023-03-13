@@ -35,7 +35,6 @@ public class Initalize implements EventProcessor {
 
         gameState.gameInitalised = true;
         gameState.clickMessage=message.get("messagetype");//initializing the clickMessage here
-		AppConstants.printLog("------> message type:---->"+gameState.clickMessage);
 
 
 		// Create a board object and assign it to the gameState board object

@@ -28,9 +28,7 @@ public class UnitStopped implements EventProcessor{
 		if(gameState.isGameActive) // if the frontend connection is active
 		{
 			gameState.clickMessage=message.get("messagetype");//message to keep track of previous click on front-end
-			AppConstants.printLog("------> message type:---->"+gameState.clickMessage);
 			int unitid = message.get("id").asInt();
-			AppConstants.printLog("------> UnitStopped :: unitid : "+unitid);
 
 		}
 		

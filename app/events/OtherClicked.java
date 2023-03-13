@@ -25,20 +25,18 @@ public class OtherClicked implements EventProcessor{
 
 	@Override
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
-        AppConstants.printLog("------> Otherclicked :: gameState.isGameActive -> "+gameState.isGameActive);
 
 		if(gameState.isGameActive) // if the frontend connection is active
 		{
 			cardClick=message.get("messagetype");//message to keep track of current click on front-end
-            AppConstants.printLog("------> message type:---->"+cardClick);
-            if(gameState.clickMessage != cardClick){
+
+			if(gameState.clickMessage != cardClick){
 				if(gameState.SummonTileList != null){//to check if cardClick happened
 					if(gameState.player1Turn) clearCardClicked(out, gameState, gameState.player1);//clear for player1
 					
 				}
                 gameState.clickMessage=cardClick;//update the gameState on this click
             }
-			AppConstants.printLog("------> OtherClicked :: Game is active ! ");
 			
 			gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
 			TileClicked.setStartTile(false) ;//to set the move to false

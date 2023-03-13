@@ -27,7 +27,6 @@ public class EndTurnClicked implements EventProcessor{
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
 		if(gameState.isGameActive){ // if the frontend connection is active
 			cardClick=message.get("messagetype");//message to keep track of previous click on front-end
-			AppConstants.printLog("------> previous message type:---->"+gameState.clickMessage);
 			AppConstants.printLog("------> End turn:---->"+message.toPrettyString());
 
 			if(gameState.clickMessage!=null) // To handle NullPointerException
@@ -72,7 +71,7 @@ public class EndTurnClicked implements EventProcessor{
 
 	private void endPlayer2Turn(ActorRef out, GameState gameState) {
 		// TODO Auto-generated method stub
-		AppConstants.printLog("------> End turn Clicked by the AI !");
+		AppConstants.printLog("------> AI ended the turn !");
 		
 		gameState.playerTurnNumber++;//incrementing the turn number the player will have
 		
@@ -94,7 +93,7 @@ public class EndTurnClicked implements EventProcessor{
 
 	private void endPlayer1Turn(ActorRef out, GameState gameState) {
 		// TODO Auto-generated method stub
-		AppConstants.printLog("------> End turn Clicked by the player !");
+		AppConstants.printLog("------> Player ended the turn !");
 
 
 		gameState.player2.setMana(gameState.compTurnNumber+1);//setting the mana to turn+1
@@ -106,10 +105,7 @@ public class EndTurnClicked implements EventProcessor{
 		
 		gameState.player1.drawAnotherCard(out,1);//draw a card from the deck
 		
-		for(Card cardd:gameState.player1.hand)
-			AppConstants.printLog("------> Hand card : "+cardd.getCardname());
 
-		AppConstants.printLog("------> Deck size : "+gameState.player1.deck.size());
 
 		gameState.player1.setMana(0);//flushing the mana
 		

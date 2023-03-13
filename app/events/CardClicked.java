@@ -32,20 +32,17 @@ public class CardClicked implements EventProcessor {
 
     @Override
     public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
-        AppConstants.printLog("------> CardClicked:: message ->"+message.toPrettyString());
 
         if (gameState.isGameActive) // if the frontend connection is active
         {
             cardClick=message.get("messagetype");//message to keep track of previous click on front-end
             handPosition = message.get("position").asInt();//get hand position
 
-            AppConstants.printLog("------> message type:---->"+gameState.clickMessage);
             if(gameState.clickMessage != cardClick){
                 gameState.clickMessage=cardClick;
             }
             if (gameState.player1Turn) { // for the first player
 
-                AppConstants.printLog("------> CardClicked:: Game is active !");
                 gameState.board.clearTileHighlighting(out, gameState.board.allTiles());
                 //method call to highlight card
                 highlightMiniCard(out, handPosition, gameState);
