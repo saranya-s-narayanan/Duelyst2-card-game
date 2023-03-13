@@ -106,6 +106,12 @@ This test confirms that the Card ID numbers for Player1's cards in OrderedCardLo
 
 This test confirms that the Card ID numbers for Player2's cards in OrderedCardLoader (`OrderedCardLoader.getPlayer2Cards().get(0).getId()`) are equal to their positions in the cardsInDeck ArrayList.
 
+# PlayerInitialAttackTest
+
+This test was written by the Professor and was included in our source code. It creates a new `GameState` and a new `Initialize` event processor. Then it verifies that `gameState.gameInitalised` returns true (the game state is updated) once an initialize message is received. 
+
 # PlayerTurnTest
 
 This test confirms that it is player1's turn when (`gameState.player1Turn`) is set to true and that it is the AI's turn when (`gameState.player1Turn`) is set to false.
+
+
