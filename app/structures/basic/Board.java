@@ -210,50 +210,6 @@ public class Board {
     }
 
 
-//    public ArrayList<Tile> highlightTilesOptimized(ActorRef out, Tile tile) {
-//
-//    	 // arrayList to store the available tiles
-//        ArrayList<Tile> adjacentTiles = new ArrayList<Tile>();
-//
-//		 // tile co-ordinates
-//       int x = tile.getTilex();
-//       int y = tile.getTiley();
-//       int newx;
-//       int newy;
-//       Tile newTile;
-//
-//       
-//       int idx=0;
-//       for(int i=-2;i<3;i++)
-//       {
-//       	
-//       	for(int j=(-1*idx);j<=idx;j++)
-//       	{
-//       		
-//       		newx=x+i;
-//       		newy=y+j;
-//       		AppConstants.printLog("New xy: ["+newx+","+newy+"]");
-//
-//       		if((newx>=0 && newx<AppConstants.boardWidth)&&(newy>=0 && newy<AppConstants.boardHeight))
-//       		{
-//       			newTile=returnTile(newx, newy);
-//       			
-//       			if(newTile!=tile) // No need to highlight starttile
-//       			{
-//       				adjacentTiles.add(newTile);
-//       			}
-//
-//       		}
-//
-//       		
-//       	}
-//       	if(i<0)
-//       		idx++;
-//       	else
-//       		idx--;
-//       }	
-//       return adjacentTiles;
-//	}
     
     /** This method will take a tile and finds it's adjacent tiles to move and it will find the 
      * attackable unit (if present) to those adjacent tiles and highlight those tiles.
@@ -387,7 +343,6 @@ public class Board {
         		
         		newx=x+i;
         		newy=y+j;
-//        		AppConstants.printLog("New xy: ["+newx+","+newy+"]");
 
         		if((newx>=0 && newx<AppConstants.boardWidth)&&(newy>=0 && newy<AppConstants.boardHeight))
         		{
@@ -449,15 +404,12 @@ public class Board {
 
         		if((newx>=0 && newx<AppConstants.boardWidth)&&(newy>=0 && newy<AppConstants.boardHeight))
         		{
-//            		AppConstants.printLog("New xy: ["+newx+","+newy+"]");
 
         			newTile=returnTile(newx, newy);
 
         			if(newTile!=startTile && newTile!=tile && newTile.getUnitFromTile()!=null) // Check if the attackable tile has any unit present
         			{
-//                		AppConstants.printLog("newUnit: "+newTile.getUnitFromTile().getIsPlayer()+", player id: "+player.getID());
 
-//        				if(newTile.getUnitFromTile().getIsPlayer()!=player.getID())
         				if(newTile.getUnitFromTile().getIsPlayer()!=startTile.getUnitFromTile().getIsPlayer())
         					adjacentTiles.add(newTile);
 
@@ -574,14 +526,7 @@ public class Board {
         }
     }
 
-    // public void clearTileHighlighting(ActorRef out, Board board) {  // method to clear the highlighted tiles
-    //     for (int i = 0; i < AppConstants.boardWidth; i++) {
-    //         for (int j = 0; j < AppConstants.boardHeight; j++) {
-    //             BasicCommands.drawTile(out, board.tiles[i][j], 0);
-    //         }
-    //     }
-
-    // }
+ 
     public void clearTileHighlighting(ActorRef out, ArrayList<Tile> tiles) {  // method to clear the highlighted tiles changed to git rid of BufferOverflow Exception
         for (Tile tile : tiles) {
 //            BasicCommands.drawTile(out, tile, 0);

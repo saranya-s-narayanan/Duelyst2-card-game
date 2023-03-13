@@ -109,15 +109,6 @@ public class Player {
 
 	public Unit getUnitbyCard(Card card){
 		Unit unit=null;
-		// if(p.getID()==1){//changes here for conflict resolution
-		// 	Card c=hand.get(i);
-		// 	for (Unit u : player1Units) {
-		// 		if(u.getId()==c.getId())  unit=u;
-		// 		//trying to return the unit for that particular card
-		// 	}
-		// 	return unit;
-		// }
-		// else return player2Units.get(i);
 		Card c=card;//changes here for conflict resolution
 		if (c != null) {
 			for (Unit u : playerUnits) {
@@ -226,17 +217,6 @@ public class Player {
 		// 	System.out.println("Card in deck: "+c.getCardname()+" with id: "+ c.getId());
 		// }
 	}
-
-	//these are moved above for bunching up the getters and setters
-	// //method to get total cards in the deck
-	// public int getCardInDeck(){
-	// 	return deck.size();
-	// }
-
-	// //method to get total cards in hand
-	// public int getCardInHand() {
-	// 	return hand.size();
-	// }
 	
 	/** This method sets the hand of the corresponding player object
 	 * @param playerID
@@ -303,15 +283,11 @@ public class Player {
 			{
 				if(playerID==1){
 					BasicCommands.addPlayer1Notification(out, "Hand is full! ", 2);
-					// AppConstants.printLog("------> drawAnotherCard P1:: card to be burned at position: "+ position);
-					//deck.remove(position); //--> was creating outOfbound exception
 					deck.remove(0);
-					// AppConstants.printLog("------> drawAnotherCard P1:: card burn complted!");
 					AppConstants.callSleep(500);
 				}
 				else{
 					// AppConstants.printLog("------> drawAnotherCard AI:: card to be burn at position: "+ position);
-					//deck.remove(position);
 					deck.remove(0);
 					// AppConstants.printLog("------> drawAnotherCard AI:: card burn complted!");
 					AppConstants.callSleep(500);
@@ -369,7 +345,6 @@ public class Player {
 	public void createUnits(Player player){
 		// System.out.println("Inside create units");
 		int j=0;
-//		for(int x=0;x<2;x++){
 			for(int i=0;i<unitFiles.length;i++){
 				// System.out.println("i= "+i);
 				Card c = deck.get(j);
@@ -386,7 +361,6 @@ public class Player {
 					playerUnits.add(u);//changes here for conflict resolution
 					j++;
 			}
-//		}
 		// System.out.println("Exiting create units");
 	}
 	
@@ -407,7 +381,6 @@ public class Player {
 				if (u.getId() == card.getId()) { // check the card ids
 					//added these in order to summon the unit on board rather than in the top left corner
 					tile.setUnitToTile(unit);
-//					unit.setSummonedID(gameState.summonedUnits.size()+1);//unique summonedID
 					unit.setSummonedID(gameState.summonedUnits.get(gameState.summonedUnits.size()-1).getSummonedID()+1);//unique summonedID
 					unit.setIsPlayer(1);
 					gameState.board.addUnitToBoard(tile.getTilex(), tile.getTiley(), unit);
@@ -428,7 +401,6 @@ public class Player {
 			for (Unit u : playerUnits) {
 				if (u.getId() == card.getId()) {
 					tile.setUnitToTile(unit);
-//					unit.setSummonedID(gameState.summonedUnits.size()+1);//unique summonedID
 					unit.setSummonedID(gameState.summonedUnits.get(gameState.summonedUnits.size()-1).getSummonedID()+1);//unique summoneddId
 					unit.setIsPlayer(2);
 					gameState.board.addUnitToBoard(tile.getTilex(), tile.getTiley(), unit);

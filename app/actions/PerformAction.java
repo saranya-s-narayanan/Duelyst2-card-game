@@ -22,14 +22,6 @@ import static structures.basic.UnitAnimationType.idle;
 
 public class PerformAction {
 
-	/*// <---- Moved below code to Appconstants - SS ---->
-	 * static String[] effects = { StaticConfFiles.f1_buff,
-	 * StaticConfFiles.f1_inmolation, StaticConfFiles.f1_martyrdom,
-	 * StaticConfFiles.f1_summon };
-	 */
-	
-	
-	
 	
 	/** This method implements attack function of players
 	 * @param mode 

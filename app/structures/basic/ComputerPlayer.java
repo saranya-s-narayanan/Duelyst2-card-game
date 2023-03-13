@@ -232,7 +232,6 @@ public class ComputerPlayer extends Player{
 		Tile tileToSummon = null;
 		//should be changing this to accomodate for different cards
 		possibleSummonList= PerformAction.getSummonableTiles(out, gameState, gameState.player2);
-		// gameState.board.highlightTilesRed(out, (ArrayList<Tile>) possibleSummonList);
 
 		// Find the closest enemy unit on board
 		int closestEnemyUnitIdx=findClosestEnemyUnit(currentTile);
@@ -334,7 +333,6 @@ public class ComputerPlayer extends Player{
 		for(int i=0;i<tileWithPlayerUnits.size();i++)
 		{
 			double distance=calculateDistanceBetweenPoints(ourTile.getTilex(), ourTile.getTiley(), tileWithPlayerUnits.get(i).getTilex(), tileWithPlayerUnits.get(i).getTiley());
-//			AppConstants.printLog("AI:: findClosestEnemyUnit:: DISTANCE: "+distance);
 			if(distance<minDistance)
 			{
 				minDistance=distance;
@@ -407,11 +405,7 @@ public class ComputerPlayer extends Player{
 				if(c.getManacost()<=getMana()) //  check mana
 				{
 					if(c.getId()==22 || c.getId()==32){//check if card in hand is staffofykir
-						//play staff of Ykir when the avatar has more than 1 enemy units in range
-//						if(bestAttackTile.get(gameState.summonedUnits.get(1)).size()>2){
 							return i;
-//						}
-//						else continue;
 					}
 					else if(c.getId()==27 || c.getId()==37){//check if the card in hand is entropic decay
 						//find unit with max health and max attack and play this card
@@ -481,7 +475,6 @@ public class ComputerPlayer extends Player{
 				//get summonable tiles
 				if(card.getId()==22 || card.getId()==32){//for staffofykir can only be played on the avatar
 					possibleSummonList = new ArrayList<Tile>();
-//					possibleSummonList.add(gameState.summonedUnits.get(1).getTileFromUnitP2(41, gameState, out));
 					possibleSummonList.add(currentTile);
 					bestSummonTile.put(card, possibleSummonList);
 				}
@@ -767,7 +760,7 @@ public class ComputerPlayer extends Player{
 
 		TileClicked tc=new TileClicked();
 		tc.processEvent(out, gameState, eventMessage); // send it to the Tileclicked event processor
-		callSleepAI(200);
+		callSleepAI(2000);
 	}
 
 	/** Method returns a random number between min and max

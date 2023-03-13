@@ -132,16 +132,8 @@ public class TileClicked implements EventProcessor {
                             // Summon the unit
                             summonCard(out,gameState,clickedTile,gameState.player2);
             		    }
-
-
 	            		
 	            	}
-//	            	else if(message.get("action").asText().equalsIgnoreCase(AppConstants.drawCardSpell)) // Cast spell
-//	            	{
-//	            		 // Do logic / call method
-//	            		
-//	            		
-//	            	}
             	}
             	 startTile=null;
 
@@ -548,14 +540,6 @@ public class TileClicked implements EventProcessor {
             else Spell.sundropElixir(out, handCard, clicked, gameState);
             return;
         }
-//        if (player.getMana() >= handCard.getManacost() && handCard.getCardname().equals("Entropic Decay")) {
-//            Spell.entropicDecay(out, handCard, clicked, gameState);
-//            return;
-//        }
-//        if (player.getMana() >= handCard.getManacost() && handCard.getCardname().equals("Staff of Y'Kir'")) {
-//            Spell.staffOfYKir(out, handCard, clicked, gameState);
-//            return;
-//        }
 
         // added the conditions of checking if the tile has a unit on it already and that the summonable tile list contains the clicked tile ontop of checking mana cost
 
@@ -569,8 +553,6 @@ public class TileClicked implements EventProcessor {
                         // variable to track how much healing the avatar recieves
                         int healing =  AppConstants.playerMaxHealth-gameState.summonedUnits.get(0).getHealth();
                         gameState.player1.getAvatar().setHealth(AppConstants.playerMaxHealth);
-                        // gameState.summonedUnits.get(0).setHealth(AppConstants.playerMaxHealth);
-            			// BasicCommands.setUnitHealth(out, gameState.summonedUnits.get(0), gameState.summonedUnits.get(0).getHealth());
             			BasicCommands.setUnitHealth(out, gameState.summonedUnits.get(0), gameState.player1.getAvatar().getHealth());
                         // buff effect and notification of healing effect
                         BasicCommands.addPlayer1Notification(out, "Healing avatar +" + healing, 2);
@@ -580,9 +562,9 @@ public class TileClicked implements EventProcessor {
             		else {
             			// Increase avatar health by 3
             			gameState.player1.getAvatar().setHealth(gameState.player1.getAvatar().getHealth() + 3);
-            			//gameState.summonedUnits.get(0).setHealth(gameState.summonedUnits.get(0).getHealth() + 3);
+        
                 		// Update on front end
-            			// BasicCommands.setUnitHealth(out, gameState.summonedUnits.get(0), gameState.summonedUnits.get(0).getHealth());
+            			
             			BasicCommands.setUnitHealth(out, gameState.summonedUnits.get(0), gameState.player1.getAvatar().getHealth());
                         BasicCommands.addPlayer1Notification(out, "Healing avatar +3", 2);
                         AppConstants.callSleep(200);
@@ -616,9 +598,7 @@ public class TileClicked implements EventProcessor {
                 if(player.getID()==1)//Notifications active for only player1
                 BasicCommands.addPlayer1Notification(out, "Summoning Complete", 2);
         	}
-//        	else { // It's a spell
-//        		AppConstants.printLog("<------------- HANDLE SPELL !!!!!!!!!!!!!!!!!!!!!!! --------------");
-//        	}
+
 
         }
         else {//if conditions are not met
@@ -662,8 +642,6 @@ public class TileClicked implements EventProcessor {
             			BasicCommands.addPlayer1Notification(out, "Outside Summonable area", 2);
                 		OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
             		}
-//            		BasicCommands.addPlayer1Notification(out, "Outside Summonable area", 2);
-//            		OtherClicked.clearCardClicked(out, gameState, player);//clear highlighting
                 }
             }
         }}
@@ -680,23 +658,4 @@ public class TileClicked implements EventProcessor {
         }
         return playerOp;
     }
-
-
-    /** This method only clears the tile, added as the other method was not clearing the tiles properly
-     *
-     * @param out
-     * @param gameState
-     *
-     * @param player
-     *
-     */
-//    public static void clearTileHighSummon( ActorRef out, GameState gameState, Player player){
-//		ArrayList<Tile> list = gameState.board.getTilesWithUnits(out, gameState.board.getTiles(), player);
-//		// iteration through the list and de-highlight adjacent tiles
-//		for (Tile items: list) {//changes here for conflict resolution
-//			gameState.board.clearTileHighlighting(out, gameState.board.summonableTiles(out, items));
-//		}
-//		gameState.SummonTileList=null;
-//		AppConstants.callSleep(200);
-//	}
 }
