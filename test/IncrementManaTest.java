@@ -21,7 +21,7 @@ import utils.AppConstants;
 public class IncrementManaTest {
 
 	@Test
-	public void EndTurnTest() {
+	public void IncrementManaTest() {
 
 		CheckMessageIsNotNullOnTell altTell = new CheckMessageIsNotNullOnTell(); // create an alternative tell
 		BasicCommands.altTell = altTell; // specify that the alternative tell should be used
@@ -31,13 +31,11 @@ public class IncrementManaTest {
 
 		assertFalse(gameState.gameInitalised); // check we have not initalized
 
-		// This sets up the GameState and initializes the players. See Initialize.java
-		// to confirm what is instantiated
+		// This sets up the GameState and initializes the players. See Initialize.java to confirm what is instantiated
 		ObjectNode eventmessage = Json.newObject();
 		initializeProcessor.processEvent(null, gameState, eventmessage);
 
-		// Creating a new EndTurnClicked object to get to processEvent, which has the
-		// logic for switching the player turns
+		// Creating a new EndTurnClicked object to get to processEvent, which has the logic for switching the player turns
 		EndTurnClicked e = new EndTurnClicked();
 
 		// Ends player1's turn
@@ -52,7 +50,6 @@ public class IncrementManaTest {
 		// Checks that AI player's getMana equals the turn number + 1 as the turn changes
 		assertTrue(gameState.player2.getMana() == gameState.compTurnNumber + 1);
 		
-		//Not working as of 3/8 because the team changed the initial mana to 5 to test new functionality
 	}
 
 }
