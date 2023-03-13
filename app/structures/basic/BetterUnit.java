@@ -17,6 +17,7 @@ public class BetterUnit extends Unit {
     int health;
     int attack;
 
+    String name; // added name attribute to better units so we can set names on intitialise
 
     public BetterUnit(ActorRef out,Unit unit, Tile tile, Board board) {
         //avatar object
@@ -63,6 +64,7 @@ public class BetterUnit extends Unit {
 
         unit.setHealth(getHealth()); // oops forgot to set health and attack for avatars !
         unit.setAttack(getAttack());
+        unit.setMaxHealth(20); // added to check max health
     }
 
 
@@ -80,6 +82,16 @@ public class BetterUnit extends Unit {
 
     public void setAttack(int attack) {
         this.attack = attack;
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
     }
 
     public static void main(String[] args) {

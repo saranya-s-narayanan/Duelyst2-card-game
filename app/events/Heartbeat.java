@@ -33,15 +33,24 @@ public class Heartbeat implements EventProcessor{
 	@Override
 	public void processEvent(ActorRef out, GameState gameState, JsonNode message) {
 		
+		if(gameState.player1!=null && gameState.player2!=null) // To avoid NULLpointerexception
+    	{
+    		gameState.player1.syncHealth();
+    		gameState.player1.setPlayerHealth(out);
+    		gameState.player2.syncHealth();
+    		gameState.player2.setPlayerHealth(out); 
+    		
+    		//to check if the game ended or not
+			PerformAction.gameEnd(out, gameState);
+        
+    	}
 		
-		// When the first Heartbeat message is received, update the received time and start the timer
-		if(gameState.lastHeartbeatTime==0) {
-			gameState.lastHeartbeatTime=System.currentTimeMillis();
+		 // Comment below lines if you want to reset backend after 60 minutes of inactivity of the frontend communication
+		if(gameState.isGameOver==false)
 			gameState.isGameActive=true;
-			startHeartbeatTaskTimer(out,gameState);
-		}
-
-		gameState.lastHeartbeatTime=System.currentTimeMillis();
+		else
+			gameState.isGameActive=false;
+		
 
 	}
 	
@@ -51,6 +60,9 @@ public class Heartbeat implements EventProcessor{
  * 
  * Longer timegap between latest time of heartbeat reception and current time indicates inactive
  * connection between the front end and the back end. So stop the back end execution.
+ * 
+ * If the timegap is more than 60minutes, it will display a message about the inactivity of the user and asks user to 
+ * reload the game for effective working
  * @param gameState
  */
 	
@@ -59,31 +71,16 @@ public class Heartbeat implements EventProcessor{
 		 heartbeatTimerTask = new TimerTask() {
 	            public void run() {
 	            	
-	            	// Syncing player health with the health of their avatar in real time and updating on the front end
-	        		gameState.player1.syncHealth();
-	        		gameState.player1.setPlayerHealth(out);
-	        		gameState.player2.syncHealth(); 
-	        		gameState.player2.setPlayerHealth(out); 
-//	        		AppConstants.printLog("------> Heartbeat:: Syncing player and avatar health ! Updating front end !!");
-	            
-	            	//to check if the game ended or not
-					PerformAction.gameEnd(out, gameState);
-//					if(gameState.isGameOver==true){
-//						{
-//							AppConstants.printLog("------> Heartbeat1:: Game ended ! Resetting Backend !!");
-//							gameState.clearStateVariables();
-//							stopGameTaskTimer();
-//							
-//						}
-//					}
+        			
 	            	// Calculate the time gap between the latest heartbeat receival time and current time
 	            	long timeDifference = System.currentTimeMillis()-gameState.lastHeartbeatTime;
 	            	// If the time gap is more than the allowed time gap, reset game variables and stop timer.
 	            	if(timeDifference>AppConstants.allowedHeartbeatTimeGap || gameState.isGameOver==true)
 	            	{
-	        			AppConstants.printLog("------> Heartbeat:: Game is NOT active ! Resetting Backend !!");
+
+	        			AppConstants.printLog("------> The game was not active for more than 15 minutes. Please reload the browser! ");
 	        			gameState.isGameActive=false;
-	            		gameState.clearStateVariables();
+	        			gameState.clearStateVariables();
 	            		stopGameTaskTimer();
 	            		
 	            	}
