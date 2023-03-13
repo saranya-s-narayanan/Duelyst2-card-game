@@ -35,7 +35,6 @@ public class Initalize implements EventProcessor {
 
         gameState.gameInitalised = true;
         gameState.clickMessage=message.get("messagetype");//initializing the clickMessage here
-		AppConstants.printLog("------> message type:---->"+gameState.clickMessage);
 
 
 		// Create a board object and assign it to the gameState board object
@@ -69,13 +68,7 @@ public class Initalize implements EventProcessor {
         //Setting the hand as an ArrayList
         gameState.player1.setHand(out,1);
         AppConstants.callSleep(200);
-        // AppConstants.printLog("------> Initialize :: Card draw complete");
 
-        //Praharsh's create unit for summoning
-        // loading the units for player 1
-        // gameState.player1.createPlayerUnits(out);//changes here for conflict resolution
-
-        
 
         //************************************// COMPUTER PLAYER //******************************************
 		// creating ai avatar object
@@ -102,27 +95,15 @@ public class Initalize implements EventProcessor {
         // loading the units for player 2
         // gameState.player2.createPlayer2Units(out);
         gameState.player2.createUnits(gameState.player2);
-        // AppConstants.printLog("------> Initialize :: deck created");
-        
-        // AppConstants.printLog("------> Initialize :: Drawing 3 cards from the deck for AI");
         //Setting the hand as an ArrayList
         gameState.player2.setHand(out,2);
         AppConstants.callSleep(200);
-
-        // loading the units for player 2
-
-        // gameState.player2.createPlayer2Units(out);
-
-        //Praharsh's create unit for summoning
-        // gameState.player2.createPlayerUnits(out);//changes here for conflict resolution
 
         
         // Add Player avatars to summoned Units arraylist
         gameState.summonedUnits.add(avatar);
         gameState.summonedUnits.add(aiAvatar);
         
-        
-//        gameState.board.addDummyUnitsonBoard(out,gameState);
        
         AppConstants.printLog("------> Game Board and player initialized!");
 

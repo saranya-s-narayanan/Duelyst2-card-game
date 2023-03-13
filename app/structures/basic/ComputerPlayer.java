@@ -231,14 +231,11 @@ public class ComputerPlayer extends Player{
 		
 		Tile tileToSummon = null;
 		//should be changing this to accomodate for different cards
-		possibleSummonList= PerformAction.getSummonableTilesAroundAvatar(out, gameState,currentTile);
-		// gameState.board.highlightTilesRed(out, (ArrayList<Tile>) possibleSummonList);
+		possibleSummonList= PerformAction.getSummonableTiles(out, gameState, gameState.player2);
 
 		// Find the closest enemy unit on board
 		int closestEnemyUnitIdx=findClosestEnemyUnit(currentTile);
 		
-		tileToSummon=findClosestTileToEnemy(closestEnemyUnitIdx,possibleSummonList);
-
 		if(card.getId()==22|| card.getId()==32){//staff of ykir
 			//tileToSummon=gameState.summonedUnits.get(1).getTileFromUnitP2(41, gameState, out);
 			tileToSummon=currentTile;
@@ -260,9 +257,11 @@ public class ComputerPlayer extends Player{
 		}
 		else if(card.getId()== 28 || card.getId()==38){//summon planar scout to the nearest tile to human avatar
 			tileToSummon=findClosestTileToEnemyAvatar(gameState, bestSummonTile.get(card));
+			System.out.println("Planar scout summoing: "+tileToSummon.toString());
 			return tileToSummon;
 		}
 
+		tileToSummon=findClosestTileToEnemy(closestEnemyUnitIdx,possibleSummonList);
 		
 		return tileToSummon;
 	}
@@ -273,19 +272,19 @@ public class ComputerPlayer extends Player{
 	 * @param summonList
 	 * @return
  	*/
-	private Tile findClosestTileToEnemy(int enemyUnitIdx, List<Tile> summonList) {
+	private Tile findClosestTileToEnemy(int enemyUnitIdx, List<Tile> listToGive) {
 		
 		Tile tile=null;
 		
 		double minDistance=999;
-		for(Tile summonTile:summonList)
+		for(Tile iterTile:listToGive)
 		{
 			if(enemyUnitIdx>-1 && enemyUnitIdx<tileWithPlayerUnits.size()) // To avoid IndexOutOfBoundException
 			{
-			double distance=calculateDistanceBetweenPoints(tileWithPlayerUnits.get(enemyUnitIdx).getTilex(), tileWithPlayerUnits.get(enemyUnitIdx).getTiley(), summonTile.getTilex(), summonTile.getTiley());
+				double distance=calculateDistanceBetweenPoints(tileWithPlayerUnits.get(enemyUnitIdx).getTilex(), tileWithPlayerUnits.get(enemyUnitIdx).getTiley(), iterTile.getTilex(), iterTile.getTiley());
 	
-				if(distance<minDistance && summonTile.getUnitFromTile()==null) {
-					tile=summonTile;
+				if(distance<minDistance && iterTile.getUnitFromTile()==null) {
+					tile=iterTile;
 					minDistance=distance;
 				}
 			}
@@ -334,7 +333,6 @@ public class ComputerPlayer extends Player{
 		for(int i=0;i<tileWithPlayerUnits.size();i++)
 		{
 			double distance=calculateDistanceBetweenPoints(ourTile.getTilex(), ourTile.getTiley(), tileWithPlayerUnits.get(i).getTilex(), tileWithPlayerUnits.get(i).getTiley());
-//			AppConstants.printLog("AI:: findClosestEnemyUnit:: DISTANCE: "+distance);
 			if(distance<minDistance)
 			{
 				minDistance=distance;
@@ -354,24 +352,24 @@ public class ComputerPlayer extends Player{
 	 * @param summonList
 	 * @return
 	 */
-	private Tile findClosestTileToEnemyAvatar(GameState gameState, List<Tile> summonList) {
-			
+	private Tile findClosestTileToEnemyAvatar(GameState gameState, List<Tile> listToGive) {
+
 		Tile tile=null;
 		int enemyUnitIdx = gameState.summonedUnits.get(0).getId();//id of the player avatar
 		double minDistance=999;
-		for(Tile summonTile:summonList)
+		for(Tile iterTile:listToGive)
 		{
-			if(enemyUnitIdx>-1 && enemyUnitIdx<tileWithPlayerUnits.size()) // To avoid IndexOutOfBoundException
+			if(enemyUnitIdx>-1 && (enemyUnitIdx<tileWithPlayerUnits.size() || enemyUnitIdx==40)) // To avoid IndexOutOfBoundException
 			{
-			double distance=calculateDistanceBetweenPoints(tileWithPlayerUnits.get(enemyUnitIdx).getTilex(), tileWithPlayerUnits.get(enemyUnitIdx).getTiley(), summonTile.getTilex(), summonTile.getTiley());
+				double distance=calculateDistanceBetweenPoints(tileWithPlayerUnits.get(0).getTilex(), tileWithPlayerUnits.get(0).getTiley(), iterTile.getTilex(), iterTile.getTiley());
 
-				if(distance<minDistance && summonTile.getUnitFromTile()==null) {
-					tile=summonTile;
+				if(distance<minDistance && iterTile.getUnitFromTile()==null) {
+					tile=iterTile;
 					minDistance=distance;
 				}
 			}
 		}
-		
+
 		return tile;
 	}
 
@@ -407,11 +405,7 @@ public class ComputerPlayer extends Player{
 				if(c.getManacost()<=getMana()) //  check mana
 				{
 					if(c.getId()==22 || c.getId()==32){//check if card in hand is staffofykir
-						//play staff of Ykir when the avatar has more than 1 enemy units in range
-//						if(bestAttackTile.get(gameState.summonedUnits.get(1)).size()>2){
 							return i;
-//						}
-//						else continue;
 					}
 					else if(c.getId()==27 || c.getId()==37){//check if the card in hand is entropic decay
 						//find unit with max health and max attack and play this card
@@ -453,38 +447,6 @@ public class ComputerPlayer extends Player{
 		}
 	}
 
-	
-
-	
-	
-	/** Methods checks is a unit is surrounded by enemy units or not
-	 * If enemy units are in range, it will return the list of adjacent enemy unit tile
-	 * otherwise, the list will be empty
-	 * @param tile
-	 * @param out
-	 * @param gameState
-	 * @return
-	 */
-
-	private ArrayList<Tile> checkIfUnitInDanger(Tile tile, ActorRef out, GameState gameState) {
-		// TODO Auto-generated method stub
-		
-		ArrayList<Tile> enemyDangerTiles=new ArrayList<>();
-		
-		// Get adjacent tile of tile to move and attack
-		ArrayList<Tile> adjacentTilesMoveAttack=gameState.board.highlightTilesMoveAndAttack(0,gameState.player2,out,tile,gameState);
-		
-		// Check for enemy units in the adjacentTilesMoveAttack
-		for(Tile enemyTile:tileWithPlayerUnits)
-		{
-			// If enemy units are present, return true
-			if(adjacentTilesMoveAttack.contains(enemyTile))
-				enemyDangerTiles.add(enemyTile);
-		}
-		
-		
-		return enemyDangerTiles;
-	}
 
 	/**
 	 * This method will give a list of possible moves like summon or move/attack
@@ -513,7 +475,6 @@ public class ComputerPlayer extends Player{
 				//get summonable tiles
 				if(card.getId()==22 || card.getId()==32){//for staffofykir can only be played on the avatar
 					possibleSummonList = new ArrayList<Tile>();
-//					possibleSummonList.add(gameState.summonedUnits.get(1).getTileFromUnitP2(41, gameState, out));
 					possibleSummonList.add(currentTile);
 					bestSummonTile.put(card, possibleSummonList);
 				}
@@ -799,7 +760,7 @@ public class ComputerPlayer extends Player{
 
 		TileClicked tc=new TileClicked();
 		tc.processEvent(out, gameState, eventMessage); // send it to the Tileclicked event processor
-		callSleepAI(200);
+		callSleepAI(2000);
 	}
 
 	/** Method returns a random number between min and max

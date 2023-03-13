@@ -182,7 +182,6 @@ public class SpecialAbilities {
                     if (tilesProvoke.contains(enemyTile)){
                         rangedAttack(out, gameState,unit,enemyUnit,enemyTile,startTile);
                         return true;}
-//                    else return false;
                 }
 
                 // If the enemyTile is in range of the startTile, attack

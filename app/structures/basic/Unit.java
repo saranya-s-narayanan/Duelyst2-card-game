@@ -222,22 +222,6 @@ public class Unit {
 		this.summonedID = summonedID;
 	}
 	
-	/** Method to get the owner id of a summoned unit 
-	 * 
-	 * @return
-	 */
-//	public int getOwnerPlayerID() {
-//		return ownerPlayer;
-//	}
-	
-	/** Method to assign 
-	 * 
-	 * @return
-	 */
-//	public void setOwnerPlayerID(int ownerPlayer) {
-//		this.ownerPlayer = ownerPlayer;
-//	}
-	
 	// this is a method that can be called to remove a unit from the board. this will be used in another method 'isAlive()' to check if the unit is alive during the game.
 	// this could be achieved by using the basicCommands.deletUnit() directly, however this will allow us to more easily call that function.
 	public void unitRemoval(ActorRef out){

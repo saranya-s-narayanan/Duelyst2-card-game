@@ -22,14 +22,6 @@ import static structures.basic.UnitAnimationType.idle;
 
 public class PerformAction {
 
-	/*// <---- Moved below code to Appconstants - SS ---->
-	 * static String[] effects = { StaticConfFiles.f1_buff,
-	 * StaticConfFiles.f1_inmolation, StaticConfFiles.f1_martyrdom,
-	 * StaticConfFiles.f1_summon };
-	 */
-	
-	
-	
 	
 	/** This method implements attack function of players
 	 * @param mode 
@@ -91,8 +83,7 @@ public class PerformAction {
 							// Get the attackable tiles of the enemy tile and check whether any of those tiles comes inside the adjacenttiles of the start tile
 							ArrayList<Tile> enemyAdjacentTiles=gameState.board.retrieveAdjacentTilesToAttackPosition(out, enemyTile);
 
-			                AppConstants.printLog("------> TileClicked :: PerFormAction :: Move and attack :: enemyAdjacentTiles : " +enemyAdjacentTiles.size() );
-	
+
 	
 							Tile tileToMove = null;
 							
@@ -107,7 +98,6 @@ public class PerformAction {
 									break;
 								}
 							}
-			                AppConstants.printLog("------> TileClicked :: PerFormAction :: Move and attack :: tileToMove : " +tileToMove );
 
 	
 			                if(tileToMove!=null)
@@ -363,7 +353,6 @@ public class PerformAction {
 		// If the avatar is moved, update 'currentTile' object in the 
 		if(unitToMove.getId()==40 || unitToMove.getId()==41)
 		{
-	    	 AppConstants.printLog("------> AVATAR moved! ID: "+unitToMove.getId());
 
 			if(unitToMove.getId()==40)
 				gameState.player1.setCurrentTile(endTile);
@@ -425,7 +414,7 @@ public class PerformAction {
 	
 	
 	public static ArrayList<Tile> getSummonableTiles(ActorRef out, GameState gameState, Player player) {  // method used to retreives a list of the summonable tiles
-
+		gameState.SummonTileList=null;
         if(gameState.SummonTileList==null){
             gameState.SummonTileList= new ArrayList<Tile>();
             // list of the tiles with units
